@@ -1,0 +1,11 @@
+debug/aboutwindow.o
+debug/combatCalculator.o
+debug/entity.o
+debug/fileImporter.o
+debug/modifiersCalculator.o
+debug/run_game.o
+debug/main.o
+debug/mainwindow.o
+debug/stream_buffer.o
+debug/moc_aboutwindow.o
+debug/moc_mainwindow.o
