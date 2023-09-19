@@ -32,7 +32,6 @@ private slots:
 
   void on_actionUser_guide_triggered();
 
-    void on_playSound_clicked();
 
   private:
   Ui::MainWindow ui;

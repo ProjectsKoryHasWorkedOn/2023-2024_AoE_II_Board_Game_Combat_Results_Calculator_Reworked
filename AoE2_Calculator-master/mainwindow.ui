@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>975</width>
-    <height>602</height>
+    <height>721</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>949</width>
-      <height>531</height>
+      <height>644</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -44,15 +44,15 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="4" column="0">
-          <widget class="QLineEdit" name="player1MonkQuantity">
-           <property name="placeholderText">
-            <string/>
+         <item row="3" column="1">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Quantity</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QLabel" name="label_3">
+         <item row="7" column="1">
+          <widget class="QLabel" name="label_6">
            <property name="text">
             <string>Quantity</string>
            </property>
@@ -65,36 +65,68 @@
            </property>
           </widget>
          </item>
+         <item row="11" column="1">
+          <widget class="QLabel" name="player1UnitsLabel_3">
+           <property name="text">
+            <string>Player 2's event cards</string>
+           </property>
+          </widget>
+         </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="font">
-            <font>
-             <bold>true</bold>
-            </font>
-           </property>
+          <widget class="QLabel" name="player1UnitsLabel_6">
            <property name="text">
-            <string>Monks</string>
+            <string>Player 1's battle assistant</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QLabel" name="label_6">
+         <item row="10" column="0">
+          <widget class="QListWidget" name="player1Technologies"/>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="player1UnitsLabel_2">
            <property name="text">
-            <string>Quantity</string>
+            <string>Player 1's event cards</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
-          <widget class="QLabel" name="player1UnitsLabel_5">
-           <property name="text">
-            <string>Player 2's technologies</string>
-           </property>
-          </widget>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="player1EntityNamesFilter"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="player1UnitsLabel">
            <property name="text">
             <string>Player 1's battle participant</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLabel" name="player1UnitsLabel_7">
+           <property name="text">
+            <string>Player 2's battle assistant</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QListWidget" name="player1EntityNames">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QComboBox" name="player1BattleAssistantNames"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Quantity</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLabel" name="player1UnitsLabel_5">
+           <property name="text">
+            <string>Player 2's technologies</string>
            </property>
           </widget>
          </item>
@@ -106,61 +138,28 @@
           </widget>
          </item>
          <item row="8" column="0">
-          <widget class="QLabel" name="player1UnitsLabel_4">
-           <property name="text">
-            <string>Player 1's technologies</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
           <widget class="QLineEdit" name="player1EntityQuantity">
            <property name="placeholderText">
             <string/>
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Quantity</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QListWidget" name="player1EntityNames">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="player1EntityNamesFilter"/>
-         </item>
-         <item row="9" column="1">
-          <widget class="QLabel" name="player1UnitsLabel_3">
-           <property name="text">
-            <string>Player 2's event cards</string>
-           </property>
-          </widget>
-         </item>
          <item row="9" column="0">
-          <widget class="QLabel" name="player1UnitsLabel_2">
+          <widget class="QLabel" name="player1UnitsLabel_4">
            <property name="text">
-            <string>Player 1's event cards</string>
+            <string>Player 1's technologies</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
-          <widget class="QLabel" name="label_5">
-           <property name="font">
-            <font>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Monks</string>
+         <item row="4" column="0">
+          <widget class="QLineEdit" name="player1MonkQuantity">
+           <property name="placeholderText">
+            <string/>
            </property>
           </widget>
+         </item>
+         <item row="12" column="0">
+          <widget class="QListWidget" name="player1Events"/>
          </item>
         </layout>
        </item>
@@ -192,19 +191,6 @@
       </layout>
      </item>
     </layout>
-   </widget>
-   <widget class="QPushButton" name="playSound">
-    <property name="geometry">
-     <rect>
-      <x>663</x>
-      <y>540</y>
-      <width>271</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Play sound effect (not working)</string>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

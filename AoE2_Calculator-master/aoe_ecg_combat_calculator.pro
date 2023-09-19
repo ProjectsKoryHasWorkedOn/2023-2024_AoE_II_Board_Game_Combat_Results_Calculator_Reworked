@@ -1,6 +1,9 @@
 QT       += core gui
-# Updated QT to a newer version (6.5.2) and selected the multimedia library
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+# Updated QT to a newer version (6.5.2)
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+# Would rather avoid using this multimedia library, doesn't seem very reliable
+# greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 CONFIG += c++17
 

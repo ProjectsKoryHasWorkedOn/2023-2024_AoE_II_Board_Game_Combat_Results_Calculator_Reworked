@@ -11,8 +11,9 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
-#include <QSoundEffect>
 #include <QCoreApplication>
+
+
 
 
 // Declaring the variables, arrays
@@ -90,10 +91,64 @@ MainWindow::MainWindow(QWidget* parent)
   workingDirectory.cdUp();
 
 
+  // Set values inside of the combobox
+  ui.player1BattleAssistantNames->addItem("Monk");
 
 
 
+  // Set values inside of the technologies list
+  QStringList technologies = {
+  "Blast Furnace" , "Bodkin Arrow", "Bracer",
+  "Chain Barding Armor", "Chain Mail Armor",
+  "Fletching", "Forging",
+  "Hoardings",
+  "Iron Casting",
+  "Leather Archer Armor", "Loom",
+  "Padded Archer Armor", "Plate Barding Armor", "Plate Mail Armor",
+  "Ring Archer Armor",
+  "Scale Barding Armor", "Scale Mail Armor", "Sanctity (unofficial)"
+  };
 
+  // Don't need _ as not passed into file
+  // Just looking at if there's a 0 or 1
+  // (unofficial) means not by original designers
+
+  for(int z = 0; z < technologies.length(); z ++){
+    QListWidgetItem *technology = new QListWidgetItem(technologies[z]);
+      technology->setData(Qt::CheckStateRole, Qt::Unchecked);
+    ui.player1Technologies->addItem(technology);
+  }
+
+
+  // Set values inside of the events list
+ QStringList events = {
+    "A_Just_Cause", "N/A",
+    "Barrel_Of_Grog", "Bone_Shaft_Arrows_(Mongol)",
+    "Caught_From_The_Crow's_Nest", "Celtic_Battle_Cry_(Celt)",
+    "Dangerous_Times",
+    "Fat_Friar's_Tavern_O'_Spices", "Field_Testing", "First_Battle_Jitters", "Flaming_Arrows", "Fortune_Favors_The_Foolish",
+    "Gatherin'_A_Rowdy_Bunch", "Gladitorial_Games",
+    "Hard_To_Starboard", "Heavy_Tree_Cover", "High_Ground", "Husbandry",
+    "It's_A_Miracle",
+    "Listen_To_A_Story", "Muddy_Battlefield", "Non-Compos_Mentis", "N/A",
+    "Piety", "N/A",
+    "Rally_The_Workers", "Relentless_Attack", "Retreat", "N/A",
+    "Shots_In_The_Back_(Briton)", "Soak_The_Timbers", "Spirits_Of_The_Ancestors", "Squires", "Steady_Hand",
+    "The_Hammer's_Cavalry_(Franks)", "The_Jester_Is_Dead_Let's_Get_Them!_(Celt)",
+    "Vengeance_Is_Mine!",
+    "While_They're_Sleeping",
+    "You_Will_Die!_(Saracen)",
+    "Zealous_Monks"
+  };
+
+  qDebug() << events.length();
+
+
+  for(int eV = 0; eV < events.length(); eV ++){
+    QListWidgetItem *event = new QListWidgetItem(events[eV]);
+    event->setData(Qt::CheckStateRole, Qt::Unchecked);
+    ui.player1Events->addItem(event);
+  }
 
 }
 
@@ -179,18 +234,5 @@ void MainWindow::on_actionUser_guide_triggered()
 }
 
 
-void MainWindow::on_playSound_clicked()
-{
-  // See if sound plays
-  /* Not a fan of this
-  QString fileName = "/sfx/test.wav";
-  QString filePath = workingDirectory.absolutePath() + fileName;
-  qDebug() << filePath;
 
-  QSoundEffect effect;
-  effect.setSource(filePath);
-  effect.setVolume(1.0f);
-  effect.play();
-  */
-}
 

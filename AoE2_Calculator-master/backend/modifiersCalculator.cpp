@@ -724,7 +724,7 @@ void modifiersCalculator::applyTechnologyEffects()
     }
   }
   if (playerTechnologies[17] == 1) {
-    // Monk_Test - +1 HP to all Monks
+    // Sanctity_Test - +1 HP to all Monks
     if (applyTechnologyModifiers.armorClass[9] == true) { // Monk
       applyTechnologyModifiers.entityHealth += 1;
     }
