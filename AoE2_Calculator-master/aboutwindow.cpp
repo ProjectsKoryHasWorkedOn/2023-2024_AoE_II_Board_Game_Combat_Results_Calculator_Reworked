@@ -7,7 +7,7 @@ aboutwindow::aboutwindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->gitHubPageLabel->setText("<a href=\"https://github.com/ProjectsKoryHasWorkedOn/AoE_II_Board_Game_Combat_Results_Calculator\">github.com/ProjectsKoryHasWorkedOn/AoE_II_Board_Game_Combat_Results_Calculator</a>");
+    ui->gitHubPageLabel->setText("<a href=\"https://github.com/ProjectsKoryHasWorkedOn/AoE_II_Board_Game_Combat_Results_Calculator_Reworked\">https://github.com/ProjectsKoryHasWorkedOn/AoE_II_Board_Game_Combat_Results_Calculator_Reworked</a>");
     ui->gitHubPageLabel->setTextFormat(Qt::RichText);
     ui->gitHubPageLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
     ui->gitHubPageLabel->setOpenExternalLinks(true);

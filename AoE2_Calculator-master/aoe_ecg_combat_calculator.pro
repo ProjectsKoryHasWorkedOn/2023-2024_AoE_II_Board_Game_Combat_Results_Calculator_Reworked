@@ -1,8 +1,6 @@
 QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-# Need to download special library for multimedia
-# greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+# Updated QT to a newer version (6.5.2) and selected the multimedia library
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 CONFIG += c++17
 

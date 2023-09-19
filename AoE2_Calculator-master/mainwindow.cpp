@@ -10,9 +10,10 @@
 #include <QTextEdit>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QCoreApplication>
 #include <QDir>
-// #include <QSoundEffect>
+#include <QSoundEffect>
+#include <QCoreApplication>
+
 
 // Declaring the variables, arrays
 QString player1EntityNamesFiltered = "";
@@ -30,7 +31,7 @@ QString technologiesP2Filename = "/import/technologies_p2.csv";
 
 
 // Declare working directory
-QDir workingDirectory(QCoreApplication::applicationDirPath());
+QDir workingDirectory;
 
 
 
@@ -83,19 +84,17 @@ MainWindow::MainWindow(QWidget* parent)
   ui.player1MonkQuantity->setText("0");
 
 
+  workingDirectory = QCoreApplication::applicationDirPath();
+
   // gets debug folder for some reason so go up a level
-  // workingDirectory.cdUp();
+  workingDirectory.cdUp();
 
 
-    // See if sound plays
-  QString fileName = "/sfx/wonder_destroyed_sfx.wav";
-  QString filePath = workingDirectory.absolutePath() + fileName;
-  qDebug() << filePath;
 
-  // QSoundEffect effect;
-  // effect.setSource(filePath);
-  // effect.setVolume(0.25f);
-  // effect.play();
+
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -177,5 +176,21 @@ void MainWindow::on_actionUser_guide_triggered()
   QString fileName = "/documentation/user_guide.docx";
   QString filePath = workingDirectory.absolutePath() + fileName;
   QDesktopServices::openUrl(filePath);
+}
+
+
+void MainWindow::on_playSound_clicked()
+{
+  // See if sound plays
+  /* Not a fan of this
+  QString fileName = "/sfx/test.wav";
+  QString filePath = workingDirectory.absolutePath() + fileName;
+  qDebug() << filePath;
+
+  QSoundEffect effect;
+  effect.setSource(filePath);
+  effect.setVolume(1.0f);
+  effect.play();
+  */
 }
 

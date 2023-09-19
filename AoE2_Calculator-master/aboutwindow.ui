@@ -80,7 +80,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>https://github.com/ProjectsKoryHasWorkedOn/AoE_II_Board_Game_Combat_Results_Calculator</string>
+    <string>[Link to GitHub repository]</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

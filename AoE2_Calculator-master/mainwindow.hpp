@@ -13,6 +13,9 @@ public:
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
 
+
+  // @ Kory make sure you delete old references, or it'll re-create them in moc_mainwindow.cpp in slots and be annoying
+
 private slots:
   void onCalculateResultsButtonClicked();
 
@@ -24,13 +27,12 @@ private slots:
 
   void on_player1EntityQuantity_textChanged();
 
-    void on_player1EntityQuantity_textChanged(const QString &arg1);
-
-  void on_player1EntityNamesFilter_textChanged(const QString &arg1);
 
     void on_actionDeveloper_guide_triggered();
 
   void on_actionUser_guide_triggered();
+
+    void on_playSound_clicked();
 
   private:
   Ui::MainWindow ui;
