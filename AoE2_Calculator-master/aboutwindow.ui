@@ -41,7 +41,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Version: 1.0</string>
+    <string>Version: 2.0</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">

@@ -122,23 +122,23 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Set values inside of the events list
  QStringList events = {
-    "A_Just_Cause", "N/A",
-    "Barrel_Of_Grog", "Bone_Shaft_Arrows_(Mongol)",
-    "Caught_From_The_Crow's_Nest", "Celtic_Battle_Cry_(Celt)",
-    "Dangerous_Times",
-    "Fat_Friar's_Tavern_O'_Spices", "Field_Testing", "First_Battle_Jitters", "Flaming_Arrows", "Fortune_Favors_The_Foolish",
-    "Gatherin'_A_Rowdy_Bunch", "Gladitorial_Games",
-    "Hard_To_Starboard", "Heavy_Tree_Cover", "High_Ground", "Husbandry",
-    "It's_A_Miracle",
-    "Listen_To_A_Story", "Muddy_Battlefield", "Non-Compos_Mentis", "N/A",
-    "Piety", "N/A",
-    "Rally_The_Workers", "Relentless_Attack", "Retreat", "N/A",
-    "Shots_In_The_Back_(Briton)", "Soak_The_Timbers", "Spirits_Of_The_Ancestors", "Squires", "Steady_Hand",
-    "The_Hammer's_Cavalry_(Franks)", "The_Jester_Is_Dead_Let's_Get_Them!_(Celt)",
-    "Vengeance_Is_Mine!",
-    "While_They're_Sleeping",
-    "You_Will_Die!_(Saracen)",
-    "Zealous_Monks"
+    "A Just Cause", "Back From A Foreign Land (unimplemented)",
+    "Barrel Of Grog", "Bone Shaft Arrows (Mongol)",
+    "Caught From The Crow's Nest", "Celtic Battle Cry (Celt)",
+    "Dangerous Times",
+    "Fat Friar's Tavern O' Spices", "Field Testing", "First Battle Jitters", "Flaming Arrows", "Fortune Favors The Foolish",
+    "Gatherin' A Rowdy Bunch", "Gladitorial Games",
+    "Hard To Starboard", "Heavy Tree Cover", "High Ground", "Husbandry",
+    "It's A Miracle",
+    "Listen To A Story", "Muddy Battlefield", "Non-Compos Mentis", "Spare slot",
+    "Piety", "Black Knight (unimplemented)",
+    "Rally The Workers", "Relentless Attack", "Retreat", "Holy War (unimplemented)",
+    "Shots In The Back (Briton)", "Soak The Timbers", "Spirits Of The Ancestors", "Squires", "Steady Hand",
+    "The Hammer's Cavalry (Franks)", "The Jester Is Dead Let's Get Them! (Celt)",
+    "Vengeance Is Mine!",
+    "While They're Sleeping",
+    "You Will Die! (Saracen)",
+    "Zealous Monks"
   };
 
   qDebug() << events.length();
