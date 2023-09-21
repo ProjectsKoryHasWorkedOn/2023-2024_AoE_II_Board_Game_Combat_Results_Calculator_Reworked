@@ -227,6 +227,8 @@
      <string>Options</string>
     </property>
     <addaction name="actionEnable_Disable_SFX"/>
+    <addaction name="actionSet_player_names"/>
+    <addaction name="actionSet_player_colors"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -259,6 +261,16 @@
   <action name="actionEnable_Disable_SFX">
    <property name="text">
     <string>Enable / Disable SFX</string>
+   </property>
+  </action>
+  <action name="actionSet_player_names">
+   <property name="text">
+    <string>Set player names</string>
+   </property>
+  </action>
+  <action name="actionSet_player_colors">
+   <property name="text">
+    <string>Set player colors</string>
    </property>
   </action>
  </widget>
