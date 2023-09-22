@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>473</width>
-    <height>705</height>
+    <width>608</width>
+    <height>785</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Combat results calculator</string>
+   <string>Combat results calculator for an AoE II board game</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -25,22 +25,6 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="programTitleLabel">
-          <property name="font">
-           <font>
-            <pointsize>16</pointsize>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>AoE II board game combat results calculator</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="3" column="1">
@@ -51,7 +35,7 @@
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="player2AssistingUnitsQuantityLabel">
             <property name="text">
              <string>Quantity</string>
             </property>
@@ -65,14 +49,14 @@
            </widget>
           </item>
           <item row="11" column="1">
-           <widget class="QLabel" name="player1UnitsLabel_3">
+           <widget class="QLabel" name="player2EventsLabel">
             <property name="text">
              <string>Player 2's event cards</string>
             </property>
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QLabel" name="player1UnitsLabel_6">
+           <widget class="QLabel" name="player1AssistingUnitsLabel">
             <property name="text">
              <string>Player 1's battle assistant</string>
             </property>
@@ -82,7 +66,7 @@
            <widget class="QListWidget" name="player1Technologies"/>
           </item>
           <item row="11" column="0">
-           <widget class="QLabel" name="player1UnitsLabel_2">
+           <widget class="QLabel" name="player1EventsLabel">
             <property name="text">
              <string>Player 1's event cards</string>
             </property>
@@ -99,7 +83,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QLabel" name="player1UnitsLabel_7">
+           <widget class="QLabel" name="player2AssistingUnitsLabel">
             <property name="text">
              <string>Player 2's battle assistant</string>
             </property>
@@ -116,14 +100,14 @@
            <widget class="QComboBox" name="player1BattleAssistantNames"/>
           </item>
           <item row="7" column="0">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="player1AssistingUnitsQuantityLabel">
             <property name="text">
              <string>Quantity</string>
             </property>
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QLabel" name="player1UnitsLabel_5">
+           <widget class="QLabel" name="player2TechnologiesLabel">
             <property name="text">
              <string>Player 2's technologies</string>
             </property>
@@ -144,7 +128,7 @@
            </widget>
           </item>
           <item row="9" column="0">
-           <widget class="QLabel" name="player1UnitsLabel_4">
+           <widget class="QLabel" name="player1TechnologiesLabel">
             <property name="text">
              <string>Player 1's technologies</string>
             </property>
@@ -173,6 +157,12 @@
           </item>
           <item>
            <widget class="QTextEdit" name="gameOutputTextEdit">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>150</height>
+             </size>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -198,7 +188,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>473</width>
+     <width>608</width>
      <height>21</height>
     </rect>
    </property>
@@ -226,9 +216,11 @@
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="actionEnable_Disable_SFX"/>
-    <addaction name="actionSet_player_names"/>
-    <addaction name="actionSet_player_colors"/>
+    <addaction name="actionDisable_SFX"/>
+    <addaction name="actionSet_name_of_player_1"/>
+    <addaction name="actionSet_set_color_of_player_1"/>
+    <addaction name="actionSet_name_of_player_2"/>
+    <addaction name="actionSet_set_color_of_player_2"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -258,19 +250,32 @@
     <string>Developer guide</string>
    </property>
   </action>
-  <action name="actionEnable_Disable_SFX">
+  <action name="actionDisable_SFX">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Enable / Disable SFX</string>
+    <string>Disable SFX</string>
    </property>
   </action>
-  <action name="actionSet_player_names">
+  <action name="actionSet_name_of_player_1">
    <property name="text">
-    <string>Set player names</string>
+    <string>Set player 1's name</string>
    </property>
   </action>
-  <action name="actionSet_player_colors">
+  <action name="actionSet_set_color_of_player_1">
    <property name="text">
-    <string>Set player colors</string>
+    <string>Set player 1's color</string>
+   </property>
+  </action>
+  <action name="actionSet_name_of_player_2">
+   <property name="text">
+    <string>Set player 2's name</string>
+   </property>
+  </action>
+  <action name="actionSet_set_color_of_player_2">
+   <property name="text">
+    <string>Set player 2's color</string>
    </property>
   </action>
  </widget>

@@ -1015,7 +1015,7 @@ void monkRounds::roundOutcome(
       // occured
       if ((monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)) {
         std::string outputString
-          = "Phase 1) Monk round " + std::to_string(i + 1) + " calculations...";
+          = "Monk round " + std::to_string(i + 1) + " calculations...";
         outputEntityInformation(outputString);
 
         // Behaviour: Display how many points were added if appropriate
@@ -1031,10 +1031,12 @@ void monkRounds::roundOutcome(
         std::cout << "\n";
       }
       else {
+        /* No longer show if a phase is skipped to conserve space on the window
         std::cout << "\n"
-                  << "Skipping Phase 1) Monk round " + std::to_string(i + 1)
+                  << "Skipping Monk round " + std::to_string(i + 1)
                        + " calculations..."
                   << "\n";
+      */
       }
 
       // Behaviour: Check if a death has occured
@@ -1348,7 +1350,7 @@ void archerRounds::roundOutcome(
     // occured
     if ((p1ArcherPresent == true) || (p2ArcherPresent == true)) {
       std::string outputString
-        = "Phase 2) Archer round " + std::to_string(i + 1) + " calculations...";
+        = "Archer round " + std::to_string(i + 1) + " calculations...";
       outputEntityInformation(outputString);
 
       // Behaviour: Display how many damage die to place if appropriate
@@ -1401,10 +1403,12 @@ void archerRounds::roundOutcome(
       }
     }
     else {
+        /* No longer show if a phase is skipped to conserve space on the window
       std::cout << "\n"
-                << "Skipping Phase 2) Archer round " + std::to_string(i + 1)
+                << "Skipping Archer round " + std::to_string(i + 1)
                      + " calculations..."
                 << "\n";
+*/
     }
   }
 }
@@ -2256,7 +2260,7 @@ void standardRounds::roundOutcome(
     // Behaviour: Display the outcome of the archer combat round only if changes
     // occured
     if (standardRoundActivated == true) {
-      std::string outputString = "Phase 3) Standard round "
+      std::string outputString = "Standard round "
                                  + std::to_string(i + 1) + " calculations...";
       outputEntityInformation(outputString);
 
@@ -2332,7 +2336,7 @@ void standardRounds::roundOutcome(
       // Behaviour: Stop from this showing up if a unit dies in the monk round
       // of combat
       if ((aDeathHasOccured == false) && (isRetreating != "1")) {
-        std::cout << "Skipping Phase 3) Standard round " + std::to_string(i + 1)
+        std::cout << "Skipping Standard round " + std::to_string(i + 1)
                        + " calculations..."
                   << "\n";
       }

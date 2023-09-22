@@ -1,9 +1,12 @@
 QT       += core gui
 # Updated QT to a newer version (6.5.2)
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-# Would rather avoid using this multimedia library, doesn't seem very reliable
-# greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+
+# Set icon
+RC_ICONS = abacus.ico
+
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 CONFIG += c++17
 
@@ -20,6 +23,7 @@ SOURCES += \
     backend/run_game.cpp \
     main.cpp \
     mainwindow.cpp \
+    soundEffects.cpp \
     stream_buffer.cpp
 
 HEADERS += \
@@ -31,6 +35,7 @@ HEADERS += \
     backend/run_game.h \
     mainwindow.h \
     mainwindow.hpp \
+    soundEffects.h \
     stream_buffer.h
 
 FORMS += \
