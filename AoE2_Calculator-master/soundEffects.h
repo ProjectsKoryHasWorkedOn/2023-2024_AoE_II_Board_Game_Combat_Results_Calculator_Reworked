@@ -6,14 +6,12 @@
 #include <QUrl>
 
 // Libraries used for audio playback
-#include <QMediaPlayer>
-#include <QAudioOutput>
+//#include <QMediaPlayer>
+//#include <QAudioOutput>
 
 class SoundPlayer {
 public:
   QString fileLocation;
-  void playSoundEffect();
+  void    playSoundEffect();
 };
 #endif // SOUNDEFFECTS_H
-
-

@@ -1,5 +1,6 @@
 #include "SoundEffects.h"
 
+#if 0
 void SoundPlayer::playSoundEffect(){
     // Declaring what i'm using for SFX
     QAudioOutput *outPut = new QAudioOutput;
@@ -20,3 +21,4 @@ void SoundPlayer::playSoundEffect(){
            // Play the media file
     player->play();
 }
+#endif

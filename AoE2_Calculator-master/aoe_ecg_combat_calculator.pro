@@ -6,7 +6,7 @@ QT       += core gui
 RC_ICONS = abacus.ico
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets # multimedia
 
 CONFIG += c++17
 
