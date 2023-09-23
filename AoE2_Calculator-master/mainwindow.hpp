@@ -3,6 +3,7 @@
 #include "./ui_mainwindow.h"
 #include "stream_buffer.h"
 
+#include <QHash>
 #include <QMainWindow>
 #include <QString>
 
@@ -13,9 +14,9 @@ public:
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
 
-
-// Delete redundant references to functions or it'll re-create them in moc_mainwindow.cpp under slots and throw up an error
-// Add new references to functions if it hasn't added them automatically or it'll throw up an error
+  // Delete redundant references to functions or it'll re-create them in
+  // moc_mainwindow.cpp under slots and throw up an error Add new references to
+  // functions if it hasn't added them automatically or it'll throw up an error
 private slots:
 
   void on_closeProgram_triggered();
@@ -34,14 +35,13 @@ private slots:
 
   void on_player1BattleAssistantNames_activated(int index);
 
-  void on_player1EntityNames_itemClicked(QListWidgetItem *item);
+  void on_player1EntityNames_itemClicked(QListWidgetItem* item);
 
-  void on_player1Technologies_itemChanged(QListWidgetItem *item);
+  void on_player1Technologies_itemChanged(QListWidgetItem* item);
 
-  void on_player1Events_itemChanged(QListWidgetItem *item);
+  void on_player1Events_itemChanged(QListWidgetItem* item);
 
   void on_actionDisable_SFX_triggered();
-
 
   void on_actionSet_name_of_player_2_triggered();
 
@@ -49,13 +49,20 @@ private slots:
 
   void on_actionSet_set_color_of_player_1_triggered();
 
-  void updatePlayerNames(QString updatedPlayer1Name, QString updatedPlayer2Name);
+  void updatePlayerNames(
+    QString updatedPlayer1Name,
+    QString updatedPlayer2Name);
 
   void on_actionSet_set_color_of_player_2_triggered();
 
 private:
-  Ui::MainWindow ui;
-  QString        m_gameOutputBuffer;
-  StreamBuffer   m_streamBuffer;
+  void initializeEntityAliases();
+
+  QStringList filterEntityNames(QString input) const;
+
+  Ui::MainWindow              ui;
+  QString                     m_gameOutputBuffer;
+  StreamBuffer                m_streamBuffer;
+  QHash<QString, QStringList> m_entityAliases;
 };
 #endif // MAINWINDOW_HPP

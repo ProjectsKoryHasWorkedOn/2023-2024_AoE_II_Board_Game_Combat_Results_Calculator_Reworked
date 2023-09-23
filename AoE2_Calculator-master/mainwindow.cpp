@@ -5,6 +5,7 @@
 #include "soundEffects.h"     // Sound playing class
 
 // Libraries used for std::cout
+#include <algorithm>
 #include <iostream>
 
 // Libraries used for debugging
@@ -74,11 +75,7 @@ MainWindow::MainWindow(QWidget* parent)
   player1Color = "black";
   player2Color = "black";
 
-  // What the possible names of entities (units, buildings) are
-  // @Phillip: Can we have aliases? For example, can
-  // "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)" be the same as
-  // "WONDER_(BRITON)"?
-
+  initializeEntityAliases();
   entityNames << "Archer"
               << "Archer_(Saracen)"
               << "Arbalest"
@@ -376,10 +373,13 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
   ui.player1EntityNames->clear();
 
   // Filter the list based on what entity name the user entered
-  QStringList filteredList = entityNames.filter(player1EntityNamesFiltered);
+  QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     ui.player1EntityNames->addItem(filteredList[y]);
   }
+
+  // TODO: Add something to filter the entityNames, considering the aliases.
+  // TODO: Add Charlemagne's thing for Wonder
 }
 
 // Run this when the text inside of the player 1 quantities field changes
@@ -568,4 +568,58 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
   player2Color = color.name();
 
   updatePlayerNames(player1Name, player2Name);
+}
+
+void MainWindow::initializeEntityAliases()
+{
+  m_entityAliases.insert(
+    "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)",
+    QStringList{"WONDER_(BRITON)"});
+  m_entityAliases.insert("ROCK_OF_CASHEL_(CELT)", QStringList{"WONDER_(CELT)"});
+  m_entityAliases.insert(
+    "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)",
+    QStringList{"WONDER_(MONGOL)"});
+  m_entityAliases.insert(
+    "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)",
+    QStringList{"WONDER_(PERSIAN)"});
+  m_entityAliases.insert(
+    "TOMB_OF_THEODORIC_(GOTH)", QStringList{"WONDER_(GOTH)"});
+  m_entityAliases.insert(
+    "NOTRE-DAME_CATHEDRAL_(FRANK)", QStringList{"WONDER_(FRANK)"});
+  m_entityAliases.insert(
+    "STAVE_CHURCH_AT_URNES_(VIKING)", QStringList{"WONDER_(VIKING)"});
+  m_entityAliases.insert(
+    "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)", QStringList{"WONDER_(JAPANESE)"});
+}
+
+QStringList MainWindow::filterEntityNames(QString input) const
+{
+  QStringList filteredEntities{};
+
+  for (const QString& entity : entityNames) {
+    const QHash<QString, QStringList>::const_iterator it{
+      m_entityAliases.find(entity.toUpper())};
+    const QStringList aliases{[this, it] {
+      if (it == m_entityAliases.end()) {
+        return QStringList{};
+      }
+
+      return it.value();
+    }()};
+
+    const bool isDirectMatch{entity.contains(input, Qt::CaseInsensitive)};
+    const bool hasAliases{!aliases.isEmpty()};
+    const bool hasAliasMatch{
+      hasAliases
+      && std::any_of(
+        aliases.begin(), aliases.end(), [&input](const QString& alias) {
+          return alias.contains(input, Qt::CaseInsensitive);
+        })};
+
+    if (isDirectMatch || hasAliasMatch) {
+      filteredEntities << entity;
+    }
+  }
+
+  return filteredEntities;
 }
