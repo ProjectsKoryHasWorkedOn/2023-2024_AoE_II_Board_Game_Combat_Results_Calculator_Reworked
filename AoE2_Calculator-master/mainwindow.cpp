@@ -29,7 +29,7 @@
 SoundPlayer playSound;
 bool        soundEffectsEnabled = true;
 
-// Declaring the file paths for @Phillip
+// Declaring the file paths for @Phillip (unused for now)
 QString entitiesFilename       = "/import/entities.csv";
 QString eventsP1Filename       = "/import/events_p1.csv";
 QString eventsP2Filename       = "/import/events_p2.csv";
@@ -65,7 +65,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   // gets debug folder for some reason so go up a level
   workingDirectory.cdUp();
-  qDebug() << workingDirectory;
 
   // What the initial name of the players are
   player1Name = "Player 1";
@@ -77,157 +76,164 @@ MainWindow::MainWindow(QWidget* parent)
 
   initializeEntityAliases();
   entityNames << "Archer"
-              << "Archer_(Saracen)"
+              << "Archer (Saracen)"
               << "Arbalest"
-              << "Arbalest_(Briton)"
-              << "Arbalest_(Saracen)"
-              << "Archery_Range"
+              << "Arbalest (Briton)"
+              << "Arbalest (Saracen)"
+              << "Archery Range"
               << "Barracks"
-              << "Battering_Ram"
-              << "Battering_Ram_(Celt)"
-              << "Berserk_(Viking)"
+              << "Battering Ram"
+              << "Battering Ram (Celt)"
+              << "Berserk (Viking)"
               << "Blacksmith"
-              << "Capped_Ram"
-              << "Capped_Ram_(Celt)"
+              << "Capped Ram"
+              << "Capped Ram (Celt)"
               << "Castle"
               << "Camel"
-              << "Castle_(Frank)"
+              << "Castle (Frank)"
               << "Cavalier"
-              << "Cavalier_(Frank)"
-              << "Cavalier_(Persian)"
-              << "Cavalry_Archer"
-              << "Cavalry_Archer_(Mongol)"
+              << "Cavalier (Frank)"
+              << "Cavalier (Persian)"
+              << "Cavalry Archer"
+              << "Cavalry Archer (Mongol)"
               << "Champion"
-              << "Champion_(Celt)"
-              << "Champion_(Goth)"
-              << "Champion_(Japanese)"
-              << "Champion_(Viking)"
-              << "Charlamagne's_Palace_At_Aix_La'Chapelle_(Briton)"
+              << "Champion (Celt)"
+              << "Champion (Goth)"
+              << "Champion (Japanese)"
+              << "Champion (Viking)"
+              << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
               << "Crossbowman"
-              << "Crossbowman_(Saracen)"
-              << "Demolition_Ship"
-              << "Demolition_Ship_(Viking)"
+              << "Crossbowman (Saracen)"
+              << "Demolition Ship"
+              << "Demolition Ship (Viking)"
               << "Dock"
-              << "Dock_(Persian)"
-              << "Dock_(Viking)"
-              << "Elite_Berserk_(Viking)"
-              << "Elite_Huskarl_(Goth)"
-              << "Elite_Longboat_(Viking)"
-              << "Elite_Longbowman_(Briton)"
-              << "Elite_Mameluke_(Saracen)"
-              << "Elite_Manugdai_(Mongol)"
-              << "Elite_Samurai_(Japanese)"
-              << "Elite_Skirmisher"
-              << "Elite_Throwing_Axeman_(Frank)"
-              << "Elite_War_Elephant_(Persian)"
-              << "Elite_Woad_Raider_(Celt)"
+              << "Dock (Persian)"
+              << "Dock (Viking)"
+              << "Elite Berserk (Viking)"
+              << "Elite Huskarl (Goth)"
+              << "Elite Longboat (Viking)"
+              << "Elite Longbowman (Briton)"
+              << "Elite Mameluke (Saracen)"
+              << "Elite Manugdai (Mongol)"
+              << "Elite Samurai (Japanese)"
+              << "Elite Skirmisher"
+              << "Elite Throwing Axeman (Frank)"
+              << "Elite War Elephant (Persian)"
+              << "Elite Woad Raider (Celt)"
               << "Farm"
-              << "Fast_Fire_Ship"
-              << "Fire_Ship"
-              << "Fishing_Ship_(Japanese)"
-              << "Fishing_Ship_(Persian)"
-              << "Fortified_Wall"
+              << "Fast Fire Ship"
+              << "Fire Ship"
+              << "Fishing Ship (Japanese)"
+              << "Fishing Ship (Persian)"
+              << "Fortified Wall"
               << "Galley"
-              << "Galley_(Japanese)"
-              << "Galley_(Saracen)"
-              << "Galley_(Viking)"
+              << "Galley (Japanese)"
+              << "Galley (Saracen)"
+              << "Galley (Viking)"
               << "Galleon"
-              << "Galleon_(Saracen)"
-              << "Galleon_(Viking)"
-              << "Galleon_(Japanese)"
-              << "Gold_Mine"
-              << "Gold_Mine_(Japanese)"
-              << "Heavy_Camel"
-              << "Heavy_Cavalry_Archer"
-              << "Heavy_Cavalry_Archer_(Mongol)"
-              << "Heavy_Cavalry_Archer_(Saracen)"
-              << "Heavy_Demolition_Ship"
-              << "Heavy_Demolition_Ship_(Viking)"
-              << "Heavy_Scorpion"
-              << "Heavy_Scorpion_(Celt)"
+              << "Galleon (Saracen)"
+              << "Galleon (Viking)"
+              << "Galleon (Japanese)"
+              << "Gold Mine"
+              << "Gold Mine (Japanese)"
+              << "Heavy Camel"
+              << "Heavy Cavalry Archer"
+              << "Heavy Cavalry Archer (Mongol)"
+              << "Heavy Cavalry Archer (Saracen)"
+              << "Heavy Demolition Ship"
+              << "Heavy Demolition Ship (Viking)"
+              << "Heavy Scorpion"
+              << "Heavy Scorpion (Celt)"
               << "House"
-              << "Huskarl_(Goth)"
+              << "Huskarl (Goth)"
               << "Knight"
-              << "Knight_(Frank)"
-              << "Knight_(Persian)"
-              << "Light_Cavalry"
-              << "Light_Cavalry_(Mongol)"
-              << "Long_Swordsman"
-              << "Long_Swordsman_(Celt)"
-              << "Long_Swordsman_(Goth)"
-              << "Long_Swordsman_(Japanese)"
-              << "Long_Swordsman_(Viking)"
-              << "Longboat_(Viking)"
-              << "Longbowman_(Briton)"
-              << "Lumber_Camp"
-              << "Lumber_Camp_(Japanese)"
-              << "Mameluke_(Saracen)"
+              << "Knight (Frank)"
+              << "Knight (Persian)"
+              << "Light Cavalry"
+              << "Light Cavalry (Mongol)"
+              << "Long Swordsman"
+              << "Long Swordsman (Celt)"
+              << "Long Swordsman (Goth)"
+              << "Long Swordsman (Japanese)"
+              << "Long Swordsman (Viking)"
+              << "Longboat (Viking)"
+              << "Longbowman (Briton)"
+              << "Lumber Camp"
+              << "Lumber Camp (Japanese)"
+              << "Mameluke (Saracen)"
               << "Man-at-Arms"
-              << "Man-at-Arms_(Viking)"
-              << "Man-at-Arms_(Celt)"
-              << "Man-at-Arms_(Goth)"
-              << "Man-at-Arms_(Japanese)"
+              << "Man-at-Arms (Viking)"
+              << "Man-at-Arms (Celt)"
+              << "Man-at-Arms (Goth)"
+              << "Man-at-Arms (Japanese)"
               << "Mangonel"
-              << "Mangonel_(Celt)"
-              << "Mangudai_(Mongol)"
+              << "Mangonel (Celt)"
+              << "Mangudai (Mongol)"
               << "Market"
-              << "Market_(Saracen)"
+              << "Market (Saracen)"
               << "Militia"
-              << "Militia_(Celt)"
-              << "Militia_(Goth)"
+              << "Militia (Celt)"
+              << "Militia (Goth)"
               << "Mill"
-              << "Mill_(Japanese)"
+              << "Mill (Japanese)"
               << "Monastery"
+              << "Notre-Dame Cathedral (Frank)"
               << "Onager"
-              << "Onager_(Celt)"
+              << "Onager (Celt)"
               << "Outpost"
               << "Paladin"
-              << "Paladin_(Persian)"
-              << "Paladin_(Frank)"
-              << "Palisade_Wall"
+              << "Paladin (Persian)"
+              << "Paladin (Frank)"
+              << "Palisade Wall"
               << "Pikeman"
-              << "Pikeman_(Celt)"
-              << "Pikeman_(Goth)"
-              << "Pikeman_(Japanese)"
-              << "Pikeman_(Viking)"
-              << "Samurai_(Japanese)"
+              << "Pikeman (Celt)"
+              << "Pikeman (Goth)"
+              << "Pikeman (Japanese)"
+              << "Pikeman (Viking)"
+              << "Rock Of Cashel (Celt)"
+              << "Samurai (Japanese)"
               << "Scorpion"
-              << "Scorpion_(Celt)"
-              << "Scout_Cavalry"
-              << "Siege_Onager"
-              << "Siege_Onager_(Celt)"
-              << "Siege_Ram"
-              << "Siege_Ram_(Celt)"
-              << "Siege_Workshop"
+              << "Scorpion (Celt)"
+              << "Scout Cavalry"
+              << "Siege Onager"
+              << "Siege Onager (Celt)"
+              << "Siege Ram"
+              << "Siege Ram (Celt)"
+              << "Siege Workshop"
               << "Skirmisher"
               << "Spearman"
-              << "Spearman_(Japanese)"
-              << "Spearman_(Viking)"
-              << "Spearman_(Celt)"
-              << "Spearman_(Goth)"
+              << "Spearman (Japanese)"
+              << "Spearman (Viking)"
+              << "Spearman (Celt)"
+              << "Spearman (Goth)"
               << "Stable"
-              << "Stone_Gate"
-              << "Stone_Mine"
-              << "Stone_Mine_(Japanese)"
-              << "Stone_Wall"
-              << "Throwing_Axeman_(Frank)"
-              << "Town_Center"
-              << "Town_Center_(Briton)"
-              << "Town_Center_(Persian)"
+              << "Stave Church At Urnes (Viking)"
+              << "Stone Gate"
+              << "Stone Mine"
+              << "Stone Mine (Japanese)"
+              << "Stone Wall"
+              << "The Golden Tent Of The Great Khan (Mongol)"
+              << "The Great Temple At Nara (Japanese)"
+              << "The Palace Of Ctesiphon On The Tigris (Persian)"
+              << "Throwing Axeman (Frank)"
+              << "Tomb Of Theodoric (Goth)"
+              << "Town Center"
+              << "Town Center (Briton)"
+              << "Town Center (Persian)"
               << "Trebuchet"
-              << "Two-handed_Swordsman"
-              << "Two-handed_Swordsman_(Celt)"
-              << "Two-handed_Swordsman_(Goth)"
-              << "Two-handed_Swordsman_(Japanese)"
-              << "Two-handed_Swordsman_(Viking)"
+              << "Two-handed Swordsman"
+              << "Two-handed Swordsman (Celt)"
+              << "Two-handed Swordsman (Goth)"
+              << "Two-handed Swordsman (Japanese)"
+              << "Two-handed Swordsman (Viking)"
               << "Villager"
-              << "War_Elephant_(Persian)"
-              << "War_Galley"
-              << "War_Galley_(Japanese)"
-              << "War_Galley_(Saracen)"
-              << "War_Galley_(Viking)"
-              << "Watch_Tower"
-              << "Woad_Raider_(Celt)";
+              << "War Elephant (Persian)"
+              << "War Galley"
+              << "War Galley (Japanese)"
+              << "War Galley (Saracen)"
+              << "War Galley (Viking)"
+              << "Watch Tower"
+              << "Woad Raider (Celt)";
 
   // Sort the list in alphabetical order
   entityNames.sort();
@@ -372,14 +378,11 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
   // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
 
-  // Filter the list based on what entity name the user entered
+  // Filter the list based on what entity name the user entered, factoring in aliases for that entity name
   QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     ui.player1EntityNames->addItem(filteredList[y]);
   }
-
-  // TODO: Add something to filter the entityNames, considering the aliases.
-  // TODO: Add Charlemagne's thing for Wonder
 }
 
 // Run this when the text inside of the player 1 quantities field changes
@@ -572,24 +575,14 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
 
 void MainWindow::initializeEntityAliases()
 {
-  m_entityAliases.insert(
-    "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)",
-    QStringList{"WONDER_(BRITON)"});
-  m_entityAliases.insert("ROCK_OF_CASHEL_(CELT)", QStringList{"WONDER_(CELT)"});
-  m_entityAliases.insert(
-    "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)",
-    QStringList{"WONDER_(MONGOL)"});
-  m_entityAliases.insert(
-    "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)",
-    QStringList{"WONDER_(PERSIAN)"});
-  m_entityAliases.insert(
-    "TOMB_OF_THEODORIC_(GOTH)", QStringList{"WONDER_(GOTH)"});
-  m_entityAliases.insert(
-    "NOTRE-DAME_CATHEDRAL_(FRANK)", QStringList{"WONDER_(FRANK)"});
-  m_entityAliases.insert(
-    "STAVE_CHURCH_AT_URNES_(VIKING)", QStringList{"WONDER_(VIKING)"});
-  m_entityAliases.insert(
-    "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)", QStringList{"WONDER_(JAPANESE)"});
+  m_entityAliases.insert("Charlamagne's Palace At Aix La'Chapelle (Briton)", QStringList{"Wonder (Briton)"});
+  m_entityAliases.insert("Rock Of Cashel (Celt)", QStringList{"Wonder (Celt)"});
+  m_entityAliases.insert("The Golden Tent Of The Great Khan (Mongol)", QStringList{"Wonder (Mongol)"});
+  m_entityAliases.insert("The Palace Of Ctesiphon On The Tigris (Persian)", QStringList{"Wonder (Persian)"});
+  m_entityAliases.insert("Tomb Of Theodoric (Goth)", QStringList{"Wonder (Goth)"});
+  m_entityAliases.insert("Notre-Dame Cathedral (Frank)", QStringList{"Wonder (Frank)"});
+  m_entityAliases.insert("Stave Church At Urnes (Viking)", QStringList{"Wonder (Viking)"});
+  m_entityAliases.insert("The Great Temple At Nara (Japanese)", QStringList{"Wonder (Japanese)"});
 }
 
 QStringList MainWindow::filterEntityNames(QString input) const
