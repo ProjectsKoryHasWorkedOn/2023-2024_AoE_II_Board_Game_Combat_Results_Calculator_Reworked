@@ -6,7 +6,7 @@ QT       += core gui
 RC_ICONS = abacus.ico
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets # multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia
 
 CONFIG += c++17
 
@@ -16,6 +16,7 @@ CONFIG += c++17
 
 SOURCES += \
     aboutwindow.cpp \
+    aliases.cpp \
     backend/combatCalculator.cpp \
     backend/entity.cpp \
     backend/fileImporter.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 
 HEADERS += \
     aboutwindow.h \
+    aliases.h \
     backend/combatCalculator.h \
     backend/entity.h \
     backend/fileImporter.h \

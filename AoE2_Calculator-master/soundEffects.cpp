@@ -1,24 +1,23 @@
 #include "SoundEffects.h"
 
-#if 0
-void SoundPlayer::playSoundEffect(){
-    // Declaring what i'm using for SFX
-    QAudioOutput *outPut = new QAudioOutput;
-    QMediaPlayer *player = new QMediaPlayer;
-    player->setAudioOutput(outPut);
+void SoundPlayer::playSoundEffect()
+{
+  // Declaring what i'm using for SFX
+  QAudioOutput* outPut = new QAudioOutput;
+  QMediaPlayer* player = new QMediaPlayer;
+  player->setAudioOutput(outPut);
 
-           // Set the location of the media file
-    player->setSource(QUrl::fromLocalFile(fileLocation));
+  // Set the location of the media file
+  player->setSource(QUrl::fromLocalFile(fileLocation));
 
-           // Set the volume
-    outPut->setVolume(100);
+  // Set the volume
+  outPut->setVolume(100);
 
-           // Play the media once
-    player->setLoops(1);
+  // Play the media once
+  player->setLoops(1);
 
-    outPut->setMuted(false);
+  outPut->setMuted(false);
 
-           // Play the media file
-    player->play();
+  // Play the media file
+  player->play();
 }
-#endif

@@ -7,9 +7,11 @@
 // Libraries used for std::cout
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 // Libraries used for debugging
 #include <QDebug>
+#include <QSet>
 
 // Libraries used for accessing file paths
 #include <QCoreApplication>
@@ -18,9 +20,9 @@
 
 // Libraries used for storing data
 #include <QColor>
+#include <QListWidgetItem>
 #include <QString>
 #include <QStringList>
-#include <QListWidgetItem>
 
 // Libraries for acquiring user input
 #include <QColorDialog>
@@ -58,6 +60,7 @@ MainWindow::MainWindow(QWidget* parent)
                      m_gameOutputBuffer.append(QString{QChar{ch}});
                      ui.gameOutputTextEdit->setText(m_gameOutputBuffer);
                    }}
+  , m_aliases{}
 {
   ui.setupUi(this);
 
@@ -236,8 +239,6 @@ MainWindow::MainWindow(QWidget* parent)
               << "Watch Tower"
               << "Woad Raider (Celt)";
 
-
-
   // Sort the list in alphabetical order
   entityNames.sort();
 
@@ -337,9 +338,7 @@ MainWindow::MainWindow(QWidget* parent)
   // Player 2 UI elements
 }
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() {}
 
 // Run this when there's a call to play a button SFX
 void SFXToPlay(QString filePath)
@@ -347,7 +346,7 @@ void SFXToPlay(QString filePath)
   // Play SFX if SFX is enabled
   if (soundEffectsEnabled == true) {
     playSound.fileLocation = workingDirectory.absolutePath() + filePath;
-    // playSound.playSoundEffect();
+    playSound.playSoundEffect();
   }
   else {
     // Do nothing
@@ -381,49 +380,49 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
   // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
 
-
-
   // Store name of filtered item
-   QString nameOfFilteredItem;
+  QString nameOfFilteredItem;
 
-  // Filter the list based on what entity name the user entered, factoring in aliases for that entity name
+  // Filter the list based on what entity name the user entered, factoring in
+  // aliases for that entity name
   QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     // Get the name of the filtered item
     nameOfFilteredItem = filteredList[y];
 
     // Add in the tooltips for the aliases so the user is aware of them
-    QListWidgetItem *listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-    if(nameOfFilteredItem == "Charlamagne's Palace At Aix La'Chapelle (Briton)"){
+    QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
+    if (
+      nameOfFilteredItem
+      == "Charlamagne's Palace At Aix La'Chapelle (Briton)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Briton)");
     }
-    else if(nameOfFilteredItem == "Rock Of Cashel (Celt)"){
+    else if (nameOfFilteredItem == "Rock Of Cashel (Celt)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Celt)");
     }
-    else if(nameOfFilteredItem == "The Golden Tent Of The Great Khan (Mongol)"){
+    else if (
+      nameOfFilteredItem == "The Golden Tent Of The Great Khan (Mongol)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Mongol)");
     }
-    else if(nameOfFilteredItem == "The Palace Of Ctesiphon On The Tigris (Persian)"){
+    else if (
+      nameOfFilteredItem == "The Palace Of Ctesiphon On The Tigris (Persian)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Persian)");
     }
-    else if(nameOfFilteredItem == "Tomb Of Theodoric (Goth)"){
+    else if (nameOfFilteredItem == "Tomb Of Theodoric (Goth)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Goth)");
     }
-    else if(nameOfFilteredItem == "Notre-Dame Cathedral (Frank)"){
+    else if (nameOfFilteredItem == "Notre-Dame Cathedral (Frank)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Frank)");
     }
-    else if(nameOfFilteredItem == "Stave Church At Urnes (Viking)"){
+    else if (nameOfFilteredItem == "Stave Church At Urnes (Viking)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Viking)");
     }
-    else if(nameOfFilteredItem == "The Great Temple At Nara (Japanese)"){
+    else if (nameOfFilteredItem == "The Great Temple At Nara (Japanese)") {
       listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Japanese)");
     }
 
-
     ui.player1EntityNames->addItem(listWidgetItem);
   }
-
-
 }
 
 // Run this when the text inside of the player 1 quantities field changes
@@ -509,9 +508,7 @@ void MainWindow::on_actionDisable_SFX_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if (soundEffectsEnabled == true) {
-    soundEffectsEnabled = false;
-  }
+  if (soundEffectsEnabled == true) { soundEffectsEnabled = false; }
   else {
     soundEffectsEnabled = true;
   }
@@ -564,9 +561,7 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
     &ok);
 
   // Validate the user input
-  if (player1Name.isEmpty()) {
-    player1Name = "Player 1";
-  }
+  if (player1Name.isEmpty()) { player1Name = "Player 1"; }
 
   updatePlayerNames(player1Name, player2Name);
 }
@@ -597,9 +592,7 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
     &ok);
 
   // Validate the user input
-  if (player2Name.isEmpty()) {
-    player2Name = "Player 2";
-  }
+  if (player2Name.isEmpty()) { player2Name = "Player 2"; }
 
   updatePlayerNames(player1Name, player2Name);
 }
@@ -617,44 +610,51 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
 
 void MainWindow::initializeEntityAliases()
 {
-  m_entityAliases.insert("Charlamagne's Palace At Aix La'Chapelle (Briton)", QStringList{"Wonder (Briton)"});
-  m_entityAliases.insert("Rock Of Cashel (Celt)", QStringList{"Wonder (Celt)"});
-  m_entityAliases.insert("The Golden Tent Of The Great Khan (Mongol)", QStringList{"Wonder (Mongol)"});
-  m_entityAliases.insert("The Palace Of Ctesiphon On The Tigris (Persian)", QStringList{"Wonder (Persian)"});
-  m_entityAliases.insert("Tomb Of Theodoric (Goth)", QStringList{"Wonder (Goth)"});
-  m_entityAliases.insert("Notre-Dame Cathedral (Frank)", QStringList{"Wonder (Frank)"});
-  m_entityAliases.insert("Stave Church At Urnes (Viking)", QStringList{"Wonder (Viking)"});
-  m_entityAliases.insert("The Great Temple At Nara (Japanese)", QStringList{"Wonder (Japanese)"});
+  m_aliases.add(
+    "Charlamagne's Palace At Aix La'Chapelle (Briton)", "Wonder (Briton)");
+  m_aliases.add("Rock Of Cashel (Celt)", "Wonder (Celt)");
+  m_aliases.add(
+    "The Golden Tent Of The Great Khan (Mongol)", "Wonder (Mongol)");
+  m_aliases.add(
+    "The Palace Of Ctesiphon On The Tigris (Persian)", "Wonder (Persian)");
+  m_aliases.add("Tomb Of Theodoric (Goth)", "Wonder (Goth)");
+  m_aliases.add("Notre-Dame Cathedral (Frank)", "Wonder (Frank)");
+  m_aliases.add("Stave Church At Urnes (Viking)", "Wonder (Viking)");
+  m_aliases.add("The Great Temple At Nara (Japanese)", "Wonder (Japanese)");
+}
+
+static std::vector<QString> findMatches(
+  const QList<QString>& haystack,
+  const QString&        needle)
+{
+  std::vector<QString> result{};
+  result.reserve(haystack.size());
+  std::copy_if(
+    haystack.begin(),
+    haystack.end(),
+    std::back_inserter(result),
+    [&needle](const QString& hay) {
+      return hay.contains(needle, Qt::CaseInsensitive);
+    });
+  return result;
 }
 
 QStringList MainWindow::filterEntityNames(QString input) const
 {
-  QStringList filteredEntities{};
+  std::vector<QString> directMatches{findMatches(entityNames, input)};
+  QSet<QString>        filteredEntities(
+    std::make_move_iterator(directMatches.begin()),
+    std::make_move_iterator(directMatches.end()));
+  const QList<QString>       aliases{m_aliases.getAllAliases()};
+  const std::vector<QString> indirectMatches{findMatches(aliases, input)};
 
-  for (const QString& entity : entityNames) {
-    const QHash<QString, QStringList>::const_iterator it{
-      m_entityAliases.find(entity.toUpper())};
-    const QStringList aliases{[this, it] {
-      if (it == m_entityAliases.end()) {
-        return QStringList{};
-      }
+  for (const QString& alias : indirectMatches) {
+    const QList<QString> entities{m_aliases.entityOf(alias)};
 
-      return it.value();
-    }()};
-
-    const bool isDirectMatch{entity.contains(input, Qt::CaseInsensitive)};
-    const bool hasAliases{!aliases.isEmpty()};
-    const bool hasAliasMatch{
-      hasAliases
-      && std::any_of(
-        aliases.begin(), aliases.end(), [&input](const QString& alias) {
-          return alias.contains(input, Qt::CaseInsensitive);
-        })};
-
-    if (isDirectMatch || hasAliasMatch) {
-      filteredEntities << entity;
-    }
+    for (const QString& entity : entities) { filteredEntities.insert(entity); }
   }
 
-  return filteredEntities;
+  QList<QString> result{filteredEntities.values()};
+  result.sort();
+  return result;
 }

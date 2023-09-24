@@ -6,8 +6,8 @@
 #include <QUrl>
 
 // Libraries used for audio playback
-//#include <QMediaPlayer>
-//#include <QAudioOutput>
+#include <QAudioOutput>
+#include <QMediaPlayer>
 
 class SoundPlayer {
 public:

@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 #include "./ui_mainwindow.h"
+#include "aliases.h"
 #include "stream_buffer.h"
 
 #include <QHash>
@@ -60,9 +61,9 @@ private:
 
   QStringList filterEntityNames(QString input) const;
 
-  Ui::MainWindow              ui;
-  QString                     m_gameOutputBuffer;
-  StreamBuffer                m_streamBuffer;
-  QHash<QString, QStringList> m_entityAliases;
+  Ui::MainWindow ui;
+  QString        m_gameOutputBuffer;
+  StreamBuffer   m_streamBuffer;
+  Aliases        m_aliases;
 };
 #endif // MAINWINDOW_HPP
