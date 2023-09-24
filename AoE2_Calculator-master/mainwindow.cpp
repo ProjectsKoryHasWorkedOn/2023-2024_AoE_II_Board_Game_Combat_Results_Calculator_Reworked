@@ -474,6 +474,7 @@ void MainWindow::on_calculateResultsButton_clicked()
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   ui.gameOutputTextEdit->setPlainText("");
+  m_gameOutputBuffer.clear();
 
   // Calculate the results of a battle
   runGame();
