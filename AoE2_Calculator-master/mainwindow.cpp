@@ -20,6 +20,7 @@
 #include <QColor>
 #include <QString>
 #include <QStringList>
+#include <QListWidgetItem>
 
 // Libraries for acquiring user input
 #include <QColorDialog>
@@ -235,6 +236,8 @@ MainWindow::MainWindow(QWidget* parent)
               << "Watch Tower"
               << "Woad Raider (Celt)";
 
+
+
   // Sort the list in alphabetical order
   entityNames.sort();
 
@@ -378,11 +381,49 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
   // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
 
+
+
+  // Store name of filtered item
+   QString nameOfFilteredItem;
+
   // Filter the list based on what entity name the user entered, factoring in aliases for that entity name
   QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
-    ui.player1EntityNames->addItem(filteredList[y]);
+    // Get the name of the filtered item
+    nameOfFilteredItem = filteredList[y];
+
+    // Add in the tooltips for the aliases so the user is aware of them
+    QListWidgetItem *listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
+    if(nameOfFilteredItem == "Charlamagne's Palace At Aix La'Chapelle (Briton)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Briton)");
+    }
+    else if(nameOfFilteredItem == "Rock Of Cashel (Celt)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Celt)");
+    }
+    else if(nameOfFilteredItem == "The Golden Tent Of The Great Khan (Mongol)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Mongol)");
+    }
+    else if(nameOfFilteredItem == "The Palace Of Ctesiphon On The Tigris (Persian)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Persian)");
+    }
+    else if(nameOfFilteredItem == "Tomb Of Theodoric (Goth)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Goth)");
+    }
+    else if(nameOfFilteredItem == "Notre-Dame Cathedral (Frank)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Frank)");
+    }
+    else if(nameOfFilteredItem == "Stave Church At Urnes (Viking)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Viking)");
+    }
+    else if(nameOfFilteredItem == "The Great Temple At Nara (Japanese)"){
+      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Japanese)");
+    }
+
+
+    ui.player1EntityNames->addItem(listWidgetItem);
   }
+
+
 }
 
 // Run this when the text inside of the player 1 quantities field changes
