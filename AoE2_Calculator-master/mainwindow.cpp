@@ -307,7 +307,7 @@ MainWindow::MainWindow(QWidget* parent)
     "Non-Compos Mentis", // [Row 22]
     // Row 23 - Spare slot
     "Piety", // [Row 24]
-    "Black Knight (unimplemented)", // [Row 25]
+    "Black Knight", // [Row 25]
     "Rally The Workers", // [Row 26]
     "Relentless Attack", // [Row 27]
     "Retreat", // [Row 28]
