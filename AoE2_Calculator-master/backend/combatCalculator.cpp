@@ -644,6 +644,8 @@ void monkRounds::roundOutcome(
           if (conversionRateP1 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP1 = true;
+
+
           }
           else {
             // Behaviour: Return the fact that the attempt was unsuccessful
@@ -669,6 +671,9 @@ void monkRounds::roundOutcome(
             getIndividualValues();
             p2BattleParticipant.entityQuantity -= 1;
             getTotalValues();
+
+            // Play a SFX for a successful conversion attempt
+              // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
           }
           else if (
             (monkPowersActivatedP1 == true) && (calculationModeP1 == "1")) {
@@ -678,6 +683,9 @@ void monkRounds::roundOutcome(
             getIndividualValues();
             p1BattleParticipant.entityQuantity += p1EntitiesHealed;
             getTotalValues();
+
+            // Play a SFX for a successful healing attempt
+            // SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
         // Behaviour: Cover the case where there are 'assisting monks'
@@ -927,6 +935,9 @@ void monkRounds::roundOutcome(
             getIndividualValues();
             p1BattleParticipant.entityQuantity -= 1;
             getTotalValues();
+
+            // Play a SFX for a successful conversion attempt
+            // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
           }
           else if (
             (monkPowersActivatedP2 == true) && (calculationModeP2 == "1")) {
@@ -936,6 +947,9 @@ void monkRounds::roundOutcome(
             getIndividualValues();
             p2BattleParticipant.entityQuantity += p2EntitiesHealed;
             getTotalValues();
+
+            // Play a SFX for a successful healing attempt
+            // SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
         // Behaviour: Cover the case where there are 'assisting monks'
@@ -1839,6 +1853,13 @@ void standardRounds::roundOutcome(
     }
   }
 
+
+
+
+
+
+
+
   // Behaviour: Give the person who played the card more attack
   if (inputP1Events[35] == 1) {
     // [35] The Jester Is Dead, Let's Get Em (Celt) = Sacrifice 1 of your
@@ -1930,8 +1951,75 @@ void standardRounds::roundOutcome(
     p2BattleParticipant.standardDamage *= d6DieRoll;
   }
 
-  // Behaviour: Run the ranged battle round for X times
+  // Behaviour: Run the standard battle round for X times
   for (int i = 0; i < inputRunTimes; i++) {
+     // Give the player who played the card a weakened defender
+    // [24] Black Knight: “Play this card when you are the attacking Cavalry unit.
+    // Two tokens on the defending unit have 0 AP for the first round of normal combat
+    if (inputP1Events[24] == 1){
+      int getHowMuchAttackIndividualUnitsDo;
+      // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
+      if(i == 0){
+        getHowMuchAttackIndividualUnitsDo = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
+      }
+      int getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+      if(p2BattleParticipant.entityQuantity > 2){
+        getHowMuchAttackTheGroupDoesWithTwoLazyUnits = (p2BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo;
+      }
+      else{
+        getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
+      }
+      // If there's cavalry in play
+      if(p1BattleParticipant.armorClass[4]){
+        // If it's round 1
+        if(i == 0){
+          if(p2BattleParticipant.entityQuantity > 2){
+            p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+          }
+          else{
+            p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+          }
+        }
+        // If it's round 2
+        else if(i == 1){
+          p2BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo * p2BattleParticipant.entityQuantity;
+        }
+      }
+    }
+
+    if (inputP2Events[24] == 1){
+      int getHowMuchAttackIndividualUnitsDo2;
+      // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
+      if(i == 0){
+        getHowMuchAttackIndividualUnitsDo2 = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
+      }
+      int getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
+      if(p1BattleParticipant.entityQuantity > 2){
+        getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = (p1BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo2;
+      }
+      else{
+        getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = 0;
+      }
+      // If there's cavalry in play
+      if(p2BattleParticipant.armorClass[4]){
+        // If it's round 1
+        if(i == 0){
+          if(p1BattleParticipant.entityQuantity > 2){
+            p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
+          }
+          else{
+            p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
+          }
+        }
+        // If it's round 2
+        else if(i == 1){
+          p1BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo2 * p1BattleParticipant.entityQuantity;
+        }
+      }
+    }
+
+
+
     // Behaviour: Check if the remaining damage value triggers a death
     checkRemainingDamage(inputP1Events, inputP2Events);
 
@@ -2056,6 +2144,9 @@ void standardRounds::roundOutcome(
     else {
       standardRoundActivated = false;
     }
+
+
+
 
     // Behaviour: Clear the results if the entity only attacks once (in the
     // first round of combat) and we are not in the 1st round

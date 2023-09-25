@@ -50,16 +50,26 @@ private slots:
 
   void on_actionSet_set_color_of_player_1_triggered();
 
-  void updatePlayerNames(
-    QString updatedPlayer1Name,
-    QString updatedPlayer2Name);
+  void updatePlayerNames();
 
   void on_actionSet_set_color_of_player_2_triggered();
+
+  void on_player2EntityNamesFilter_textChanged(const QString &arg1);
+
+  void on_player2Technologies_itemChanged(QListWidgetItem *item);
+
+  void on_player2Events_itemChanged(QListWidgetItem *item);
+
+  void on_player2EntityNames_itemClicked(QListWidgetItem *item);
+
+  void on_player2BattleAssistantNames_activated(int index);
 
 private:
   void initializeEntityAliases();
 
   QStringList filterEntityNames(QString input) const;
+
+  QString tooltipReturner(QString name);
 
   Ui::MainWindow ui;
   QString        m_gameOutputBuffer;

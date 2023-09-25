@@ -3,7 +3,7 @@ QT       += core gui
 
 
 # Set icon
-RC_ICONS = abacus.ico
+RC_ICONS = swords_clashing.ico
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia

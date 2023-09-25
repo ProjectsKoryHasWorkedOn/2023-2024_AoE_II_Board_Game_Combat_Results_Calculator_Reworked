@@ -5,13 +5,13 @@
 #include "soundEffects.h"     // Sound playing class
 
 // Libraries used for std::cout
-#include <algorithm>
 #include <iostream>
-#include <vector>
+
+// Libraries used for std::copy_if
+#include <algorithm>
 
 // Libraries used for debugging
 #include <QDebug>
-#include <QSet>
 
 // Libraries used for accessing file paths
 #include <QCoreApplication>
@@ -23,10 +23,15 @@
 #include <QListWidgetItem>
 #include <QString>
 #include <QStringList>
+#include <QSet>
+#include <vector>
 
 // Libraries for acquiring user input
 #include <QColorDialog>
 #include <QInputDialog>
+
+// Librraries used for hotkeys
+#include <QShortcut>
 
 // Declaring class
 SoundPlayer playSound;
@@ -41,7 +46,6 @@ QString technologiesP1Filename = "/import/technologies_p1.csv";
 QString technologiesP2Filename = "/import/technologies_p2.csv";
 
 // Declaring the variables, arrays for the UI elements
-QString     player1EntityNamesFiltered = "";
 QStringList entityNames;
 QString     player1EntityQuantity = "0";
 QString     player1MonkQuantity   = "0";
@@ -63,6 +67,17 @@ MainWindow::MainWindow(QWidget* parent)
   , m_aliases{}
 {
   ui.setupUi(this);
+
+
+  // create shortcut
+  QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
+
+  // connect its 'activated' signal to the 'on_calculateResultsButton_clicked' function
+  QObject::connect(shortcut,    &QShortcut::activated,
+                   this,        &MainWindow::on_calculateResultsButton_clicked);
+
+  // Indicate that there's a hotkey for this in the tooltip
+  ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
 
   // What the working directory is
   workingDirectory = QCoreApplication::applicationDirPath();
@@ -244,98 +259,152 @@ MainWindow::MainWindow(QWidget* parent)
 
   // What the possible names of technologies are
   QStringList technologies = {
-    "Blast Furnace",
-    "Bodkin Arrow",
-    "Bracer",
-    "Chain Barding Armor",
-    "Chain Mail Armor",
-    "Fletching",
-    "Forging",
-    "Hoardings",
-    "Iron Casting",
-    "Leather Archer Armor",
-    "Loom",
-    "Padded Archer Armor",
-    "Plate Barding Armor",
-    "Plate Mail Armor",
-    "Ring Archer Armor",
-    "Scale Barding Armor",
-    "Scale Mail Armor",
-    "Sanctity (unofficial)"};
+    "Blast Furnace", // [Row 1]
+    "Bodkin Arrow", // [Row 2]
+    "Bracer", // [Row 3]
+    "Chain Barding Armor", // [Row 4]
+    "Chain Mail Armor", // [Row 5]
+    "Fletching", // [Row 6]
+    "Forging", // [Row 7]
+    "Hoardings", // [Row 8]
+    "Iron Casting", // [Row 9]
+    "Leather Archer Armor", // [Row 10]
+    "Loom", // [Row 11]
+    "Padded Archer Armor", // [Row 12]
+    "Plate Barding Armor", // [Row 13]
+    "Plate Mail Armor", // [Row 14]
+    "Ring Archer Armor", // [Row 15]
+    "Scale Barding Armor", // [Row 16]
+    "Scale Mail Armor", // [Row 17]
+    "Sanctity {2E}"}; // [Row 18]
+
+  // Sort the list in alphabetical order
+  technologies.sort();
 
   // What the possible names of event cards are
   QStringList events = {
-    "A Just Cause",
-    "Back From A Foreign Land (unimplemented)",
-    "Barrel Of Grog",
-    "Bone Shaft Arrows (Mongol)",
-    "Caught From The Crow's Nest",
-    "Celtic Battle Cry (Celt)",
-    "Dangerous Times",
-    "Fat Friar's Tavern O' Spices",
-    "Field Testing",
-    "First Battle Jitters",
-    "Flaming Arrows",
-    "Fortune Favors The Foolish",
-    "Gatherin' A Rowdy Bunch",
-    "Gladitorial Games",
-    "Hard To Starboard",
-    "Heavy Tree Cover",
-    "High Ground",
-    "Husbandry",
-    "It's A Miracle",
-    "Listen To A Story",
-    "Muddy Battlefield",
-    "Non-Compos Mentis",
-    "Spare slot",
-    "Piety",
-    "Black Knight (unimplemented)",
-    "Rally The Workers",
-    "Relentless Attack",
-    "Retreat",
-    "Holy War (unimplemented)",
-    "Shots In The Back (Briton)",
-    "Soak The Timbers",
-    "Spirits Of The Ancestors",
-    "Squires",
-    "Steady Hand",
-    "The Hammer's Cavalry (Franks)",
-    "The Jester Is Dead Let's Get Them! (Celt)",
-    "Vengeance Is Mine!",
-    "While They're Sleeping",
-    "You Will Die! (Saracen)",
-    "Zealous Monks"};
+    "A Just Cause", // [Row 1]
+    "Back From A Foreign Land (unimplemented)", // [Row 2]
+    "Barrel Of Grog", // [Row 3]
+    "Bone Shaft Arrows (Mongol)", // [Row 4]
+    "Caught From The Crow's Nest", // [Row 5]
+    "Celtic Battle Cry (Celt)", // [Row 6]
+    "Dangerous Times", // [Row 7]
+    "Fat Friar's Tavern O' Spices", // [Row 8]
+    "Field Testing", // [Row 9]
+    "First Battle Jitters", // [Row 10]
+    "Flaming Arrows", // [Row 11]
+    "Fortune Favors The Foolish", // [Row 12]
+    "Gatherin' A Rowdy Bunch", // [Row 13]
+    "Gladitorial Games", // [Row 14]
+    "Hard To Starboard", // [Row 15]
+    "Heavy Tree Cover", // [Row 16]
+    "High Ground", // [Row 17]
+    "Husbandry", // [Row 18]
+    "It's A Miracle", // [Row 19]
+    "Listen To A Story", // [Row 20]
+    "Muddy Battlefield", // [Row 21]
+    "Non-Compos Mentis", // [Row 22]
+    // Row 23 - Spare slot
+    "Piety", // [Row 24]
+    "Black Knight (unimplemented)", // [Row 25]
+    "Rally The Workers", // [Row 26]
+    "Relentless Attack", // [Row 27]
+    "Retreat", // [Row 28]
+    "Holy War", // [Row 29]
+    "Shots In The Back (Briton)", // [Row 30]
+    "Soak The Timbers", // [Row 31]
+    "Spirits Of The Ancestors", // [Row 32]
+    "Squires", // [Row 33]
+    "Steady Hand", // [Row 34]
+    "The Hammer's Cavalry (Franks)", // [Row 35]
+    "The Jester Is Dead Let's Get Them! (Celt)", // [Row 36]
+    "Vengeance Is Mine!", // [Row 37]
+    "While They're Sleeping", // [Row 38]
+    "You Will Die! (Saracen)", // [Row 39]
+    "Zealous Monks"}; // [Row 40]
 
-  // Set the initial state of the UI elements
-  // These are like placeholder (lorem ipsum) values
+  // Sort the list in alphabetical order
+  events.sort();
 
+  // Populate the UI elements with elements
   // Both player 1 & 2 UI elements
   for (int i = 0; i < entityNames.size(); i++) {
     ui.player1EntityNames->addItem(entityNames[i]);
-    // add ui.player2EntityNames->addItem(entityNames[i]);
+    ui.player2EntityNames->addItem(entityNames[i]);
   }
 
+  // Can only have one list widget item per list
   for (int z = 0; z < technologies.length(); z++) {
-    QListWidgetItem* technology = new QListWidgetItem(technologies[z]);
-    technology->setData(Qt::CheckStateRole, Qt::Unchecked);
-    ui.player1Technologies->addItem(technology);
-    // add ui.player1Technologies->addItem(technology);
+    QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[z]);
+    technologyPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+    // Mark which ones correspond to the 2E
+    if(technologyPlayer1->text().contains("{2E}")){
+      technologyPlayer1->setForeground(QColor("#FFFFFF"));
+      technologyPlayer1->setBackground(QColor("#5A5A5A"));
+    }
+
+    ui.player1Technologies->addItem(technologyPlayer1);
+  }
+
+  for (int zz = 0; zz < technologies.length(); zz++){
+    QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technologies[zz]);
+    technologyPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+    // Mark which ones correspond to the 2E
+    if(technologyPlayer2->text().contains("{2E}")){
+      technologyPlayer2->setForeground(QColor("#FFFFFF"));
+      technologyPlayer2->setBackground(QColor("#5A5A5A"));
+    }
+
+    ui.player2Technologies->addItem(technologyPlayer2);
   }
 
   for (int eV = 0; eV < events.length(); eV++) {
-    QListWidgetItem* event = new QListWidgetItem(events[eV]);
-    event->setData(Qt::CheckStateRole, Qt::Unchecked);
-    ui.player1Events->addItem(event);
-    // add ui.player2Events->addItem(event);
+    QListWidgetItem* eventPlayer1 = new QListWidgetItem(events[eV]);
+    eventPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+    // Mark which ones I haven't implemented
+    if(eventPlayer1->text().contains("(unimplemented)")){
+      eventPlayer1->setForeground(QColor("#FF0000"));
+    }
+
+
+    ui.player1Events->addItem(eventPlayer1);
   }
 
-  // Player 1 UI elements
-  ui.player1EntityQuantity->setText("1");
-  ui.player1EntityNamesFilter->setText("");
-  ui.player1MonkQuantity->setText("0");
-  ui.player1BattleAssistantNames->addItem("Monk");
+  for (int eVe = 0; eVe < events.length(); eVe++) {
+    QListWidgetItem* eventPlayer2 = new QListWidgetItem(events[eVe]);
+    eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
-  // Player 2 UI elements
+    // Mark which ones I haven't implemented
+    if(eventPlayer2->text().contains("(unimplemented)")){
+      eventPlayer2->setForeground(QColor("#FF0000"));
+    }
+
+    ui.player2Events->addItem(eventPlayer2);
+  }
+
+  ui.player1BattleAssistantNames->addItem("Monk");
+  ui.player2BattleAssistantNames->addItem("Monk");
+
+  // These are like placeholder (lorem ipsum) values
+  // Player 1 UI elements starting state
+  ui.player1EntityNamesFilter->setText("");
+  ui.player1EntityQuantity->setValue(1);
+  ui.player1EntityAssistantQuantity->setValue(0);
+
+  // Player 2 UI elements starting state
+  ui.player2EntityNamesFilter->setText("");
+  ui.player2EntityQuantity->setValue(1);
+  ui.player2EntityAssistantQuantity->setValue(0);
+
+  // Setting up the validators
+  ui.player1EntityQuantity->setRange(1, 5);
+  ui.player2EntityQuantity->setRange(1, 5);
+  ui.player1EntityAssistantQuantity->setRange(0, 5);
+  ui.player2EntityAssistantQuantity->setRange(0, 5);
 }
 
 MainWindow::~MainWindow() {}
@@ -371,11 +440,90 @@ void MainWindow::on_actionAbout_triggered()
   aboutWindow.exec();
 }
 
+// Tooltip returner
+QString MainWindow::tooltipReturner(QString name){
+  QString tooltipForIt;
+
+  if (
+    name
+    == "Charlamagne's Palace At Aix La'Chapelle (Briton)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Briton)";
+  }
+  else if (name == "Rock Of Cashel (Celt)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Celt)";
+  }
+  else if (
+    name == "The Golden Tent Of The Great Khan (Mongol)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Mongol)";
+  }
+  else if (
+    name == "The Palace Of Ctesiphon On The Tigris (Persian)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Persian)";
+  }
+  else if (name == "Tomb Of Theodoric (Goth)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Goth)";
+  }
+  else if (name == "Notre-Dame Cathedral (Frank)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Frank)";
+  }
+  else if (name == "Stave Church At Urnes (Viking)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Viking)";
+  }
+  else if (name == "The Great Temple At Nara (Japanese)") {
+    tooltipForIt = "<b>Aliases:</b> Wonder (Japanese)";
+  }
+  /*
+  else if (name == "Bombard Cannon"){
+    tooltipForIt = "<b>Aliases:</b> BBC";
+  }
+  */
+  else if (name == "Knight"){
+    tooltipForIt = "<b>Aliases:</b> Kt";
+  }
+  else if (name == "Knight (Frank)"){
+    tooltipForIt = "<b>Aliases:</b> Kt (Frank)";
+  }
+  else if (name == "Knight (Persian)"){
+    tooltipForIt = "<b>Aliases:</b> Kt (Persian)";
+  }
+  else if (name == "Crossbowman"){
+    tooltipForIt = "<b>Aliases:</b> Xbow";
+  }
+  else if (name == "Crossbowman (Saracen)"){
+    tooltipForIt = "<b>Aliases:</b> Xbow (Saracen)";
+  }
+  else if (name == "Siege Onager"){
+    tooltipForIt = "<b>Aliases:</b> SO";
+  }
+  else if (name == "Siege Onager (Celt)"){
+    tooltipForIt = "<b>Aliases:</b> SO (Celt)";
+  }
+  /*
+  else if (name == "Bombard Tower"){
+    tooltipForIt = "<b>Aliases:</b> BBT";
+  }
+  */
+  else if (name == "Town Center"){
+    tooltipForIt = "<b>Aliases:</b> TC";
+  }
+  else if (name == "Town Center (Briton)"){
+    tooltipForIt = "<b>Aliases:</b> TC (Briton)";
+  }
+  else if (name == "Town Center (Persian)"){
+    tooltipForIt = "<b>Aliases:</b> TC (Persian)";
+  }
+  else{
+    tooltipForIt ="";
+  }
+
+  return tooltipForIt;
+}
+
 // Run this when the text inside of the player 1 entities search field changes
 void MainWindow::on_player1EntityNamesFilter_textChanged()
 {
   // Get what entity names the user is entering
-  player1EntityNamesFiltered = ui.player1EntityNamesFilter->text();
+  QString player1EntityNamesFiltered = ui.player1EntityNamesFilter->text();
 
   // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
@@ -392,38 +540,45 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
 
     // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-    if (
-      nameOfFilteredItem
-      == "Charlamagne's Palace At Aix La'Chapelle (Briton)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Briton)");
-    }
-    else if (nameOfFilteredItem == "Rock Of Cashel (Celt)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Celt)");
-    }
-    else if (
-      nameOfFilteredItem == "The Golden Tent Of The Great Khan (Mongol)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Mongol)");
-    }
-    else if (
-      nameOfFilteredItem == "The Palace Of Ctesiphon On The Tigris (Persian)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Persian)");
-    }
-    else if (nameOfFilteredItem == "Tomb Of Theodoric (Goth)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Goth)");
-    }
-    else if (nameOfFilteredItem == "Notre-Dame Cathedral (Frank)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Frank)");
-    }
-    else if (nameOfFilteredItem == "Stave Church At Urnes (Viking)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Viking)");
-    }
-    else if (nameOfFilteredItem == "The Great Temple At Nara (Japanese)") {
-      listWidgetItem->setToolTip("<b>Aliases:</b> Wonder (Japanese)");
+    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
+    if(listWidgetItemTooltip != ""){
+      listWidgetItem->setToolTip(listWidgetItemTooltip);
     }
 
     ui.player1EntityNames->addItem(listWidgetItem);
   }
 }
+
+// Run this when the text inside of the player 2 entities search field changes
+void MainWindow::on_player2EntityNamesFilter_textChanged(const QString &arg1)
+{
+  // Get what entity names the user is entering
+  QString player2EntityNamesFiltered = ui.player2EntityNamesFilter->text();
+
+         // Clear what's in the list of entity names
+  ui.player2EntityNames->clear();
+
+         // Store name of filtered item
+  QString nameOfFilteredItem;
+
+         // Filter the list based on what entity name the user entered, factoring in
+         // aliases for that entity name
+  QStringList filteredList = filterEntityNames(player2EntityNamesFiltered);
+  for (int y = 0; y < filteredList.size(); y++) {
+    // Get the name of the filtered item
+    nameOfFilteredItem = filteredList[y];
+
+           // Add in the tooltips for the aliases so the user is aware of them
+    QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
+    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
+    if(listWidgetItemTooltip != ""){
+      listWidgetItem->setToolTip(listWidgetItemTooltip);
+    }
+
+    ui.player2EntityNames->addItem(listWidgetItem);
+  }
+}
+
 
 // Run this when the text inside of the player 1 quantities field changes
 void MainWindow::on_player1EntityQuantity_textChanged()
@@ -485,11 +640,28 @@ void MainWindow::on_player1BattleAssistantNames_activated(int index)
   SFXToPlay("/sfx/ui/button_pressed.wav");
 }
 
+
+
+void MainWindow::on_player2BattleAssistantNames_activated(int index)
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+}
+
+
 // Run on change of what battle participant is selected by player 1
 void MainWindow::on_player1EntityNames_itemClicked(QListWidgetItem* item)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 }
+
+
+
+void MainWindow::on_player2EntityNames_itemClicked(QListWidgetItem *item)
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+}
+
+
 
 // Run on change of what technologies are toggled by player 1
 void MainWindow::on_player1Technologies_itemChanged(QListWidgetItem* item)
@@ -503,6 +675,20 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* item)
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 }
 
+
+
+void MainWindow::on_player2Technologies_itemChanged(QListWidgetItem *item)
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+}
+
+
+void MainWindow::on_player2Events_itemChanged(QListWidgetItem *item)
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+}
+
+
 // Run on change of "Options" > "Disable SFX" toggle
 void MainWindow::on_actionDisable_SFX_triggered()
 {
@@ -515,10 +701,7 @@ void MainWindow::on_actionDisable_SFX_triggered()
 }
 
 // Run this when there's a call to update the names and colors of the players
-void MainWindow::updatePlayerNames(
-  QString updatedPlayer1Name,
-  QString updatedPlayer2Name)
-{
+void MainWindow::updatePlayerNames(){
   ui.player1UnitsLabel->setText(
     "<font color=" + player1Color + ">" + player1Name + "'s" + "</font>" + " "
     + "battle participant");
@@ -531,7 +714,6 @@ void MainWindow::updatePlayerNames(
   ui.player1EventsLabel->setText(
     "<font color=" + player1Color + ">" + player1Name + "'s" + "</font>" + " "
     + "event cards");
-
   ui.player2UnitsLabel->setText(
     "<font color=" + player2Color + ">" + player2Name + "'s" + "</font>" + " "
     + "battle participant");
@@ -563,7 +745,7 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
   // Validate the user input
   if (player1Name.isEmpty()) { player1Name = "Player 1"; }
 
-  updatePlayerNames(player1Name, player2Name);
+  updatePlayerNames();
 }
 
 // Run on change of "Options" > "Set player 1's color"
@@ -574,7 +756,7 @@ void MainWindow::on_actionSet_set_color_of_player_1_triggered()
   QColor color = QColorDialog::getColor();
   player1Color = color.name();
 
-  updatePlayerNames(player1Name, player2Name);
+  updatePlayerNames();
 }
 
 // Run on change of "Options" > "Set player 2's name"
@@ -594,7 +776,7 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
   // Validate the user input
   if (player2Name.isEmpty()) { player2Name = "Player 2"; }
 
-  updatePlayerNames(player1Name, player2Name);
+  updatePlayerNames();
 }
 
 // Run on change of "Options" > "Set player 2's color"
@@ -605,22 +787,29 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
   QColor color = QColorDialog::getColor();
   player2Color = color.name();
 
-  updatePlayerNames(player1Name, player2Name);
+  updatePlayerNames();
 }
 
 void MainWindow::initializeEntityAliases()
 {
-  m_aliases.add(
-    "Charlamagne's Palace At Aix La'Chapelle (Briton)", "Wonder (Briton)");
+  m_aliases.add("Charlamagne's Palace At Aix La'Chapelle (Briton)", "Wonder (Briton)");
   m_aliases.add("Rock Of Cashel (Celt)", "Wonder (Celt)");
-  m_aliases.add(
-    "The Golden Tent Of The Great Khan (Mongol)", "Wonder (Mongol)");
-  m_aliases.add(
-    "The Palace Of Ctesiphon On The Tigris (Persian)", "Wonder (Persian)");
+  m_aliases.add("The Golden Tent Of The Great Khan (Mongol)", "Wonder (Mongol)");
+  m_aliases.add("The Palace Of Ctesiphon On The Tigris (Persian)", "Wonder (Persian)");
   m_aliases.add("Tomb Of Theodoric (Goth)", "Wonder (Goth)");
   m_aliases.add("Notre-Dame Cathedral (Frank)", "Wonder (Frank)");
   m_aliases.add("Stave Church At Urnes (Viking)", "Wonder (Viking)");
   m_aliases.add("The Great Temple At Nara (Japanese)", "Wonder (Japanese)");
+  m_aliases.add("Knight", "Kt");
+  m_aliases.add("Knight (Frank)", "Kt (Frank)");
+  m_aliases.add("Knight (Persian)", "Kt (Persian)");
+  m_aliases.add("Crossbowman", "Xbow");
+  m_aliases.add("Crossbowman (Saracen)", "Xbow (Saracen)");
+  m_aliases.add("Siege Onager", "SO");
+  m_aliases.add("Siege Onager (Celt)", "SO (Celt)");
+  m_aliases.add("Town Center", "TC");
+  m_aliases.add("Town Center (Briton)", "TC (Briton)");
+  m_aliases.add("Town Center (Persian)", "TC (Persian)");
 }
 
 static std::vector<QString> findMatches(
@@ -658,3 +847,13 @@ QStringList MainWindow::filterEntityNames(QString input) const
   result.sort();
   return result;
 }
+
+
+
+
+
+
+
+
+
+
