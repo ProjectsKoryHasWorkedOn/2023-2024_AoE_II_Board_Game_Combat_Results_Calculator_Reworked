@@ -67,6 +67,7 @@ int runGame()
   // Integer array: The player details
   int* player_details_array;
 
+
   /** Complex declarations **/
   // Structure: The entities
   Entity p1BattleParticipant;
@@ -123,6 +124,7 @@ int runGame()
   // for all players
   player_details_array = importFile.aSplitColumnFile(
     "import/playerDetails.csv", playerDetailsRows);
+
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants

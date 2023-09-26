@@ -1099,7 +1099,7 @@ int* fileImporter::aSplitColumnFile(
     exit(EXIT_FAILURE);
   }
   else {
-    // Variable: Declare the number of technologies (17) or events (?)
+    // Variable: Declare the number of rows in the .csv files for events, technologies, ...
     int rows = inputNumberOfRows;
 
     // Variable: Declare the layout (an active column and the name column)
@@ -1143,7 +1143,7 @@ int* fileImporter::aSplitColumnFile(
 
     // Behaviour: Ensure that the words array contains all of the words
     if (count <= arrayWords - 1) {
-      std::cout << "Error: You have entered too little input input into "
+      std::cout << "Error: You have entered too little input into "
                 << inputTechnologyOrEventsFilename << "\n";
       std::cout << "You will have to replace the existing "
                 << inputTechnologyOrEventsFilename
@@ -1158,6 +1158,7 @@ int* fileImporter::aSplitColumnFile(
     // the stack
     // - Storing the pointer in the heap will prevent the pointer from being
     // deleted straight away
+
     int* everySecondElement = new int[arrayWords / 2];
 
     // Integer: Declare an integer to increment the everySecondElement array
@@ -1212,5 +1213,6 @@ int* fileImporter::aSplitColumnFile(
 
     // Behaviour: Return a string of technologies
     return everySecondElement;
+
   }
 }
