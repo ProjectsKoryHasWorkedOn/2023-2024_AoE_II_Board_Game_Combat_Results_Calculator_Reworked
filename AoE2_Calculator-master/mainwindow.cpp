@@ -713,6 +713,13 @@ void MainWindow::on_actionDisable_SFX_triggered()
 
 // Run this when there's a call to update the names and colors of the players
 void MainWindow::updatePlayerNames(){
+  ui.actionSet_player_1_Age->setText("Set " + player1Name + "'s medieval age");
+  ui.actionSet_name_of_player_1->setText("Set " + player1Name + "'s name");
+  ui.actionSet_set_color_of_player_1->setText("Set " + player1Name + "'s color");
+  ui.actionSet_player_2_Age->setText("Set " + player2Name + "'s medieval age");
+  ui.actionSet_name_of_player_2->setText("Set " + player2Name + "'s name");
+  ui.actionSet_set_color_of_player_2->setText("Set " + player2Name + "'s color");
+
   ui.player1UnitsLabel->setText(
     "<font color=" + player1Color + ">" + player1Name + "'s" + "</font>" + " "
     + "battle participant");
