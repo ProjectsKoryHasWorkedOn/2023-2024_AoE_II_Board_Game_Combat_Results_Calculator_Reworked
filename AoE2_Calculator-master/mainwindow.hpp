@@ -24,9 +24,7 @@ private slots:
 
   void on_actionAbout_triggered();
 
-  void on_player1EntityNamesFilter_textChanged();
-
-  void on_player1EntityQuantity_textChanged();
+  void on_player1EntityNamesFilter_textChanged(const QString &textInsideOfElement);
 
   void on_actionDeveloper_guide_triggered();
 
@@ -34,13 +32,12 @@ private slots:
 
   void on_calculateResultsButton_clicked();
 
-  void on_player1BattleAssistantNames_activated(int index);
 
-  void on_player1EntityNames_itemClicked(QListWidgetItem* item);
+  void on_player1EntityNames_itemClicked(QListWidgetItem* selectedItem);
 
-  void on_player1Technologies_itemChanged(QListWidgetItem* item);
+  void on_player1Technologies_itemChanged(QListWidgetItem* checkedItem);
 
-  void on_player1Events_itemChanged(QListWidgetItem* item);
+  void on_player1Events_itemChanged(QListWidgetItem* checkedItem);
 
   void on_actionDisable_SFX_triggered();
 
@@ -54,19 +51,31 @@ private slots:
 
   void on_actionSet_set_color_of_player_2_triggered();
 
-  void on_player2EntityNamesFilter_textChanged(const QString &arg1);
+  void on_player2EntityNamesFilter_textChanged(const QString &textInsideOfElement);
 
-  void on_player2Technologies_itemChanged(QListWidgetItem *item);
+  void on_player2Technologies_itemChanged(QListWidgetItem *checkedItem);
 
-  void on_player2Events_itemChanged(QListWidgetItem *item);
+  void on_player2Events_itemChanged(QListWidgetItem *checkedItem);
 
-  void on_player2EntityNames_itemClicked(QListWidgetItem *item);
+  void on_player2EntityNames_itemClicked(QListWidgetItem *selectedItem);
 
-  void on_player2BattleAssistantNames_activated(int index);
 
   void on_actionSet_player_1_Age_triggered();
 
   void on_actionSet_player_2_Age_triggered();
+
+
+  void on_player2EntityQuantity_valueChanged(int valueInsideOfField);
+
+  void on_player1EntityQuantity_valueChanged(int valueInsideOfField);
+
+  void on_player1EntityAssistantQuantity_valueChanged(int valueInsideOfField);
+
+  void on_player2EntityAssistantQuantity_valueChanged(int valueInsideOfField);
+
+  void on_player1BattleAssistantNames_textActivated(const QString &currentSelection);
+
+  void on_player2BattleAssistantNames_textActivated(const QString &currentSelection);
 
 private:
   void initializeEntityAliases();
@@ -74,6 +83,8 @@ private:
   QStringList filterEntityNames(QString input) const;
 
   QString tooltipReturner(QString name);
+
+  QString convertSpacesToUnderscores(QString text);
 
   Ui::MainWindow ui;
   QString        m_gameOutputBuffer;

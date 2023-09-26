@@ -19,7 +19,7 @@
 #include <QDir>
 
 // Libraries used for storing data
-#include <QColor>
+#include <QColor> // Prefers RGB input over HEX
 #include <QListWidgetItem>
 #include <QString>
 #include <QStringList>
@@ -47,12 +47,16 @@ QString technologiesP2Filename = "/import/technologies_p2.csv";
 
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
-QString     player1EntityQuantity = "0";
-QString     player1MonkQuantity   = "0";
+int     player1EntityQuantity;
+int     player1AssistingEntityQuantity;
+int     player2EntityQuantity;
+int     player2AssistingEntityQuantity;
 QString     player1Name;
 QString     player2Name;
 QString     player1Color;
 QString     player2Color;
+QString player1BattleAssistantName;
+QString player2BattleAssistantName;
 
 // Get what age the player is in
 QString player1Age;
@@ -269,6 +273,7 @@ MainWindow::MainWindow(QWidget* parent)
   entityNames.sort();
 
   // What the possible names of technologies are
+  // @Reference: What row in the .csv file it goes to
   QStringList technologies = {
     "Blast Furnace", // [Row 1]
     "Bodkin Arrow", // [Row 2]
@@ -293,6 +298,7 @@ MainWindow::MainWindow(QWidget* parent)
   technologies.sort();
 
   // What the possible names of event cards are
+  // @Reference: What row in the .csv file it goes to
   QStringList events = {
     "A Just Cause", // [Row 1]
     "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing rate modifier)
@@ -349,54 +355,45 @@ MainWindow::MainWindow(QWidget* parent)
   }
 
   // Can only have one list widget item per list
-  for (int z = 0; z < technologies.length(); z++) {
-    QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[z]);
+  for (int tE = 0; tE < technologies.length(); tE++) {
+    QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[tE]);
+    QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technologies[tE]);
+
     technologyPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
-
-    // Mark which ones correspond to the 2E
-    if(technologyPlayer1->text().contains("{2E}")){
-      technologyPlayer1->setForeground(QColor("#FFFFFF"));
-      technologyPlayer1->setBackground(QColor("#5A5A5A"));
-    }
-
-    ui.player1Technologies->addItem(technologyPlayer1);
-  }
-
-  for (int zz = 0; zz < technologies.length(); zz++){
-    QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technologies[zz]);
     technologyPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
     // Mark which ones correspond to the 2E
-    if(technologyPlayer2->text().contains("{2E}")){
-      technologyPlayer2->setForeground(QColor("#FFFFFF"));
-      technologyPlayer2->setBackground(QColor("#5A5A5A"));
+    if(technologyPlayer1->text().contains("{2E}")){
+      technologyPlayer1->setForeground(QColor(255,255,255));
+      technologyPlayer1->setBackground(QColor(90, 90, 90));
     }
 
+    if(technologyPlayer2->text().contains("{2E}")){
+      technologyPlayer2->setForeground(QColor(255,255,255));
+      technologyPlayer2->setBackground(QColor(90, 90, 90));
+    }
+
+    ui.player1Technologies->addItem(technologyPlayer1);
     ui.player2Technologies->addItem(technologyPlayer2);
   }
 
   for (int eV = 0; eV < events.length(); eV++) {
     QListWidgetItem* eventPlayer1 = new QListWidgetItem(events[eV]);
+    QListWidgetItem* eventPlayer2 = new QListWidgetItem(events[eV]);
+
     eventPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
-
-    // Mark which ones I haven't implemented
-    if(eventPlayer1->text().contains("(unimplemented)")){
-      eventPlayer1->setForeground(QColor("#FF0000"));
-    }
-
-
-    ui.player1Events->addItem(eventPlayer1);
-  }
-
-  for (int eVe = 0; eVe < events.length(); eVe++) {
-    QListWidgetItem* eventPlayer2 = new QListWidgetItem(events[eVe]);
     eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
     // Mark which ones I haven't implemented
-    if(eventPlayer2->text().contains("(unimplemented)")){
-      eventPlayer2->setForeground(QColor("#FF0000"));
+    if(eventPlayer1->text().contains("(unimplemented)")){
+      eventPlayer1->setForeground(QColor(255, 0, 0));
     }
 
+    if(eventPlayer2->text().contains("(unimplemented)")){
+      eventPlayer2->setForeground(QColor(255, 0, 0));
+    }
+
+    ui.player1Events->addItem(eventPlayer1);
     ui.player2Events->addItem(eventPlayer2);
   }
 
@@ -534,10 +531,10 @@ QString MainWindow::tooltipReturner(QString name){
 }
 
 // Run this when the text inside of the player 1 entities search field changes
-void MainWindow::on_player1EntityNamesFilter_textChanged()
+void MainWindow::on_player1EntityNamesFilter_textChanged(const QString &textInsideOfElement)
 {
   // Get what entity names the user is entering
-  QString player1EntityNamesFiltered = ui.player1EntityNamesFilter->text();
+  QString player1EntityNamesFiltered = textInsideOfElement;
 
   // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
@@ -564,10 +561,10 @@ void MainWindow::on_player1EntityNamesFilter_textChanged()
 }
 
 // Run this when the text inside of the player 2 entities search field changes
-void MainWindow::on_player2EntityNamesFilter_textChanged(const QString &arg1)
+void MainWindow::on_player2EntityNamesFilter_textChanged(const QString &textInsideOfElement)
 {
   // Get what entity names the user is entering
-  QString player2EntityNamesFiltered = ui.player2EntityNamesFilter->text();
+  QString player2EntityNamesFiltered = textInsideOfElement;
 
          // Clear what's in the list of entity names
   ui.player2EntityNames->clear();
@@ -590,23 +587,6 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(const QString &arg1)
     }
 
     ui.player2EntityNames->addItem(listWidgetItem);
-  }
-}
-
-
-// Run this when the text inside of the player 1 quantities field changes
-void MainWindow::on_player1EntityQuantity_textChanged()
-{
-  // Get what entity quantity the user is entering
-  player1EntityQuantity = ui.player1EntityQuantity->text();
-
-  // Give an error to Console if quantity isn't right
-  if (
-    player1EntityQuantity != "1" && player1EntityQuantity != "2"
-    && player1EntityQuantity != "3" && player1EntityQuantity != "4"
-    && player1EntityQuantity != "5") {
-    qDebug()
-      << "Error: Player 1's entity quantity input should be between 1 and 4";
   }
 }
 
@@ -648,60 +628,188 @@ void MainWindow::on_calculateResultsButton_clicked()
   runGame();
 }
 
+
+
+
+// Run this when the value inside of the player 1 entity quantities field changes
+void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
+{
+  // Get what entity quantity the user is entering
+  player1EntityQuantity = valueInsideOfField;
+
+         // Give an error to Console if quantity isn't right
+  if (
+    player1EntityQuantity != 1 && player1EntityQuantity != 2
+    && player1EntityQuantity != 3 && player1EntityQuantity != 4
+    && player1EntityQuantity != 5) {
+    qDebug()
+      << "Error: Player 1's entity quantity input should be between 1 and 5";
+  }
+
+  // @Phillip: Pass player1EntityQuantity to entities.csv
+}
+
+// Run this when the value inside of the player 2 entity quantities field changes
+void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
+{
+  // Get what entity quantity the user is entering
+  player2EntityQuantity = valueInsideOfField;
+
+         // Give an error to Console if quantity isn't right
+  if (
+    player2EntityQuantity != 1 && player2EntityQuantity != 2
+    && player2EntityQuantity != 3 && player2EntityQuantity != 4
+    && player2EntityQuantity != 5) {
+    qDebug()
+      << "Error: Player 2's entity quantity input should be between 1 and 5";
+  }
+
+         // @Phillip: Pass player2EntityQuantity to entities.csv
+}
+
 // Run on change of what battle assistant is selected by player 1
-void MainWindow::on_player1BattleAssistantNames_activated(int index)
+void MainWindow::on_player1BattleAssistantNames_textActivated(const QString &currentSelection)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  player1BattleAssistantName = currentSelection;
+
+  // @Phillip: Pass player1BattleAssistantName into entities.csv
+}
+
+// Run on change of what battle assistant is selected by player 2
+void MainWindow::on_player2BattleAssistantNames_textActivated(const QString &currentSelection)
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  player2BattleAssistantName = currentSelection;
+
+  // @Phillip: Pass player2BattleAssistantName into entities.csv
+}
+
+void MainWindow::on_player1EntityAssistantQuantity_valueChanged(int valueInsideOfField)
+{
+
+  player1AssistingEntityQuantity = valueInsideOfField;
+
+         // Give an error to Console if quantity isn't right
+  if (player1AssistingEntityQuantity != 0 && player1AssistingEntityQuantity != 1 && player1AssistingEntityQuantity != 2
+    && player1AssistingEntityQuantity != 3 && player1AssistingEntityQuantity != 4
+    && player1AssistingEntityQuantity != 5) {
+    qDebug()
+      << "Error: Player 1's assisting entity quantity input should be between 0 and 5";
+  }
+
+         // @Phillip: Pass player1AssistingEntityQuantity to entities.csv
+
 }
 
 
-
-void MainWindow::on_player2BattleAssistantNames_activated(int index)
+void MainWindow::on_player2EntityAssistantQuantity_valueChanged(int valueInsideOfField)
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  player2AssistingEntityQuantity = valueInsideOfField;
+
+         // Give an error to Console if quantity isn't right
+  if (player2AssistingEntityQuantity != 0 && player2AssistingEntityQuantity != 1 && player2AssistingEntityQuantity != 2
+      && player2AssistingEntityQuantity != 3 && player2AssistingEntityQuantity != 4
+      && player2AssistingEntityQuantity != 5) {
+    qDebug()
+      << "Error: Player 2's assisting entity quantity input should be between 0 and 5";
+  }
+
+         // @Phillip: Pass player2AssistingEntityQuantity to entities.csv
+
 }
 
+QString MainWindow::convertSpacesToUnderscores(QString text){
+  std::replace(text.begin(), text.end(), ' ', '_');
+  return text;
+}
 
 // Run on change of what battle participant is selected by player 1
-void MainWindow::on_player1EntityNames_itemClicked(QListWidgetItem* item)
+void MainWindow::on_player1EntityNames_itemClicked(QListWidgetItem * selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  QString currentSelectionFormatted = convertSpacesToUnderscores(selectedItem->text());
+
+  // @Phillip: Pass currentSelectionFormatted into entities.csv
 }
 
-
-
-void MainWindow::on_player2EntityNames_itemClicked(QListWidgetItem *item)
+void MainWindow::on_player2EntityNames_itemClicked(QListWidgetItem *selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  QString currentSelectionFormatted = convertSpacesToUnderscores(selectedItem->text());
+
+  // @Phillip: Pass currentSelectionFormatted into entities.csv
 }
-
-
 
 // Run on change of what technologies are toggled by player 1
-void MainWindow::on_player1Technologies_itemChanged(QListWidgetItem* item)
+void MainWindow::on_player1Technologies_itemChanged(QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  if(checkedItem->checkState() == Qt::Checked){
+    QString activeTechnology = checkedItem->text();
+    // @Phillip: Pass a 1 in row of activeTechnology into technologies_p1.csv
+    // @Phillip refer to @Reference
+  }
+  else{
+    QString inactiveTechnology = checkedItem->text();
+    // @Phillip: Pass a 0 in row of activeTechnology into technologies_p1.csv
+    // @Phillip refer to @Reference
+  }
 }
 
 // Run on change of what events are toggled by player 1
-void MainWindow::on_player1Events_itemChanged(QListWidgetItem* item)
+void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  if(checkedItem->checkState() == Qt::Checked){
+    QString activeEvent = checkedItem->text();
+    // @Phillip: Pass a 1 in row of activeEvent into events_p1.csv
+    // @Phillip refer to @Reference
+  }
+  else{
+    QString inactiveEvent = checkedItem->text();
+    // @Phillip: Pass a 0 in row of inactiveEvent into events_p1.csv
+    // @Phillip refer to @Reference
+  }
 }
 
-
-
-void MainWindow::on_player2Technologies_itemChanged(QListWidgetItem *item)
+void MainWindow::on_player2Technologies_itemChanged(QListWidgetItem *checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  if(checkedItem->checkState() == Qt::Checked){
+    QString activeTechnology = checkedItem->text();
+    // @Phillip: Pass a 1 in row of activeTechnology into technologies_p2.csv
+    // @Phillip refer to @Reference
+  }
+  else{
+    QString inactiveTechnology = checkedItem->text();
+    // @Phillip: Pass a 0 in row of activeTechnology into technologies_p2.csv
+    // @Phillip refer to @Reference
+  }
 }
 
-
-void MainWindow::on_player2Events_itemChanged(QListWidgetItem *item)
+void MainWindow::on_player2Events_itemChanged(QListWidgetItem *checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
-}
 
+  if(checkedItem->checkState() == Qt::Checked){
+    QString activeEvent = checkedItem->text();
+    // @Phillip: Pass a 1 in row of activeEvent into events_p2.csv
+    // @Phillip refer to @Reference
+  }
+  else{
+    QString inactiveEvent = checkedItem->text();
+    // @Phillip: Pass a 0 in row of inactiveEvent into events_p2.csv
+    // @Phillip refer to @Reference
+  }
+}
 
 // Run on change of "Options" > "Disable SFX" toggle
 void MainWindow::on_actionDisable_SFX_triggered()
@@ -869,16 +977,6 @@ QStringList MainWindow::filterEntityNames(QString input) const
   return result;
 }
 
-
-
-
-
-
-
-
-
-
-
 void MainWindow::on_actionSet_player_1_Age_triggered()
 {
   bool ok;
@@ -886,11 +984,13 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
                                        tr("Age:"), ages, 0, false, &ok);
 }
 
-
 void MainWindow::on_actionSet_player_2_Age_triggered()
 {
   bool ok;
   player2Age = QInputDialog::getItem(this, tr("Enter player 2's medieval age"),
                                              tr("Age:"), ages, 0, false, &ok);
 }
+
+
+
 
