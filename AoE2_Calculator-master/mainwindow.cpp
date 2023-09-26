@@ -73,6 +73,9 @@ MainWindow::MainWindow(QWidget* parent)
 {
   ui.setupUi(this);
 
+  QIntValidator myName;
+  myName.setRange(100, 999);
+
 
   // create shortcut
   QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
