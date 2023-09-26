@@ -1105,7 +1105,7 @@ int* fileImporter::aSplitColumnFile(
     // Variable: Declare the layout (an active column and the name column)
     int columns = 2;
 
-    // Variable: Declarea an array to store the number of words in the file
+    // Variable: Declare an array to store the number of words in the file
     int arrayWords = columns * rows;
 
     // Array: Declare and initialize the words array

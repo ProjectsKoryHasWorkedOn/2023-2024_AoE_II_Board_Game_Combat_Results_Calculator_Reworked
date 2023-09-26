@@ -388,10 +388,10 @@ void monkRounds::roundOutcome(
   int* inputP1Events,
   int* inputP2Events)
 {
-  /** How the monk calculation process works:
-    Conversion Rate = Number of Monks (up to 5)
-    Success if(d6DieRoll (a d6ConversionRoll) <= ConversionRate){}
-  **/
+  /* How the monk calculation process works:
+    conversionRatehealingRate = Number of Monks (up to 5)
+    Success if(d6DieRoll (a d6ConversionRoll) <= conversionRatehealingRate){}
+  */
 
   // Bool: Track if either player has a monk to begin with
   bool monkPresentP1 = false, monkPresentP2 = false;
@@ -422,7 +422,9 @@ void monkRounds::roundOutcome(
 
   // Integer: Store the conversion rates for either the assisting or primary
   // monks (makes things a bit easier to understand)
-  int  conversionRateP1 = 0, conversionRateP2 = 0;
+  int  conversionRatehealingRateP1 = 0, conversionRatehealingRateP2 = 0;
+
+
   bool assistingMonksP1 = false, assistingMonksP2 = false;
   bool justMonksP1 = false, justMonksP2 = false;
 
@@ -441,12 +443,12 @@ void monkRounds::roundOutcome(
         // Behaviour: See what monk is in the battle (a primary or assisting
         // monk)
         if (p1BattleParticipant.entityQuantity > 0) {
-          conversionRateP1 = p1BattleParticipant.entityQuantity;
+          conversionRatehealingRateP1 = p1BattleParticipant.entityQuantity;
           assistingMonksP1 = false;
           justMonksP1      = true;
         }
         else if (p1AssistingMonkParticipant.entityQuantity > 0) {
-          conversionRateP1 = p1AssistingMonkParticipant.entityQuantity;
+          conversionRatehealingRateP1 = p1AssistingMonkParticipant.entityQuantity;
           assistingMonksP1 = true;
           justMonksP1      = false;
         }
@@ -464,12 +466,12 @@ void monkRounds::roundOutcome(
         // Behaviour: See what monk is in the battle (a primary or assisting
         // monk)
         if (p2BattleParticipant.entityQuantity > 0) {
-          conversionRateP2 = p2BattleParticipant.entityQuantity;
+          conversionRatehealingRateP2 = p2BattleParticipant.entityQuantity;
           assistingMonksP2 = false;
           justMonksP2      = true;
         }
         if (p2AssistingMonkParticipant.entityQuantity > 0) {
-          conversionRateP2 = p2AssistingMonkParticipant.entityQuantity;
+          conversionRatehealingRateP2 = p2AssistingMonkParticipant.entityQuantity;
           assistingMonksP2 = true;
           justMonksP2      = false;
         }
@@ -544,6 +546,27 @@ void monkRounds::roundOutcome(
           }
         }
 
+
+        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine civ bonus: +2 healing rate modifier)
+        if(inputP1Events[1] == 1){
+          if(calculationModeP1 == "1"){
+            conversionRatehealingRateP1 += 2;
+          }
+        }
+
+
+
+        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier is -1)
+
+
+
+        if(inputP2Events[40] == 1){
+          if(calculationModeP1 == "0"){
+            conversionRatehealingRateP1 -= 1;
+          }
+        }
+
+
         // Behaviour: Apply the effects of event 23
         if (inputP1Events[23] == 1) {
           // [23] Piety - If you have one monk attached to a unit, your
@@ -560,7 +583,7 @@ void monkRounds::roundOutcome(
               getTotalValues();
             }
             else {
-              conversionRateP1 = pietyConversionRate;
+              conversionRatehealingRateP1 = pietyConversionRate;
             }
           }
           // Behaviour: The case where there are just monks
@@ -572,7 +595,7 @@ void monkRounds::roundOutcome(
               getTotalValues();
             }
             else {
-              conversionRateP1 = pietyConversionRate;
+              conversionRatehealingRateP1 = pietyConversionRate;
             }
           }
         }
@@ -598,7 +621,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Check if there are 'assisting monks'
             if (assistingMonksP1 == true) {
               // Behaviour: Check if the conversion attempt failed
-              if (conversionRateP1 <= d6DieRoll) {
+              if (conversionRatehealingRateP1 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "\n";
@@ -608,7 +631,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Check if there are just monks
             else if (justMonksP1 == true) {
               // Behaviour: Check if the conversion attempt failed
-              if (conversionRateP1 <= d6DieRoll) {
+              if (conversionRatehealingRateP1 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "\n";
@@ -638,10 +661,10 @@ void monkRounds::roundOutcome(
           }
         }
 
-        /** Main calculations start  here **/
+        /* Main calculations start  here */
         // Behaviour: Cover the case where there are no 'assisting' monks
         if (justMonksP1 == true) {
-          if (conversionRateP1 <= d6DieRoll) {
+          if (conversionRatehealingRateP1 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP1 = true;
 
@@ -690,7 +713,7 @@ void monkRounds::roundOutcome(
         }
         // Behaviour: Cover the case where there are 'assisting monks'
         else if (assistingMonksP1 == true) {
-          if (conversionRateP1 <= d6DieRoll) {
+          if (conversionRatehealingRateP1 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP1 = true;
           }
@@ -785,6 +808,24 @@ void monkRounds::roundOutcome(
         // proceeding
         d6DieRoll = generateD6DieInput();
 
+
+        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier is -1)
+
+        if(inputP1Events[40] == 1){
+          if(calculationModeP2 == "0"){
+            conversionRatehealingRateP2 -= 1;
+          }
+        }
+
+        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine civ bonus: +2 healing rate modifier)
+        if(inputP2Events[1] == 1){
+          if(calculationModeP2 == "1"){
+            conversionRatehealingRateP2 += 2;
+          }
+        }
+
+
+
         if (inputP2Events[39] == 1) {
           // [39] Zealous Monks - Target Monk unit gets 1 conversion roll at a 3
           // or less rate for each monk attached In other words, you reroll the
@@ -815,30 +856,30 @@ void monkRounds::roundOutcome(
           // [23] Piety - If you have one monk attached to a unit, your
           // conversion rate is 4. If the attempt fails, the monk dies Reference
           // "Conversion Rate" = "Quantity of the unit"
-          int pietyConversionRateP2 = 4;
+          int pietyconversionRatehealingRateP2 = 4;
 
           // Behaviour: Check if there are 'assisting monks'
           if (assistingMonksP2 == true) {
             // Behaviour: Check if the conversion attempt failed
-            if (pietyConversionRateP2 <= d6DieRoll) {
+            if (pietyconversionRatehealingRateP2 <= d6DieRoll) {
               getIndividualValues();
               p2AssistingMonkParticipant.entityQuantity -= 1;
               getTotalValues();
             }
             else {
-              conversionRateP2 = pietyConversionRateP2;
+              conversionRatehealingRateP2 = pietyconversionRatehealingRateP2;
             }
           }
           // Behaviour: Check if there are just monks
           else if (justMonksP2 == true) {
             // Behaviour: Check if the conversion attempt failed
-            if (pietyConversionRateP2 <= d6DieRoll) {
+            if (pietyconversionRatehealingRateP2 <= d6DieRoll) {
               getIndividualValues();
               p2BattleParticipant.entityQuantity -= 1;
               getTotalValues();
             }
             else {
-              conversionRateP2 = pietyConversionRateP2;
+              conversionRatehealingRateP2 = pietyconversionRatehealingRateP2;
             }
           }
         }
@@ -864,7 +905,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Check if there are 'assisting monks'
             if (assistingMonksP2 == true) {
               // Behaviour: Check if the conversion attempt failed
-              if (conversionRateP2 <= d6DieRoll) {
+              if (conversionRatehealingRateP2 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p2 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "\n";
@@ -874,7 +915,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Check if there are just monks
             else if (justMonksP2 == true) {
               // Behaviour: Check if the conversion attempt failed
-              if (conversionRateP2 < d6DieRoll) {
+              if (conversionRatehealingRateP2 < d6DieRoll) {
                 std::cout
                   << "The conversion attempt for p2 failed failed. Pay 2 gold "
                      "and enter 1 to try again. Otherwise enter 0"
@@ -905,9 +946,14 @@ void monkRounds::roundOutcome(
           }
         }
 
+
+
+
+
         // Behaviour: Cover the case where there are just monks
+
         if (justMonksP2 == true) {
-          if (conversionRateP2 <= d6DieRoll) {
+          if (conversionRatehealingRateP2 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP2 = true;
           }
@@ -954,7 +1000,7 @@ void monkRounds::roundOutcome(
         }
         // Behaviour: Cover the case where there are 'assisting monks'
         else if (assistingMonksP2 == true) {
-          if (conversionRateP2 <= d6DieRoll) {
+          if (conversionRatehealingRateP2 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP2 = true;
           }
@@ -1958,25 +2004,21 @@ void standardRounds::roundOutcome(
     // Two tokens on the defending unit have 0 AP for the first round of normal combat
     if (inputP1Events[24] == 1){
       int getHowMuchAttackIndividualUnitsDo;
-      // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
-      if(i == 0){
-        getHowMuchAttackIndividualUnitsDo = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
-      }
       int getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
-      if(p2BattleParticipant.entityQuantity > 2){
-        getHowMuchAttackTheGroupDoesWithTwoLazyUnits = (p2BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo;
-      }
-      else{
-        getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
-      }
+
       // If there's cavalry in play
       if(p1BattleParticipant.armorClass[4]){
         // If it's round 1
         if(i == 0){
+          // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
+          getHowMuchAttackIndividualUnitsDo = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
+
           if(p2BattleParticipant.entityQuantity > 2){
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits = (p2BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo;
             p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
           }
           else{
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
             p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
           }
         }
@@ -1989,25 +2031,21 @@ void standardRounds::roundOutcome(
 
     if (inputP2Events[24] == 1){
       int getHowMuchAttackIndividualUnitsDo2;
-      // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
-      if(i == 0){
-        getHowMuchAttackIndividualUnitsDo2 = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
-      }
       int getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
-      if(p1BattleParticipant.entityQuantity > 2){
-        getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = (p1BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo2;
-      }
-      else{
-        getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = 0;
-      }
-      // If there's cavalry in play
+
+             // If there's cavalry in play
       if(p2BattleParticipant.armorClass[4]){
         // If it's round 1
         if(i == 0){
+          // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
+          getHowMuchAttackIndividualUnitsDo2 = (p1BattleParticipant.standardDamage / p1BattleParticipant.entityQuantity);
+
           if(p1BattleParticipant.entityQuantity > 2){
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = (p1BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo2;
             p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
           }
           else{
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = 0;
             p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
           }
         }

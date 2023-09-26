@@ -234,8 +234,10 @@
      <string>Options</string>
     </property>
     <addaction name="actionDisable_SFX"/>
+    <addaction name="actionSet_player_1_Age"/>
     <addaction name="actionSet_name_of_player_1"/>
     <addaction name="actionSet_set_color_of_player_1"/>
+    <addaction name="actionSet_player_2_Age"/>
     <addaction name="actionSet_name_of_player_2"/>
     <addaction name="actionSet_set_color_of_player_2"/>
    </widget>
@@ -293,6 +295,16 @@
   <action name="actionSet_set_color_of_player_2">
    <property name="text">
     <string>Set player 2's color</string>
+   </property>
+  </action>
+  <action name="actionSet_player_1_Age">
+   <property name="text">
+    <string>Set player 1 medieval age</string>
+   </property>
+  </action>
+  <action name="actionSet_player_2_Age">
+   <property name="text">
+    <string>Set player 2 medieval age</string>
    </property>
   </action>
  </widget>

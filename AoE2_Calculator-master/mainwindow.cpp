@@ -54,6 +54,11 @@ QString     player2Name;
 QString     player1Color;
 QString     player2Color;
 
+// Get what age the player is in
+QString player1Age;
+QString player2Age;
+QStringList ages;
+
 // Declare working directory
 QDir workingDirectory;
 
@@ -84,6 +89,9 @@ MainWindow::MainWindow(QWidget* parent)
 
   // gets debug folder for some reason so go up a level
   workingDirectory.cdUp();
+
+  // What the ages are
+  ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age") << tr("Imperial Age");
 
   // What the initial name of the players are
   player1Name = "Player 1";
@@ -284,7 +292,8 @@ MainWindow::MainWindow(QWidget* parent)
   // What the possible names of event cards are
   QStringList events = {
     "A Just Cause", // [Row 1]
-    "Back From A Foreign Land (unimplemented)", // [Row 2]
+    "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing rate modifier)
+    // (has multiple slots in .csv file)
     "Barrel Of Grog", // [Row 3]
     "Bone Shaft Arrows (Mongol)", // [Row 4]
     "Caught From The Crow's Nest", // [Row 5]
@@ -305,7 +314,8 @@ MainWindow::MainWindow(QWidget* parent)
     "Listen To A Story", // [Row 20]
     "Muddy Battlefield", // [Row 21]
     "Non-Compos Mentis", // [Row 22]
-    // Row 23 - Spare slot
+    // Back_From_A_Foreign_Land (Byzantine civ bonus:
+    // All building get a HP bonus: Age I – 10 HP, Age II – 20 HP, Age III – 30 HP, Age IV – 40 HP) [Row 23]
     "Piety", // [Row 24]
     "Black Knight", // [Row 25]
     "Rally The Workers", // [Row 26]
@@ -323,6 +333,7 @@ MainWindow::MainWindow(QWidget* parent)
     "While They're Sleeping", // [Row 38]
     "You Will Die! (Saracen)", // [Row 39]
     "Zealous Monks"}; // [Row 40]
+    // Back_From_A_Foreign_Land (Teuton civ bonus: Conversion rate modifier is -1) [Row 41]
 
   // Sort the list in alphabetical order
   events.sort();
@@ -856,4 +867,20 @@ QStringList MainWindow::filterEntityNames(QString input) const
 
 
 
+
+
+void MainWindow::on_actionSet_player_1_Age_triggered()
+{
+  bool ok;
+  player1Age = QInputDialog::getItem(this, tr("Enter player 1's medieval age"),
+                                       tr("Age:"), ages, 0, false, &ok);
+}
+
+
+void MainWindow::on_actionSet_player_2_Age_triggered()
+{
+  bool ok;
+  player2Age = QInputDialog::getItem(this, tr("Enter player 2's medieval age"),
+                                             tr("Age:"), ages, 0, false, &ok);
+}
 

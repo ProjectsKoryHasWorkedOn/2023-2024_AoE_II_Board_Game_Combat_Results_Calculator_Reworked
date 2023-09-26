@@ -35,7 +35,10 @@ int runGame()
 
   // Constant integer: The number of rows inside of the technology, event, and
   // player details files
-  const int technologiesRows = 18, eventsRows = 40, playerDetailsRows = 2;
+
+
+  // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
+  const int technologiesRows = 18, eventsRows = 41, playerDetailsRows = 2;
 
   // Integer: The rounds of combat
   int monkCombatRounds        = 1;
@@ -129,9 +132,13 @@ int runGame()
     p1AssistingMonkBattleParticipant,
     p2AssistingMonkBattleParticipant);
 
+
+
+
+
   // Behaviour: Set the values for player 1
   theModifiersCalculator.setAdditionalValues(
-    player1, player_details_array[1], p1_technologies_array, p1_events_array);
+    player1, player_details_array[0], p1_technologies_array, p1_events_array);
 
   // Behaviour: Run a function to apply all of the modifiers for player 1
   p1BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
@@ -140,7 +147,7 @@ int runGame()
 
   // Set the values for player 2
   theModifiersCalculator.setAdditionalValues(
-    player2, player_details_array[2], p2_technologies_array, p2_events_array);
+    player2, player_details_array[1], p2_technologies_array, p2_events_array);
 
   // Behaviour: Run a function to apply all of the modifiers for player 2
   p2BattleParticipant = theModifiersCalculator.applyAllModifiers(0);

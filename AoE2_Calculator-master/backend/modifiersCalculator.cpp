@@ -763,7 +763,7 @@ void modifiersCalculator::applyEventCardEffects()
     // A Just Case
     applyEventCardModifiers.standardDamage += 1;
   }
-  // [1] Back From A Foreign Land (uninplemented)
+  // [1] Back From A Foreign Land: Byzantine civ bonus: +2 healing rate modifier (done elsewhere)
   if (playerEvents[2] == 1) {
     // [2] Barrel of Grog - If target unit is Celt, they get +2 HP (ought to
     // calculate now)
@@ -878,7 +878,28 @@ void modifiersCalculator::applyEventCardEffects()
   // [19] Listen To A Story (done elsewhere)
   // [20] Muddy Battlefield (done elsewhere)
   // [21] Non-Compos Mentis (done elsewhere)
-  // [22] Blank
+  // [22] Back From A Foreign Land (Byzantine civ bonus: All buildings get a HP bonus)
+  if (playerEvents[22] == 1) {
+    if (applyEventCardModifiers.armorClass[1] == true) { // Building
+      if(playerAge == 1){
+        applyEventCardModifiers.entityHealth += 10;
+      }
+      else if(playerAge == 2){
+        applyEventCardModifiers.entityHealth += 20;
+      }
+      else if(playerAge == 3){
+        applyEventCardModifiers.entityHealth += 30;
+      }
+      else if(playerAge == 4){
+        applyEventCardModifiers.entityHealth += 40;
+      }
+      else{
+        std::cout << "Error: Player Age not recognized";
+      }
+    }
+  }
+
+
   // [23] Piety (done elsewhere)
   // [24] Black Knight (done elsewhere)
   if (playerEvents[25] == 1) {
@@ -943,6 +964,7 @@ void modifiersCalculator::applyEventCardEffects()
   // [37] While They're Sleeping  (done elsewhere)
   // [38] You Will Die! (Done elsewhere)
   // [39] Zealous Monks (Done elsewhere)
+  // [40] Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier is -1) (done elsewhere)
 
   // Behaviour: Update the Entity values
   if (playerNumber == 1) {

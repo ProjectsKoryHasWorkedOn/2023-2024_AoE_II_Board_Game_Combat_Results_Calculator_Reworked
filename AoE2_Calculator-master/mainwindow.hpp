@@ -64,6 +64,10 @@ private slots:
 
   void on_player2BattleAssistantNames_activated(int index);
 
+  void on_actionSet_player_1_Age_triggered();
+
+  void on_actionSet_player_2_Age_triggered();
+
 private:
   void initializeEntityAliases();
 
