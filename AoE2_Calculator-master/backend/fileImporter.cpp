@@ -1070,20 +1070,20 @@ Entity fileImporter::entitiesFile(
 // Function: Get the active technologies from '[p1/p2]_technologies.csv', the
 // active events from '[p1/p2]_events.csv', or player details from 'players.csv'
 int* fileImporter::aSplitColumnFile(
-  std::string inputTechnologyOrEventsFilename,
+  std::string inputTechnologyOrEventsOrPlayerAgeFilename,
   int         inputNumberOfRows)
 {
   // Behaviour: Open "[p1/p2]_technologies.csv" or "[p1/p2]_events.csv" for
   // player 1 or 2 (not both)
-  inputFile.open(inputTechnologyOrEventsFilename);
+  inputFile.open(inputTechnologyOrEventsOrPlayerAgeFilename);
 
   // Behaviour: Check that the filename is correct
   if (
-    (inputTechnologyOrEventsFilename != "import/technologies_p1.csv")
-    && (inputTechnologyOrEventsFilename != "import/technologies_p2.csv")
-    && (inputTechnologyOrEventsFilename != "import/events_p1.csv")
-    && (inputTechnologyOrEventsFilename != "import/events_p2.csv")
-    && (inputTechnologyOrEventsFilename != "import/playerDetails.csv")) {
+    (inputTechnologyOrEventsOrPlayerAgeFilename != "import/technologies_p1.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/technologies_p2.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/events_p1.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/events_p2.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/playerAge.csv")) {
     std::cout << "Error: Input filename supposed to be called "
                  "'import/[p1/p2]_technologies.csv', "
                  "'import/[p1/p2]_events.csv', or 'import/playerDetails.csv'"
@@ -1095,7 +1095,7 @@ int* fileImporter::aSplitColumnFile(
   // successfully opened
   if (!inputFile.is_open()) {
     std::cout << "Error: Failed to open the file called "
-              << inputTechnologyOrEventsFilename << "\n";
+              << inputTechnologyOrEventsOrPlayerAgeFilename << "\n";
     exit(EXIT_FAILURE);
   }
   else {
@@ -1126,9 +1126,9 @@ int* fileImporter::aSplitColumnFile(
       // Behaviour: Ensure that the user does not exceed the array bounds
       if (count >= arrayWords + 1) {
         std::cout << "Error: You have entered too much input into "
-                  << inputTechnologyOrEventsFilename << "\n";
+                  << inputTechnologyOrEventsOrPlayerAgeFilename << "\n";
         std::cout << "You will have to replace the existing "
-                  << inputTechnologyOrEventsFilename
+                  << inputTechnologyOrEventsOrPlayerAgeFilename
                   << " file with the default one"
                   << "\n";
         exit(EXIT_FAILURE);
@@ -1144,9 +1144,9 @@ int* fileImporter::aSplitColumnFile(
     // Behaviour: Ensure that the words array contains all of the words
     if (count <= arrayWords - 1) {
       std::cout << "Error: You have entered too little input into "
-                << inputTechnologyOrEventsFilename << "\n";
+                << inputTechnologyOrEventsOrPlayerAgeFilename << "\n";
       std::cout << "You will have to replace the existing "
-                << inputTechnologyOrEventsFilename
+                << inputTechnologyOrEventsOrPlayerAgeFilename
                 << " file with the default one"
                 << "\n";
       exit(EXIT_FAILURE);
@@ -1184,7 +1184,7 @@ int* fileImporter::aSplitColumnFile(
             << "\n";
 
           std::cout << "The player details file..."
-                    << inputTechnologyOrEventsFilename
+                    << inputTechnologyOrEventsOrPlayerAgeFilename
                     << " file with the default one"
                     << "\n";
           std::cout << "Error: For each row, enter a Medieval Age (1-4)"
@@ -1212,7 +1212,44 @@ int* fileImporter::aSplitColumnFile(
     inputFile.close();
 
     // Behaviour: Return a string of technologies
-    return everySecondElement;
+      return everySecondElement;
+
 
   }
+}
+
+// Read from the player names file
+std::string* fileImporter::playerNames(
+    std::string inputPlayerNamesFilename,
+    int         inputNumberOfRows)
+{
+
+  inputFile.open(inputPlayerNamesFilename);
+
+  // Behaviour: Check that the filename is correct
+  if (inputPlayerNamesFilename != "import/playerNames.csv") {
+      std::cout << "Error: Input filename supposed to be called "
+                   "'import/playerNames.csv'"
+                << "\n";
+      exit(EXIT_FAILURE);
+  }
+
+  std::string *lineString  = new std::string[inputNumberOfRows];
+
+  std::string myline;
+
+  if (inputFile.is_open()) {
+      for (int i = 0; i < inputNumberOfRows; i ++){
+        inputFile >> myline;
+      std::replace(myline.begin(), myline.end(), '_', ' ');
+        lineString[i] = myline;
+      }
+
+  }
+  else{
+      std::cout << "Error: couldn't open the file";
+      exit(EXIT_FAILURE);
+  }
+
+  return lineString;
 }

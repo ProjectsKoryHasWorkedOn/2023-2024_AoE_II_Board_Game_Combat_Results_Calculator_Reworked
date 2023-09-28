@@ -39,7 +39,7 @@ struct Entity {
     bool        isLineBreak);
 
   // Function: Return entity information
-  void outputEntity(const int inputPlayerNumber);
+  void outputEntity(std::string playerName);
 };
 #endif // ENTITY_H
 

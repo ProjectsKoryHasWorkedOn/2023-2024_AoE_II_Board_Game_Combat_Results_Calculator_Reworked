@@ -38,7 +38,7 @@ int runGame()
 
 
   // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
-  const int technologiesRows = 18, eventsRows = 41, playerDetailsRows = 2;
+  const int technologiesRows = 18, eventsRows = 41, playerAgeRows = 2;
 
   // Integer: The rounds of combat
   int monkCombatRounds        = 1;
@@ -65,7 +65,11 @@ int runGame()
   int* p2_events_array;
 
   // Integer array: The player details
-  int* player_details_array;
+  int * player_age_array;
+
+  // String: The player names. Obtained from player_age_array
+  std::string * playerNamesArray;
+
 
 
   /** Complex declarations **/
@@ -122,9 +126,10 @@ int runGame()
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
-  player_details_array = importFile.aSplitColumnFile(
-    "import/playerDetails.csv", playerDetailsRows);
+  player_age_array = importFile.aSplitColumnFile(
+    "import/playerAge.csv", playerAgeRows);
 
+  playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants
@@ -135,12 +140,9 @@ int runGame()
     p2AssistingMonkBattleParticipant);
 
 
-
-
-
   // Behaviour: Set the values for player 1
   theModifiersCalculator.setAdditionalValues(
-    player1, player_details_array[0], p1_technologies_array, p1_events_array);
+    player1, player_age_array[0], p1_technologies_array, p1_events_array);
 
   // Behaviour: Run a function to apply all of the modifiers for player 1
   p1BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
@@ -149,7 +151,7 @@ int runGame()
 
   // Set the values for player 2
   theModifiersCalculator.setAdditionalValues(
-    player2, player_details_array[1], p2_technologies_array, p2_events_array);
+    player2, player_age_array[1], p2_technologies_array, p2_events_array);
 
   // Behaviour: Run a function to apply all of the modifiers for player 2
   p2BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
@@ -160,15 +162,15 @@ int runGame()
   // modified (before further calculations occur)
   std::cout << "You entered..."
             << "\n";
-  p1BattleParticipant.outputEntity(player1);
+  p1BattleParticipant.outputEntity(playerNamesArray[0]);
   if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p1AssistingMonkBattleParticipant.outputEntity(player1);
+    p1AssistingMonkBattleParticipant.outputEntity(playerNamesArray[0]);
   }
-  p2BattleParticipant.outputEntity(player2);
+  p2BattleParticipant.outputEntity(playerNamesArray[1]);
   if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p2AssistingMonkBattleParticipant.outputEntity(player2);
+    p2AssistingMonkBattleParticipant.outputEntity(playerNamesArray[1]);
   }
 
   /** Part 3: Applying further modifiers **/
@@ -277,6 +279,9 @@ int runGame()
   // Behaviour: Set the superclass to the monk rounds
   theCombatCalculator = &monkRounds;
 
+  // Set the player names
+  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
@@ -308,6 +313,9 @@ int runGame()
   /** Part 4.2: Round 2 **/
   // Behaviour: Set the combat calculator to the archer rounds
   theCombatCalculator = &rangedRounds;
+
+  // Set the player names
+  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
 
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
@@ -349,6 +357,9 @@ int runGame()
     // Behaviour: Set the combat calculator to the bombardment rounds
     theCombatCalculator = &bombardmentRounds;
 
+    // Set the player names
+    theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+
     // Behaviour: Set the protected values
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
@@ -383,6 +394,9 @@ int runGame()
   // Behaviour: Set the combat calculator to the standard rounds
   theCombatCalculator = &standardRounds;
 
+  // Set the player names
+  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+
   // Behaviour: Set the protected values
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
@@ -391,6 +405,10 @@ int runGame()
     p2AssistingMonkBattleParticipant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
+
+
+
+
 
   // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(

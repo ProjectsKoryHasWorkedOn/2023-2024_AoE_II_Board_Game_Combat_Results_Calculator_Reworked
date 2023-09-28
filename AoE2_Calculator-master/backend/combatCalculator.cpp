@@ -28,6 +28,18 @@ combatCalculator::~combatCalculator()
 {
 }
 
+// Function: Set the player names
+void combatCalculator::setPlayerNames(
+  std::string& inputP1Name,
+  std::string& inputP2Name){
+
+  player1Name = inputP1Name;
+  player2Name = inputP2Name;
+
+}
+
+
+
 // Function: Set the battle participants
 void combatCalculator::setCombatParticipants(
   Entity& inputP1BattleParticipant,
@@ -177,15 +189,15 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
   }
 
   // Behaviour: Run a function to output the entity information
-  p1BattleParticipant.outputEntity(1);
+  p1BattleParticipant.outputEntity(player1Name);
   if (p1AssistingMonkParticipant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p1AssistingMonkParticipant.outputEntity(1);
+    p1AssistingMonkParticipant.outputEntity(player1Name);
   }
-  p2BattleParticipant.outputEntity(2);
+  p2BattleParticipant.outputEntity(player2Name);
   if (p2AssistingMonkParticipant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p2AssistingMonkParticipant.outputEntity(2);
+    p2AssistingMonkParticipant.outputEntity(player2Name);
   }
 }
 
@@ -1080,11 +1092,11 @@ void monkRounds::roundOutcome(
 
         // Behaviour: Display how many points were added if appropriate
         if (p2PointsLost != 0) {
-          std::cout << ">> Player 1 gets " << p2PointsLost << " points"
+          std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
                     << "\n";
         }
         if (p1PointsLost != 0) {
-          std::cout << ">> Player 2 gets " << p1PointsLost << " points"
+          std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
                     << "\n";
         }
 
@@ -1427,11 +1439,11 @@ void archerRounds::roundOutcome(
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> Player 1 gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
                   << "\n";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> Player 2 gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
                   << "\n";
       }
 
@@ -1758,11 +1770,11 @@ void bombardmentRounds::roundOutcome(
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> Player 1 gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
                   << "\n";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> Player 2 gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
                   << "\n";
       }
 
@@ -2407,11 +2419,11 @@ void standardRounds::roundOutcome(
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> Player 1 gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
                   << "\n";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> Player 2 gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
                   << "\n";
       }
 

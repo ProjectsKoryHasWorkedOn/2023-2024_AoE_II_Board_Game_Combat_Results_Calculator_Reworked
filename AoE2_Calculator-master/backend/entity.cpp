@@ -2254,12 +2254,11 @@ void Entity::displayColorfulText(
 }
 
 // Function: Return entity information
-void Entity::outputEntity(const int inputPlayerNumber)
+void Entity::outputEntity(std::string playerName)
 {
   // Behaviour: Display the player's name first (no matter what)
-  std::string playerName = std::to_string(inputPlayerNumber);
   displayColorfulText(
-    "bold", "white", "default", "player " + playerName + "'s", false);
+    "bold", "white", "default", playerName + "'s", false);
   std::cout << " ";
 
   // Behaviour: Check that the entity is not dead before proceeding

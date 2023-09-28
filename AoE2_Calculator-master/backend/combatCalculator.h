@@ -27,6 +27,10 @@ protected:
   // String: Store whether or not an entity is retreating
   std::string isRetreating;
 
+
+  std::string player1Name;
+  std::string player2Name;
+
   /** Values atteined from the function setCombatParticipants() **/
   // Struct: Declare the entities participating in the battle
   Entity p1BattleParticipant;
@@ -44,11 +48,22 @@ protected:
   float remainingDamageP2;
 
 public:
+
+
   // Functions: The constructor and deconstructor
   combatCalculator();
   ~combatCalculator();
 
+
+
+
   /** Set the values functions **/
+  // Function: Set the player names
+  void setPlayerNames(
+    std::string& inputP1Name,
+    std::string& inputP2Name);
+
+
   // Function: Set the battle participants
   void setCombatParticipants(
     Entity& inputP1BattleParticipant,

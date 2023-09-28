@@ -33,7 +33,14 @@ public:
   // active events from '[p1/p2]_events.csv', or player details from
   // 'players.csv'
   int* aSplitColumnFile(
-    std::string inputTechnologyOrEventsFilename,
+    std::string inputTechnologyOrEventsOrPlayerAgeFilename,
     int         inputNumberOfRows);
+
+
+std::string* playerNames(
+  std::string inputPlayerNamesFilename,
+  int         inputNumberOfRows);
+
 };
+
 #endif // FILE_IMPORTER_H
