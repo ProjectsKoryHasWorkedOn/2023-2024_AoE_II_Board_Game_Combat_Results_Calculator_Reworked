@@ -22,6 +22,10 @@ SOURCES += \
     backend/fileImporter.cpp \
     backend/modifiersCalculator.cpp \
     backend/run_game.cpp \
+    csv/csv_entity.cpp \
+    csv/csv_event.cpp \
+    csv/csv_technology.cpp \
+    csv/entities.cpp \
     main.cpp \
     mainwindow.cpp \
     soundEffects.cpp \
@@ -35,6 +39,10 @@ HEADERS += \
     backend/fileImporter.h \
     backend/modifiersCalculator.h \
     backend/run_game.h \
+    csv/csv_entity.h \
+    csv/csv_event.h \
+    csv/csv_technology.h \
+    csv/entities.h \
     mainwindow.h \
     mainwindow.hpp \
     soundEffects.h \

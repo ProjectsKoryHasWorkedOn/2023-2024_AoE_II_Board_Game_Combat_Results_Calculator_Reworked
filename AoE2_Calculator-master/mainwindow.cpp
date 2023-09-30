@@ -21,9 +21,9 @@
 // Libraries used for storing data
 #include <QColor> // Prefers RGB input over HEX
 #include <QListWidgetItem>
+#include <QSet>
 #include <QString>
 #include <QStringList>
-#include <QSet>
 #include <vector>
 
 // Libraries for acquiring user input
@@ -38,29 +38,29 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled = true;
 
 // Declaring the file paths for @Phillip (unused for now)
-QString entitiesFilename       = "/import/entities.csv";
-QString eventsP1Filename       = "/import/events_p1.csv";
-QString eventsP2Filename       = "/import/events_p2.csv";
-QString playerDetailsFilename  = "/import/playerDetails.csv";
-QString technologiesP1Filename = "/import/technologies_p1.csv";
-QString technologiesP2Filename = "/import/technologies_p2.csv";
+extern const QString entitiesFilename       = "/import/entities.csv";
+extern const QString eventsP1Filename       = "/import/events_p1.csv";
+extern const QString eventsP2Filename       = "/import/events_p2.csv";
+extern const QString playerDetailsFilename  = "/import/playerDetails.csv";
+extern const QString technologiesP1Filename = "/import/technologies_p1.csv";
+extern const QString technologiesP2Filename = "/import/technologies_p2.csv";
 
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
-int     player1EntityQuantity;
-int     player1AssistingEntityQuantity;
-int     player2EntityQuantity;
-int     player2AssistingEntityQuantity;
+int         player1EntityQuantity;
+int         player1AssistingEntityQuantity;
+int         player2EntityQuantity;
+int         player2AssistingEntityQuantity;
 QString     player1Name;
 QString     player2Name;
 QString     player1Color;
 QString     player2Color;
-QString player1BattleAssistantName;
-QString player2BattleAssistantName;
+QString     player1BattleAssistantName;
+QString     player2BattleAssistantName;
 
 // Get what age the player is in
-QString player1Age;
-QString player2Age;
+QString     player1Age;
+QString     player2Age;
 QStringList ages;
 
 // Declare working directory
@@ -80,13 +80,16 @@ MainWindow::MainWindow(QWidget* parent)
   QIntValidator myName;
   myName.setRange(100, 999);
 
-
   // create shortcut
-  QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
+  QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
 
-  // connect its 'activated' signal to the 'on_calculateResultsButton_clicked' function
-  QObject::connect(shortcut,    &QShortcut::activated,
-                   this,        &MainWindow::on_calculateResultsButton_clicked);
+  // connect its 'activated' signal to the 'on_calculateResultsButton_clicked'
+  // function
+  QObject::connect(
+    shortcut,
+    &QShortcut::activated,
+    this,
+    &MainWindow::on_calculateResultsButton_clicked);
 
   // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
@@ -98,7 +101,8 @@ MainWindow::MainWindow(QWidget* parent)
   workingDirectory.cdUp();
 
   // What the ages are
-  ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age") << tr("Imperial Age");
+  ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
+       << tr("Imperial Age");
 
   // What the initial name of the players are
   player1Name = "Player 1";
@@ -275,24 +279,24 @@ MainWindow::MainWindow(QWidget* parent)
   // What the possible names of technologies are
   // @Reference: What row in the .csv file it goes to
   QStringList technologies = {
-    "Blast Furnace", // [Row 1]
-    "Bodkin Arrow", // [Row 2]
-    "Bracer", // [Row 3]
-    "Chain Barding Armor", // [Row 4]
-    "Chain Mail Armor", // [Row 5]
-    "Fletching", // [Row 6]
-    "Forging", // [Row 7]
-    "Hoardings", // [Row 8]
-    "Iron Casting", // [Row 9]
+    "Blast Furnace",        // [Row 1]
+    "Bodkin Arrow",         // [Row 2]
+    "Bracer",               // [Row 3]
+    "Chain Barding Armor",  // [Row 4]
+    "Chain Mail Armor",     // [Row 5]
+    "Fletching",            // [Row 6]
+    "Forging",              // [Row 7]
+    "Hoardings",            // [Row 8]
+    "Iron Casting",         // [Row 9]
     "Leather Archer Armor", // [Row 10]
-    "Loom", // [Row 11]
-    "Padded Archer Armor", // [Row 12]
-    "Plate Barding Armor", // [Row 13]
-    "Plate Mail Armor", // [Row 14]
-    "Ring Archer Armor", // [Row 15]
-    "Scale Barding Armor", // [Row 16]
-    "Scale Mail Armor", // [Row 17]
-    "Sanctity {2E}"}; // [Row 18]
+    "Loom",                 // [Row 11]
+    "Padded Archer Armor",  // [Row 12]
+    "Plate Barding Armor",  // [Row 13]
+    "Plate Mail Armor",     // [Row 14]
+    "Ring Archer Armor",    // [Row 15]
+    "Scale Barding Armor",  // [Row 16]
+    "Scale Mail Armor",     // [Row 17]
+    "Sanctity {2E}"};       // [Row 18]
 
   // Sort the list in alphabetical order
   technologies.sort();
@@ -300,49 +304,52 @@ MainWindow::MainWindow(QWidget* parent)
   // What the possible names of event cards are
   // @Reference: What row in the .csv file it goes to
   QStringList events = {
-    "A Just Cause", // [Row 1]
-    "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing rate modifier)
+    "A Just Cause",             // [Row 1]
+    "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing
+                                // rate modifier)
     // (has multiple slots in .csv file)
-    "Barrel Of Grog", // [Row 3]
-    "Bone Shaft Arrows (Mongol)", // [Row 4]
-    "Caught From The Crow's Nest", // [Row 5]
-    "Celtic Battle Cry (Celt)", // [Row 6]
-    "Dangerous Times", // [Row 7]
+    "Barrel Of Grog",               // [Row 3]
+    "Bone Shaft Arrows (Mongol)",   // [Row 4]
+    "Caught From The Crow's Nest",  // [Row 5]
+    "Celtic Battle Cry (Celt)",     // [Row 6]
+    "Dangerous Times",              // [Row 7]
     "Fat Friar's Tavern O' Spices", // [Row 8]
-    "Field Testing", // [Row 9]
-    "First Battle Jitters", // [Row 10]
-    "Flaming Arrows", // [Row 11]
-    "Fortune Favors The Foolish", // [Row 12]
-    "Gatherin' A Rowdy Bunch", // [Row 13]
-    "Gladitorial Games", // [Row 14]
-    "Hard To Starboard", // [Row 15]
-    "Heavy Tree Cover", // [Row 16]
-    "High Ground", // [Row 17]
-    "Husbandry", // [Row 18]
-    "It's A Miracle", // [Row 19]
-    "Listen To A Story", // [Row 20]
-    "Muddy Battlefield", // [Row 21]
-    "Non-Compos Mentis", // [Row 22]
+    "Field Testing",                // [Row 9]
+    "First Battle Jitters",         // [Row 10]
+    "Flaming Arrows",               // [Row 11]
+    "Fortune Favors The Foolish",   // [Row 12]
+    "Gatherin' A Rowdy Bunch",      // [Row 13]
+    "Gladitorial Games",            // [Row 14]
+    "Hard To Starboard",            // [Row 15]
+    "Heavy Tree Cover",             // [Row 16]
+    "High Ground",                  // [Row 17]
+    "Husbandry",                    // [Row 18]
+    "It's A Miracle",               // [Row 19]
+    "Listen To A Story",            // [Row 20]
+    "Muddy Battlefield",            // [Row 21]
+    "Non-Compos Mentis",            // [Row 22]
     // Back_From_A_Foreign_Land (Byzantine civ bonus:
-    // All building get a HP bonus: Age I – 10 HP, Age II – 20 HP, Age III – 30 HP, Age IV – 40 HP) [Row 23]
-    "Piety", // [Row 24]
-    "Black Knight", // [Row 25]
-    "Rally The Workers", // [Row 26]
-    "Relentless Attack", // [Row 27]
-    "Retreat", // [Row 28]
-    "Holy War", // [Row 29]
-    "Shots In The Back (Briton)", // [Row 30]
-    "Soak The Timbers", // [Row 31]
-    "Spirits Of The Ancestors", // [Row 32]
-    "Squires", // [Row 33]
-    "Steady Hand", // [Row 34]
-    "The Hammer's Cavalry (Franks)", // [Row 35]
+    // All building get a HP bonus: Age I – 10 HP, Age II – 20 HP, Age III – 30
+    // HP, Age IV – 40 HP) [Row 23]
+    "Piety",                                     // [Row 24]
+    "Black Knight",                              // [Row 25]
+    "Rally The Workers",                         // [Row 26]
+    "Relentless Attack",                         // [Row 27]
+    "Retreat",                                   // [Row 28]
+    "Holy War",                                  // [Row 29]
+    "Shots In The Back (Briton)",                // [Row 30]
+    "Soak The Timbers",                          // [Row 31]
+    "Spirits Of The Ancestors",                  // [Row 32]
+    "Squires",                                   // [Row 33]
+    "Steady Hand",                               // [Row 34]
+    "The Hammer's Cavalry (Franks)",             // [Row 35]
     "The Jester Is Dead Let's Get Them! (Celt)", // [Row 36]
-    "Vengeance Is Mine!", // [Row 37]
-    "While They're Sleeping", // [Row 38]
-    "You Will Die! (Saracen)", // [Row 39]
-    "Zealous Monks"}; // [Row 40]
-    // Back_From_A_Foreign_Land (Teuton civ bonus: Conversion rate modifier is -1) [Row 41]
+    "Vengeance Is Mine!",                        // [Row 37]
+    "While They're Sleeping",                    // [Row 38]
+    "You Will Die! (Saracen)",                   // [Row 39]
+    "Zealous Monks"};                            // [Row 40]
+  // Back_From_A_Foreign_Land (Teuton civ bonus: Conversion rate modifier is -1)
+  // [Row 41]
 
   // Sort the list in alphabetical order
   events.sort();
@@ -363,13 +370,13 @@ MainWindow::MainWindow(QWidget* parent)
     technologyPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
     // Mark which ones correspond to the 2E
-    if(technologyPlayer1->text().contains("{2E}")){
-      technologyPlayer1->setForeground(QColor(255,255,255));
+    if (technologyPlayer1->text().contains("{2E}")) {
+      technologyPlayer1->setForeground(QColor(255, 255, 255));
       technologyPlayer1->setBackground(QColor(90, 90, 90));
     }
 
-    if(technologyPlayer2->text().contains("{2E}")){
-      technologyPlayer2->setForeground(QColor(255,255,255));
+    if (technologyPlayer2->text().contains("{2E}")) {
+      technologyPlayer2->setForeground(QColor(255, 255, 255));
       technologyPlayer2->setBackground(QColor(90, 90, 90));
     }
 
@@ -385,11 +392,11 @@ MainWindow::MainWindow(QWidget* parent)
     eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
     // Mark which ones I haven't implemented
-    if(eventPlayer1->text().contains("(unimplemented)")){
+    if (eventPlayer1->text().contains("(unimplemented)")) {
       eventPlayer1->setForeground(QColor(255, 0, 0));
     }
 
-    if(eventPlayer2->text().contains("(unimplemented)")){
+    if (eventPlayer2->text().contains("(unimplemented)")) {
       eventPlayer2->setForeground(QColor(255, 0, 0));
     }
 
@@ -452,23 +459,20 @@ void MainWindow::on_actionAbout_triggered()
 }
 
 // Tooltip returner
-QString MainWindow::tooltipReturner(QString name){
+QString MainWindow::tooltipReturner(QString name)
+{
   QString tooltipForIt;
 
-  if (
-    name
-    == "Charlamagne's Palace At Aix La'Chapelle (Briton)") {
+  if (name == "Charlamagne's Palace At Aix La'Chapelle (Briton)") {
     tooltipForIt = "<b>Aliases:</b> Wonder (Briton)";
   }
   else if (name == "Rock Of Cashel (Celt)") {
     tooltipForIt = "<b>Aliases:</b> Wonder (Celt)";
   }
-  else if (
-    name == "The Golden Tent Of The Great Khan (Mongol)") {
+  else if (name == "The Golden Tent Of The Great Khan (Mongol)") {
     tooltipForIt = "<b>Aliases:</b> Wonder (Mongol)";
   }
-  else if (
-    name == "The Palace Of Ctesiphon On The Tigris (Persian)") {
+  else if (name == "The Palace Of Ctesiphon On The Tigris (Persian)") {
     tooltipForIt = "<b>Aliases:</b> Wonder (Persian)";
   }
   else if (name == "Tomb Of Theodoric (Goth)") {
@@ -488,25 +492,25 @@ QString MainWindow::tooltipReturner(QString name){
     tooltipForIt = "<b>Aliases:</b> BBC";
   }
   */
-  else if (name == "Knight"){
+  else if (name == "Knight") {
     tooltipForIt = "<b>Aliases:</b> Kt";
   }
-  else if (name == "Knight (Frank)"){
+  else if (name == "Knight (Frank)") {
     tooltipForIt = "<b>Aliases:</b> Kt (Frank)";
   }
-  else if (name == "Knight (Persian)"){
+  else if (name == "Knight (Persian)") {
     tooltipForIt = "<b>Aliases:</b> Kt (Persian)";
   }
-  else if (name == "Crossbowman"){
+  else if (name == "Crossbowman") {
     tooltipForIt = "<b>Aliases:</b> Xbow";
   }
-  else if (name == "Crossbowman (Saracen)"){
+  else if (name == "Crossbowman (Saracen)") {
     tooltipForIt = "<b>Aliases:</b> Xbow (Saracen)";
   }
-  else if (name == "Siege Onager"){
+  else if (name == "Siege Onager") {
     tooltipForIt = "<b>Aliases:</b> SO";
   }
-  else if (name == "Siege Onager (Celt)"){
+  else if (name == "Siege Onager (Celt)") {
     tooltipForIt = "<b>Aliases:</b> SO (Celt)";
   }
   /*
@@ -514,24 +518,25 @@ QString MainWindow::tooltipReturner(QString name){
     tooltipForIt = "<b>Aliases:</b> BBT";
   }
   */
-  else if (name == "Town Center"){
+  else if (name == "Town Center") {
     tooltipForIt = "<b>Aliases:</b> TC";
   }
-  else if (name == "Town Center (Briton)"){
+  else if (name == "Town Center (Briton)") {
     tooltipForIt = "<b>Aliases:</b> TC (Briton)";
   }
-  else if (name == "Town Center (Persian)"){
+  else if (name == "Town Center (Persian)") {
     tooltipForIt = "<b>Aliases:</b> TC (Persian)";
   }
-  else{
-    tooltipForIt ="";
+  else {
+    tooltipForIt = "";
   }
 
   return tooltipForIt;
 }
 
 // Run this when the text inside of the player 1 entities search field changes
-void MainWindow::on_player1EntityNamesFilter_textChanged(const QString &textInsideOfElement)
+void MainWindow::on_player1EntityNamesFilter_textChanged(
+  const QString& textInsideOfElement)
 {
   // Get what entity names the user is entering
   QString player1EntityNamesFiltered = textInsideOfElement;
@@ -551,8 +556,8 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(const QString &textInsi
 
     // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
-    if(listWidgetItemTooltip != ""){
+    QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
+    if (listWidgetItemTooltip != "") {
       listWidgetItem->setToolTip(listWidgetItemTooltip);
     }
 
@@ -561,28 +566,29 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(const QString &textInsi
 }
 
 // Run this when the text inside of the player 2 entities search field changes
-void MainWindow::on_player2EntityNamesFilter_textChanged(const QString &textInsideOfElement)
+void MainWindow::on_player2EntityNamesFilter_textChanged(
+  const QString& textInsideOfElement)
 {
   // Get what entity names the user is entering
   QString player2EntityNamesFiltered = textInsideOfElement;
 
-         // Clear what's in the list of entity names
+  // Clear what's in the list of entity names
   ui.player2EntityNames->clear();
 
-         // Store name of filtered item
+  // Store name of filtered item
   QString nameOfFilteredItem;
 
-         // Filter the list based on what entity name the user entered, factoring in
-         // aliases for that entity name
+  // Filter the list based on what entity name the user entered, factoring in
+  // aliases for that entity name
   QStringList filteredList = filterEntityNames(player2EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     // Get the name of the filtered item
     nameOfFilteredItem = filteredList[y];
 
-           // Add in the tooltips for the aliases so the user is aware of them
+    // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
-    if(listWidgetItemTooltip != ""){
+    QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
+    if (listWidgetItemTooltip != "") {
       listWidgetItem->setToolTip(listWidgetItemTooltip);
     }
 
@@ -628,16 +634,14 @@ void MainWindow::on_calculateResultsButton_clicked()
   runGame();
 }
 
-
-
-
-// Run this when the value inside of the player 1 entity quantities field changes
+// Run this when the value inside of the player 1 entity quantities field
+// changes
 void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
 {
   // Get what entity quantity the user is entering
   player1EntityQuantity = valueInsideOfField;
 
-         // Give an error to Console if quantity isn't right
+  // Give an error to Console if quantity isn't right
   if (
     player1EntityQuantity != 1 && player1EntityQuantity != 2
     && player1EntityQuantity != 3 && player1EntityQuantity != 4
@@ -649,13 +653,14 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
   // @Phillip: Pass player1EntityQuantity to entities.csv
 }
 
-// Run this when the value inside of the player 2 entity quantities field changes
+// Run this when the value inside of the player 2 entity quantities field
+// changes
 void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
 {
   // Get what entity quantity the user is entering
   player2EntityQuantity = valueInsideOfField;
 
-         // Give an error to Console if quantity isn't right
+  // Give an error to Console if quantity isn't right
   if (
     player2EntityQuantity != 1 && player2EntityQuantity != 2
     && player2EntityQuantity != 3 && player2EntityQuantity != 4
@@ -664,11 +669,12 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
       << "Error: Player 2's entity quantity input should be between 1 and 5";
   }
 
-         // @Phillip: Pass player2EntityQuantity to entities.csv
+  // @Phillip: Pass player2EntityQuantity to entities.csv
 }
 
 // Run on change of what battle assistant is selected by player 1
-void MainWindow::on_player1BattleAssistantNames_textActivated(const QString &currentSelection)
+void MainWindow::on_player1BattleAssistantNames_textActivated(
+  const QString& currentSelection)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
@@ -678,7 +684,8 @@ void MainWindow::on_player1BattleAssistantNames_textActivated(const QString &cur
 }
 
 // Run on change of what battle assistant is selected by player 2
-void MainWindow::on_player2BattleAssistantNames_textActivated(const QString &currentSelection)
+void MainWindow::on_player2BattleAssistantNames_textActivated(
+  const QString& currentSelection)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
@@ -687,75 +694,87 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(const QString &cur
   // @Phillip: Pass player2BattleAssistantName into entities.csv
 }
 
-void MainWindow::on_player1EntityAssistantQuantity_valueChanged(int valueInsideOfField)
+void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
+  int valueInsideOfField)
 {
-
   player1AssistingEntityQuantity = valueInsideOfField;
 
-         // Give an error to Console if quantity isn't right
-  if (player1AssistingEntityQuantity != 0 && player1AssistingEntityQuantity != 1 && player1AssistingEntityQuantity != 2
-    && player1AssistingEntityQuantity != 3 && player1AssistingEntityQuantity != 4
+  // Give an error to Console if quantity isn't right
+  if (
+    player1AssistingEntityQuantity != 0 && player1AssistingEntityQuantity != 1
+    && player1AssistingEntityQuantity != 2
+    && player1AssistingEntityQuantity != 3
+    && player1AssistingEntityQuantity != 4
     && player1AssistingEntityQuantity != 5) {
-    qDebug()
-      << "Error: Player 1's assisting entity quantity input should be between 0 and 5";
+    qDebug() << "Error: Player 1's assisting entity quantity input should be "
+                "between 0 and 5";
   }
 
-         // @Phillip: Pass player1AssistingEntityQuantity to entities.csv
-
+  // @Phillip: Pass player1AssistingEntityQuantity to entities.csv
 }
 
-
-void MainWindow::on_player2EntityAssistantQuantity_valueChanged(int valueInsideOfField)
+void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
+  int valueInsideOfField)
 {
   player2AssistingEntityQuantity = valueInsideOfField;
 
-         // Give an error to Console if quantity isn't right
-  if (player2AssistingEntityQuantity != 0 && player2AssistingEntityQuantity != 1 && player2AssistingEntityQuantity != 2
-      && player2AssistingEntityQuantity != 3 && player2AssistingEntityQuantity != 4
-      && player2AssistingEntityQuantity != 5) {
-    qDebug()
-      << "Error: Player 2's assisting entity quantity input should be between 0 and 5";
+  // Give an error to Console if quantity isn't right
+  if (
+    player2AssistingEntityQuantity != 0 && player2AssistingEntityQuantity != 1
+    && player2AssistingEntityQuantity != 2
+    && player2AssistingEntityQuantity != 3
+    && player2AssistingEntityQuantity != 4
+    && player2AssistingEntityQuantity != 5) {
+    qDebug() << "Error: Player 2's assisting entity quantity input should be "
+                "between 0 and 5";
   }
 
-         // @Phillip: Pass player2AssistingEntityQuantity to entities.csv
-
+  // @Phillip: Pass player2AssistingEntityQuantity to entities.csv
 }
 
-QString MainWindow::convertSpacesToUnderscores(QString text){
+QString MainWindow::convertSpacesToUnderscores(QString text)
+{
   std::replace(text.begin(), text.end(), ' ', '_');
   return text;
 }
 
 // Run on change of what battle participant is selected by player 1
-void MainWindow::on_player1EntityNames_itemClicked(QListWidgetItem * selectedItem)
+void MainWindow::on_player1EntityNames_itemClicked(
+  QListWidgetItem* selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  QString currentSelectionFormatted = convertSpacesToUnderscores(selectedItem->text());
+  QString currentSelectionFormatted
+    = convertSpacesToUnderscores(selectedItem->text());
+  m_player1EntityName = currentSelectionFormatted;
 
   // @Phillip: Pass currentSelectionFormatted into entities.csv
 }
 
-void MainWindow::on_player2EntityNames_itemClicked(QListWidgetItem *selectedItem)
+void MainWindow::on_player2EntityNames_itemClicked(
+  QListWidgetItem* selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  QString currentSelectionFormatted = convertSpacesToUnderscores(selectedItem->text());
+  QString currentSelectionFormatted
+    = convertSpacesToUnderscores(selectedItem->text());
+  m_player2EntityName = currentSelectionFormatted;
 
   // @Phillip: Pass currentSelectionFormatted into entities.csv
 }
 
 // Run on change of what technologies are toggled by player 1
-void MainWindow::on_player1Technologies_itemChanged(QListWidgetItem* checkedItem)
+void MainWindow::on_player1Technologies_itemChanged(
+  QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if(checkedItem->checkState() == Qt::Checked){
+  if (checkedItem->checkState() == Qt::Checked) {
     QString activeTechnology = checkedItem->text();
     // @Phillip: Pass a 1 in row of activeTechnology into technologies_p1.csv
     // @Phillip refer to @Reference
   }
-  else{
+  else {
     QString inactiveTechnology = checkedItem->text();
     // @Phillip: Pass a 0 in row of activeTechnology into technologies_p1.csv
     // @Phillip refer to @Reference
@@ -767,44 +786,45 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if(checkedItem->checkState() == Qt::Checked){
+  if (checkedItem->checkState() == Qt::Checked) {
     QString activeEvent = checkedItem->text();
     // @Phillip: Pass a 1 in row of activeEvent into events_p1.csv
     // @Phillip refer to @Reference
   }
-  else{
+  else {
     QString inactiveEvent = checkedItem->text();
     // @Phillip: Pass a 0 in row of inactiveEvent into events_p1.csv
     // @Phillip refer to @Reference
   }
 }
 
-void MainWindow::on_player2Technologies_itemChanged(QListWidgetItem *checkedItem)
+void MainWindow::on_player2Technologies_itemChanged(
+  QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if(checkedItem->checkState() == Qt::Checked){
+  if (checkedItem->checkState() == Qt::Checked) {
     QString activeTechnology = checkedItem->text();
     // @Phillip: Pass a 1 in row of activeTechnology into technologies_p2.csv
     // @Phillip refer to @Reference
   }
-  else{
+  else {
     QString inactiveTechnology = checkedItem->text();
     // @Phillip: Pass a 0 in row of activeTechnology into technologies_p2.csv
     // @Phillip refer to @Reference
   }
 }
 
-void MainWindow::on_player2Events_itemChanged(QListWidgetItem *checkedItem)
+void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if(checkedItem->checkState() == Qt::Checked){
+  if (checkedItem->checkState() == Qt::Checked) {
     QString activeEvent = checkedItem->text();
     // @Phillip: Pass a 1 in row of activeEvent into events_p2.csv
     // @Phillip refer to @Reference
   }
-  else{
+  else {
     QString inactiveEvent = checkedItem->text();
     // @Phillip: Pass a 0 in row of inactiveEvent into events_p2.csv
     // @Phillip refer to @Reference
@@ -823,13 +843,16 @@ void MainWindow::on_actionDisable_SFX_triggered()
 }
 
 // Run this when there's a call to update the names and colors of the players
-void MainWindow::updatePlayerNames(){
+void MainWindow::updatePlayerNames()
+{
   ui.actionSet_player_1_Age->setText("Set " + player1Name + "'s medieval age");
   ui.actionSet_name_of_player_1->setText("Set " + player1Name + "'s name");
-  ui.actionSet_set_color_of_player_1->setText("Set " + player1Name + "'s color");
+  ui.actionSet_set_color_of_player_1->setText(
+    "Set " + player1Name + "'s color");
   ui.actionSet_player_2_Age->setText("Set " + player2Name + "'s medieval age");
   ui.actionSet_name_of_player_2->setText("Set " + player2Name + "'s name");
-  ui.actionSet_set_color_of_player_2->setText("Set " + player2Name + "'s color");
+  ui.actionSet_set_color_of_player_2->setText(
+    "Set " + player2Name + "'s color");
 
   ui.player1UnitsLabel->setText(
     "<font color=" + player1Color + ">" + player1Name + "'s" + "</font>" + " "
@@ -921,10 +944,13 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
 
 void MainWindow::initializeEntityAliases()
 {
-  m_aliases.add("Charlamagne's Palace At Aix La'Chapelle (Briton)", "Wonder (Briton)");
+  m_aliases.add(
+    "Charlamagne's Palace At Aix La'Chapelle (Briton)", "Wonder (Briton)");
   m_aliases.add("Rock Of Cashel (Celt)", "Wonder (Celt)");
-  m_aliases.add("The Golden Tent Of The Great Khan (Mongol)", "Wonder (Mongol)");
-  m_aliases.add("The Palace Of Ctesiphon On The Tigris (Persian)", "Wonder (Persian)");
+  m_aliases.add(
+    "The Golden Tent Of The Great Khan (Mongol)", "Wonder (Mongol)");
+  m_aliases.add(
+    "The Palace Of Ctesiphon On The Tigris (Persian)", "Wonder (Persian)");
   m_aliases.add("Tomb Of Theodoric (Goth)", "Wonder (Goth)");
   m_aliases.add("Notre-Dame Cathedral (Frank)", "Wonder (Frank)");
   m_aliases.add("Stave Church At Urnes (Viking)", "Wonder (Viking)");
@@ -980,17 +1006,13 @@ QStringList MainWindow::filterEntityNames(QString input) const
 void MainWindow::on_actionSet_player_1_Age_triggered()
 {
   bool ok;
-  player1Age = QInputDialog::getItem(this, tr("Enter player 1's medieval age"),
-                                       tr("Age:"), ages, 0, false, &ok);
+  player1Age = QInputDialog::getItem(
+    this, tr("Enter player 1's medieval age"), tr("Age:"), ages, 0, false, &ok);
 }
 
 void MainWindow::on_actionSet_player_2_Age_triggered()
 {
   bool ok;
-  player2Age = QInputDialog::getItem(this, tr("Enter player 2's medieval age"),
-                                             tr("Age:"), ages, 0, false, &ok);
+  player2Age = QInputDialog::getItem(
+    this, tr("Enter player 2's medieval age"), tr("Age:"), ages, 0, false, &ok);
 }
-
-
-
-
