@@ -42,7 +42,7 @@ CsvEntity::CsvEntity(
   : m_entityName{std::move(entityName)}
   , m_entityQuantity{entityQuantity}
   , m_assistantName{std::move(assistantName)}
-  , m_assistantQuantity{m_assistantQuantity}
+  , m_assistantQuantity{assistantQuantity}
 {
 }
 

@@ -30,9 +30,9 @@ std::vector<CsvEntity> readEntities()
 void writeEntities(const std::vector<CsvEntity>& entities)
 {
   QFile file{entitiesFilename};
-  if (
-    !file.open(QIODeviceBase::WriteOnly | QIODeviceBase::Text),
-    QFileDevice::WriteOther) {
+  if (!file.open(
+        QIODeviceBase::WriteOnly | QIODeviceBase::Text,
+        QFileDevice::WriteOther)) {
     throw std::runtime_error{
       "Could not open \"" + entitiesFilename.toStdString() + "\""};
   }
