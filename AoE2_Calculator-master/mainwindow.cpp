@@ -74,6 +74,7 @@ MainWindow::MainWindow(QWidget* parent)
                      ui.gameOutputTextEdit->setText(m_gameOutputBuffer);
                    }}
   , m_aliases{}
+  , m_entities{}
 {
   ui.setupUi(this);
 
@@ -650,7 +651,7 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
       << "Error: Player 1's entity quantity input should be between 1 and 5";
   }
 
-  // @Phillip: Pass player1EntityQuantity to entities.csv
+  m_entities.changePlayer1EntityQuantity(player1EntityQuantity);
 }
 
 // Run this when the value inside of the player 2 entity quantities field
@@ -669,7 +670,7 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
       << "Error: Player 2's entity quantity input should be between 1 and 5";
   }
 
-  // @Phillip: Pass player2EntityQuantity to entities.csv
+  m_entities.changePlayer2EntityQuantity(player2EntityQuantity);
 }
 
 // Run on change of what battle assistant is selected by player 1

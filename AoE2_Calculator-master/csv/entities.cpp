@@ -9,7 +9,7 @@
 namespace {
 std::vector<CsvEntity> readEntities()
 {
-  QFile file{entitiesFilename};
+  QFile file{workingDirectory.absolutePath() + entitiesFilename};
   if (!file.open(
         QIODeviceBase::ReadOnly | QIODeviceBase::Text,
         QFileDevice::ReadOther)) {
@@ -29,7 +29,7 @@ std::vector<CsvEntity> readEntities()
 
 void writeEntities(const std::vector<CsvEntity>& entities)
 {
-  QFile file{entitiesFilename};
+  QFile file{workingDirectory.absolutePath() + entitiesFilename};
   if (!file.open(
         QIODeviceBase::WriteOnly | QIODeviceBase::Text,
         QFileDevice::WriteOther)) {

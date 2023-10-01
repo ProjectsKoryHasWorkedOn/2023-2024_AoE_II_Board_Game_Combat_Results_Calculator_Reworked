@@ -2,8 +2,10 @@
 #define MAINWINDOW_HPP
 #include "./ui_mainwindow.h"
 #include "aliases.h"
+#include "csv/entities.h"
 #include "stream_buffer.h"
 
+#include <QDir>
 #include <QHash>
 #include <QMainWindow>
 #include <QString>
@@ -14,6 +16,7 @@ extern const QString eventsP2Filename;
 extern const QString playerDetailsFilename;
 extern const QString technologiesP1Filename;
 extern const QString technologiesP2Filename;
+extern QDir          workingDirectory;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -100,5 +103,6 @@ private:
   Aliases        m_aliases;
   QString        m_player1EntityName;
   QString        m_player2EntityName;
+  Entities       m_entities;
 };
 #endif // MAINWINDOW_HPP
