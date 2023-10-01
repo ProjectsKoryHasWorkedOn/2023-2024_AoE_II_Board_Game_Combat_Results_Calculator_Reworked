@@ -1051,13 +1051,13 @@ void MainWindow::selectInitialEntities()
     findByEntityName(ui.player2EntityNames, player2Entity)};
 
   if (player1SelectedEntity != nullptr) {
-    ui.player1EntityNames->itemClicked(player1SelectedEntity);
+    emit ui.player1EntityNames->itemClicked(player1SelectedEntity);
     ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
     ui.player1EntityNames->scrollToItem(player1SelectedEntity);
   }
 
   if (player2SelectedEntity != nullptr) {
-    ui.player2EntityNames->itemClicked(player2SelectedEntity);
+    emit ui.player2EntityNames->itemClicked(player2SelectedEntity);
     ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
   }
