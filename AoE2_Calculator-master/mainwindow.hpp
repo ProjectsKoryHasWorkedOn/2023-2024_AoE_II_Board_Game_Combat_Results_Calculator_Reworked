@@ -95,7 +95,14 @@ private:
 
   QString tooltipReturner(QString name);
 
-  QString convertSpacesToUnderscores(QString text);
+  QString convertSpacesToUnderscores(QString text) const;
+
+  QString convertUnderscoresToSpaces(QString text) const;
+
+  QListWidgetItem* findByEntityName(QListWidget* haystack, QString needle)
+    const;
+
+  void selectInitialEntities();
 
   Ui::MainWindow ui;
   QString        m_gameOutputBuffer;

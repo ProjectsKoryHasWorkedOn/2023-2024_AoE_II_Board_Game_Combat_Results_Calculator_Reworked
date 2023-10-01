@@ -362,6 +362,8 @@ MainWindow::MainWindow(QWidget* parent)
     ui.player2EntityNames->addItem(entityNames[i]);
   }
 
+  selectInitialEntities();
+
   // Can only have one list widget item per list
   for (int tE = 0; tE < technologies.length(); tE++) {
     QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[tE]);
@@ -733,10 +735,29 @@ void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
   m_entities.changePlayer2AssistantQuantity(player2AssistingEntityQuantity);
 }
 
-QString MainWindow::convertSpacesToUnderscores(QString text)
+QString MainWindow::convertSpacesToUnderscores(QString text) const
 {
   std::replace(text.begin(), text.end(), ' ', '_');
   return text;
+}
+
+QString MainWindow::convertUnderscoresToSpaces(QString text) const
+{
+  std::replace(text.begin(), text.end(), '_', ' ');
+  return text;
+}
+
+QListWidgetItem* MainWindow::findByEntityName(
+  QListWidget* haystack,
+  QString      needle) const
+{
+  needle = convertUnderscoresToSpaces(needle);
+  const QList<QListWidgetItem*> foundItems{
+    haystack->findItems(needle, Qt::MatchFixedString)};
+
+  if (foundItems.empty()) { return nullptr; }
+
+  return foundItems.front();
 }
 
 // Run on change of what battle participant is selected by player 1
@@ -1018,4 +1039,26 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
   bool ok;
   player2Age = QInputDialog::getItem(
     this, tr("Enter player 2's medieval age"), tr("Age:"), ages, 0, false, &ok);
+}
+
+void MainWindow::selectInitialEntities()
+{
+  const QString          player1Entity{m_entities.player1Entity().entityName()};
+  QListWidgetItem* const player1SelectedEntity{
+    findByEntityName(ui.player1EntityNames, player1Entity)};
+  const QString          player2Entity{m_entities.player2Entity().entityName()};
+  QListWidgetItem* const player2SelectedEntity{
+    findByEntityName(ui.player2EntityNames, player2Entity)};
+
+  if (player1SelectedEntity != nullptr) {
+    ui.player1EntityNames->itemClicked(player1SelectedEntity);
+    ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
+    ui.player1EntityNames->scrollToItem(player1SelectedEntity);
+  }
+
+  if (player2SelectedEntity != nullptr) {
+    ui.player2EntityNames->itemClicked(player2SelectedEntity);
+    ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
+    ui.player2EntityNames->scrollToItem(player2SelectedEntity);
+  }
 }
