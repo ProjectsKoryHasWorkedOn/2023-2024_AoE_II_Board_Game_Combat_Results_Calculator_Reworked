@@ -11,7 +11,13 @@ public:
     QString assistantName,
     int     assistantQuantity);
 
+  void setEntityName(QString newName);
+
   void setEntityQuantity(int newQuantity);
+
+  void setAssistantName(QString newName);
+
+  void setAssistantQuantity(int newQuantity);
 
   const QString& entityName() const;
 

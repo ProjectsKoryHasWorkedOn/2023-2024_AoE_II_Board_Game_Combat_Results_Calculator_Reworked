@@ -10,9 +10,21 @@ class Entities {
 public:
   Entities();
 
+  void changePlayer1EntityName(QString entityName);
+
+  void changePlayer2EntityName(QString entityName);
+
   void changePlayer1EntityQuantity(int newQuantity);
 
   void changePlayer2EntityQuantity(int newQuantity);
+
+  void changePlayer1AssistantName(QString newName);
+
+  void changePlayer2AssistantName(QString newName);
+
+  void changePlayer1AssistantQuantity(int newQuantity);
+
+  void changePlayer2AssistantQuantity(int newQuantity);
 
   CsvEntity& player1Entity();
 

@@ -47,6 +47,18 @@ void writeEntities(const std::vector<CsvEntity>& entities)
 
 Entities::Entities() : m_entities{readEntities()} {}
 
+void Entities::changePlayer1EntityName(QString entityName)
+{
+  player1Entity().setEntityName(entityName);
+  writeEntities(m_entities);
+}
+
+void Entities::changePlayer2EntityName(QString entityName)
+{
+  player2Entity().setEntityName(entityName);
+  writeEntities(m_entities);
+}
+
 void Entities::changePlayer1EntityQuantity(int newQuantity)
 {
   player1Entity().setEntityQuantity(newQuantity);
@@ -56,6 +68,30 @@ void Entities::changePlayer1EntityQuantity(int newQuantity)
 void Entities::changePlayer2EntityQuantity(int newQuantity)
 {
   player2Entity().setEntityQuantity(newQuantity);
+  writeEntities(m_entities);
+}
+
+void Entities::changePlayer1AssistantName(QString newName)
+{
+  player1Entity().setAssistantName(newName);
+  writeEntities(m_entities);
+}
+
+void Entities::changePlayer2AssistantName(QString newName)
+{
+  player2Entity().setAssistantName(newName);
+  writeEntities(m_entities);
+}
+
+void Entities::changePlayer1AssistantQuantity(int newQuantity)
+{
+  player1Entity().setAssistantQuantity(newQuantity);
+  writeEntities(m_entities);
+}
+
+void Entities::changePlayer2AssistantQuantity(int newQuantity)
+{
+  player2Entity().setAssistantQuantity(newQuantity);
   writeEntities(m_entities);
 }
 

@@ -46,9 +46,18 @@ CsvEntity::CsvEntity(
 {
 }
 
+void CsvEntity::setEntityName(QString newName) { m_entityName = newName; }
+
 void CsvEntity::setEntityQuantity(int newQuantity)
 {
   m_entityQuantity = newQuantity;
+}
+
+void CsvEntity::setAssistantName(QString newName) { m_assistantName = newName; }
+
+void CsvEntity::setAssistantQuantity(int newQuantity)
+{
+  m_assistantQuantity = newQuantity;
 }
 
 const QString& CsvEntity::entityName() const { return m_entityName; }

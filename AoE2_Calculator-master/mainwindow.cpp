@@ -681,7 +681,7 @@ void MainWindow::on_player1BattleAssistantNames_textActivated(
 
   player1BattleAssistantName = currentSelection;
 
-  // @Phillip: Pass player1BattleAssistantName into entities.csv
+  m_entities.changePlayer1AssistantName(player1BattleAssistantName);
 }
 
 // Run on change of what battle assistant is selected by player 2
@@ -692,7 +692,7 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(
 
   player2BattleAssistantName = currentSelection;
 
-  // @Phillip: Pass player2BattleAssistantName into entities.csv
+  m_entities.changePlayer2AssistantName(player2BattleAssistantName);
 }
 
 void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
@@ -711,7 +711,7 @@ void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
                 "between 0 and 5";
   }
 
-  // @Phillip: Pass player1AssistingEntityQuantity to entities.csv
+  m_entities.changePlayer1AssistantQuantity(player1AssistingEntityQuantity);
 }
 
 void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
@@ -730,7 +730,7 @@ void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
                 "between 0 and 5";
   }
 
-  // @Phillip: Pass player2AssistingEntityQuantity to entities.csv
+  m_entities.changePlayer2AssistantQuantity(player2AssistingEntityQuantity);
 }
 
 QString MainWindow::convertSpacesToUnderscores(QString text)
@@ -747,9 +747,10 @@ void MainWindow::on_player1EntityNames_itemClicked(
 
   QString currentSelectionFormatted
     = convertSpacesToUnderscores(selectedItem->text());
-  m_player1EntityName = currentSelectionFormatted;
+  currentSelectionFormatted = currentSelectionFormatted.toUpper();
+  m_player1EntityName       = currentSelectionFormatted;
 
-  // @Phillip: Pass currentSelectionFormatted into entities.csv
+  m_entities.changePlayer1EntityName(m_player1EntityName);
 }
 
 void MainWindow::on_player2EntityNames_itemClicked(
@@ -759,9 +760,10 @@ void MainWindow::on_player2EntityNames_itemClicked(
 
   QString currentSelectionFormatted
     = convertSpacesToUnderscores(selectedItem->text());
-  m_player2EntityName = currentSelectionFormatted;
+  currentSelectionFormatted = currentSelectionFormatted.toUpper();
+  m_player2EntityName       = currentSelectionFormatted;
 
-  // @Phillip: Pass currentSelectionFormatted into entities.csv
+  m_entities.changePlayer2EntityName(m_player2EntityName);
 }
 
 // Run on change of what technologies are toggled by player 1
