@@ -42,7 +42,7 @@ bool        hasProgramInitialized = false;
 extern const QString entitiesFilename       = "/import/entities.csv";
 extern const QString eventsP1Filename       = "/import/events_p1.csv";
 extern const QString eventsP2Filename       = "/import/events_p2.csv";
-extern const QString playerAgeFilename  = "/import/playerAge.csv";
+extern const QString playerMedievalAgesFilename  = "/import/playerAge.csv";
 extern const QString playerNamesFilename = "/import/playerNames.csv";
 extern const QString technologiesP1Filename = "/import/technologies_p1.csv";
 extern const QString technologiesP2Filename = "/import/technologies_p2.csv";
@@ -59,6 +59,11 @@ QString     player1Color;
 QString     player2Color;
 QString     player1BattleAssistantName;
 QString     player2BattleAssistantName;
+bool expectingSingleEntityForPlayer1;
+bool expectingSingleEntityForPlayer2;
+
+int representationOfPlayer1Age;
+int representationOfPlayer2Age;
 
 // Get what age the player is in
 QString     player1Age;
@@ -112,8 +117,9 @@ MainWindow::MainWindow(QWidget* parent)
   player1Name = "Player 1";
   player2Name = "Player 2";
 
-  // Set names based on .csv files
-  setInitialNames();
+  // What the initial expectation is for number of entities allowed
+  expectingSingleEntityForPlayer1 = false;
+  expectingSingleEntityForPlayer2 = false;
 
   // What the initial player color of the players are
   player1Color = "black";
@@ -368,8 +374,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui.player2EntityNames->addItem(entityNames[i]);
   }
 
-  selectInitialEntities();
-
   // Can only have one list widget item per list
   for (int tE = 0; tE < technologies.length(); tE++) {
     QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[tE]);
@@ -411,6 +415,13 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui.player1Events->addItem(eventPlayer1);
     ui.player2Events->addItem(eventPlayer2);
+
+    // Read in the .csv files and update the UI elements on the basis of this
+    setInitialNames();
+    selectInitialEntities();
+    markInitialPlayerMedievalAge();
+
+
   }
 
   ui.player1BattleAssistantNames->addItem("Monk");
@@ -427,9 +438,6 @@ MainWindow::MainWindow(QWidget* parent)
   ui.player2EntityQuantity->setValue(1);
   ui.player2EntityAssistantQuantity->setValue(0);
 
-  // Setting up the validators
-  ui.player1EntityQuantity->setRange(1, 5);
-  ui.player2EntityQuantity->setRange(1, 5);
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
 }
@@ -618,6 +626,19 @@ void MainWindow::on_actionDeveloper_guide_triggered()
   QDesktopServices::openUrl(filePath);
 }
 
+// Run this on click of Help > Documentation > Developer wishlist
+void MainWindow::on_actionDeveloper_wishlist_triggered()
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+
+         // Set the path to it
+  QString fileName = "/documentation/developer_wishlist.docx";
+  QString filePath = workingDirectory.absolutePath() + fileName;
+
+  // Open that path
+  QDesktopServices::openUrl(filePath);
+}
+
 // Run this on click of Help > Documentation > User guide
 void MainWindow::on_actionUser_guide_triggered()
 {
@@ -766,11 +787,92 @@ QListWidgetItem* MainWindow::findByEntityName(
   return foundItems.front();
 }
 
+
+void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber){
+
+  nameOfSelection = nameOfSelection.toUpper();
+  nameOfSelection = convertSpacesToUnderscores(nameOfSelection);
+
+  if(
+  (nameOfSelection.contains("ARCHERY_RANGE")) ||
+  (nameOfSelection.contains("BARRACKS")) ||
+  (nameOfSelection.contains("BLACKSMITH")) ||
+  (nameOfSelection.contains("RAM")) ||
+  (nameOfSelection.contains("CASTLE")) ||
+  (nameOfSelection.contains("CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)")) ||
+  (nameOfSelection.contains("ROCK_OF_CASHEL_(CELT)")) ||
+  (nameOfSelection.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)")) ||
+  (nameOfSelection.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)")) ||
+  (nameOfSelection.contains("TOMB_OF_THEODORIC_(GOTH)")) ||
+  (nameOfSelection.contains("NOTRE-DAME_CATHEDRAL_(FRANK)")) ||
+  (nameOfSelection.contains("STAVE_CHURCH_AT_URNES_(VIKING)")) ||
+  (nameOfSelection.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)")) ||
+  (nameOfSelection.contains("DEMOLITION_SHIP")) ||
+  (nameOfSelection.contains("DOCK")) ||
+  (nameOfSelection.contains("FIRE_SHIP")) ||
+  (nameOfSelection.contains("FISHING_SHIP")) ||
+  (nameOfSelection.contains("WALL")) ||
+  (nameOfSelection.contains("GALLEY")) ||
+  (nameOfSelection.contains("HERO")) || // May implement this as an assisting unit
+  (nameOfSelection.contains("GATE")) ||
+  (nameOfSelection.contains("GALLEON")) ||
+  (nameOfSelection.contains("GOLD_MINE")) ||
+  (nameOfSelection.contains("HOUSE")) ||
+  (nameOfSelection.contains("LONGBOAT_(VIKING)")) ||
+  (nameOfSelection.contains("LUMBER_CAMP")) ||
+  (nameOfSelection.contains("MANGONEL")) ||
+  (nameOfSelection.contains("MARKET")) ||
+  (nameOfSelection.contains("MILL")) ||
+  (nameOfSelection.contains("MONASTERY")) ||
+  (nameOfSelection.contains("ONAGER")) ||
+  (nameOfSelection.contains("OUTPOST")) ||
+  (nameOfSelection.contains("SCORPION")) ||
+  (nameOfSelection.contains("SIEGE_WORKSHOP")) ||
+  (nameOfSelection.contains("STABLE")) ||
+  (nameOfSelection.contains("STONE_MINE")) ||
+  (nameOfSelection.contains("TOWN_CENTER")) ||
+  (nameOfSelection.contains("TREBUCHET")) ||
+  (nameOfSelection.contains("WAR_ELEPHANT_(PERSIAN)")) ||
+    (nameOfSelection.contains("WATCH_TOWER"))
+  ) {
+    if(playerNumber == 1){
+      expectingSingleEntityForPlayer1 = true;
+    }
+    if(playerNumber == 2){
+      expectingSingleEntityForPlayer2 = true;
+    }
+  }
+  else{
+    if(playerNumber == 1){
+      expectingSingleEntityForPlayer1 = false;
+    }
+    if(playerNumber == 2){
+      expectingSingleEntityForPlayer2 = false;
+    }
+  }
+
+  if(expectingSingleEntityForPlayer1 == true){
+    ui.player1EntityQuantity->setRange(1, 1);
+  }
+  else{
+    ui.player1EntityQuantity->setRange(1, 5);
+  }
+
+  if(expectingSingleEntityForPlayer2 == true){
+    ui.player2EntityQuantity->setRange(1, 1);
+  }
+  else{
+    ui.player2EntityQuantity->setRange(1, 5);
+  }
+}
+
 // Run on change of what battle participant is selected by player 1
 void MainWindow::on_player1EntityNames_itemClicked(
   QListWidgetItem* selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  updateRangeAllowed(selectedItem->text(), 1);
 
   QString currentSelectionFormatted
     = convertSpacesToUnderscores(selectedItem->text());
@@ -784,6 +886,8 @@ void MainWindow::on_player2EntityNames_itemClicked(
   QListWidgetItem* selectedItem)
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  updateRangeAllowed(selectedItem->text(), 2);
 
   QString currentSelectionFormatted
     = convertSpacesToUnderscores(selectedItem->text());
@@ -1050,6 +1154,22 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
   bool ok;
   player1Age = QInputDialog::getItem(
     this, tr("Enter player 1's medieval age"), tr("Age:"), ages, 0, false, &ok);
+
+  if(player1Age == "Dark Age"){
+    representationOfPlayer1Age = 1;
+  }
+  else if(player1Age == "Feudal Age"){
+    representationOfPlayer1Age = 2;
+  }
+  else if(player1Age == "Castle Age"){
+    representationOfPlayer1Age = 3;
+  }
+  else if(player1Age == "Imperial Age"){
+    representationOfPlayer1Age = 4;
+  }
+
+  // update file
+  m_player_medieval_age.changePlayer1MedievalAge(representationOfPlayer1Age);
 }
 
 void MainWindow::on_actionSet_player_2_Age_triggered()
@@ -1057,8 +1177,23 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
   bool ok;
   player2Age = QInputDialog::getItem(
     this, tr("Enter player 2's medieval age"), tr("Age:"), ages, 0, false, &ok);
-}
 
+  if(player2Age == "Dark Age"){
+    representationOfPlayer2Age = 1;
+  }
+  else if(player2Age == "Feudal Age"){
+    representationOfPlayer2Age = 2;
+  }
+  else if(player2Age == "Castle Age"){
+    representationOfPlayer2Age = 3;
+  }
+  else if(player2Age == "Imperial Age"){
+    representationOfPlayer2Age = 4;
+  }
+
+  // update file
+  m_player_medieval_age.changePlayer2MedievalAge(representationOfPlayer2Age);
+}
 
 void MainWindow::setInitialNames(){
   const QString player1InitialName{m_player_names.play1Name().playerName()};
@@ -1070,8 +1205,10 @@ void MainWindow::setInitialNames(){
   updatePlayerNames();
 }
 
-
-
+void MainWindow::markInitialPlayerMedievalAge(){
+  representationOfPlayer1Age = m_player_medieval_age.player1MedievalAge().PlayerMedievalAge();
+  representationOfPlayer2Age = m_player_medieval_age.player2MedievalAge().PlayerMedievalAge();
+}
 
 void MainWindow::selectInitialEntities()
 {
@@ -1086,10 +1223,15 @@ void MainWindow::selectInitialEntities()
   if (player1SelectedEntity != nullptr) {
     ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
     ui.player1EntityNames->scrollToItem(player1SelectedEntity);
+    updateRangeAllowed(m_entities.player1Entity().entityName(), 1);
   }
 
   if (player2SelectedEntity != nullptr) {
     ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
+    updateRangeAllowed(m_entities.player2Entity().entityName(), 2);
   }
 }
+
+
+

@@ -225,6 +225,7 @@
      </property>
      <addaction name="actionUser_guide"/>
      <addaction name="actionDeveloper_guide"/>
+     <addaction name="actionDeveloper_wishlist"/>
     </widget>
     <addaction name="actionAbout"/>
     <addaction name="menuDocumentation"/>
@@ -311,6 +312,11 @@
   <action name="actionSet_player_2_Age">
    <property name="text">
     <string>Set player 2's medieval age</string>
+   </property>
+  </action>
+  <action name="actionDeveloper_wishlist">
+   <property name="text">
+    <string>Developer wishlist</string>
    </property>
   </action>
  </widget>

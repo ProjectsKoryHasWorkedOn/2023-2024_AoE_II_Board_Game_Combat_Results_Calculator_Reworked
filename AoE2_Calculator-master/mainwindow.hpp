@@ -4,6 +4,7 @@
 #include "aliases.h"
 #include "csv/entities.h"
 #include "csv/player_names.h"
+#include "csv/player_medieval_ages.h"
 #include "stream_buffer.h"
 
 #include <QDir>
@@ -14,7 +15,7 @@
 extern const QString entitiesFilename;
 extern const QString eventsP1Filename;
 extern const QString eventsP2Filename;
-extern const QString playerAgeFilename;
+extern const QString playerMedievalAgesFilename;
 extern const QString playerNamesFilename;
 extern const QString technologiesP1Filename;
 extern const QString technologiesP2Filename;
@@ -90,6 +91,8 @@ private slots:
   void on_player2BattleAssistantNames_textActivated(
     const QString& currentSelection);
 
+  void on_actionDeveloper_wishlist_triggered();
+
 private:
   void initializeEntityAliases();
 
@@ -108,6 +111,11 @@ private:
 
   void setInitialNames();
 
+  void markInitialPlayerMedievalAge();
+
+  void updateRangeAllowed(QString nameOfSelection, int playerNumber);
+
+
   Ui::MainWindow ui;
   QString        m_gameOutputBuffer;
   StreamBuffer   m_streamBuffer;
@@ -116,6 +124,9 @@ private:
   QString        m_player2EntityName;
   Entities       m_entities;
   PlayerName     m_player_names;
+  playerMedievalAges  m_player_medieval_age;
+
+
 
 };
 #endif // MAINWINDOW_HPP
