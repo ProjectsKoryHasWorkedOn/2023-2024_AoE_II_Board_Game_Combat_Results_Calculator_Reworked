@@ -16,7 +16,8 @@ Entity::Entity()
   rangedDamage   = 0;
   garrisonValue  = 0;
   pointValue     = 0;
-  for (int i = 0; i < 43; i++) {
+  numberOfArmorClasses = 44;
+  for (int i = 0; i < numberOfArmorClasses; i++) {
     armorClass[i] = false;
   }
   entitiesArmorClasses                        = 0;
@@ -185,7 +186,7 @@ Camel::Camel()
   entityHealth   = 26;
   standardDamage = 5;
   pointValue     = 4;
-  armorClass[30] = true; // Camel armor class
+  armorClass[2]  = true; // Camel armor class
                          // 20 standardAttack bonus against cavalry (I)
 }
 
@@ -659,6 +660,7 @@ Fishing_Ship::Fishing_Ship()
   entityAge      = 1;
   pointValue     = 2;    // 2 wood
   armorClass[11] = true; // Ship armor class
+  armorClass[30] = true; // Fishing ship armor calss
 }
 
 Fishing_Ship::~Fishing_Ship()
@@ -866,7 +868,7 @@ Hero::Hero()
   entityHealth   = 12;
   standardDamage = 6;
   pointValue     = 3;    // 3 gold
-  armorClass[42] = true; // The hero armor class
+  armorClass[43] = true; // The hero armor class
 }
 
 Hero::~Hero()
@@ -1684,7 +1686,6 @@ Spearman::Spearman()
   pointValue     = 2;    // 1 food, 1 wood
   armorClass[8]  = true; // Infantry armor class
   armorClass[13] = true; // Spearman armor class
-  armorClass[40] = true; // Spearman armor class
                          // 25 standardDamage vs Cavalry (I)
 }
 
@@ -2051,13 +2052,14 @@ void Wonder::updateWonderHP()
 // Function: Update Trebuchet Armor Class
 void Trebuchet::updateTrebuchetArmorClass()
 {
-  // Behaviour: Ram armor class if packed
+  // Behaviour: Ram armor class if unpacked (deployed)
+  // So it takes bonus damage from units that deal bonus damage vs rams
   packed = false;
   std::cout << "Enter 1 if the Trebuchet is packed. Enter 0 if unpacked"
             << "\n";
   std::cin >> packed;
 
-  if (packed == 1) {
+  if (packed == 0) {
     armorClass[10] = true; // Ram armor class
   }
   else {
@@ -2329,11 +2331,17 @@ void Entity::outputEntity(std::string playerName)
     std::cout << " of type: ";
 
     // Array: Store whether or not an armor class has been displayed
-    bool displayedArmorClass[20] = {false};
+    bool displayedArmorClass[numberOfArmorClasses] = {false};
 
     // Behaviour: Only display each armor class once and add a space after each
-    // armor class except for the last class Reference: Only the armor classes
-    // recognized by the AoE II wikipedia are displayed (the first 20)
+    // armor class except for the last class
+
+    // Don't have an armor class for "base melee" and "base pierce" as there's no armor stat in the board game
+    // Just attack bonuses
+
+    // Could have fewer armor classes if I referred to entityName (e.g. for capped ram) instead of having an armor class for it in
+    // modifiersCalculator.cpp
+
     for (int i = 0; i != entitiesArmorClasses; i++) {
       if ((armorClass[0] == true) && (displayedArmorClass[0] == false)) {
         displayColorfulText("bold", "white", "blue", "Archer", false);
@@ -2392,8 +2400,7 @@ void Entity::outputEntity(std::string playerName)
         displayedArmorClass[13] = true;
       }
       else if ((armorClass[14] == true) && (displayedArmorClass[14] == false)) {
-        displayColorfulText(
-          "bold", "white", "blue", "Standard_Building", false);
+        displayColorfulText("bold", "white", "blue", "Standard_Building", false);
         displayedArmorClass[14] = true;
       }
       else if ((armorClass[15] == true) && (displayedArmorClass[15] == false)) {
@@ -2415,6 +2422,102 @@ void Entity::outputEntity(std::string playerName)
       else if ((armorClass[19] == true) && (displayedArmorClass[19] == false)) {
         displayColorfulText("bold", "white", "blue", "War_Elephant", false);
         displayedArmorClass[19] = true;
+      }
+      else if ((armorClass[20] == true) && (displayedArmorClass[20] == false)) {
+        displayColorfulText("bold", "white", "blue", "King", false);
+        displayedArmorClass[20] = true;
+      }
+      else if ((armorClass[21] == true) && (displayedArmorClass[21] == false)) {
+        displayColorfulText("bold", "white", "blue", "Demolition_Ship", false);
+        displayedArmorClass[21] = true;
+      }
+      else if ((armorClass[22] == true) && (displayedArmorClass[22] == false)) {
+        displayColorfulText("bold", "white", "blue", "Galley", false);
+        displayedArmorClass[22] = true;
+      }
+      else if ((armorClass[23] == true) && (displayedArmorClass[23] == false)) {
+        displayColorfulText("bold", "white", "blue", "Fire_Ship", false);
+        displayedArmorClass[23] = true;
+      }
+      else if ((armorClass[24] == true) && (displayedArmorClass[24] == false)) {
+        displayColorfulText("bold", "white", "blue", "Watch_Tower", false);
+        displayedArmorClass[24] = true;
+      }
+      else if ((armorClass[25] == true) && (displayedArmorClass[25] == false)) {
+        displayColorfulText("bold", "white", "blue", "Town_Center", false);
+        displayedArmorClass[25] = true;
+      }
+      else if ((armorClass[26] == true) && (displayedArmorClass[26] == false)) {
+        displayColorfulText("bold", "white", "blue", "Villager", false);
+        displayedArmorClass[26] = true;
+      }
+      else if ((armorClass[27] == true) && (displayedArmorClass[27] == false)) {
+        displayColorfulText("bold", "white", "blue", "Battering_Ram", false);
+        displayedArmorClass[27] = true;
+      }
+      else if ((armorClass[28] == true) && (displayedArmorClass[28] == false)) {
+        displayColorfulText("bold", "white", "blue", "Capped_Ram", false);
+        displayedArmorClass[28] = true;
+      }
+      else if ((armorClass[29] == true) && (displayedArmorClass[29] == false)) {
+        displayColorfulText("bold", "white", "blue", "Siege_Ram", false);
+        displayedArmorClass[29] = true;
+      }
+      else if ((armorClass[30] == true) && (displayedArmorClass[30] == false)) {
+        displayColorfulText("bold", "white", "blue", "Fishing_Ship", false);
+        displayedArmorClass[30] = true;
+      }
+      else if ((armorClass[31] == true) && (displayedArmorClass[31] == false)) {
+        displayColorfulText("bold", "white", "blue", "Heavy_Camel", false);
+        displayedArmorClass[31] = true;
+      }
+      else if ((armorClass[32] == true) && (displayedArmorClass[32] == false)) {
+        displayColorfulText("bold", "white", "blue", "Skirmisher", false);
+        displayedArmorClass[32] = true;
+      }
+      else if ((armorClass[33] == true) && (displayedArmorClass[33] == false)) {
+        displayColorfulText("bold", "white", "blue", "Elite_Skirmisher", false);
+        displayedArmorClass[33] = true;
+      }
+      else if ((armorClass[34] == true) && (displayedArmorClass[34] == false)) {
+        displayColorfulText("bold", "white", "blue", "Fast_Fire_Ship", false);
+        displayedArmorClass[34] = true;
+      }
+      else if ((armorClass[35] == true) && (displayedArmorClass[35] == false)) {
+        displayColorfulText("bold", "white", "blue", "War_Galley", false);
+        displayedArmorClass[35] = true;
+      }
+      else if ((armorClass[36] == true) && (displayedArmorClass[36] == false)) {
+        displayColorfulText("bold", "white", "blue", "Galleon", false);
+        displayedArmorClass[36] = true;
+      }
+      else if ((armorClass[37] == true) && (displayedArmorClass[37] == false)) {
+        displayColorfulText("bold", "white", "blue", "Mangonel", false);
+        displayedArmorClass[37] = true;
+      }
+      else if ((armorClass[38] == true) && (displayedArmorClass[38] == false)) {
+        displayColorfulText("bold", "white", "blue", "Onager", false);
+        displayedArmorClass[38] = true;
+      }
+      else if ((armorClass[39] == true) && (displayedArmorClass[39] == false)) {
+        displayColorfulText("bold", "white", "blue", "Siege_Onager", false);
+        displayedArmorClass[39] = true;
+      }
+      else if ((armorClass[40] == true) && (displayedArmorClass[40] == false)) {
+        displayColorfulText("bold", "white", "blue", "Predator_Animal", false);
+        displayedArmorClass[40] = true;
+      }
+      else if ((armorClass[41] == true) && (displayedArmorClass[41] == false)) {
+        displayColorfulText("bold", "white", "blue", "Pikeman", false);
+        displayedArmorClass[41] = true;
+      }
+      else if ((armorClass[42] == true) && (displayedArmorClass[42] == false)) {
+        displayColorfulText("bold", "white", "blue", "Trebuchet", false);
+        displayedArmorClass[42] = true;
+      }
+      else if ((armorClass[43] == true) && (displayedArmorClass[43] == false)) {
+        displayColorfulText("bold", "white", "blue", "Hero", false);
+        displayedArmorClass[43] = true;
       }
 
       if (i != entitiesArmorClasses - 1) {

@@ -3,6 +3,7 @@
 #include "./ui_mainwindow.h"
 #include "aliases.h"
 #include "csv/entities.h"
+#include "csv/player_names.h"
 #include "stream_buffer.h"
 
 #include <QDir>
@@ -13,7 +14,8 @@
 extern const QString entitiesFilename;
 extern const QString eventsP1Filename;
 extern const QString eventsP2Filename;
-extern const QString playerDetailsFilename;
+extern const QString playerAgeFilename;
+extern const QString playerNamesFilename;
 extern const QString technologiesP1Filename;
 extern const QString technologiesP2Filename;
 extern QDir          workingDirectory;
@@ -104,6 +106,8 @@ private:
 
   void selectInitialEntities();
 
+  void setInitialNames();
+
   Ui::MainWindow ui;
   QString        m_gameOutputBuffer;
   StreamBuffer   m_streamBuffer;
@@ -111,5 +115,7 @@ private:
   QString        m_player1EntityName;
   QString        m_player2EntityName;
   Entities       m_entities;
+  PlayerName     m_player_names;
+
 };
 #endif // MAINWINDOW_HPP

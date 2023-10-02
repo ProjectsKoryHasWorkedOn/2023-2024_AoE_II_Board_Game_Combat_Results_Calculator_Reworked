@@ -36,12 +36,14 @@
 // Declaring class
 SoundPlayer playSound;
 bool        soundEffectsEnabled = true;
+bool        hasProgramInitialized = false;
 
 // Declaring the file paths for @Phillip (unused for now)
 extern const QString entitiesFilename       = "/import/entities.csv";
 extern const QString eventsP1Filename       = "/import/events_p1.csv";
 extern const QString eventsP2Filename       = "/import/events_p2.csv";
-extern const QString playerDetailsFilename  = "/import/playerDetails.csv";
+extern const QString playerAgeFilename  = "/import/playerAge.csv";
+extern const QString playerNamesFilename = "/import/playerNames.csv";
 extern const QString technologiesP1Filename = "/import/technologies_p1.csv";
 extern const QString technologiesP2Filename = "/import/technologies_p2.csv";
 
@@ -74,7 +76,8 @@ MainWindow::MainWindow(QWidget* parent)
                      ui.gameOutputTextEdit->setText(m_gameOutputBuffer);
                    }}
   , m_aliases{}
-  , m_entities{}
+  , m_entities{},
+  m_player_names{}
 {
   ui.setupUi(this);
 
@@ -108,6 +111,9 @@ MainWindow::MainWindow(QWidget* parent)
   // What the initial name of the players are
   player1Name = "Player 1";
   player2Name = "Player 2";
+
+  // Set names based on .csv files
+  setInitialNames();
 
   // What the initial player color of the players are
   player1Color = "black";
@@ -869,6 +875,10 @@ void MainWindow::on_actionDisable_SFX_triggered()
 // Run this when there's a call to update the names and colors of the players
 void MainWindow::updatePlayerNames()
 {
+  // no underscores in UI
+  player1Name = convertUnderscoresToSpaces(player1Name);
+  player2Name = convertUnderscoresToSpaces(player2Name);
+
   ui.actionSet_player_1_Age->setText("Set " + player1Name + "'s medieval age");
   ui.actionSet_name_of_player_1->setText("Set " + player1Name + "'s name");
   ui.actionSet_set_color_of_player_1->setText(
@@ -902,6 +912,14 @@ void MainWindow::updatePlayerNames()
   ui.player2EventsLabel->setText(
     "<font color=" + player2Color + ">" + player2Name + "'s" + "</font>" + " "
     + "event cards");
+
+  // underscores in file
+  player1Name = convertSpacesToUnderscores(player1Name);
+  player2Name = convertSpacesToUnderscores(player2Name);
+
+  // update file
+  m_player_names.changePlayer1Name(player1Name);
+  m_player_names.changePlayer2Name(player2Name);
 }
 
 // Run on change of "Options" > "Set player 1's name"
@@ -1041,6 +1059,20 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
     this, tr("Enter player 2's medieval age"), tr("Age:"), ages, 0, false, &ok);
 }
 
+
+void MainWindow::setInitialNames(){
+  const QString player1InitialName{m_player_names.play1Name().playerName()};
+  const QString player2InitialName{m_player_names.play2Name().playerName()};
+
+  player1Name = player1InitialName;
+  player2Name = player2InitialName;
+
+  updatePlayerNames();
+}
+
+
+
+
 void MainWindow::selectInitialEntities()
 {
   const QString          player1Entity{m_entities.player1Entity().entityName()};
@@ -1048,16 +1080,15 @@ void MainWindow::selectInitialEntities()
     findByEntityName(ui.player1EntityNames, player1Entity)};
   const QString          player2Entity{m_entities.player2Entity().entityName()};
   QListWidgetItem* const player2SelectedEntity{
-    findByEntityName(ui.player2EntityNames, player2Entity)};
+    findByEntityName(ui.player2EntityNames, player2Entity)
+  };
 
   if (player1SelectedEntity != nullptr) {
-    emit ui.player1EntityNames->itemClicked(player1SelectedEntity);
     ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
     ui.player1EntityNames->scrollToItem(player1SelectedEntity);
   }
 
   if (player2SelectedEntity != nullptr) {
-    emit ui.player2EntityNames->itemClicked(player2SelectedEntity);
     ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
   }

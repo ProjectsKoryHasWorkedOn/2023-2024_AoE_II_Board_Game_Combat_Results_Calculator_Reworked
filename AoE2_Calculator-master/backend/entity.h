@@ -16,7 +16,8 @@ struct Entity {
   int         rangedDamage;
   int         garrisonValue;
   int         pointValue;
-  bool        armorClass[43];
+  int         numberOfArmorClasses;
+  bool        armorClass[44]; // numberOfArmorClasses = 44
   bool        onlyAttacksInTheSecondRoundOfStandardCombat;
   bool        onlyAttacksOnce;
   bool        dealsAreaEffectDamage;

@@ -755,7 +755,7 @@ Entity fileImporter::conductASearch(
   // Behaviour: Make sure that each entity (except for Villagers) has at least 1
   // armor class
   bool hasArmorClass = false;
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < returnEntity.numberOfArmorClasses; i++) {
     if (returnEntity.armorClass[i] == true) {
       hasArmorClass = true;
     }

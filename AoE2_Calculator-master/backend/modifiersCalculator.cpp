@@ -142,7 +142,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Camel line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[30] == true) && // Camel
+    (applyRockPaperScissorsModifiers.armorClass[2] == true) && // Camel
     (comparisonEntity.armorClass[4] == true)                    // Cavalry
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 20;
@@ -499,7 +499,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Spearman line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[40] == true) && // Spearman
+    (applyRockPaperScissorsModifiers.armorClass[13] == true) && // Spearman
     (comparisonEntity.armorClass[4] == true)                    // Cavalry
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 25;
