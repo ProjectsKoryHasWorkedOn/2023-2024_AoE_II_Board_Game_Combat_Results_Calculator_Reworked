@@ -3,8 +3,9 @@
 #include "./ui_mainwindow.h"
 #include "aliases.h"
 #include "csv/entities.h"
-#include "csv/player_names.h"
+#include "csv/events.h"
 #include "csv/player_medieval_ages.h"
+#include "csv/player_names.h"
 #include "stream_buffer.h"
 
 #include <QDir>
@@ -115,18 +116,16 @@ private:
 
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
 
-
-  Ui::MainWindow ui;
-  QString        m_gameOutputBuffer;
-  StreamBuffer   m_streamBuffer;
-  Aliases        m_aliases;
-  QString        m_player1EntityName;
-  QString        m_player2EntityName;
-  Entities       m_entities;
-  PlayerName     m_player_names;
-  playerMedievalAges  m_player_medieval_age;
-
-
-
+  Ui::MainWindow     ui;
+  QString            m_gameOutputBuffer;
+  StreamBuffer       m_streamBuffer;
+  Aliases            m_aliases;
+  QString            m_player1EntityName;
+  QString            m_player2EntityName;
+  Entities           m_entities;
+  PlayerName         m_player_names;
+  playerMedievalAges m_player_medieval_age;
+  Events             m_player1Events;
+  Events             m_player2Events;
 };
 #endif // MAINWINDOW_HPP

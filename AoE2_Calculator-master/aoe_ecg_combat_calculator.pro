@@ -22,12 +22,12 @@ SOURCES += \
     backend/fileImporter.cpp \
     backend/modifiersCalculator.cpp \
     backend/run_game.cpp \
+    csv/csv_count_with_text.cpp \
     csv/csv_entity.cpp \
-    csv/csv_event.cpp \
     csv/csv_player_medieval_age.cpp \
     csv/csv_player_name.cpp \
-    csv/csv_technology.cpp \
     csv/entities.cpp \
+    csv/events.cpp \
     csv/player_medieval_ages.cpp \
     csv/player_names.cpp \
     main.cpp \
@@ -43,16 +43,19 @@ HEADERS += \
     backend/fileImporter.h \
     backend/modifiersCalculator.h \
     backend/run_game.h \
+    csv/csv_count_with_text.hpp \
     csv/csv_entity.h \
     csv/csv_event.h \
     csv/csv_player_medieval_ages.h \
     csv/csv_player_name.h \
     csv/csv_technology.h \
     csv/entities.h \
+    csv/events.h \
     csv/player_medieval_ages.h \
     csv/player_names.h \
     mainwindow.h \
     mainwindow.hpp \
+    player.h \
     soundEffects.h \
     stream_buffer.h
 
