@@ -27,9 +27,9 @@ SOURCES += \
     csv/csv_player_medieval_age.cpp \
     csv/csv_player_name.cpp \
     csv/entities.cpp \
-    csv/events.cpp \
     csv/player_medieval_ages.cpp \
     csv/player_names.cpp \
+    file_paths.cpp \
     main.cpp \
     mainwindow.cpp \
     soundEffects.cpp \
@@ -51,8 +51,11 @@ HEADERS += \
     csv/csv_technology.h \
     csv/entities.h \
     csv/events.h \
+    csv/modifiers.h \
     csv/player_medieval_ages.h \
     csv/player_names.h \
+    csv/technologies.h \
+    file_paths.h \
     mainwindow.h \
     mainwindow.hpp \
     player.h \

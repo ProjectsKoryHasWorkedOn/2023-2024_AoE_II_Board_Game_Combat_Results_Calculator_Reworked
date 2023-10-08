@@ -2,7 +2,8 @@
 #include "mainwindow.hpp"     // This window
 #include "aboutwindow.h"      // A window this window can open
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
-#include "soundEffects.h"     // Sound playing class
+#include "file_paths.h"
+#include "soundEffects.h" // Sound playing class
 
 // Libraries used for std::cout
 #include <iostream>
@@ -38,15 +39,6 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
-// Declaring the file paths for @Phillip (unused for now)
-extern const QString entitiesFilename           = "/import/entities.csv";
-extern const QString eventsP1Filename           = "/import/events_p1.csv";
-extern const QString eventsP2Filename           = "/import/events_p2.csv";
-extern const QString playerMedievalAgesFilename = "/import/playerAge.csv";
-extern const QString playerNamesFilename        = "/import/playerNames.csv";
-extern const QString technologiesP1Filename     = "/import/technologies_p1.csv";
-extern const QString technologiesP2Filename     = "/import/technologies_p2.csv";
-
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
 int         player1EntityQuantity;
@@ -70,12 +62,7 @@ QString     player1Age;
 QString     player2Age;
 QStringList ages;
 
-
-
 QStringList backFromAForeignLandCivilizationBonuses;
-
-// Declare working directory
-QDir workingDirectory;
 
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
@@ -89,6 +76,8 @@ MainWindow::MainWindow(QWidget* parent)
   , m_player_names{}
   , m_player1Events{Player::Player1}
   , m_player2Events{Player::Player2}
+  , m_player1Technologies{Player::Player1}
+  , m_player2Technologies{Player::Player2}
 {
   ui.setupUi(this);
 
@@ -116,9 +105,10 @@ MainWindow::MainWindow(QWidget* parent)
   workingDirectory.cdUp();
 
   // What the civ bonuses are
-  backFromAForeignLandCivilizationBonuses << tr("Byzantine bonus: Monk healing rate has a +2 modifier")
-                                          << tr("Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age")
-                                          << tr("Teuton bonus: Conversion rate modifier is -1");
+  backFromAForeignLandCivilizationBonuses
+    << tr("Byzantine bonus: Monk healing rate has a +2 modifier")
+    << tr("Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age")
+    << tr("Teuton bonus: Conversion rate modifier is -1");
 
   // What the ages are
   ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
@@ -390,6 +380,7 @@ MainWindow::MainWindow(QWidget* parent)
     QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[tE]);
     QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technologies[tE]);
 
+    // TODO: HERE: Do the checked business.
     technologyPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
     technologyPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
@@ -922,15 +913,14 @@ void MainWindow::on_player1Technologies_itemChanged(
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
+  QString technology = checkedItem->text();
+  technology         = convertSpacesToUnderscores(technology);
+
   if (checkedItem->checkState() == Qt::Checked) {
-    QString activeTechnology = checkedItem->text();
-    // @Phillip: Pass a 1 in row of activeTechnology into technologies_p1.csv
-    // @Phillip refer to @Reference
+    m_player1Technologies.enable(technology);
   }
   else {
-    QString inactiveTechnology = checkedItem->text();
-    // @Phillip: Pass a 0 in row of activeTechnology into technologies_p1.csv
-    // @Phillip refer to @Reference
+    m_player1Technologies.disable(technology);
   }
 }
 
@@ -942,18 +932,31 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
-  if(event == "Back_From_A_Foreign_Land"){
-    bool ok;
-    QString player1BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
-      this, tr("Select one civilization bonus"), tr("Civilization bonus:"), backFromAForeignLandCivilizationBonuses, 0, false, &ok);
+  if (event == "Back_From_A_Foreign_Land") {
+    bool    ok;
+    QString player1BackFromAForeignLandCivilizationBonusSelection
+      = QInputDialog::getItem(
+        this,
+        tr("Select one civilization bonus"),
+        tr("Civilization bonus:"),
+        backFromAForeignLandCivilizationBonuses,
+        0,
+        false,
+        &ok);
 
-    if (player1BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: Monk healing rate has a +2 modifier") {
+    if (
+      player1BackFromAForeignLandCivilizationBonusSelection
+      == "Byzantine bonus: Monk healing rate has a +2 modifier") {
       event = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
     }
-    else if (player1BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
+    else if (
+      player1BackFromAForeignLandCivilizationBonusSelection
+      == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
       event = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
     }
-    else if (player1BackFromAForeignLandCivilizationBonusSelection == "Teuton bonus: Conversion rate modifier is -1") {
+    else if (
+      player1BackFromAForeignLandCivilizationBonusSelection
+      == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
     }
   }
@@ -971,15 +974,14 @@ void MainWindow::on_player2Technologies_itemChanged(
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
+  QString technology = checkedItem->text();
+  technology         = convertSpacesToUnderscores(technology);
+
   if (checkedItem->checkState() == Qt::Checked) {
-    QString activeTechnology = checkedItem->text();
-    // @Phillip: Pass a 1 in row of activeTechnology into technologies_p2.csv
-    // @Phillip refer to @Reference
+    m_player2Technologies.enable(technology);
   }
   else {
-    QString inactiveTechnology = checkedItem->text();
-    // @Phillip: Pass a 0 in row of activeTechnology into technologies_p2.csv
-    // @Phillip refer to @Reference
+    m_player2Technologies.disable(technology);
   }
 }
 
@@ -990,18 +992,31 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
-  if(event == "Back_From_A_Foreign_Land"){
-    bool ok;
-    QString player2BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
-      this, tr("Select one civilization bonus"), tr("Civilization bonus:"), backFromAForeignLandCivilizationBonuses, 0, false, &ok);
+  if (event == "Back_From_A_Foreign_Land") {
+    bool    ok;
+    QString player2BackFromAForeignLandCivilizationBonusSelection
+      = QInputDialog::getItem(
+        this,
+        tr("Select one civilization bonus"),
+        tr("Civilization bonus:"),
+        backFromAForeignLandCivilizationBonuses,
+        0,
+        false,
+        &ok);
 
-    if (player2BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: Monk healing rate has a +2 modifier") {
+    if (
+      player2BackFromAForeignLandCivilizationBonusSelection
+      == "Byzantine bonus: Monk healing rate has a +2 modifier") {
       event = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
     }
-    else if (player2BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
+    else if (
+      player2BackFromAForeignLandCivilizationBonusSelection
+      == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
       event = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
     }
-    else if (player2BackFromAForeignLandCivilizationBonusSelection == "Teuton bonus: Conversion rate modifier is -1") {
+    else if (
+      player2BackFromAForeignLandCivilizationBonusSelection
+      == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
     }
   }

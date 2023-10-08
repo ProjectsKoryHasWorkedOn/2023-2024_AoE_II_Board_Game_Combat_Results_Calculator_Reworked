@@ -6,21 +6,13 @@
 #include "csv/events.h"
 #include "csv/player_medieval_ages.h"
 #include "csv/player_names.h"
+#include "csv/technologies.h"
 #include "stream_buffer.h"
 
 #include <QDir>
 #include <QHash>
 #include <QMainWindow>
 #include <QString>
-
-extern const QString entitiesFilename;
-extern const QString eventsP1Filename;
-extern const QString eventsP2Filename;
-extern const QString playerMedievalAgesFilename;
-extern const QString playerNamesFilename;
-extern const QString technologiesP1Filename;
-extern const QString technologiesP2Filename;
-extern QDir          workingDirectory;
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -127,5 +119,7 @@ private:
   playerMedievalAges m_player_medieval_age;
   Events             m_player1Events;
   Events             m_player2Events;
+  Technologies       m_player1Technologies;
+  Technologies       m_player2Technologies;
 };
 #endif // MAINWINDOW_HPP
