@@ -38,6 +38,17 @@ void Events::toggle(const QString& name)
   CsvEvent::writeFile<CsvEvent>(getEventFilePath(m_player), m_events);
 }
 
+bool Events::isActive(const QString& name) const
+{
+  const CsvEvent& event{find(name)};
+  return event.count() == 1;
+}
+
+const std::vector<CsvEvent>& Events::events() const
+{
+  return m_events;
+}
+
 void Events::changeEntry(const QString& name, int value)
 {
   CsvEvent& event{find(name)};
@@ -53,4 +64,9 @@ CsvEvent& Events::find(const QString& name)
     })};
   assert((it != m_events.end()) && "Couldn't find something that matches name");
   return *it;
+}
+
+const CsvEvent& Events::find(const QString& name) const
+{
+  return const_cast<Events*>(this)->find(name);
 }

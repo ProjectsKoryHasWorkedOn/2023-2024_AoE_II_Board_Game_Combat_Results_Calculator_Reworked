@@ -15,10 +15,16 @@ public:
 
   void toggle(const QString& name);
 
+  bool isActive(const QString& name) const;
+
+  const std::vector<CsvEvent>& events() const;
+
 private:
   void changeEntry(const QString& name, int value);
 
   CsvEvent& find(const QString& name);
+
+  const CsvEvent& find(const QString& name) const;
 
   std::vector<CsvEvent> m_events;
   Player                m_player;

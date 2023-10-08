@@ -323,26 +323,26 @@ MainWindow::MainWindow(QWidget* parent)
     "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing
                                 // rate modifier)
     // (has multiple slots in .csv file)
-    "Barrel Of Grog",               // [Row 3]
-    "Bone Shaft Arrows (Mongol)",   // [Row 4]
-    "Caught From The Crow's Nest",  // [Row 5]
-    "Celtic Battle Cry (Celt)",     // [Row 6]
-    "Dangerous Times",              // [Row 7]
-    "Fat Friar's Tavern O' Spices", // [Row 8]
-    "Field Testing",                // [Row 9]
-    "First Battle Jitters",         // [Row 10]
-    "Flaming Arrows",               // [Row 11]
-    "Fortune Favors The Foolish",   // [Row 12]
-    "Gatherin' A Rowdy Bunch",      // [Row 13]
-    "Gladitorial Games",            // [Row 14]
-    "Hard To Starboard",            // [Row 15]
-    "Heavy Tree Cover",             // [Row 16]
-    "High Ground",                  // [Row 17]
-    "Husbandry",                    // [Row 18]
-    "It's A Miracle",               // [Row 19]
-    "Listen To A Story",            // [Row 20]
-    "Muddy Battlefield",            // [Row 21]
-    "Non-Compos Mentis",            // [Row 22]
+    "Barrel Of Grog",                // [Row 3]
+    "Bone Shaft Arrows (Mongol)",    // [Row 4]
+    "Caught From The Crow's Nest",   // [Row 5]
+    "Celtic Battle Cry (Celt)",      // [Row 6]
+    "Dangerous Times",               // [Row 7]
+    "Fat Friar's Tavern O' Spirits", // [Row 8]
+    "Field Testing",                 // [Row 9]
+    "First Battle Jitters",          // [Row 10]
+    "Flaming Arrows",                // [Row 11]
+    "Fortune Favors The Foolish",    // [Row 12]
+    "Gatherin' A Rowdy Bunch",       // [Row 13]
+    "Gladitorial Games",             // [Row 14]
+    "Hard To Starboard",             // [Row 15]
+    "Heavy Tree Cover",              // [Row 16]
+    "High Ground",                   // [Row 17]
+    "Husbandry",                     // [Row 18]
+    "It's A Miracle",                // [Row 19]
+    "Listen To A Story",             // [Row 20]
+    "Muddy Battlefield",             // [Row 21]
+    "Non-Compos Mentis",             // [Row 22]
     // Back_From_A_Foreign_Land (Byzantine civ bonus:
     // All building get a HP bonus: Age I – 10 HP, Age II – 20 HP, Age III – 30
     // HP, Age IV – 40 HP) [Row 23]
@@ -402,9 +402,16 @@ MainWindow::MainWindow(QWidget* parent)
   for (int eV = 0; eV < events.length(); eV++) {
     QListWidgetItem* eventPlayer1 = new QListWidgetItem(events[eV]);
     QListWidgetItem* eventPlayer2 = new QListWidgetItem(events[eV]);
-
-    eventPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
-    eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
+    const QString    eventNameWithUnderscores
+      = convertSpacesToUnderscores(events[eV]);
+    eventPlayer1->setData(
+      Qt::CheckStateRole,
+      m_player1Events.isActive(eventNameWithUnderscores) ? Qt::Checked
+                                                         : Qt::Unchecked);
+    eventPlayer2->setData(
+      Qt::CheckStateRole,
+      m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
+                                                         : Qt::Unchecked);
 
     // Mark which ones I haven't implemented
     if (eventPlayer1->text().contains("(unimplemented)")) {
