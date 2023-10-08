@@ -376,13 +376,23 @@ MainWindow::MainWindow(QWidget* parent)
   }
 
   // Can only have one list widget item per list
-  for (int tE = 0; tE < technologies.length(); tE++) {
-    QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technologies[tE]);
-    QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technologies[tE]);
+  // C++11 range based for loop
+  for (const QString& technology : technologies) {
+    QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technology);
+    QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technology);
 
-    // TODO: HERE: Do the checked business.
-    technologyPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
-    technologyPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
+    const QString technologyWithUnderscores{
+      convertSpacesToUnderscores(technology)};
+    technologyPlayer1->setData(
+      Qt::CheckStateRole,
+      m_player1Technologies.isActive(technologyWithUnderscores)
+        ? Qt::Checked
+        : Qt::Unchecked);
+    technologyPlayer2->setData(
+      Qt::CheckStateRole,
+      m_player2Technologies.isActive(technologyWithUnderscores)
+        ? Qt::Checked
+        : Qt::Unchecked);
 
     // Mark which ones correspond to the 2E
     if (technologyPlayer1->text().contains("{2E}")) {
