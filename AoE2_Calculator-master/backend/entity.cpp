@@ -2026,12 +2026,12 @@ void Wonder::updateWonderHP()
   // turns
   turnsInPlay = 0;
   std::cout << "How many turns have the Wonder been in play for?"
-            << "\n";
+            << "<br>";
   std::cin >> turnsInPlay;
 
   if ((turnsInPlay < 1) || (turnsInPlay > 6)) {
     std::cout << "Error: Wonder ought to be in play for 1-6 turns only"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
   // Behaviour: Update wonder HP based on the number of turns in play
@@ -2056,7 +2056,7 @@ void Trebuchet::updateTrebuchetArmorClass()
   // So it takes bonus damage from units that deal bonus damage vs rams
   packed = false;
   std::cout << "Enter 1 if the Trebuchet is packed. Enter 0 if unpacked"
-            << "\n";
+            << "<br>";
   std::cin >> packed;
 
   if (packed == 0) {
@@ -2092,166 +2092,198 @@ void Entity::displayColorfulText(
   bool        isLineBreak)
 {
   // Variables: Store the color codes
-  int formatAttributeCode = 0;
-  int foregroundColorCode = 0;
-  int backgroundColorCode = 0;
+  std::string formatAttributeCodeStart = "";
+  std::string formatAttributeCodeEnd = "";
+
+  std::string foregroundColorCodeStart = "";
+  std::string foregroundColorCodeEnd = "";
+
+  std::string backgroundColorCodeStart = "";
+  std::string backgroundColorCodeEnd = "";
 
   // Behaviour: Convert the input text into a color code for the attribute
   if (inputFormatAttribute == "default" || inputFormatAttribute == "") {
-    formatAttributeCode = 0;
+    formatAttributeCodeStart = "";
+    formatAttributeCodeEnd = "";
   }
   else if (inputFormatAttribute == "bold") {
-    formatAttributeCode = 1;
-  }
-  else if (inputFormatAttribute == "dim") {
-    formatAttributeCode = 2;
+    formatAttributeCodeStart = "<b>";
+    formatAttributeCodeEnd = "</b>";
   }
   else if (inputFormatAttribute == "underlined") {
-    formatAttributeCode = 3;
-  }
-  else if (inputFormatAttribute == "blink") {
-    formatAttributeCode = 5;
-  }
-  else if (inputFormatAttribute == "reverse") {
-    formatAttributeCode = 7;
+    formatAttributeCodeStart = "<u>";
+    formatAttributeCodeEnd = "</u>";
   }
   else if (inputFormatAttribute == "hidden") {
-    formatAttributeCode = 8;
+    formatAttributeCodeStart = "<p hidden>";
+    formatAttributeCodeEnd = "</p>";
   }
   else {
     std::cout << "Error: formatAttributeCode not found"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 
   // Behaviour: Convert the input text into a color code for the foreground
   // color (text color)
   if (inputForegroundColor == "black") {
-    foregroundColorCode = 30;
+    foregroundColorCodeStart = "<font color=\"black\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "red") {
-    foregroundColorCode = 31;
+    foregroundColorCodeStart = "<font color=\"red\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "green") {
-    foregroundColorCode = 32;
+    foregroundColorCodeStart = "<font color=\"green\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "yellow") {
-    foregroundColorCode = 33;
+    foregroundColorCodeStart = "<font color=\"yellow\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "blue") {
-    foregroundColorCode = 34;
+    foregroundColorCodeStart = "<font color=\"blue\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "magenta") {
-    foregroundColorCode = 35;
+    foregroundColorCodeStart = "<font color=\"magenta\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "cyan") {
-    foregroundColorCode = 36;
+    foregroundColorCodeStart = "<font color=\"cyan\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_gray") {
-    foregroundColorCode = 37;
+    foregroundColorCodeStart = "<font color=\"lightgray\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "default" || inputForegroundColor == "") {
-    foregroundColorCode = 39;
+    foregroundColorCodeStart = "";
+    foregroundColorCodeEnd = "";
   }
   else if (inputForegroundColor == "dark_gray") {
-    foregroundColorCode = 90;
+    foregroundColorCodeStart = "<font color=\"darkgray\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_red") {
-    foregroundColorCode = 91;
+    foregroundColorCodeStart = "<font color=\"#FFCCCB\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_green") {
-    foregroundColorCode = 92;
+    foregroundColorCodeStart = "<font color=\"lightgreen\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_yellow") {
-    foregroundColorCode = 93;
+    foregroundColorCodeStart = "<font color=\"lightyellow\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_blue") {
-    foregroundColorCode = 94;
+    foregroundColorCodeStart = "<font color=\"lightblue\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_magenta") {
-    foregroundColorCode = 95;
+    foregroundColorCodeStart = "<font color=\"#ff80ff\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "light_cyan") {
-    foregroundColorCode = 96;
+    foregroundColorCodeStart = "<font color=\"lightcyan\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else if (inputForegroundColor == "white") {
-    foregroundColorCode = 97;
+    foregroundColorCodeStart = "<font color=\"#ffffff\">";
+    foregroundColorCodeEnd = "</font>";
   }
   else {
     std::cout << "Error: foregroundColorCode not found"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 
   // Behaviour: Convert the input text into a color code for the background
   // color
   if (inputBackgroundColor == "black") {
-    backgroundColorCode = 40;
+    backgroundColorCodeStart = "<span style=\"background-color:black;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "red") {
-    backgroundColorCode = 41;
+    backgroundColorCodeStart = "<span style=\"background-color:red;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "green") {
-    backgroundColorCode = 42;
+    backgroundColorCodeStart = "<span style=\"background-color:green;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "yellow") {
-    backgroundColorCode = 43;
+    backgroundColorCodeStart = "<span style=\"background-color:yellow;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "blue") {
-    backgroundColorCode = 44;
+    backgroundColorCodeStart = "<span style=\"background-color:blue;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "magenta") {
-    backgroundColorCode = 45;
+    backgroundColorCodeStart = "<span style=\"background-color:magenta;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "cyan") {
-    backgroundColorCode = 46;
+    backgroundColorCodeStart = "<span style=\"background-color:cyan;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_gray") {
-    backgroundColorCode = 47;
+    backgroundColorCodeStart = "<span style=\"background-color:LightGray;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "default" || inputBackgroundColor == "") {
-    backgroundColorCode = 49;
+    backgroundColorCodeStart = "";
+    backgroundColorCodeEnd = "";
   }
   else if (inputBackgroundColor == "dark_gray") {
-    backgroundColorCode = 100;
+    backgroundColorCodeStart = "<span style=\"background-color:DarkGray;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_red") {
-    backgroundColorCode = 101;
+    backgroundColorCodeStart = "<span style=\"background-color:LightRed;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_green") {
-    backgroundColorCode = 102;
+    backgroundColorCodeStart = "<span style=\"background-color:LightGreen;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_yellow") {
-    backgroundColorCode = 103;
+    backgroundColorCodeStart = "<span style=\"background-color:LightYellow;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_blue") {
-    backgroundColorCode = 104;
+    backgroundColorCodeStart = "<span style=\"background-color:LightBlue;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_magenta") {
-    backgroundColorCode = 105;
+    backgroundColorCodeStart = "<span style=\"background-color:LightMagenta;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "light_cyan") {
-    backgroundColorCode = 106;
+    backgroundColorCodeStart = "<span style=\"background-color:LightCyan;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else if (inputBackgroundColor == "white") {
-    backgroundColorCode = 107;
+    backgroundColorCodeStart = "<span style=\"background-color:#ffffff;\">";
+    backgroundColorCodeEnd = "</span>";
   }
   else {
     std::cout << "Error: backgroundColorCode not found"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 
   // Behaviour: Display the text to the terminal
   if (isLineBreak == false) {
     // Behaviour: Do not add a line break
-    // **Phillip** std::cout << "\033[" << formatAttributeCode << ";" << foregroundColorCode << ";" << backgroundColorCode << "m" << inputText << "\033[0m";
-    std::cout << inputText;
+    std::cout << formatAttributeCodeStart << foregroundColorCodeStart << backgroundColorCodeStart << inputText << backgroundColorCodeEnd << foregroundColorCodeEnd << formatAttributeCodeEnd;
   }
   else {
     // Behaviour: Add a line break
-    // **Phillip** std::cout << "\033[" << formatAttributeCode << ";" << foregroundColorCode << ";" << backgroundColorCode << "m" << inputText << "\033[0m\n";
-    std::cout << inputText << "\n";
+    std::cout << formatAttributeCodeStart << foregroundColorCodeStart << backgroundColorCodeStart << inputText << backgroundColorCodeEnd << foregroundColorCodeEnd << formatAttributeCodeEnd << "<br>";
   }
 }
 
@@ -2283,7 +2315,7 @@ void Entity::outputEntity(std::string playerName)
       medievalAge = "Imperial_Age";
       break;
     default:
-      std::cout << "Error: Age not recognized for " << entityName << "\n";
+      std::cout << "Error: Age not recognized for " << entityName << "<br>";
       exit(EXIT_FAILURE);
     }
 
@@ -2531,5 +2563,5 @@ void Entity::outputEntity(std::string playerName)
     std::cout << " is dead";
   }
 
-  std::cout << "\n";
+  std::cout << "<br>";
 }

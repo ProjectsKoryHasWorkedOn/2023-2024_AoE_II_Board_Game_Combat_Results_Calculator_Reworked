@@ -84,7 +84,7 @@ float combatCalculator::returnRemaningDamage(int inputPlayerNumber)
   }
   else {
     std::cout << "Error: Input player number not recognized"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 }
@@ -126,7 +126,7 @@ void combatCalculator::checkD6DiceSimulator()
   // Behaviour: Check the randomness of the automatic d6 dice roller
   for (int i = 0; i < 50; i++) {
     d6DieRoll = generateD6DieInput();
-    std::cout << "d6 roll " << i << ": " << d6DieRoll << "\n";
+    std::cout << "d6 roll " << i << ": " << d6DieRoll << "<br>";
   }
 }
 
@@ -143,7 +143,7 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
   }
   else {
     std::cout << "Error: Input player number not recognized"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 }
@@ -167,13 +167,13 @@ void combatCalculator::checkIfRetreating()
   // they are not versing cavalry or an archer
   std::cout << "For entities that can retreat: Enter 1 if retreating or 0 if "
                "fighting in the next round"
-            << "\n";
+            << "<br>";
   isRetreating = "0";
   // **Phillip** std::cin >> isRetreating;
 
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"
-              << "\n";
+              << "<br>";
     exit(EXIT_FAILURE);
   }
 }
@@ -182,10 +182,10 @@ void combatCalculator::checkIfRetreating()
 void combatCalculator::outputEntityInformation(std::string inputMessage)
 {
   // Behaviour: Only display the message if there is a message to be displayed
-  std::cout << "\n";
+  std::cout << "<br>";
 
   if (inputMessage != "") {
-    std::cout << inputMessage << "\n";
+    std::cout << inputMessage << "<br>";
   }
 
   // Behaviour: Run a function to output the entity information
@@ -514,17 +514,17 @@ void monkRounds::roundOutcome(
         // Behaviour: Ask the user if they are performing a conversion or
         // healing attempt and store the answer
         std::string calculationModeP1 = "0";
-        std::cout << "\n"
+        std::cout << "<br>"
                   << "Is " << player1Name << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
-                  << "\n";
+                  << "<br>";
         std::cin >> calculationModeP1;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP1 != "0") && (calculationModeP1 != "1")) {
           std::cout << "Error: The input must be 0 or 1 for " << player1Name << "'s "
                        "conversion/healing attempt"
-                    << "\n";
+                    << "<br>";
           exit(EXIT_FAILURE);
         }
 
@@ -636,7 +636,7 @@ void monkRounds::roundOutcome(
               if (conversionRatehealingRateP1 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
-                          << "\n";
+                          << "<br>";
                 std::cin >> getP1Response;
               }
             }
@@ -646,7 +646,7 @@ void monkRounds::roundOutcome(
               if (conversionRatehealingRateP1 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
-                          << "\n";
+                          << "<br>";
                 std::cin >> getP1Response;
               }
             }
@@ -669,7 +669,7 @@ void monkRounds::roundOutcome(
             int extraConversionAttemptCostP1 = 2 * extraConversionAttemptsP1;
             std::cout << "<< Player 1 must pay "
                       << std::to_string(extraConversionAttemptCostP1) << " gold"
-                      << "\n";
+                      << "<br>";
           }
         }
 
@@ -686,7 +686,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Return the fact that the attempt was unsuccessful
             monkPowersActivatedP1 = false;
             std::cout << player1Name << "'s monk powers failed to activate"
-                      << "\n";
+                      << "<br>";
           }
 
           // Behaviour: Act on the success odds
@@ -696,7 +696,7 @@ void monkRounds::roundOutcome(
             if (p2BattleParticipant.armorClass[12] == true) {
               std::cout << "Error: " << player1Name << "'s conversion attempt cannot be " <<
                            "applied to " << player2Name << "'s siege unit"
-                        << "\n";
+                        << "<br>";
               exit(EXIT_FAILURE);
             }
 
@@ -733,7 +733,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Return the fact that the attempt was unsusscessful
             monkPowersActivatedP1 = false;
             std::cout << player1Name << "'s 'assisting' monk powers failed to activate"
-                      << "\n";
+                      << "<br>";
           }
 
           // Behaviour: Act on the success odds
@@ -746,7 +746,7 @@ void monkRounds::roundOutcome(
             if (assistingMonksP1 == true) {
               std::cout << "Is " << player1Name << "'s 'assistant monk' targeting " <<
                 player2Name << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
-                        << "\n";
+                        << "<br>";
               std::cin >> p1AssistingMonkTarget;
             }
 
@@ -755,7 +755,7 @@ void monkRounds::roundOutcome(
               (p1AssistingMonkTarget != "0")
               && (p1AssistingMonkTarget != "1")) {
               std::cout << "Error: The input must be 0 or 1"
-                        << "\n";
+                        << "<br>";
               exit(EXIT_FAILURE);
             }
 
@@ -767,7 +767,7 @@ void monkRounds::roundOutcome(
               if (p2BattleParticipant.armorClass[12] == true) {
                 std::cout << "Error: " << player1Name << "'s conversion attempt cannot be "
                              "applied to " << player2Name << "'s siege unit"
-                          << "\n";
+                          << "<br>";
                 exit(EXIT_FAILURE);
               }
 
@@ -805,14 +805,14 @@ void monkRounds::roundOutcome(
         std::string calculationModeP2 = "0";
         std::cout << "Is " << player2Name << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
-                  << "\n";
+                  << "<br>";
         std::cin >> calculationModeP2;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP2 != "0") && (calculationModeP2 != "1")) {
           std::cout << "Error: The input must be 0 or 1 for " << player2Name << "'s"
                        "conversion/healing attempt"
-                    << "\n";
+                    << "<br>";
           exit(EXIT_FAILURE);
         }
 
@@ -920,7 +920,7 @@ void monkRounds::roundOutcome(
               if (conversionRatehealingRateP2 <= d6DieRoll) {
                 std::cout << "The conversion attempt for p2 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
-                          << "\n";
+                          << "<br>";
                 std::cin >> getP2Response;
               }
             }
@@ -931,7 +931,7 @@ void monkRounds::roundOutcome(
                 std::cout
                   << "The conversion attempt for p2 failed failed. Pay 2 gold "
                      "and enter 1 to try again. Otherwise enter 0"
-                  << "\n";
+                  << "<br>";
                 std::cin >> getP2Response;
               }
             }
@@ -954,7 +954,7 @@ void monkRounds::roundOutcome(
             int extraConversionAttemptCostP2 = 2 * extraConversionAttemptsP2;
             std::cout << "<< Player 2 must pay "
                       << std::to_string(extraConversionAttemptCostP2) << " gold"
-                      << "\n";
+                      << "<br>";
           }
         }
 
@@ -973,7 +973,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Return the fact that the attempt was unsuccessful
             monkPowersActivatedP2 = false;
             std::cout << player2Name << "'s monk powers failed to activate"
-                      << "\n";
+                      << "<br>";
           }
 
           // Behaviour: Act on the success odds
@@ -983,7 +983,7 @@ void monkRounds::roundOutcome(
             if (p1BattleParticipant.armorClass[12] == true) {
               std::cout << "Error: " << player2Name << "'s conversion attempt cannot be " <<
                         "applied to " << player1Name << "'s siege unit"
-                        << "\n";
+                        << "<br>";
               exit(EXIT_FAILURE);
             }
 
@@ -1020,7 +1020,7 @@ void monkRounds::roundOutcome(
             // Behaviour: Return the fact that the attempt was unsusscessful
             monkPowersActivatedP2 = false;
             std::cout << player2Name << "'s 'assisting' monk powers failed to activate"
-                      << "\n";
+                      << "<br>";
           }
 
           // Behaviour: Act on the success odds
@@ -1033,7 +1033,7 @@ void monkRounds::roundOutcome(
             if (assistingMonksP2 == true) {
               std::cout << "Is " << player2Name << "'s 'assistant monk' targeting " <<
                 player1Name << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
-                        << "\n";
+                        << "<br>";
               std::cin >> p2AssistingMonkTarget;
             }
 
@@ -1042,7 +1042,7 @@ void monkRounds::roundOutcome(
               (p2AssistingMonkTarget != "0")
               && (p2AssistingMonkTarget != "1")) {
               std::cout << "Error: The input must be 0 or 1"
-                        << "\n";
+                        << "<br>";
               exit(EXIT_FAILURE);
             }
 
@@ -1054,7 +1054,7 @@ void monkRounds::roundOutcome(
               if (p1BattleParticipant.armorClass[12] == true) {
                 std::cout << "Error: " << player2Name << "'s conversion attempt cannot be "
                                                          "applied to" << player1Name << "'s siege unit"
-                          << "\n";
+                          << "<br>";
                 exit(EXIT_FAILURE);
               }
 
@@ -1093,21 +1093,21 @@ void monkRounds::roundOutcome(
         // Behaviour: Display how many points were added if appropriate
         if (p2PointsLost != 0) {
           std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
-                    << "\n";
+                    << "<br>";
         }
         if (p1PointsLost != 0) {
           std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
-                    << "\n";
+                    << "<br>";
         }
 
-        std::cout << "\n";
+        std::cout << "<br>";
       }
       else {
         /* No longer show if a phase is skipped to conserve space on the window
-        std::cout << "\n"
+        std::cout << "<br>"
                   << "Skipping Monk round " + std::to_string(i + 1)
                        + " calculations..."
-                  << "\n";
+                  << "<br>";
       */
       }
 
@@ -1430,7 +1430,7 @@ void archerRounds::roundOutcome(
         if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
           std::cout << ">> Place " << p2DamageDie
                     << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "\n";
+                    << p2BattleParticipant.entityName << "<br>";
         }
 
       }
@@ -1438,21 +1438,21 @@ void archerRounds::roundOutcome(
         if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
           std::cout << ">> Place " << p1DamageDie
                     << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "\n";
+                    << p1BattleParticipant.entityName << "<br>";
         }
       }
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
         std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
       if (p1PointsLost != 0) {
         std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
 
-      std::cout << "\n";
+      std::cout << "<br>";
 
       // Behaviour: Check if a death has occured
       checkIfDead();
@@ -1469,7 +1469,7 @@ void archerRounds::roundOutcome(
 
           std::cout << "Did the conditions of Shots_In_The_Back_(Briton) get "
                        "satisfied for player 1 or 2? Enter 1 for yes. 0 for no"
-                    << "\n";
+                    << "<br>";
           std::cin >> getAnswer;
 
           if (getAnswer == "1") {
@@ -1481,10 +1481,10 @@ void archerRounds::roundOutcome(
     }
     else {
         /* No longer show if a phase is skipped to conserve space on the window
-      std::cout << "\n"
+      std::cout << "<br>"
                 << "Skipping Archer round " + std::to_string(i + 1)
                      + " calculations..."
-                << "\n";
+                << "<br>";
 */
     }
   }
@@ -1766,28 +1766,28 @@ void bombardmentRounds::roundOutcome(
         if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
           std::cout << ">> Place " << p2DamageDie
                     << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "\n";
+                    << p2BattleParticipant.entityName << "<br>";
         }
       }
       else if (isP2FightingBuilding == true) {
         if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
           std::cout << ">> Place " << p1DamageDie
                     << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "\n";
+                    << p1BattleParticipant.entityName << "<br>";
         }
       }
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
         std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
       if (p1PointsLost != 0) {
         std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
 
-      std::cout << "\n";
+      std::cout << "<br>";
 
       // Behaviour: Check if a death has occured
       checkIfDead();
@@ -1807,7 +1807,7 @@ void bombardmentRounds::roundOutcome(
         std::cout
           << "Skipping Caught from the Crow's Nest Phase) Bombardment round "
                + std::to_string(i + 1) + " calculations..."
-          << "\n";
+          << "<br>";
       }
     }
   }
@@ -2438,14 +2438,14 @@ void standardRounds::roundOutcome(
         if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
           std::cout << ">> Place " << p2DamageDie
                     << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "\n";
+                    << p2BattleParticipant.entityName << "<br>";
         }
       }
       else if (isP2FightingBuilding == true) {
         if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
           std::cout << ">> Place " << p1DamageDie
                     << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "\n";
+                    << p1BattleParticipant.entityName << "<br>";
         }
 
       }
@@ -2453,14 +2453,14 @@ void standardRounds::roundOutcome(
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
         std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
       if (p1PointsLost != 0) {
         std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
-                  << "\n";
+                  << "<br>";
       }
 
-      std::cout << "\n";
+      std::cout << "<br>";
 
       // Behaviour: Deal with event 34
       if (inputP1Events[34] == 1) {
@@ -2512,7 +2512,7 @@ void standardRounds::roundOutcome(
       if ((aDeathHasOccured == false) && (isRetreating != "1")) {
         std::cout << "Skipping Standard round " + std::to_string(i + 1)
                        + " calculations..."
-                  << "\n";
+                  << "<br>";
       }
     }
   }

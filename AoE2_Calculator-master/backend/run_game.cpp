@@ -16,8 +16,8 @@ void outputRemainingDamage(
   float inputRemainingDamageP2)
 {
   // Behaviour: Check the remaining damage value
-  std::cout << "remaning damage value p1: " << inputRemainingDamageP1 << "\n";
-  std::cout << "remaning damage value p2: " << inputRemainingDamageP2 << "\n";
+  std::cout << "remaning damage value p1: " << inputRemainingDamageP1 << "<br>";
+  std::cout << "remaning damage value p2: " << inputRemainingDamageP2 << "<br>";
 }
 
 /** The main function **/
@@ -161,7 +161,7 @@ int runGame()
   // Behaviour: Return information about the input entities once they have been
   // modified (before further calculations occur)
   std::cout << "You entered..."
-            << "\n";
+            << "<br>";
   p1BattleParticipant.outputEntity(playerNamesArray[0]);
   if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
@@ -199,7 +199,7 @@ int runGame()
     // Behaviour: Just ask the user what got rolled
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
-              << "\n";
+              << "<br>";
     std::cin >> getResponse;
 
     // Behaviour: Apply the results
@@ -221,7 +221,7 @@ int runGame()
     // Behaviour: Just ask the user what got rolled
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
-              << "\n";
+              << "<br>";
     std::cin >> getResponse;
 
     // Behaviour: Apply the results

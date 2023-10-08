@@ -768,7 +768,7 @@ void modifiersCalculator::applyEventCardEffects()
     // [2] Barrel of Grog - If target unit is Celt, they get +2 HP (ought to
     // calculate now)
     std::cout << "Is " << applyEventCardModifiers.entityName << " Celt?"
-              << "\n";
+              << "<br>";
     std::cin >> isThisRelevant;
 
     if (isThisRelevant == "1") {
@@ -794,7 +794,7 @@ void modifiersCalculator::applyEventCardEffects()
     if (applyEventCardModifiers.armorClass[1] == true) { // Building
       std::cout << "Is Dangerous_Times attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
-                << "\n";
+                << "<br>";
       std::cin >> isThisRelevant;
 
       if (isThisRelevant == "1") {
@@ -817,7 +817,7 @@ void modifiersCalculator::applyEventCardEffects()
     if (applyEventCardModifiers.armorClass[0] == true) { // Archer
       std::cout << "Is Flaming_Arrows attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
-                << "\n";
+                << "<br>";
       std::cin >> isThisRelevant;
 
       if (isThisRelevant == "1") {
@@ -839,7 +839,7 @@ void modifiersCalculator::applyEventCardEffects()
     if (applyEventCardModifiers.armorClass[0] == true) { // Archer
       std::cout << "Is High_Ground attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
-                << "\n";
+                << "<br>";
       std::cin >> isThisRelevant;
 
       if (isThisRelevant == "1") {
@@ -866,7 +866,7 @@ void modifiersCalculator::applyEventCardEffects()
     if (applyEventCardModifiers.armorClass[4] == true) { // Cavalry
       std::cout << "Is Husbandry attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
-                << "\n";
+                << "<br>";
       std::cin >> isThisRelevant;
 
       if (isThisRelevant == "1") {
@@ -923,7 +923,7 @@ void modifiersCalculator::applyEventCardEffects()
     std::cout
       << "Is it player " << playerNumber
       << "'s next turn in regards to Spirits of the Ancestors? Enter 1 if so"
-      << "\n";
+      << "<br>";
     std::cin >> isThisRelevant;
 
     if (isThisRelevant == "1") {
@@ -937,7 +937,7 @@ void modifiersCalculator::applyEventCardEffects()
     if (applyEventCardModifiers.armorClass[8] == true) { // Infantry
       std::cout << "Is Squires attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
-                << "\n";
+                << "<br>";
       std::cin >> isThisRelevant;
 
       if (isThisRelevant == "1") {
@@ -953,7 +953,7 @@ void modifiersCalculator::applyEventCardEffects()
     // defending in your village. Play anytime.(ought to calculate now)
     std::cout << "Is Vengeance_Is_Mine! attached to "
               << applyEventCardModifiers.entityName << "? Enter 1 if so"
-              << "\n";
+              << "<br>";
     std::cin >> isThisRelevant;
 
     if (isThisRelevant == "1") {

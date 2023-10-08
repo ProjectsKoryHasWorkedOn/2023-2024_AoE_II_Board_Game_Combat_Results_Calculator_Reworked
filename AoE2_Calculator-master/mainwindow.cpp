@@ -8,6 +8,10 @@
 // Libraries used for std::cout
 #include <iostream>
 
+
+// background color
+#include <QPalette>
+
 // Libraries used for std::copy_if
 #include <algorithm>
 
@@ -39,6 +43,16 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
+
+// More global variables
+bool isP1BackFromAForeignLandEventInPlay;
+QString player1BackFromAForeignLandCivilizationBonusSelection;
+
+
+bool isP2BackFromAForeignLandEventInPlay;
+QString player2BackFromAForeignLandCivilizationBonusSelection;
+
+
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
 int         player1EntityQuantity;
@@ -69,7 +83,9 @@ MainWindow::MainWindow(QWidget* parent)
   , m_gameOutputBuffer{}
   , m_streamBuffer{std::cout, [this](char ch) {
                      m_gameOutputBuffer.append(QString{QChar{ch}});
-                     ui.gameOutputTextEdit->setText(m_gameOutputBuffer);
+
+                     // Changing this causes problems @Phillip
+                     ui.gameOutputTextEdit->setHtml(m_gameOutputBuffer);
                    }}
   , m_aliases{}
   , m_entities{}
@@ -414,14 +430,94 @@ MainWindow::MainWindow(QWidget* parent)
     QListWidgetItem* eventPlayer2 = new QListWidgetItem(events[eV]);
     const QString    eventNameWithUnderscores
       = convertSpacesToUnderscores(events[eV]);
-    eventPlayer1->setData(
-      Qt::CheckStateRole,
-      m_player1Events.isActive(eventNameWithUnderscores) ? Qt::Checked
-                                                         : Qt::Unchecked);
-    eventPlayer2->setData(
-      Qt::CheckStateRole,
-      m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
-                                                         : Qt::Unchecked);
+
+
+
+
+
+    if(eventNameWithUnderscores != "Back_From_A_Foreign_Land"){
+      eventPlayer1->setData(
+        Qt::CheckStateRole,
+        m_player1Events.isActive(eventNameWithUnderscores) ? Qt::Checked
+                                                           : Qt::Unchecked);
+      eventPlayer2->setData(
+        Qt::CheckStateRole,
+        m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
+                                                           : Qt::Unchecked);
+
+    }
+    else{
+
+
+
+      if(
+        (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
+        (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
+        (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
+        ){
+
+
+        if(m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1){
+          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+        }
+        else if(m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1){
+          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+        }
+        else if(m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1){
+          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+        }
+
+
+
+        eventPlayer1->setData(Qt::CheckStateRole, Qt::Checked);
+
+
+        isP1BackFromAForeignLandEventInPlay = true;
+      }
+      else{
+        eventPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+        isP1BackFromAForeignLandEventInPlay = false;
+      }
+
+
+
+
+      if(
+        (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
+        (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
+        (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
+        ){
+
+
+        if(m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1){
+          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+        }
+        else if(m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1){
+          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+        }
+        else if(m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1){
+          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+        }
+
+
+
+        eventPlayer2->setData(Qt::CheckStateRole, Qt::Checked);
+
+
+        isP2BackFromAForeignLandEventInPlay = true;
+      }
+      else{
+        eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
+
+        isP2BackFromAForeignLandEventInPlay = false;
+      }
+
+
+    }
+
+
+
 
     // Mark which ones I haven't implemented
     if (eventPlayer1->text().contains("(unimplemented)")) {
@@ -457,6 +553,13 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
+
+
+  // Set background color of UI element
+  QPalette p;
+  p.setColor(QPalette::Base, QColor(246,238,227)); // BG
+  ui.gameOutputTextEdit->setPalette(p);
+
 }
 
 MainWindow::~MainWindow()
@@ -671,12 +774,14 @@ void MainWindow::on_actionUser_guide_triggered()
   QDesktopServices::openUrl(filePath);
 }
 
+
+
 // Run on click of the calculate results button
 void MainWindow::on_calculateResultsButton_clicked()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  ui.gameOutputTextEdit->setPlainText("");
+  ui.gameOutputTextEdit->setHtml("");
   m_gameOutputBuffer.clear();
 
   // Calculate the results of a battle
@@ -934,6 +1039,10 @@ void MainWindow::on_player1Technologies_itemChanged(
   }
 }
 
+
+
+
+
 // Run on change of what events are toggled by player 1
 void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 {
@@ -942,10 +1051,23 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
+
+  if(
+    (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
+    (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
+    (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
+    ){
+    isP1BackFromAForeignLandEventInPlay = true;
+  }
+  else{
+    isP1BackFromAForeignLandEventInPlay = false;
+  }
+
   if (event == "Back_From_A_Foreign_Land") {
     bool    ok;
-    QString player1BackFromAForeignLandCivilizationBonusSelection
-      = QInputDialog::getItem(
+
+    if(isP1BackFromAForeignLandEventInPlay == false){
+      player1BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
         this,
         tr("Select one civilization bonus"),
         tr("Civilization bonus:"),
@@ -953,6 +1075,7 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
         0,
         false,
         &ok);
+    }
 
     if (
       player1BackFromAForeignLandCivilizationBonusSelection
@@ -968,6 +1091,9 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
       player1BackFromAForeignLandCivilizationBonusSelection
       == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+    }
+    else{
+      event = player1BackFromAForeignLandCivilizationBonusSelection;
     }
   }
 
@@ -1002,10 +1128,22 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
+  if(
+    (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
+    (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
+    (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
+    ){
+    isP2BackFromAForeignLandEventInPlay = true;
+  }
+  else{
+    isP2BackFromAForeignLandEventInPlay = false;
+  }
+
   if (event == "Back_From_A_Foreign_Land") {
     bool    ok;
-    QString player2BackFromAForeignLandCivilizationBonusSelection
-      = QInputDialog::getItem(
+
+    if(isP2BackFromAForeignLandEventInPlay == false){
+      player2BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
         this,
         tr("Select one civilization bonus"),
         tr("Civilization bonus:"),
@@ -1013,6 +1151,7 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
         0,
         false,
         &ok);
+    }
 
     if (
       player2BackFromAForeignLandCivilizationBonusSelection
@@ -1028,6 +1167,9 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
       player2BackFromAForeignLandCivilizationBonusSelection
       == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+    }
+    else{
+      event = player2BackFromAForeignLandCivilizationBonusSelection;
     }
   }
 
