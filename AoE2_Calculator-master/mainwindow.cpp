@@ -70,6 +70,10 @@ QString     player1Age;
 QString     player2Age;
 QStringList ages;
 
+
+
+QStringList backFromAForeignLandCivilizationBonuses;
+
 // Declare working directory
 QDir workingDirectory;
 
@@ -110,6 +114,11 @@ MainWindow::MainWindow(QWidget* parent)
 
   // gets debug folder for some reason so go up a level
   workingDirectory.cdUp();
+
+  // What the civ bonuses are
+  backFromAForeignLandCivilizationBonuses << tr("Byzantine bonus: Monk healing rate has a +2 modifier")
+                                          << tr("Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age")
+                                          << tr("Teuton bonus: Conversion rate modifier is -1");
 
   // What the ages are
   ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
@@ -933,6 +942,22 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
+  if(event == "Back_From_A_Foreign_Land"){
+    bool ok;
+    QString player1BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
+      this, tr("Select one civilization bonus"), tr("Civilization bonus:"), backFromAForeignLandCivilizationBonuses, 0, false, &ok);
+
+    if (player1BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: Monk healing rate has a +2 modifier") {
+      event = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+    }
+    else if (player1BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
+      event = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+    }
+    else if (player1BackFromAForeignLandCivilizationBonusSelection == "Teuton bonus: Conversion rate modifier is -1") {
+      event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+    }
+  }
+
   if (checkedItem->checkState() == Qt::Checked) {
     m_player1Events.enable(event);
   }
@@ -964,6 +989,22 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
 
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
+
+  if(event == "Back_From_A_Foreign_Land"){
+    bool ok;
+    QString player2BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
+      this, tr("Select one civilization bonus"), tr("Civilization bonus:"), backFromAForeignLandCivilizationBonuses, 0, false, &ok);
+
+    if (player2BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: Monk healing rate has a +2 modifier") {
+      event = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+    }
+    else if (player2BackFromAForeignLandCivilizationBonusSelection == "Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age") {
+      event = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+    }
+    else if (player2BackFromAForeignLandCivilizationBonusSelection == "Teuton bonus: Conversion rate modifier is -1") {
+      event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+    }
+  }
 
   if (checkedItem->checkState() == Qt::Checked) {
     m_player2Events.enable(event);
