@@ -2092,31 +2092,25 @@ void Entity::displayColorfulText(
   bool        isLineBreak)
 {
   // Variables: Store the color codes
-  std::string formatAttributeCodeStart = "";
-  std::string formatAttributeCodeEnd = "";
-
-  std::string foregroundColorCodeStart = "";
-  std::string foregroundColorCodeEnd = "";
-
-  std::string backgroundColorCodeStart = "";
-  std::string backgroundColorCodeEnd = "";
+  std::string textDecorationValue = "none";
+  std::string fontWeightValue = "normal";
+  std::string textColorValue = "default";
+  std::string backgroundColorValue = "default";
 
   // Behaviour: Convert the input text into a color code for the attribute
   if (inputFormatAttribute == "default" || inputFormatAttribute == "") {
-    formatAttributeCodeStart = "";
-    formatAttributeCodeEnd = "";
+    fontWeightValue = "normal";
+    textDecorationValue = "none";
   }
   else if (inputFormatAttribute == "bold") {
-    formatAttributeCodeStart = "<b>";
-    formatAttributeCodeEnd = "</b>";
+    fontWeightValue = "bold";
   }
   else if (inputFormatAttribute == "underlined") {
-    formatAttributeCodeStart = "<u>";
-    formatAttributeCodeEnd = "</u>";
+    textDecorationValue = "underline";
   }
-  else if (inputFormatAttribute == "hidden") {
-    formatAttributeCodeStart = "<p hidden>";
-    formatAttributeCodeEnd = "</p>";
+  else if(inputFormatAttribute == "bold_and_underlined"){
+    fontWeightValue = "bold";
+    textDecorationValue = "underline";
   }
   else {
     std::cout << "Error: formatAttributeCode not found"
@@ -2124,75 +2118,59 @@ void Entity::displayColorfulText(
     exit(EXIT_FAILURE);
   }
 
+
   // Behaviour: Convert the input text into a color code for the foreground
   // color (text color)
   if (inputForegroundColor == "black") {
-    foregroundColorCodeStart = "<font color=\"black\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "black";
   }
   else if (inputForegroundColor == "red") {
-    foregroundColorCodeStart = "<font color=\"red\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "red";
   }
   else if (inputForegroundColor == "green") {
-    foregroundColorCodeStart = "<font color=\"green\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "green";
   }
   else if (inputForegroundColor == "yellow") {
-    foregroundColorCodeStart = "<font color=\"yellow\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "yellow";
   }
   else if (inputForegroundColor == "blue") {
-    foregroundColorCodeStart = "<font color=\"blue\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "blue";
   }
   else if (inputForegroundColor == "magenta") {
-    foregroundColorCodeStart = "<font color=\"magenta\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "magenta";
   }
   else if (inputForegroundColor == "cyan") {
-    foregroundColorCodeStart = "<font color=\"cyan\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "cyan";
   }
   else if (inputForegroundColor == "light_gray") {
-    foregroundColorCodeStart = "<font color=\"lightgray\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "lightgray";
   }
   else if (inputForegroundColor == "default" || inputForegroundColor == "") {
-    foregroundColorCodeStart = "";
-    foregroundColorCodeEnd = "";
+    textColorValue = "default";
   }
   else if (inputForegroundColor == "dark_gray") {
-    foregroundColorCodeStart = "<font color=\"darkgray\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "darkgray";
   }
   else if (inputForegroundColor == "light_red") {
-    foregroundColorCodeStart = "<font color=\"#FFCCCB\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "#FFCCCB";
   }
   else if (inputForegroundColor == "light_green") {
-    foregroundColorCodeStart = "<font color=\"lightgreen\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "lightgreen";
   }
   else if (inputForegroundColor == "light_yellow") {
-    foregroundColorCodeStart = "<font color=\"lightyellow\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "lightyellow";
   }
   else if (inputForegroundColor == "light_blue") {
-    foregroundColorCodeStart = "<font color=\"lightblue\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "lightblue";
   }
   else if (inputForegroundColor == "light_magenta") {
-    foregroundColorCodeStart = "<font color=\"#ff80ff\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "#ff80ff";
   }
   else if (inputForegroundColor == "light_cyan") {
-    foregroundColorCodeStart = "<font color=\"lightcyan\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "lightcyan";
   }
   else if (inputForegroundColor == "white") {
-    foregroundColorCodeStart = "<font color=\"#ffffff\">";
-    foregroundColorCodeEnd = "</font>";
+    textColorValue = "#ffffff";
   }
   else {
     std::cout << "Error: foregroundColorCode not found"
@@ -2203,72 +2181,55 @@ void Entity::displayColorfulText(
   // Behaviour: Convert the input text into a color code for the background
   // color
   if (inputBackgroundColor == "black") {
-    backgroundColorCodeStart = "<span style=\"background-color:black;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "black";
   }
   else if (inputBackgroundColor == "red") {
-    backgroundColorCodeStart = "<span style=\"background-color:red;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "red";
   }
   else if (inputBackgroundColor == "green") {
-    backgroundColorCodeStart = "<span style=\"background-color:green;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "green";
   }
   else if (inputBackgroundColor == "yellow") {
-    backgroundColorCodeStart = "<span style=\"background-color:yellow;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "yellow";
   }
   else if (inputBackgroundColor == "blue") {
-    backgroundColorCodeStart = "<span style=\"background-color:blue;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "blue";
   }
   else if (inputBackgroundColor == "magenta") {
-    backgroundColorCodeStart = "<span style=\"background-color:magenta;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "magenta";
   }
   else if (inputBackgroundColor == "cyan") {
-    backgroundColorCodeStart = "<span style=\"background-color:cyan;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "cyan";
   }
   else if (inputBackgroundColor == "light_gray") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightGray;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightGray";
   }
   else if (inputBackgroundColor == "default" || inputBackgroundColor == "") {
-    backgroundColorCodeStart = "";
-    backgroundColorCodeEnd = "";
+    backgroundColorValue = "default";
   }
   else if (inputBackgroundColor == "dark_gray") {
-    backgroundColorCodeStart = "<span style=\"background-color:DarkGray;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "DarkGray";
   }
   else if (inputBackgroundColor == "light_red") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightRed;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightRed";
   }
   else if (inputBackgroundColor == "light_green") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightGreen;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightGreen";
   }
   else if (inputBackgroundColor == "light_yellow") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightYellow;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightYellow;";
   }
   else if (inputBackgroundColor == "light_blue") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightBlue;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightBlue";
   }
   else if (inputBackgroundColor == "light_magenta") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightMagenta;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightMagenta";
   }
   else if (inputBackgroundColor == "light_cyan") {
-    backgroundColorCodeStart = "<span style=\"background-color:LightCyan;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "LightCyan";
   }
   else if (inputBackgroundColor == "white") {
-    backgroundColorCodeStart = "<span style=\"background-color:#ffffff;\">";
-    backgroundColorCodeEnd = "</span>";
+    backgroundColorValue = "#ffffff";
   }
   else {
     std::cout << "Error: backgroundColorCode not found"
@@ -2279,11 +2240,18 @@ void Entity::displayColorfulText(
   // Behaviour: Display the text to the terminal
   if (isLineBreak == false) {
     // Behaviour: Do not add a line break
-    std::cout << formatAttributeCodeStart << foregroundColorCodeStart << backgroundColorCodeStart << inputText << backgroundColorCodeEnd << foregroundColorCodeEnd << formatAttributeCodeEnd;
+
+    std::cout << "<span style=\"text-decoration: " << textDecorationValue
+              << ";font-weight: " << fontWeightValue << ";color: " << textColorValue
+              << ";background-color: " << backgroundColorValue << "\">"
+              << inputText << "</span>";
   }
   else {
     // Behaviour: Add a line break
-    std::cout << formatAttributeCodeStart << foregroundColorCodeStart << backgroundColorCodeStart << inputText << backgroundColorCodeEnd << foregroundColorCodeEnd << formatAttributeCodeEnd << "<br>";
+    std::cout << "<span style=\"text-decoration: " << textDecorationValue
+              << ";font-weight: " << fontWeightValue << ";color: " << textColorValue
+              << ";background-color: " << backgroundColorValue << "\">"
+              << inputText << "</span>" << "<br>";
   }
 }
 

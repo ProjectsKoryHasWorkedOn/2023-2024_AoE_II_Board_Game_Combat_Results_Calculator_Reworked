@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
+    <width>611</width>
     <height>785</height>
    </rect>
   </property>
@@ -205,20 +205,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>608</width>
+     <width>611</width>
      <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Program</string>
     </property>
-    <addaction name="closeProgram"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
+    <widget class="QMenu" name="menuOptions">
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <addaction name="actionEnableDisableSFX"/>
+     <addaction name="actionEnableDisableDarkMode"/>
+    </widget>
     <widget class="QMenu" name="menuDocumentation">
      <property name="title">
       <string>Documentation</string>
@@ -229,12 +230,10 @@
     </widget>
     <addaction name="actionAbout"/>
     <addaction name="menuDocumentation"/>
-   </widget>
-   <widget class="QMenu" name="menuOptions">
-    <property name="title">
-     <string>Options</string>
-    </property>
-    <addaction name="actionDisable_SFX"/>
+    <addaction name="separator"/>
+    <addaction name="closeProgram"/>
+    <addaction name="separator"/>
+    <addaction name="menuOptions"/>
    </widget>
    <widget class="QMenu" name="menuPlayer_details">
     <property name="title">
@@ -243,13 +242,12 @@
     <addaction name="actionSet_player_1_Age"/>
     <addaction name="actionSet_name_of_player_1"/>
     <addaction name="actionSet_set_color_of_player_1"/>
+    <addaction name="separator"/>
     <addaction name="actionSet_player_2_Age"/>
     <addaction name="actionSet_name_of_player_2"/>
     <addaction name="actionSet_set_color_of_player_2"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuHelp"/>
-   <addaction name="menuOptions"/>
    <addaction name="menuPlayer_details"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -264,16 +262,6 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
-   </property>
-  </action>
-  <action name="actionUser_guide">
-   <property name="text">
-    <string>User guide</string>
-   </property>
-  </action>
-  <action name="actionDeveloper_guide">
-   <property name="text">
-    <string>Developer guide</string>
    </property>
   </action>
   <action name="actionDisable_SFX">
@@ -312,6 +300,40 @@
   <action name="actionSet_player_2_Age">
    <property name="text">
     <string>Set player 2's medieval age</string>
+   </property>
+  </action>
+  <action name="actionEnable_dark_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable dark mode</string>
+   </property>
+  </action>
+  <action name="actionEnableDisableSFX">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Disable SFX</string>
+   </property>
+  </action>
+  <action name="actionEnableDisableDarkMode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable dark mode</string>
+   </property>
+  </action>
+  <action name="actionUser_guide">
+   <property name="text">
+    <string>User guide</string>
+   </property>
+  </action>
+  <action name="actionDeveloper_guide">
+   <property name="text">
+    <string>Developer guide</string>
    </property>
   </action>
   <action name="actionDeveloper_wishlist">

@@ -3,7 +3,12 @@
 #include "aboutwindow.h"      // A window this window can open
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
 #include "file_paths.h"
+
+
+
 #include "soundEffects.h" // Sound playing class
+
+#include "cross-window_palette.h" // Coloring of the UI
 
 // Libraries used for std::cout
 #include <iostream>
@@ -22,6 +27,9 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
+
+
+#include <QIcon>
 
 // Libraries used for storing data
 #include <QColor> // Prefers RGB input over HEX
@@ -42,6 +50,7 @@
 SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
+
 
 
 // More global variables
@@ -78,6 +87,7 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
+
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
   , m_gameOutputBuffer{}
@@ -95,6 +105,7 @@ MainWindow::MainWindow(QWidget* parent)
   , m_player1Technologies{Player::Player1}
   , m_player2Technologies{Player::Player2}
 {
+
   ui.setupUi(this);
 
   QIntValidator myName;
@@ -129,6 +140,8 @@ MainWindow::MainWindow(QWidget* parent)
   // What the ages are
   ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
        << tr("Imperial Age");
+
+
 
   // What the initial name of the players are
   player1Name = "Player 1";
@@ -554,11 +567,14 @@ MainWindow::MainWindow(QWidget* parent)
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
 
+  // Set up palettes
+  palettes.setPaletteValues();
+  palettes.darkModeEnabled = false;
 
-  // Set background color of UI element
-  QPalette p;
-  p.setColor(QPalette::Base, QColor(246,238,227)); // BG
-  ui.gameOutputTextEdit->setPalette(p);
+
+  setColorTheUIElements();
+
+
 
 }
 
@@ -579,7 +595,7 @@ void SFXToPlay(QString filePath)
   }
 }
 
-// Run this on click of the exit button
+// Run this on click of the "Program" -> "Exit" button
 void MainWindow::on_closeProgram_triggered()
 {
   // Exit the program
@@ -1181,18 +1197,132 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   }
 }
 
-// Run on change of "Options" > "Disable SFX" toggle
-void MainWindow::on_actionDisable_SFX_triggered()
-{
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if (soundEffectsEnabled == true) {
-    soundEffectsEnabled = false;
+
+void MainWindow::setColorTheUIElements(){
+
+  if(palettes.darkModeEnabled == true){
+    selectedPalette = palettes.darkPalette;
+
+
+    // Do the icons
+    ui.closeProgram->setIcon(QIcon(workingDirectory.absolutePath() + closeProgramIconInvertedFilename));
+
+    ui.menuOptions->setIcon(QIcon(workingDirectory.absolutePath() + programOptionsIconInvertedFilename));
+
+    ui.menuDocumentation->setIcon(QIcon(workingDirectory.absolutePath() + documentationInvertedIconFilename));
+
+    ui.actionAbout->setIcon(QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilename));
+
+
+    ui.actionSet_player_1_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_name_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_set_color_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_player_2_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+     ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_set_color_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+
+
+    // Update the player names
+    if(player1Color == "black" || player2Color == "black"){
+      player1Color = "white";
+      player2Color = "white";
+
+      updatePlayerNames();
+    }
+
   }
-  else {
-    soundEffectsEnabled = true;
+  else{
+    selectedPalette = palettes.lightPalette;
+
+    // Do the icons
+    ui.closeProgram->setIcon(QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
+    ui.menuOptions->setIcon(QIcon(workingDirectory.absolutePath() + programOptionsIconFilename));
+
+    ui.menuDocumentation->setIcon(QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+
+    ui.actionAbout->setIcon(QIcon(workingDirectory.absolutePath() + aboutIconFilename));
+
+     ui.actionSet_player_1_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+     ui.actionSet_name_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+          ui.actionSet_set_color_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+               ui.actionSet_player_2_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+                    ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+                         ui.actionSet_set_color_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+
+
+    // Update the player names
+    if(player1Color == "white" || player2Color == "white"){
+      player1Color = "black";
+      player2Color = "black";
+
+      updatePlayerNames();
+    }
+
   }
+
+  // Do the colors
+
+  ui.player1UnitsLabel->setPalette(selectedPalette);
+  ui.player2UnitsLabel->setPalette(selectedPalette);
+
+  ui.player1EntityNamesFilter->setPalette(selectedPalette);
+  ui.player2EntityNamesFilter->setPalette(selectedPalette);
+
+  ui.player1EntityNames->setPalette(selectedPalette);
+  ui.player2EntityNames->setPalette(selectedPalette);
+
+  ui.player1EntityQuantityLabel->setPalette(selectedPalette);
+  ui.player2EntityQuantityLabel->setPalette(selectedPalette);
+
+  ui.player1EntityQuantity->setPalette(selectedPalette);
+  ui.player2EntityQuantity->setPalette(selectedPalette);
+
+  ui.player1AssistingUnitsLabel->setPalette(selectedPalette);
+  ui.player2AssistingUnitsLabel->setPalette(selectedPalette);
+
+
+  ui.player1BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
+  ui.player2BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
+
+
+  ui.player1AssistingUnitsQuantityLabel->setPalette(selectedPalette);
+  ui.player2AssistingUnitsQuantityLabel->setPalette(selectedPalette);
+
+  ui.player1EntityAssistantQuantity->setPalette(selectedPalette);
+  ui.player2EntityAssistantQuantity->setPalette(selectedPalette);
+
+  ui.player1TechnologiesLabel->setPalette(selectedPalette);
+  ui.player2TechnologiesLabel->setPalette(selectedPalette);
+
+  ui.player1Technologies->setPalette(selectedPalette);
+  ui.player2Technologies->setPalette(selectedPalette);
+
+  ui.player1EventsLabel->setPalette(selectedPalette);
+  ui.player2EventsLabel->setPalette(selectedPalette);
+
+  ui.gameOutputLabel->setPalette(selectedPalette);
+  ui.gameOutputTextEdit->setPalette(selectedPalette);
+
+
+  ui.menubar->setStyleSheet(palettes.getMenuBarStyling()); // Used for background color
+  ui.menubar->setPalette(selectedPalette); // For the text color
+
+
+  ui.menuFile->setPalette(selectedPalette);
+  ui.menuOptions->setPalette(selectedPalette);
+  ui.menuPlayer_details->setPalette(selectedPalette);
+  ui.menuDocumentation->setPalette(selectedPalette);
+
+  ui.calculateResultsButton->setStyleSheet(palettes.getButtonBackgroundColor()); // Used for background color
+  ui.calculateResultsButton->setPalette(selectedPalette); // For the text color
+
+  this->setPalette(selectedPalette); //sets color of main window
 }
+
+
+
+
 
 // Run this when there's a call to update the names and colors of the players
 void MainWindow::updatePlayerNames()
@@ -1459,3 +1589,33 @@ void MainWindow::selectInitialEntities()
     updateRangeAllowed(m_entities.player2Entity().entityName(), 2);
   }
 }
+
+
+// Run on change of "Program" > "Options" > "Disable SFX" toggle
+void MainWindow::on_actionEnableDisableSFX_triggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  if (soundEffectsEnabled == true) {
+    soundEffectsEnabled = false;
+  }
+  else {
+    soundEffectsEnabled = true;
+  }
+}
+
+// Run on change of "Program" > "Options" > "Enable dark mode" toggle
+void MainWindow::on_actionEnableDisableDarkMode_triggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  if(palettes.darkModeEnabled == false){
+    palettes.darkModeEnabled = true;
+  }
+  else{
+    palettes.darkModeEnabled = false;
+  }
+
+  setColorTheUIElements();
+}
+

@@ -9,10 +9,13 @@
 #include "csv/technologies.h"
 #include "stream_buffer.h"
 
+
+
 #include <QDir>
 #include <QHash>
 #include <QMainWindow>
 #include <QString>
+#include <QPalette>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -45,7 +48,6 @@ private slots:
 
   void on_player1Events_itemChanged(QListWidgetItem* checkedItem);
 
-  void on_actionDisable_SFX_triggered();
 
   void on_actionSet_name_of_player_2_triggered();
 
@@ -86,6 +88,13 @@ private slots:
 
   void on_actionDeveloper_wishlist_triggered();
 
+
+  void setColorTheUIElements();
+
+  void on_actionEnableDisableSFX_triggered();
+
+  void on_actionEnableDisableDarkMode_triggered();
+
 private:
   void initializeEntityAliases();
 
@@ -107,6 +116,7 @@ private:
   void markInitialPlayerMedievalAge();
 
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
+
 
   Ui::MainWindow     ui;
   QString            m_gameOutputBuffer;

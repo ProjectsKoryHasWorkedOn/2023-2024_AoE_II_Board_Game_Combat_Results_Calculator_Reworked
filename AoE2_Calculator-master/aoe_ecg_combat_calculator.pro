@@ -22,6 +22,7 @@ SOURCES += \
     backend/fileImporter.cpp \
     backend/modifiersCalculator.cpp \
     backend/run_game.cpp \
+    cross-window_palette.cpp \
     csv/csv_count_with_text.cpp \
     csv/csv_entity.cpp \
     csv/csv_player_medieval_age.cpp \
@@ -33,7 +34,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     soundEffects.cpp \
-    stream_buffer.cpp
+    stream_buffer.cpp \
+    uicoloring.cpp
 
 HEADERS += \
     aboutwindow.h \
@@ -43,6 +45,7 @@ HEADERS += \
     backend/fileImporter.h \
     backend/modifiersCalculator.h \
     backend/run_game.h \
+    cross-window_palette.h \
     csv/csv_count_with_text.hpp \
     csv/csv_entity.h \
     csv/csv_event.h \
@@ -60,7 +63,8 @@ HEADERS += \
     mainwindow.hpp \
     player.h \
     soundEffects.h \
-    stream_buffer.h
+    stream_buffer.h \
+    uicoloring.h
 
 FORMS += \
     aboutwindow.ui \
@@ -73,3 +77,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     CMakeLists.txt
+
+RESOURCES +=
