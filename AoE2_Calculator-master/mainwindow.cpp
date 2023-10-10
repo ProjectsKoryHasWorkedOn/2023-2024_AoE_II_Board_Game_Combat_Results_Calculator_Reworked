@@ -1199,10 +1199,48 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
 
 
 
+void MainWindow::setColorTheToggleElements(){
+  if(palettes.darkModeEnabled == true){
+    // Have to do icons for the checkable items
+    // No way to change color of actionEnableDisableDarkMode checkable via css
+    // ui.menuOptions->setStyleSheet("QMenu::item:checked {color: rgb(255, 0, 0);}");
+    // Changes color of label but not of the checkbox
+    // ui.actionEnableDisableDarkMode->setFont(); \\ Has no color option
+    // Also have to remove checkable option as it interferes with the icons
+    ui.actionEnableDisableDarkMode->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+    ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
+
+    if(soundEffectsEnabled == false){
+      ui.actionEnableDisableSFX->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
+    }
+    else {
+      ui.actionEnableDisableSFX->setIconVisibleInMenu(false);
+    }
+  }
+  else if(palettes.darkModeEnabled == false){
+    ui.actionEnableDisableDarkMode->setIconVisibleInMenu(false);
+
+    if(soundEffectsEnabled == false){
+      ui.actionEnableDisableSFX->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+      ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
+    }
+    else{
+      ui.actionEnableDisableSFX->setIconVisibleInMenu(false);
+    }
+  }
+}
+
+
+
 void MainWindow::setColorTheUIElements(){
+
+  setColorTheToggleElements();
 
   if(palettes.darkModeEnabled == true){
     selectedPalette = palettes.darkPalette;
+
+
 
 
     // Do the icons
@@ -1219,8 +1257,9 @@ void MainWindow::setColorTheUIElements(){
     ui.actionSet_name_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
     ui.actionSet_set_color_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
     ui.actionSet_player_2_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-     ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
     ui.actionSet_set_color_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+
 
 
     // Update the player names
@@ -1236,6 +1275,8 @@ void MainWindow::setColorTheUIElements(){
     selectedPalette = palettes.lightPalette;
 
     // Do the icons
+
+
     ui.closeProgram->setIcon(QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
     ui.menuOptions->setIcon(QIcon(workingDirectory.absolutePath() + programOptionsIconFilename));
 
@@ -1281,10 +1322,8 @@ void MainWindow::setColorTheUIElements(){
   ui.player1AssistingUnitsLabel->setPalette(selectedPalette);
   ui.player2AssistingUnitsLabel->setPalette(selectedPalette);
 
-
   ui.player1BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
   ui.player2BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
-
 
   ui.player1AssistingUnitsQuantityLabel->setPalette(selectedPalette);
   ui.player2AssistingUnitsQuantityLabel->setPalette(selectedPalette);
@@ -1304,10 +1343,8 @@ void MainWindow::setColorTheUIElements(){
   ui.gameOutputLabel->setPalette(selectedPalette);
   ui.gameOutputTextEdit->setPalette(selectedPalette);
 
-
   ui.menubar->setStyleSheet(palettes.getMenuBarStyling()); // Used for background color
   ui.menubar->setPalette(selectedPalette); // For the text color
-
 
   ui.menuFile->setPalette(selectedPalette);
   ui.menuOptions->setPalette(selectedPalette);
@@ -1319,10 +1356,6 @@ void MainWindow::setColorTheUIElements(){
 
   this->setPalette(selectedPalette); //sets color of main window
 }
-
-
-
-
 
 // Run this when there's a call to update the names and colors of the players
 void MainWindow::updatePlayerNames()
@@ -1602,7 +1635,12 @@ void MainWindow::on_actionEnableDisableSFX_triggered()
   else {
     soundEffectsEnabled = true;
   }
+
+  setColorTheToggleElements();
 }
+
+
+
 
 // Run on change of "Program" > "Options" > "Enable dark mode" toggle
 void MainWindow::on_actionEnableDisableDarkMode_triggered()

@@ -91,18 +91,23 @@ QString colorPalettes::getMenuBarStyling(){
   QString menuBarStyling;
   QString menuBarBackgroundColor;
   QString menuBarItemBackgroundColor;
-
+  QString menuBarItemToggleUntickedColor;
+  QString menuBarItemToggleTickedColor;
 
   if(colorPalettes::darkModeEnabled == true){
     menuBarBackgroundColor = "QMenuBar {background-color: rgb(30, 30, 30);}";
     menuBarItemBackgroundColor = "QMenuBar::item {background-color: rgb(30, 30, 30);}";
+    menuBarItemToggleTickedColor = "QMenuBar::item:checked {color: rgb(255, 255, 255);}";
+    menuBarItemToggleUntickedColor = "QMenuBar::item:unchecked {color: rgb(255, 255, 255);}";
   }
   else{
     menuBarBackgroundColor = "QMenuBar {background-color: rgb(253, 253, 253);}";
     menuBarItemBackgroundColor = "QMenuBar::item {background-color: rgb(245, 245, 245);}";
+        menuBarItemToggleTickedColor = "QMenuBar::item:checked {color: rgb(0, 0, 0);}";
+    menuBarItemToggleUntickedColor = "QMenuBar::item:unchecked {color: rgb(0, 0, 0);}";
   }
 
-  menuBarStyling = menuBarBackgroundColor + menuBarItemBackgroundColor;
+  menuBarStyling = menuBarBackgroundColor + menuBarItemBackgroundColor + menuBarItemToggleTickedColor + menuBarItemToggleUntickedColor;
 
   return menuBarStyling;
 }

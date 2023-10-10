@@ -28,6 +28,9 @@ extern const QString documentationInvertedIconFilename = "/images/program_docume
 extern const QString playerDetailsIconFilename = "/images/player_details_icon.ico";
 extern const QString playerDetailsIconInvertedFilename = "/images/player_details_icon_inverted.ico";
 
+extern const QString checkedIconFilename = "/images/checked_icon.ico";
+extern const QString checkedIconInvertedFilename = "/images/checked_icon_inverted.ico";
+
 
 // Declare working directory
 QDir workingDirectory;

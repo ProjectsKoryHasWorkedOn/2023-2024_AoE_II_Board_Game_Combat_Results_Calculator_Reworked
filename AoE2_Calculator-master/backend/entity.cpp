@@ -2169,6 +2169,9 @@ void Entity::displayColorfulText(
   else if (inputForegroundColor == "light_cyan") {
     textColorValue = "lightcyan";
   }
+  else if (inputForegroundColor == "dark_cyan") {
+    textColorValue = "darkcyan";
+  }
   else if (inputForegroundColor == "white") {
     textColorValue = "#ffffff";
   }
@@ -2227,6 +2230,9 @@ void Entity::displayColorfulText(
   }
   else if (inputBackgroundColor == "light_cyan") {
     backgroundColorValue = "LightCyan";
+  }
+  else if (inputBackgroundColor == "dark_cyan") {
+    backgroundColorValue = "DarkCyan";
   }
   else if (inputBackgroundColor == "white") {
     backgroundColorValue = "#ffffff";
@@ -2293,7 +2299,7 @@ void Entity::outputEntity(std::string playerName)
     std::cout << " ";
     displayColorfulText("bold", "white", "dark_gray", medievalAge, false);
     std::cout << " ";
-    displayColorfulText("bold", "white", "light_blue", entityName, false);
+    displayColorfulText("bold", "white", "dark_cyan", entityName, false);
     std::cout << " has a total of ";
     displayColorfulText(
       "bold", "red", "default", std::to_string(entityHealth), false);
@@ -2527,7 +2533,7 @@ void Entity::outputEntity(std::string playerName)
   }
   // Behaviour: Display something different if the entity is dead
   else if (entityQuantity <= 0) {
-    displayColorfulText("bold", "white", "light_blue", entityName, false);
+    displayColorfulText("bold", "white", "dark_cyan", entityName, false);
     std::cout << " is dead";
   }
 

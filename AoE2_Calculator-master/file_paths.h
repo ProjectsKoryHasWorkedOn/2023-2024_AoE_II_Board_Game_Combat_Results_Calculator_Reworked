@@ -33,4 +33,9 @@ extern const QString playerDetailsIconInvertedFilename;
 
 
 
+extern const QString checkedIconFilename;
+extern const QString checkedIconInvertedFilename;
+
+
+
 #endif // FILE_PATHS_H

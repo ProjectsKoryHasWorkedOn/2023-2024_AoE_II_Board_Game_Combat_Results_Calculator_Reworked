@@ -95,6 +95,8 @@ private slots:
 
   void on_actionEnableDisableDarkMode_triggered();
 
+  void setColorTheToggleElements();
+
 private:
   void initializeEntityAliases();
 
