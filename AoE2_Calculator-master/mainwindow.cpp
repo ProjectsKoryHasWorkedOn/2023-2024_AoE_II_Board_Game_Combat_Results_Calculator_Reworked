@@ -1083,6 +1083,7 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
     bool    ok;
 
     if(isP1BackFromAForeignLandEventInPlay == false){
+
       player1BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
         this,
         tr("Select one civilization bonus"),
@@ -1092,6 +1093,8 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
         false,
         &ok);
     }
+
+
 
     if (
       player1BackFromAForeignLandCivilizationBonusSelection
@@ -1237,9 +1240,10 @@ void MainWindow::setColorTheUIElements(){
 
   setColorTheToggleElements();
 
+
+
   if(palettes.darkModeEnabled == true){
     selectedPalette = palettes.darkPalette;
-
 
 
 
@@ -1413,7 +1417,23 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   bool ok;
-  player1Name = QInputDialog::getText(
+QInputDialog nameDialog;
+
+//@Phillip: Not sure how to style it
+//  nameDialog.setPalette(selectedPalette);
+ // nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
+nameDialog.setStyleSheet("QLineEdit { background-color: yellow ;};");
+
+/*
+ * As stated in QDialog css properties
+
+    Supports only the background, background-clip and background-origin properties.
+
+
+qt-project.org/doc/qt-4.8/stylesheet-reference.html#list-of-properties
+ */
+
+  player1Name = nameDialog.getText(
     this,
     tr("Enter player 1's name"),
     tr("Player 1's name:"),
@@ -1421,9 +1441,36 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
     "",
     &ok);
 
+  // @Phillip: Not sure how to amke this work
+
+
+
   // Validate the user input
   if (player1Name.isEmpty()) {
     player1Name = "Player 1";
+  }
+
+  updatePlayerNames();
+}
+
+
+// Run on change of "Options" > "Set player 2's name"
+void MainWindow::on_actionSet_name_of_player_2_triggered()
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+
+  bool ok;
+  player2Name = QInputDialog::getText(
+    this,
+    tr("Enter player 2's name"),
+    tr("Player 2's name:"),
+    QLineEdit::Normal,
+    "",
+    &ok);
+
+         // Validate the user input
+  if (player2Name.isEmpty()) {
+    player2Name = "Player 2";
   }
 
   updatePlayerNames();
@@ -1440,27 +1487,6 @@ void MainWindow::on_actionSet_set_color_of_player_1_triggered()
   updatePlayerNames();
 }
 
-// Run on change of "Options" > "Set player 2's name"
-void MainWindow::on_actionSet_name_of_player_2_triggered()
-{
-  SFXToPlay("/sfx/ui/button_pressed.wav");
-
-  bool ok;
-  player2Name = QInputDialog::getText(
-    this,
-    tr("Enter player 2's name"),
-    tr("Player 2's name:"),
-    QLineEdit::Normal,
-    "",
-    &ok);
-
-  // Validate the user input
-  if (player2Name.isEmpty()) {
-    player2Name = "Player 2";
-  }
-
-  updatePlayerNames();
-}
 
 // Run on change of "Options" > "Set player 2's color"
 void MainWindow::on_actionSet_set_color_of_player_2_triggered()

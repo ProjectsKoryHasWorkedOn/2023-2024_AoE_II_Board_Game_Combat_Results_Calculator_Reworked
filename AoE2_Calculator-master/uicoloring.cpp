@@ -87,6 +87,19 @@ QString colorPalettes::getSpinBoxStyling(){
 }
 
 
+QString colorPalettes::getDialogBoxStyling(){
+  QString dialogBoxStyling;
+
+  QString dialogBoxBackgroundColor = "QInputDialog {background-color: red;}";
+
+
+  dialogBoxStyling = dialogBoxBackgroundColor;
+
+
+  return dialogBoxStyling;
+}
+
+
 QString colorPalettes::getMenuBarStyling(){
   QString menuBarStyling;
   QString menuBarBackgroundColor;

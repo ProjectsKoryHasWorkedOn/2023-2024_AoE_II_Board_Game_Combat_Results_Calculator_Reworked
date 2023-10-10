@@ -21,6 +21,9 @@ public:
 
   QString getSpinBoxStyling();
 
+  QString getDialogBoxStyling();
+
+
 };
 
 #endif // UICOLORING_H
