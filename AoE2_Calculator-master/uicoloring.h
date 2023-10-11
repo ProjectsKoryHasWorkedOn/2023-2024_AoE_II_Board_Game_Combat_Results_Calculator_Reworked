@@ -23,6 +23,8 @@ public:
 
   QString getDialogBoxStyling();
 
+  QString getLineEditStyling();
+
 
 };
 

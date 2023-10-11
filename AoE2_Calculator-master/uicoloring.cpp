@@ -87,14 +87,47 @@ QString colorPalettes::getSpinBoxStyling(){
 }
 
 
+QString colorPalettes::getLineEditStyling(){
+  QString lineEditStyling;
+  QString lineEditBackgroundColor;
+  QString lineEditTextColor;
+
+  if(colorPalettes::darkModeEnabled == true){
+    lineEditBackgroundColor = "QLineEdit {color: white; background-color: rgb(45, 45, 45);};";
+  }
+  else{
+    lineEditBackgroundColor = "QLineEdit {color: black; background-color: rgb(253, 253, 253);};";
+  }
+
+  lineEditStyling = lineEditBackgroundColor + lineEditTextColor;
+
+  return lineEditStyling;
+}
+
+
+// QString colorPalettes::get
+
+
 QString colorPalettes::getDialogBoxStyling(){
   QString dialogBoxStyling;
 
-  QString dialogBoxBackgroundColor = "QInputDialog {background-color: red;}";
+  QString dialogBoxColor = "";
+  QString lineEditStyling = "";
 
+  QString widgetTextColor = "";
 
-  dialogBoxStyling = dialogBoxBackgroundColor;
+  lineEditStyling = getLineEditStyling();
 
+  if(colorPalettes::darkModeEnabled == true){
+    dialogBoxColor = "QInputDialog {background-color: black;}";
+    widgetTextColor = "QLabel {color: rgb(255, 255, 255);};";
+  }
+  else{
+    dialogBoxColor = "QInputDialog {background-color: rgb(253, 253, 253);}";
+    widgetTextColor = "QLabel {color: rgb(0,0,0);};";
+  }
+
+  dialogBoxStyling = dialogBoxColor + lineEditStyling + widgetTextColor;
 
   return dialogBoxStyling;
 }

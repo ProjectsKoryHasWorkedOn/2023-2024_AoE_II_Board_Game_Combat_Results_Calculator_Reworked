@@ -1417,33 +1417,20 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   bool ok;
-QInputDialog nameDialog;
+  QWidget *test = new QWidget;
+  QInputDialog nameDialog;
 
-//@Phillip: Not sure how to style it
-//  nameDialog.setPalette(selectedPalette);
- // nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
-nameDialog.setStyleSheet("QLineEdit { background-color: yellow ;};");
-
-/*
- * As stated in QDialog css properties
-
-    Supports only the background, background-clip and background-origin properties.
-
-
-qt-project.org/doc/qt-4.8/stylesheet-reference.html#list-of-properties
- */
+  //@Phillip: Not sure how to style the text for this
+  // Might have to use HTML inside of tr("Player 1's name") as a last resort
+  test->setStyleSheet(palettes.getDialogBoxStyling());
 
   player1Name = nameDialog.getText(
-    this,
+    test,
     tr("Enter player 1's name"),
-    tr("Player 1's name:"),
+    tr("Player 1's name"),
     QLineEdit::Normal,
     "",
     &ok);
-
-  // @Phillip: Not sure how to amke this work
-
-
 
   // Validate the user input
   if (player1Name.isEmpty()) {
