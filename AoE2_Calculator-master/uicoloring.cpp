@@ -30,6 +30,8 @@ void colorPalettes::setPaletteValues(){
   lightPalette.setColor(QPalette::Highlight, QColor(229, 243, 255));
 
 
+
+
   /* Dark palette */
   // Set background color of the window
   darkPalette.setColor(QPalette::Window, QColor(30, 30, 30));
@@ -105,7 +107,38 @@ QString colorPalettes::getLineEditStyling(){
 }
 
 
-// QString colorPalettes::get
+QString colorPalettes::getDialogBoxTextTags(QString middleValue){
+  QString htmlText;
+
+  QString startingTag = "";
+  QString endingTag = "";
+
+  if(colorPalettes::darkModeEnabled == true){
+    startingTag = "<p style=\"color: white;\">";
+    endingTag = "</p>";
+  }
+  else{
+    startingTag = "<p style=\"color: black;\">";
+    endingTag = "</p>";
+  }
+
+  htmlText = startingTag + middleValue + endingTag;
+  return htmlText;
+}
+
+
+QString colorPalettes::getColorDialogBoxStyling(){
+  QString colorDialogBoxStyling;
+
+  if(colorPalettes::darkModeEnabled == true){
+    colorDialogBoxStyling = "QColorDialog {background-color: lightgrey;}";
+  }
+  else{
+    colorDialogBoxStyling = "QInputDialog {background-color: rgb(253, 253, 253);}";
+  }
+
+  return colorDialogBoxStyling;
+}
 
 
 QString colorPalettes::getDialogBoxStyling(){
@@ -114,20 +147,20 @@ QString colorPalettes::getDialogBoxStyling(){
   QString dialogBoxColor = "";
   QString lineEditStyling = "";
 
-  QString widgetTextColor = "";
+  // QString widgetTextColor = ""; // Wasn't able to get this to work
 
   lineEditStyling = getLineEditStyling();
 
   if(colorPalettes::darkModeEnabled == true){
     dialogBoxColor = "QInputDialog {background-color: black;}";
-    widgetTextColor = "QLabel {color: rgb(255, 255, 255);};";
+    // widgetTextColor = "QLabel {color: red;};";
   }
   else{
     dialogBoxColor = "QInputDialog {background-color: rgb(253, 253, 253);}";
-    widgetTextColor = "QLabel {color: rgb(0,0,0);};";
+    // widgetTextColor = "QLabel {color: red;};";
   }
 
-  dialogBoxStyling = dialogBoxColor + lineEditStyling + widgetTextColor;
+  dialogBoxStyling = dialogBoxColor + lineEditStyling; // + widgetTextColor;
 
   return dialogBoxStyling;
 }

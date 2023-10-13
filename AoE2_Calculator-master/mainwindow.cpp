@@ -4,7 +4,7 @@
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
 #include "file_paths.h"
 
-
+#include <QLabel>
 
 #include "soundEffects.h" // Sound playing class
 
@@ -1080,21 +1080,19 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
   }
 
   if (event == "Back_From_A_Foreign_Land") {
-    bool    ok;
-
     if(isP1BackFromAForeignLandEventInPlay == false){
 
-      player1BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
-        this,
-        tr("Select one civilization bonus"),
-        tr("Civilization bonus:"),
-        backFromAForeignLandCivilizationBonuses,
-        0,
-        false,
-        &ok);
+      QInputDialog backFromAForeignLandEventDialog;
+      QLabel civilizationBonusSelectedLabel(palettes.getDialogBoxTextTags("Selected civilization bonus:"));
+      backFromAForeignLandEventDialog.setLabelText(civilizationBonusSelectedLabel.text());
+      backFromAForeignLandEventDialog.setInputMode(QInputDialog::TextInput);
+      backFromAForeignLandEventDialog.setWindowTitle("\"Back From A Foreign Land\" event card");
+      backFromAForeignLandEventDialog.setStyleSheet(palettes.getDialogBoxStyling());
+      backFromAForeignLandEventDialog.setComboBoxItems(backFromAForeignLandCivilizationBonuses);
+      backFromAForeignLandEventDialog.exec();
+
+      player1BackFromAForeignLandCivilizationBonusSelection = backFromAForeignLandEventDialog.textValue();
     }
-
-
 
     if (
       player1BackFromAForeignLandCivilizationBonusSelection
@@ -1159,17 +1157,17 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   }
 
   if (event == "Back_From_A_Foreign_Land") {
-    bool    ok;
-
     if(isP2BackFromAForeignLandEventInPlay == false){
-      player2BackFromAForeignLandCivilizationBonusSelection = QInputDialog::getItem(
-        this,
-        tr("Select one civilization bonus"),
-        tr("Civilization bonus:"),
-        backFromAForeignLandCivilizationBonuses,
-        0,
-        false,
-        &ok);
+      QInputDialog backFromAForeignLandEventDialog;
+      QLabel civilizationBonusSelectedLabel(palettes.getDialogBoxTextTags("Selected civilization bonus:"));
+      backFromAForeignLandEventDialog.setLabelText(civilizationBonusSelectedLabel.text());
+      backFromAForeignLandEventDialog.setInputMode(QInputDialog::TextInput);
+      backFromAForeignLandEventDialog.setWindowTitle("\"Back From A Foreign Land\" event card");
+      backFromAForeignLandEventDialog.setStyleSheet(palettes.getDialogBoxStyling());
+      backFromAForeignLandEventDialog.setComboBoxItems(backFromAForeignLandCivilizationBonuses);
+      backFromAForeignLandEventDialog.exec();
+
+      player2BackFromAForeignLandCivilizationBonusSelection = backFromAForeignLandEventDialog.textValue();
     }
 
     if (
@@ -1416,21 +1414,18 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  bool ok;
-  QWidget *test = new QWidget;
+
   QInputDialog nameDialog;
 
-  //@Phillip: Not sure how to style the text for this
-  // Might have to use HTML inside of tr("Player 1's name") as a last resort
-  test->setStyleSheet(palettes.getDialogBoxStyling());
+  QLabel player1NameLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s name:"));
+  nameDialog.setLabelText(player1NameLabel.text());
+  nameDialog.setInputMode(QInputDialog::TextInput);
+  nameDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s name");
+  nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  nameDialog.exec();
 
-  player1Name = nameDialog.getText(
-    test,
-    tr("Enter player 1's name"),
-    tr("Player 1's name"),
-    QLineEdit::Normal,
-    "",
-    &ok);
+  player1Name = nameDialog.textValue();
+
 
   // Validate the user input
   if (player1Name.isEmpty()) {
@@ -1446,16 +1441,20 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  bool ok;
-  player2Name = QInputDialog::getText(
-    this,
-    tr("Enter player 2's name"),
-    tr("Player 2's name:"),
-    QLineEdit::Normal,
-    "",
-    &ok);
 
-         // Validate the user input
+  QInputDialog nameDialog;
+  QLabel player2NameLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s name:"));
+  nameDialog.setLabelText(player2NameLabel.text());
+  nameDialog.setInputMode(QInputDialog::TextInput);
+  nameDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s name");
+  nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  nameDialog.exec();
+
+  player2Name = nameDialog.textValue();
+
+
+
+  // Validate the user input
   if (player2Name.isEmpty()) {
     player2Name = "Player 2";
   }
@@ -1468,7 +1467,13 @@ void MainWindow::on_actionSet_set_color_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  QColor color = QColorDialog::getColor();
+  QColorDialog colorDialog;
+  colorDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s player color");
+  colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
+  colorDialog.exec();
+
+  QColor color = colorDialog.currentColor();
+
   player1Color = color.name();
 
   updatePlayerNames();
@@ -1480,7 +1485,13 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  QColor color = QColorDialog::getColor();
+  QColorDialog colorDialog;
+  colorDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s player color");
+  colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
+  colorDialog.exec();
+
+  QColor color = colorDialog.currentColor();
+
   player2Color = color.name();
 
   updatePlayerNames();
@@ -1551,9 +1562,15 @@ QStringList MainWindow::filterEntityNames(QString input) const
 
 void MainWindow::on_actionSet_player_1_Age_triggered()
 {
-  bool ok;
-  player1Age = QInputDialog::getItem(
-    this, tr("Enter player 1's medieval age"), tr("Age:"), ages, 0, false, &ok);
+  QInputDialog medievalAgeDialog;
+  QLabel ageLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s medieval age:"));
+  medievalAgeDialog.setLabelText(ageLabel.text());
+  medievalAgeDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s medieval age");
+  medievalAgeDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  medievalAgeDialog.setComboBoxItems(ages);
+  medievalAgeDialog.exec();
+
+  player1Age = medievalAgeDialog.textValue();
 
   if (player1Age == "Dark Age") {
     representationOfPlayer1Age = 1;
@@ -1574,9 +1591,15 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
 
 void MainWindow::on_actionSet_player_2_Age_triggered()
 {
-  bool ok;
-  player2Age = QInputDialog::getItem(
-    this, tr("Enter player 2's medieval age"), tr("Age:"), ages, 0, false, &ok);
+  QInputDialog medievalAgeDialog;
+  QLabel ageLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s medieval age:"));
+  medievalAgeDialog.setLabelText(ageLabel.text());
+  medievalAgeDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s medieval age");
+  medievalAgeDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  medievalAgeDialog.setComboBoxItems(ages);
+  medievalAgeDialog.exec();
+
+  player2Age = medievalAgeDialog.textValue();
 
   if (player2Age == "Dark Age") {
     representationOfPlayer2Age = 1;

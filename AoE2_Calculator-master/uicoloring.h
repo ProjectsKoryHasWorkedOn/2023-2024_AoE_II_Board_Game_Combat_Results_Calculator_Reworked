@@ -26,6 +26,11 @@ public:
   QString getLineEditStyling();
 
 
+  QString getDialogBoxTextTags(QString middleValue);
+
+  QString getColorDialogBoxStyling();
+
+
 };
 
 #endif // UICOLORING_H
