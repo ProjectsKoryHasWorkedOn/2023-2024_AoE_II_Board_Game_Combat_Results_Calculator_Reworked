@@ -13,7 +13,6 @@
 // Libraries used for std::cout
 #include <iostream>
 
-
 // background color
 #include <QPalette>
 
@@ -27,7 +26,6 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QDir>
-
 
 #include <QIcon>
 
@@ -51,16 +49,12 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
-
-
 // More global variables
-bool isP1BackFromAForeignLandEventInPlay;
+bool    isP1BackFromAForeignLandEventInPlay;
 QString player1BackFromAForeignLandCivilizationBonusSelection;
 
-
-bool isP2BackFromAForeignLandEventInPlay;
+bool    isP2BackFromAForeignLandEventInPlay;
 QString player2BackFromAForeignLandCivilizationBonusSelection;
-
 
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
@@ -87,16 +81,9 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
-
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
-  , m_gameOutputBuffer{}
-  , m_streamBuffer{std::cout, [this](char ch) {
-                     m_gameOutputBuffer.append(QString{QChar{ch}});
-
-                     // Changing this causes problems @Phillip
-                     ui.gameOutputTextEdit->setHtml(m_gameOutputBuffer);
-                   }}
+  , m_outputRedirector{std::cout, ui.gameOutputTextEdit}
   , m_aliases{}
   , m_entities{}
   , m_player_names{}
@@ -105,7 +92,6 @@ MainWindow::MainWindow(QWidget* parent)
   , m_player1Technologies{Player::Player1}
   , m_player2Technologies{Player::Player2}
 {
-
   ui.setupUi(this);
 
   QIntValidator myName;
@@ -140,8 +126,6 @@ MainWindow::MainWindow(QWidget* parent)
   // What the ages are
   ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
        << tr("Imperial Age");
-
-
 
   // What the initial name of the players are
   player1Name = "Player 1";
@@ -444,11 +428,7 @@ MainWindow::MainWindow(QWidget* parent)
     const QString    eventNameWithUnderscores
       = convertSpacesToUnderscores(events[eV]);
 
-
-
-
-
-    if(eventNameWithUnderscores != "Back_From_A_Foreign_Land"){
+    if (eventNameWithUnderscores != "Back_From_A_Foreign_Land") {
       eventPlayer1->setData(
         Qt::CheckStateRole,
         m_player1Events.isActive(eventNameWithUnderscores) ? Qt::Checked
@@ -457,80 +437,82 @@ MainWindow::MainWindow(QWidget* parent)
         Qt::CheckStateRole,
         m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
                                                            : Qt::Unchecked);
-
     }
-    else{
-
-
-
-      if(
-        (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
-        (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
-        (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
-        ){
-
-
-        if(m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1){
-          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+    else {
+      if (
+        (m_player1Events.isActive(
+           "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+         == 1)
+        || (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1)
+        || (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)) {
+        if (
+          m_player1Events.isActive(
+            "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+          == 1) {
+          player1BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
         }
-        else if(m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1){
-          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+        else if (
+          m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus")
+          == 1) {
+          player1BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
         }
-        else if(m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1){
-          player1BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+        else if (
+          m_player1Events.isActive(
+            "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier")
+          == 1) {
+          player1BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
         }
-
-
 
         eventPlayer1->setData(Qt::CheckStateRole, Qt::Checked);
 
-
         isP1BackFromAForeignLandEventInPlay = true;
       }
-      else{
+      else {
         eventPlayer1->setData(Qt::CheckStateRole, Qt::Unchecked);
 
         isP1BackFromAForeignLandEventInPlay = false;
       }
 
-
-
-
-      if(
-        (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
-        (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
-        (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
-        ){
-
-
-        if(m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1){
-          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
+      if (
+        (m_player2Events.isActive(
+           "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+         == 1)
+        || (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1)
+        || (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)) {
+        if (
+          m_player2Events.isActive(
+            "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+          == 1) {
+          player2BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier";
         }
-        else if(m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1){
-          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
+        else if (
+          m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus")
+          == 1) {
+          player2BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Byz_HP_Bonus";
         }
-        else if(m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1){
-          player2BackFromAForeignLandCivilizationBonusSelection = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
+        else if (
+          m_player2Events.isActive(
+            "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier")
+          == 1) {
+          player2BackFromAForeignLandCivilizationBonusSelection
+            = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
         }
-
-
 
         eventPlayer2->setData(Qt::CheckStateRole, Qt::Checked);
 
-
         isP2BackFromAForeignLandEventInPlay = true;
       }
-      else{
+      else {
         eventPlayer2->setData(Qt::CheckStateRole, Qt::Unchecked);
 
         isP2BackFromAForeignLandEventInPlay = false;
       }
-
-
     }
-
-
-
 
     // Mark which ones I haven't implemented
     if (eventPlayer1->text().contains("(unimplemented)")) {
@@ -571,11 +553,7 @@ MainWindow::MainWindow(QWidget* parent)
   palettes.setPaletteValues();
   palettes.darkModeEnabled = false;
 
-
   setColorTheUIElements();
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -790,15 +768,12 @@ void MainWindow::on_actionUser_guide_triggered()
   QDesktopServices::openUrl(filePath);
 }
 
-
-
 // Run on click of the calculate results button
 void MainWindow::on_calculateResultsButton_clicked()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   ui.gameOutputTextEdit->setHtml("");
-  m_gameOutputBuffer.clear();
 
   // Calculate the results of a battle
   runGame();
@@ -1055,10 +1030,6 @@ void MainWindow::on_player1Technologies_itemChanged(
   }
 }
 
-
-
-
-
 // Run on change of what events are toggled by player 1
 void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 {
@@ -1067,31 +1038,36 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
-
-  if(
-    (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
-    (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
-    (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
-    ){
+  if (
+    (m_player1Events.isActive(
+       "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+     == 1)
+    || (m_player1Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1)
+    || (m_player1Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)) {
     isP1BackFromAForeignLandEventInPlay = true;
   }
-  else{
+  else {
     isP1BackFromAForeignLandEventInPlay = false;
   }
 
   if (event == "Back_From_A_Foreign_Land") {
-    if(isP1BackFromAForeignLandEventInPlay == false){
-
+    if (isP1BackFromAForeignLandEventInPlay == false) {
       QInputDialog backFromAForeignLandEventDialog;
-      QLabel civilizationBonusSelectedLabel(palettes.getDialogBoxTextTags("Selected civilization bonus:"));
-      backFromAForeignLandEventDialog.setLabelText(civilizationBonusSelectedLabel.text());
+      QLabel       civilizationBonusSelectedLabel(
+        palettes.getDialogBoxTextTags("Selected civilization bonus:"));
+      backFromAForeignLandEventDialog.setLabelText(
+        civilizationBonusSelectedLabel.text());
       backFromAForeignLandEventDialog.setInputMode(QInputDialog::TextInput);
-      backFromAForeignLandEventDialog.setWindowTitle("\"Back From A Foreign Land\" event card");
-      backFromAForeignLandEventDialog.setStyleSheet(palettes.getDialogBoxStyling());
-      backFromAForeignLandEventDialog.setComboBoxItems(backFromAForeignLandCivilizationBonuses);
+      backFromAForeignLandEventDialog.setWindowTitle(
+        "\"Back From A Foreign Land\" event card");
+      backFromAForeignLandEventDialog.setStyleSheet(
+        palettes.getDialogBoxStyling());
+      backFromAForeignLandEventDialog.setComboBoxItems(
+        backFromAForeignLandCivilizationBonuses);
       backFromAForeignLandEventDialog.exec();
 
-      player1BackFromAForeignLandCivilizationBonusSelection = backFromAForeignLandEventDialog.textValue();
+      player1BackFromAForeignLandCivilizationBonusSelection
+        = backFromAForeignLandEventDialog.textValue();
     }
 
     if (
@@ -1109,7 +1085,7 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
       == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
     }
-    else{
+    else {
       event = player1BackFromAForeignLandCivilizationBonusSelection;
     }
   }
@@ -1145,29 +1121,36 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
 
-  if(
-    (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier") == 1) ||
-    (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1) ||
-    (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)
-    ){
+  if (
+    (m_player2Events.isActive(
+       "Back_From_A_Foreign_Land_Byz_Healing_Rate_Modifier")
+     == 1)
+    || (m_player2Events.isActive("Back_From_A_Foreign_Land_Byz_HP_Bonus") == 1)
+    || (m_player2Events.isActive("Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier") == 1)) {
     isP2BackFromAForeignLandEventInPlay = true;
   }
-  else{
+  else {
     isP2BackFromAForeignLandEventInPlay = false;
   }
 
   if (event == "Back_From_A_Foreign_Land") {
-    if(isP2BackFromAForeignLandEventInPlay == false){
+    if (isP2BackFromAForeignLandEventInPlay == false) {
       QInputDialog backFromAForeignLandEventDialog;
-      QLabel civilizationBonusSelectedLabel(palettes.getDialogBoxTextTags("Selected civilization bonus:"));
-      backFromAForeignLandEventDialog.setLabelText(civilizationBonusSelectedLabel.text());
+      QLabel       civilizationBonusSelectedLabel(
+        palettes.getDialogBoxTextTags("Selected civilization bonus:"));
+      backFromAForeignLandEventDialog.setLabelText(
+        civilizationBonusSelectedLabel.text());
       backFromAForeignLandEventDialog.setInputMode(QInputDialog::TextInput);
-      backFromAForeignLandEventDialog.setWindowTitle("\"Back From A Foreign Land\" event card");
-      backFromAForeignLandEventDialog.setStyleSheet(palettes.getDialogBoxStyling());
-      backFromAForeignLandEventDialog.setComboBoxItems(backFromAForeignLandCivilizationBonuses);
+      backFromAForeignLandEventDialog.setWindowTitle(
+        "\"Back From A Foreign Land\" event card");
+      backFromAForeignLandEventDialog.setStyleSheet(
+        palettes.getDialogBoxStyling());
+      backFromAForeignLandEventDialog.setComboBoxItems(
+        backFromAForeignLandCivilizationBonuses);
       backFromAForeignLandEventDialog.exec();
 
-      player2BackFromAForeignLandCivilizationBonusSelection = backFromAForeignLandEventDialog.textValue();
+      player2BackFromAForeignLandCivilizationBonusSelection
+        = backFromAForeignLandEventDialog.textValue();
     }
 
     if (
@@ -1185,7 +1168,7 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
       == "Teuton bonus: Conversion rate modifier is -1") {
       event = "Back_From_A_Foreign_Land_Teuton_Conversion_Rate_Modifier";
     }
-    else{
+    else {
       event = player2BackFromAForeignLandCivilizationBonusSelection;
     }
   }
@@ -1198,110 +1181,119 @@ void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
   }
 }
 
-
-
-void MainWindow::setColorTheToggleElements(){
-  if(palettes.darkModeEnabled == true){
+void MainWindow::setColorTheToggleElements()
+{
+  if (palettes.darkModeEnabled == true) {
     // Have to do icons for the checkable items
     // No way to change color of actionEnableDisableDarkMode checkable via css
-    // ui.menuOptions->setStyleSheet("QMenu::item:checked {color: rgb(255, 0, 0);}");
-    // Changes color of label but not of the checkbox
+    // ui.menuOptions->setStyleSheet("QMenu::item:checked {color: rgb(255, 0,
+    // 0);}"); Changes color of label but not of the checkbox
     // ui.actionEnableDisableDarkMode->setFont(); \\ Has no color option
     // Also have to remove checkable option as it interferes with the icons
-    ui.actionEnableDisableDarkMode->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+    ui.actionEnableDisableDarkMode->setIcon(
+      QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
 
-    if(soundEffectsEnabled == false){
-      ui.actionEnableDisableSFX->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+    if (soundEffectsEnabled == false) {
+      ui.actionEnableDisableSFX->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
       ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
     }
     else {
       ui.actionEnableDisableSFX->setIconVisibleInMenu(false);
     }
   }
-  else if(palettes.darkModeEnabled == false){
+  else if (palettes.darkModeEnabled == false) {
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(false);
 
-    if(soundEffectsEnabled == false){
-      ui.actionEnableDisableSFX->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+    if (soundEffectsEnabled == false) {
+      ui.actionEnableDisableSFX->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
       ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
     }
-    else{
+    else {
       ui.actionEnableDisableSFX->setIconVisibleInMenu(false);
     }
   }
 }
 
-
-
-void MainWindow::setColorTheUIElements(){
-
+void MainWindow::setColorTheUIElements()
+{
   setColorTheToggleElements();
 
-
-
-  if(palettes.darkModeEnabled == true){
+  if (palettes.darkModeEnabled == true) {
     selectedPalette = palettes.darkPalette;
 
-
-
     // Do the icons
-    ui.closeProgram->setIcon(QIcon(workingDirectory.absolutePath() + closeProgramIconInvertedFilename));
+    ui.closeProgram->setIcon(QIcon(
+      workingDirectory.absolutePath() + closeProgramIconInvertedFilename));
 
-    ui.menuOptions->setIcon(QIcon(workingDirectory.absolutePath() + programOptionsIconInvertedFilename));
+    ui.menuOptions->setIcon(QIcon(
+      workingDirectory.absolutePath() + programOptionsIconInvertedFilename));
 
-    ui.menuDocumentation->setIcon(QIcon(workingDirectory.absolutePath() + documentationInvertedIconFilename));
+    ui.menuDocumentation->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationInvertedIconFilename));
 
-    ui.actionAbout->setIcon(QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilename));
+    ui.actionAbout->setIcon(
+      QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilename));
 
-
-    ui.actionSet_player_1_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-    ui.actionSet_name_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-    ui.actionSet_set_color_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-    ui.actionSet_player_2_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-    ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-    ui.actionSet_set_color_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
-
-
+    ui.actionSet_player_1_Age->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_name_of_player_1->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_set_color_of_player_1->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_player_2_Age->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_name_of_player_2->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_set_color_of_player_2->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
 
     // Update the player names
-    if(player1Color == "black" || player2Color == "black"){
+    if (player1Color == "black" || player2Color == "black") {
       player1Color = "white";
       player2Color = "white";
 
       updatePlayerNames();
     }
-
   }
-  else{
+  else {
     selectedPalette = palettes.lightPalette;
 
     // Do the icons
 
+    ui.closeProgram->setIcon(
+      QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
+    ui.menuOptions->setIcon(
+      QIcon(workingDirectory.absolutePath() + programOptionsIconFilename));
 
-    ui.closeProgram->setIcon(QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
-    ui.menuOptions->setIcon(QIcon(workingDirectory.absolutePath() + programOptionsIconFilename));
+    ui.menuDocumentation->setIcon(
+      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
 
-    ui.menuDocumentation->setIcon(QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+    ui.actionAbout->setIcon(
+      QIcon(workingDirectory.absolutePath() + aboutIconFilename));
 
-    ui.actionAbout->setIcon(QIcon(workingDirectory.absolutePath() + aboutIconFilename));
-
-     ui.actionSet_player_1_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-     ui.actionSet_name_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-          ui.actionSet_set_color_of_player_1->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-               ui.actionSet_player_2_Age->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-                    ui.actionSet_name_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-                         ui.actionSet_set_color_of_player_2->setIcon(QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
-
+    ui.actionSet_player_1_Age->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_name_of_player_1->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_set_color_of_player_1->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_player_2_Age->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_name_of_player_2->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_set_color_of_player_2->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
 
     // Update the player names
-    if(player1Color == "white" || player2Color == "white"){
+    if (player1Color == "white" || player2Color == "white") {
       player1Color = "black";
       player2Color = "black";
 
       updatePlayerNames();
     }
-
   }
 
   // Do the colors
@@ -1324,8 +1316,10 @@ void MainWindow::setColorTheUIElements(){
   ui.player1AssistingUnitsLabel->setPalette(selectedPalette);
   ui.player2AssistingUnitsLabel->setPalette(selectedPalette);
 
-  ui.player1BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
-  ui.player2BattleAssistantNames->setStyleSheet(palettes.getSpinBoxStyling()); // Used for background color
+  ui.player1BattleAssistantNames->setStyleSheet(
+    palettes.getSpinBoxStyling()); // Used for background color
+  ui.player2BattleAssistantNames->setStyleSheet(
+    palettes.getSpinBoxStyling()); // Used for background color
 
   ui.player1AssistingUnitsQuantityLabel->setPalette(selectedPalette);
   ui.player2AssistingUnitsQuantityLabel->setPalette(selectedPalette);
@@ -1345,7 +1339,8 @@ void MainWindow::setColorTheUIElements(){
   ui.gameOutputLabel->setPalette(selectedPalette);
   ui.gameOutputTextEdit->setPalette(selectedPalette);
 
-  ui.menubar->setStyleSheet(palettes.getMenuBarStyling()); // Used for background color
+  ui.menubar->setStyleSheet(
+    palettes.getMenuBarStyling());         // Used for background color
   ui.menubar->setPalette(selectedPalette); // For the text color
 
   ui.menuFile->setPalette(selectedPalette);
@@ -1353,10 +1348,11 @@ void MainWindow::setColorTheUIElements(){
   ui.menuPlayer_details->setPalette(selectedPalette);
   ui.menuDocumentation->setPalette(selectedPalette);
 
-  ui.calculateResultsButton->setStyleSheet(palettes.getButtonBackgroundColor()); // Used for background color
+  ui.calculateResultsButton->setStyleSheet(
+    palettes.getButtonBackgroundColor()); // Used for background color
   ui.calculateResultsButton->setPalette(selectedPalette); // For the text color
 
-  this->setPalette(selectedPalette); //sets color of main window
+  this->setPalette(selectedPalette); // sets color of main window
 }
 
 // Run this when there's a call to update the names and colors of the players
@@ -1414,18 +1410,18 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-
   QInputDialog nameDialog;
 
-  QLabel player1NameLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s name:"));
+  QLabel player1NameLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player1Name) + "'s name:"));
   nameDialog.setLabelText(player1NameLabel.text());
   nameDialog.setInputMode(QInputDialog::TextInput);
-  nameDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s name");
+  nameDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player1Name) + "'s name");
   nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
   nameDialog.exec();
 
   player1Name = nameDialog.textValue();
-
 
   // Validate the user input
   if (player1Name.isEmpty()) {
@@ -1435,24 +1431,22 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
   updatePlayerNames();
 }
 
-
 // Run on change of "Options" > "Set player 2's name"
 void MainWindow::on_actionSet_name_of_player_2_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-
   QInputDialog nameDialog;
-  QLabel player2NameLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s name:"));
+  QLabel       player2NameLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player2Name) + "'s name:"));
   nameDialog.setLabelText(player2NameLabel.text());
   nameDialog.setInputMode(QInputDialog::TextInput);
-  nameDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s name");
+  nameDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player2Name) + "'s name");
   nameDialog.setStyleSheet(palettes.getDialogBoxStyling());
   nameDialog.exec();
 
   player2Name = nameDialog.textValue();
-
-
 
   // Validate the user input
   if (player2Name.isEmpty()) {
@@ -1468,7 +1462,8 @@ void MainWindow::on_actionSet_set_color_of_player_1_triggered()
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   QColorDialog colorDialog;
-  colorDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s player color");
+  colorDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player1Name) + "'s player color");
   colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
   colorDialog.exec();
 
@@ -1479,14 +1474,14 @@ void MainWindow::on_actionSet_set_color_of_player_1_triggered()
   updatePlayerNames();
 }
 
-
 // Run on change of "Options" > "Set player 2's color"
 void MainWindow::on_actionSet_set_color_of_player_2_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   QColorDialog colorDialog;
-  colorDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s player color");
+  colorDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player2Name) + "'s player color");
   colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
   colorDialog.exec();
 
@@ -1563,9 +1558,11 @@ QStringList MainWindow::filterEntityNames(QString input) const
 void MainWindow::on_actionSet_player_1_Age_triggered()
 {
   QInputDialog medievalAgeDialog;
-  QLabel ageLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s medieval age:"));
+  QLabel       ageLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player1Name) + "'s medieval age:"));
   medievalAgeDialog.setLabelText(ageLabel.text());
-  medievalAgeDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player1Name) + "'s medieval age");
+  medievalAgeDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player1Name) + "'s medieval age");
   medievalAgeDialog.setStyleSheet(palettes.getDialogBoxStyling());
   medievalAgeDialog.setComboBoxItems(ages);
   medievalAgeDialog.exec();
@@ -1592,9 +1589,11 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
 void MainWindow::on_actionSet_player_2_Age_triggered()
 {
   QInputDialog medievalAgeDialog;
-  QLabel ageLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s medieval age:"));
+  QLabel       ageLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player2Name) + "'s medieval age:"));
   medievalAgeDialog.setLabelText(ageLabel.text());
-  medievalAgeDialog.setWindowTitle("Enter " + convertUnderscoresToSpaces(player2Name) + "'s medieval age");
+  medievalAgeDialog.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player2Name) + "'s medieval age");
   medievalAgeDialog.setStyleSheet(palettes.getDialogBoxStyling());
   medievalAgeDialog.setComboBoxItems(ages);
   medievalAgeDialog.exec();
@@ -1659,7 +1658,6 @@ void MainWindow::selectInitialEntities()
   }
 }
 
-
 // Run on change of "Program" > "Options" > "Disable SFX" toggle
 void MainWindow::on_actionEnableDisableSFX_triggered()
 {
@@ -1675,21 +1673,17 @@ void MainWindow::on_actionEnableDisableSFX_triggered()
   setColorTheToggleElements();
 }
 
-
-
-
 // Run on change of "Program" > "Options" > "Enable dark mode" toggle
 void MainWindow::on_actionEnableDisableDarkMode_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if(palettes.darkModeEnabled == false){
+  if (palettes.darkModeEnabled == false) {
     palettes.darkModeEnabled = true;
   }
-  else{
+  else {
     palettes.darkModeEnabled = false;
   }
 
   setColorTheUIElements();
 }
-

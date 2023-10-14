@@ -7,15 +7,14 @@
 #include "csv/player_medieval_ages.h"
 #include "csv/player_names.h"
 #include "csv/technologies.h"
+#include "output_redirector.h"
 #include "stream_buffer.h"
-
-
 
 #include <QDir>
 #include <QHash>
 #include <QMainWindow>
-#include <QString>
 #include <QPalette>
+#include <QString>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -47,7 +46,6 @@ private slots:
   void on_player1Technologies_itemChanged(QListWidgetItem* checkedItem);
 
   void on_player1Events_itemChanged(QListWidgetItem* checkedItem);
-
 
   void on_actionSet_name_of_player_2_triggered();
 
@@ -88,7 +86,6 @@ private slots:
 
   void on_actionDeveloper_wishlist_triggered();
 
-
   void setColorTheUIElements();
 
   void on_actionEnableDisableSFX_triggered();
@@ -119,10 +116,8 @@ private:
 
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
 
-
   Ui::MainWindow     ui;
-  QString            m_gameOutputBuffer;
-  StreamBuffer       m_streamBuffer;
+  OutputRedirector   m_outputRedirector;
   Aliases            m_aliases;
   QString            m_player1EntityName;
   QString            m_player2EntityName;

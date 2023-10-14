@@ -33,6 +33,7 @@ SOURCES += \
     file_paths.cpp \
     main.cpp \
     mainwindow.cpp \
+    output_redirector.cpp \
     soundEffects.cpp \
     stream_buffer.cpp \
     uicoloring.cpp
@@ -61,6 +62,7 @@ HEADERS += \
     file_paths.h \
     mainwindow.h \
     mainwindow.hpp \
+    output_redirector.h \
     player.h \
     soundEffects.h \
     stream_buffer.h \
