@@ -1661,7 +1661,6 @@ void MainWindow::selectInitialEntities()
 
 static void selectAssistant(const QString& assistant, QComboBox* comboBox)
 {
-  QString   s = comboBox->itemText(0);
   const int assistantIndex{comboBox->findText(assistant, Qt::MatchFixedString)};
   assert(assistantIndex != -1);
   comboBox->setCurrentIndex(assistantIndex);
