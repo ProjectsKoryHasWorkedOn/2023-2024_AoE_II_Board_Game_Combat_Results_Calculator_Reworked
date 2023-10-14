@@ -2173,7 +2173,7 @@ void Entity::displayColorfulText(
     textColorValue = "darkcyan";
   }
   else if (inputForegroundColor == "white") {
-    textColorValue = "#ffffff";
+    textColorValue = "white";
   }
   else {
     std::cout << "Error: foregroundColorCode not found"
@@ -2235,7 +2235,7 @@ void Entity::displayColorfulText(
     backgroundColorValue = "DarkCyan";
   }
   else if (inputBackgroundColor == "white") {
-    backgroundColorValue = "#ffffff";
+    backgroundColorValue = "white";
   }
   else {
     std::cout << "Error: backgroundColorCode not found"
