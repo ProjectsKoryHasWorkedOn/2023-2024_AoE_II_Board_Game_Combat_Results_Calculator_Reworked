@@ -2097,6 +2097,16 @@ void Entity::displayColorfulText(
   std::string textColorValue = "default";
   std::string backgroundColorValue = "default";
 
+  // There are 19 predefined QColor objects: white, black, red, darkRed, green, darkGreen, blue, darkBlue, cyan, darkCyan, magenta, darkMagenta, yellow, darkYellow, gray, darkGray, lightGray
+  // Get error if hex code is used
+  /*
+   *
+QCssParser::parseHexColor: Unknown color name '#F'
+QCssParser::parseHexColor: Unknown color name '#FF'
+QCssParser::parseHexColor: Unknown color name '#FFFF'
+QCssParser::parseHexColor: Unknown color name '#FFFFF'
+   */
+
   // Behaviour: Convert the input text into a color code for the attribute
   if (inputFormatAttribute == "default" || inputFormatAttribute == "") {
     fontWeightValue = "normal";
@@ -2117,7 +2127,6 @@ void Entity::displayColorfulText(
               << "<br>";
     exit(EXIT_FAILURE);
   }
-
 
   // Behaviour: Convert the input text into a color code for the foreground
   // color (text color)
@@ -2152,28 +2161,28 @@ void Entity::displayColorfulText(
     textColorValue = "darkgray";
   }
   else if (inputForegroundColor == "light_red") {
-    textColorValue = "#FFCCCB";
+    textColorValue = "rgb(255,204,203)";
   }
   else if (inputForegroundColor == "light_green") {
-    textColorValue = "lightgreen";
+    textColorValue = "rgb(144,238,144)";
   }
   else if (inputForegroundColor == "light_yellow") {
-    textColorValue = "lightyellow";
+    textColorValue = "rgb(255,255,224)";
   }
   else if (inputForegroundColor == "light_blue") {
-    textColorValue = "lightblue";
+    textColorValue = "rgb(173,216,230)";
   }
   else if (inputForegroundColor == "light_magenta") {
-    textColorValue = "#ff80ff";
+    textColorValue = "rgb(255,128,255)";
   }
   else if (inputForegroundColor == "light_cyan") {
-    textColorValue = "lightcyan";
+    textColorValue = "rgb(224,255,255)";
   }
   else if (inputForegroundColor == "dark_cyan") {
     textColorValue = "darkcyan";
   }
   else if (inputForegroundColor == "white") {
-    textColorValue = "white";
+    textColorValue = "rgb(255,255,255)";
   }
   else {
     std::cout << "Error: foregroundColorCode not found"
@@ -2214,22 +2223,22 @@ void Entity::displayColorfulText(
     backgroundColorValue = "DarkGray";
   }
   else if (inputBackgroundColor == "light_red") {
-    backgroundColorValue = "LightRed";
+    backgroundColorValue = "rgb(255,204,203)";
   }
   else if (inputBackgroundColor == "light_green") {
-    backgroundColorValue = "LightGreen";
+    backgroundColorValue = "rgb(144,238,144)";
   }
   else if (inputBackgroundColor == "light_yellow") {
-    backgroundColorValue = "LightYellow;";
+    backgroundColorValue = "rgb(255,255,224);";
   }
   else if (inputBackgroundColor == "light_blue") {
-    backgroundColorValue = "LightBlue";
+    backgroundColorValue = "rgb(173,216,230)";
   }
   else if (inputBackgroundColor == "light_magenta") {
-    backgroundColorValue = "LightMagenta";
+    backgroundColorValue = "rgb(255,128,255)";
   }
   else if (inputBackgroundColor == "light_cyan") {
-    backgroundColorValue = "LightCyan";
+    backgroundColorValue = "rgb(224,255,255)";
   }
   else if (inputBackgroundColor == "dark_cyan") {
     backgroundColorValue = "DarkCyan";
