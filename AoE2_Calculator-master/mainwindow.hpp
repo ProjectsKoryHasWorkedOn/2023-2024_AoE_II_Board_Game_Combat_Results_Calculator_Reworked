@@ -110,6 +110,8 @@ private:
 
   void selectInitialEntities();
 
+  void selectInitialAssistants();
+
   void setInitialNames();
 
   void markInitialPlayerMedievalAge();

@@ -525,11 +525,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui.player1Events->addItem(eventPlayer1);
     ui.player2Events->addItem(eventPlayer2);
-
-    // Read in the .csv files and update the UI elements on the basis of this
-    setInitialNames();
-    selectInitialEntities();
-    markInitialPlayerMedievalAge();
   }
 
   ui.player1BattleAssistantNames->addItem("Monk");
@@ -548,6 +543,12 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
+
+  // Read in the .csv files and update the UI elements on the basis of this
+  setInitialNames();
+  selectInitialEntities();
+  selectInitialAssistants();
+  markInitialPlayerMedievalAge();
 
   // Set up palettes
   palettes.setPaletteValues();
@@ -1656,6 +1657,26 @@ void MainWindow::selectInitialEntities()
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
     updateRangeAllowed(m_entities.player2Entity().entityName(), 2);
   }
+}
+
+static void selectAssistant(const QString& assistant, QComboBox* comboBox)
+{
+  QString   s = comboBox->itemText(0);
+  const int assistantIndex{comboBox->findText(assistant, Qt::MatchFixedString)};
+  assert(assistantIndex != -1);
+  comboBox->setCurrentIndex(assistantIndex);
+}
+
+void MainWindow::selectInitialAssistants()
+{
+  selectAssistant(
+    m_entities.player1Entity().assistantName(), ui.player1BattleAssistantNames);
+  selectAssistant(
+    m_entities.player2Entity().assistantName(), ui.player2BattleAssistantNames);
+  ui.player1EntityAssistantQuantity->setValue(
+    m_entities.player1Entity().assistantQuantity());
+  ui.player2EntityAssistantQuantity->setValue(
+    m_entities.player2Entity().assistantQuantity());
 }
 
 // Run on change of "Program" > "Options" > "Disable SFX" toggle
