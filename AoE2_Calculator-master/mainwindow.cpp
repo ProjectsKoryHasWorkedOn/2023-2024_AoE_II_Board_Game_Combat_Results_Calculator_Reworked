@@ -1698,13 +1698,6 @@ void MainWindow::on_actionEnableDisableSFX_triggered()
 void MainWindow::on_actionEnableDisableDarkMode_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
-
-  if (palettes.darkModeEnabled == false) {
-    palettes.darkModeEnabled = true;
-  }
-  else {
-    palettes.darkModeEnabled = false;
-  }
-
+  palettes.darkModeEnabled = !palettes.darkModeEnabled;
   setColorTheUIElements();
 }
