@@ -1,5 +1,6 @@
 #ifndef USER_INPUT_HANDLER_H
 #define USER_INPUT_HANDLER_H
+#include <memory>
 #include <sstream>
 
 class UserInputHandler {
@@ -21,9 +22,10 @@ public:
   ~UserInputHandler();
 
 private:
-  std::stringstream m_stringStream;
-  std::streambuf*   m_stringStreamBuf;
-  std::streambuf*   m_cinStreamBuf;
+  std::stringstream               m_stringStream;
+  std::streambuf*                 m_stringStreamBuf;
+  std::streambuf*                 m_cinStreamBuf;
+  std::unique_ptr<std::streambuf> m_redirectingStreamBuf;
 };
 
 #endif // USER_INPUT_HANDLER_H
