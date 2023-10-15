@@ -5,7 +5,7 @@
 class RedirectingStreamBuf : public std::streambuf {
 public:
   explicit RedirectingStreamBuf(std::streambuf* buf)
-    : m_string{"1"}, m_index{0}, m_src{buf}, m_buffer{}
+    : m_string{}, m_index{0}, m_src{buf}, m_buffer{}
   {
     // TODO: HERE: No idea about this thing.
 
@@ -16,6 +16,10 @@ public:
 protected:
   int underflow() override
   {
+    if (m_string.empty()) {
+      // TODO: Ask the user for input.
+    }
+
     if (m_index == m_string.size()) {
       m_string.clear();
       m_index  = 0;
@@ -27,19 +31,6 @@ protected:
     setg(&m_buffer, &m_buffer, &m_buffer + 1);
     m_index++;
     return traits_type::to_int_type(m_buffer);
-
-    /*
-    const traits_type::int_type i{m_src->sbumpc()};
-
-    if (!traits_type::eq_int_type(i, traits_type::eof())) {
-      m_buffer = traits_type::to_char_type(i);
-
-      // Makes one read position available.
-      setg(&m_buffer, &m_buffer, &m_buffer + 1);
-    }
-
-    return i;
-*/
   }
 
 private:
@@ -57,8 +48,6 @@ UserInputHandler::UserInputHandler()
       std::make_unique<RedirectingStreamBuf>(m_stringStreamBuf)}
 {
   std::cin.rdbuf(m_redirectingStreamBuf.get());
-
-  // m_stringStream << "1";
 }
 
 UserInputHandler::~UserInputHandler()
