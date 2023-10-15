@@ -1683,12 +1683,7 @@ void MainWindow::on_actionEnableDisableSFX_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  if (soundEffectsEnabled == true) {
-    soundEffectsEnabled = false;
-  }
-  else {
-    soundEffectsEnabled = true;
-  }
+  soundEffectsEnabled = !soundEffectsEnabled;
 
   setColorTheToggleElements();
 }
