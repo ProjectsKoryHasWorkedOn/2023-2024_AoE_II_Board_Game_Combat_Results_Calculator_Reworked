@@ -31,14 +31,11 @@ combatCalculator::~combatCalculator()
 // Function: Set the player names
 void combatCalculator::setPlayerNames(
   std::string& inputP1Name,
-  std::string& inputP2Name){
-
+  std::string& inputP2Name)
+{
   player1Name = inputP1Name;
   player2Name = inputP2Name;
-
 }
-
-
 
 // Function: Set the battle participants
 void combatCalculator::setCombatParticipants(
@@ -168,8 +165,11 @@ void combatCalculator::checkIfRetreating()
   std::cout << "For entities that can retreat: Enter 1 if retreating or 0 if "
                "fighting in the next round"
             << "<br>";
-  isRetreating = "0";
-  // **Phillip** std::cin >> isRetreating;
+
+  // TODO: HERE, try to have this read from a QInputDialog and fill in cin
+  //             programatically.
+  // isRetreating = "0";
+  std::cin >> isRetreating;
 
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"
@@ -434,8 +434,7 @@ void monkRounds::roundOutcome(
 
   // Integer: Store the conversion rates for either the assisting or primary
   // monks (makes things a bit easier to understand)
-  int  conversionRatehealingRateP1 = 0, conversionRatehealingRateP2 = 0;
-
+  int conversionRatehealingRateP1 = 0, conversionRatehealingRateP2 = 0;
 
   bool assistingMonksP1 = false, assistingMonksP2 = false;
   bool justMonksP1 = false, justMonksP2 = false;
@@ -456,11 +455,12 @@ void monkRounds::roundOutcome(
         // monk)
         if (p1BattleParticipant.entityQuantity > 0) {
           conversionRatehealingRateP1 = p1BattleParticipant.entityQuantity;
-          assistingMonksP1 = false;
-          justMonksP1      = true;
+          assistingMonksP1            = false;
+          justMonksP1                 = true;
         }
         else if (p1AssistingMonkParticipant.entityQuantity > 0) {
-          conversionRatehealingRateP1 = p1AssistingMonkParticipant.entityQuantity;
+          conversionRatehealingRateP1
+            = p1AssistingMonkParticipant.entityQuantity;
           assistingMonksP1 = true;
           justMonksP1      = false;
         }
@@ -479,11 +479,12 @@ void monkRounds::roundOutcome(
         // monk)
         if (p2BattleParticipant.entityQuantity > 0) {
           conversionRatehealingRateP2 = p2BattleParticipant.entityQuantity;
-          assistingMonksP2 = false;
-          justMonksP2      = true;
+          assistingMonksP2            = false;
+          justMonksP2                 = true;
         }
         if (p2AssistingMonkParticipant.entityQuantity > 0) {
-          conversionRatehealingRateP2 = p2AssistingMonkParticipant.entityQuantity;
+          conversionRatehealingRateP2
+            = p2AssistingMonkParticipant.entityQuantity;
           assistingMonksP2 = true;
           justMonksP2      = false;
         }
@@ -515,14 +516,16 @@ void monkRounds::roundOutcome(
         // healing attempt and store the answer
         std::string calculationModeP1 = "0";
         std::cout << "<br>"
-                  << "Is " << player1Name << "'s monk performing a conversion (enter 0) or "
+                  << "Is " << player1Name
+                  << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
                   << "<br>";
         std::cin >> calculationModeP1;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP1 != "0") && (calculationModeP1 != "1")) {
-          std::cout << "Error: The input must be 0 or 1 for " << player1Name << "'s "
+          std::cout << "Error: The input must be 0 or 1 for " << player1Name
+                    << "'s "
                        "conversion/healing attempt"
                     << "<br>";
           exit(EXIT_FAILURE);
@@ -558,26 +561,22 @@ void monkRounds::roundOutcome(
           }
         }
 
-
-        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine civ bonus: +2 healing rate modifier)
-        if(inputP1Events[1] == 1){
-          if(calculationModeP1 == "1"){
+        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine
+        // civ bonus: +2 healing rate modifier)
+        if (inputP1Events[1] == 1) {
+          if (calculationModeP1 == "1") {
             conversionRatehealingRateP1 += 2;
           }
         }
 
+        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ
+        // bonus: Conversion rate modifier is -1)
 
-
-        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier is -1)
-
-
-
-        if(inputP2Events[40] == 1){
-          if(calculationModeP1 == "0"){
+        if (inputP2Events[40] == 1) {
+          if (calculationModeP1 == "0") {
             conversionRatehealingRateP1 -= 1;
           }
         }
-
 
         // Behaviour: Apply the effects of event 23
         if (inputP1Events[23] == 1) {
@@ -679,8 +678,6 @@ void monkRounds::roundOutcome(
           if (conversionRatehealingRateP1 <= d6DieRoll) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP1 = true;
-
-
           }
           else {
             // Behaviour: Return the fact that the attempt was unsuccessful
@@ -694,8 +691,9 @@ void monkRounds::roundOutcome(
             // Behaviour: Make sure that the conversion attempt is not being
             // applied to siege units
             if (p2BattleParticipant.armorClass[12] == true) {
-              std::cout << "Error: " << player1Name << "'s conversion attempt cannot be " <<
-                           "applied to " << player2Name << "'s siege unit"
+              std::cout << "Error: " << player1Name
+                        << "'s conversion attempt cannot be "
+                        << "applied to " << player2Name << "'s siege unit"
                         << "<br>";
               exit(EXIT_FAILURE);
             }
@@ -708,7 +706,7 @@ void monkRounds::roundOutcome(
             getTotalValues();
 
             // Play a SFX for a successful conversion attempt
-              // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
+            // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
           }
           else if (
             (monkPowersActivatedP1 == true) && (calculationModeP1 == "1")) {
@@ -732,7 +730,8 @@ void monkRounds::roundOutcome(
           else {
             // Behaviour: Return the fact that the attempt was unsusscessful
             monkPowersActivatedP1 = false;
-            std::cout << player1Name << "'s 'assisting' monk powers failed to activate"
+            std::cout << player1Name
+                      << "'s 'assisting' monk powers failed to activate"
                       << "<br>";
           }
 
@@ -744,8 +743,9 @@ void monkRounds::roundOutcome(
             std::string p1AssistingMonkTarget = "0";
 
             if (assistingMonksP1 == true) {
-              std::cout << "Is " << player1Name << "'s 'assistant monk' targeting " <<
-                player2Name << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
+              std::cout << "Is " << player1Name
+                        << "'s 'assistant monk' targeting " << player2Name
+                        << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
                         << "<br>";
               std::cin >> p1AssistingMonkTarget;
             }
@@ -765,8 +765,10 @@ void monkRounds::roundOutcome(
               // Behaviour: Make sure that the conversion attempt is not being
               // applied to siege units
               if (p2BattleParticipant.armorClass[12] == true) {
-                std::cout << "Error: " << player1Name << "'s conversion attempt cannot be "
-                             "applied to " << player2Name << "'s siege unit"
+                std::cout << "Error: " << player1Name
+                          << "'s conversion attempt cannot be "
+                             "applied to "
+                          << player2Name << "'s siege unit"
                           << "<br>";
                 exit(EXIT_FAILURE);
               }
@@ -803,14 +805,16 @@ void monkRounds::roundOutcome(
         // Behaviour: Ask the user if they are performing a conversion or
         // healing attempt and store the answer
         std::string calculationModeP2 = "0";
-        std::cout << "Is " << player2Name << "'s monk performing a conversion (enter 0) or "
+        std::cout << "Is " << player2Name
+                  << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
                   << "<br>";
         std::cin >> calculationModeP2;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP2 != "0") && (calculationModeP2 != "1")) {
-          std::cout << "Error: The input must be 0 or 1 for " << player2Name << "'s"
+          std::cout << "Error: The input must be 0 or 1 for " << player2Name
+                    << "'s"
                        "conversion/healing attempt"
                     << "<br>";
           exit(EXIT_FAILURE);
@@ -820,23 +824,22 @@ void monkRounds::roundOutcome(
         // proceeding
         d6DieRoll = generateD6DieInput();
 
+        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ
+        // bonus: Conversion rate modifier is -1)
 
-        // Behaviour: Apply the effects of Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier is -1)
-
-        if(inputP1Events[40] == 1){
-          if(calculationModeP2 == "0"){
+        if (inputP1Events[40] == 1) {
+          if (calculationModeP2 == "0") {
             conversionRatehealingRateP2 -= 1;
           }
         }
 
-        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine civ bonus: +2 healing rate modifier)
-        if(inputP2Events[1] == 1){
-          if(calculationModeP2 == "1"){
+        // Behaviour: Apply the effects of Back From A Foreign Land (Byzantine
+        // civ bonus: +2 healing rate modifier)
+        if (inputP2Events[1] == 1) {
+          if (calculationModeP2 == "1") {
             conversionRatehealingRateP2 += 2;
           }
         }
-
-
 
         if (inputP2Events[39] == 1) {
           // [39] Zealous Monks - Target Monk unit gets 1 conversion roll at a 3
@@ -958,10 +961,6 @@ void monkRounds::roundOutcome(
           }
         }
 
-
-
-
-
         // Behaviour: Cover the case where there are just monks
 
         if (justMonksP2 == true) {
@@ -981,8 +980,9 @@ void monkRounds::roundOutcome(
             // Behaviour: Make sure that the conversion attempt is not being
             // applied to siege units
             if (p1BattleParticipant.armorClass[12] == true) {
-              std::cout << "Error: " << player2Name << "'s conversion attempt cannot be " <<
-                        "applied to " << player1Name << "'s siege unit"
+              std::cout << "Error: " << player2Name
+                        << "'s conversion attempt cannot be "
+                        << "applied to " << player1Name << "'s siege unit"
                         << "<br>";
               exit(EXIT_FAILURE);
             }
@@ -1019,7 +1019,8 @@ void monkRounds::roundOutcome(
           else {
             // Behaviour: Return the fact that the attempt was unsusscessful
             monkPowersActivatedP2 = false;
-            std::cout << player2Name << "'s 'assisting' monk powers failed to activate"
+            std::cout << player2Name
+                      << "'s 'assisting' monk powers failed to activate"
                       << "<br>";
           }
 
@@ -1031,8 +1032,9 @@ void monkRounds::roundOutcome(
             std::string p2AssistingMonkTarget = "0";
 
             if (assistingMonksP2 == true) {
-              std::cout << "Is " << player2Name << "'s 'assistant monk' targeting " <<
-                player1Name << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
+              std::cout << "Is " << player2Name
+                        << "'s 'assistant monk' targeting " << player1Name
+                        << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
                         << "<br>";
               std::cin >> p2AssistingMonkTarget;
             }
@@ -1052,8 +1054,10 @@ void monkRounds::roundOutcome(
               // Behaviour: Make sure that the conversion attempt is not being
               // applied to siege units
               if (p1BattleParticipant.armorClass[12] == true) {
-                std::cout << "Error: " << player2Name << "'s conversion attempt cannot be "
-                                                         "applied to" << player1Name << "'s siege unit"
+                std::cout << "Error: " << player2Name
+                          << "'s conversion attempt cannot be "
+                             "applied to"
+                          << player1Name << "'s siege unit"
                           << "<br>";
                 exit(EXIT_FAILURE);
               }
@@ -1092,11 +1096,13 @@ void monkRounds::roundOutcome(
 
         // Behaviour: Display how many points were added if appropriate
         if (p2PointsLost != 0) {
-          std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
+          std::cout << ">> " << player1Name << " gets " << p2PointsLost
+                    << " points"
                     << "<br>";
         }
         if (p1PointsLost != 0) {
-          std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
+          std::cout << ">> " << player2Name << " gets " << p1PointsLost
+                    << " points"
                     << "<br>";
         }
 
@@ -1427,28 +1433,29 @@ void archerRounds::roundOutcome(
 
       // Behaviour: Display how many damage die to place if appropriate
       if (isP1FightingBuilding == true) {
-        if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
-          std::cout << ">> Place " << p2DamageDie
-                    << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "<br>";
+        if ((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)) {
+          std::cout << ">> Place " << p2DamageDie << " damage die onto "
+                    << player2Name << "'s " << p2BattleParticipant.entityName
+                    << "<br>";
         }
-
       }
       else if (isP2FightingBuilding == true) {
-        if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
-          std::cout << ">> Place " << p1DamageDie
-                    << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "<br>";
+        if ((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)) {
+          std::cout << ">> Place " << p1DamageDie << " damage die onto "
+                    << player1Name << "'s " << p1BattleParticipant.entityName
+                    << "<br>";
         }
       }
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost
+                  << " points"
                   << "<br>";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost
+                  << " points"
                   << "<br>";
       }
 
@@ -1480,11 +1487,11 @@ void archerRounds::roundOutcome(
       }
     }
     else {
-        /* No longer show if a phase is skipped to conserve space on the window
-      std::cout << "<br>"
-                << "Skipping Archer round " + std::to_string(i + 1)
-                     + " calculations..."
-                << "<br>";
+      /* No longer show if a phase is skipped to conserve space on the window
+    std::cout << "<br>"
+              << "Skipping Archer round " + std::to_string(i + 1)
+                   + " calculations..."
+              << "<br>";
 */
     }
   }
@@ -1763,27 +1770,29 @@ void bombardmentRounds::roundOutcome(
 
       // Behaviour: Display how many damage die to place if appropriate
       if (isP1FightingBuilding == true) {
-        if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
-          std::cout << ">> Place " << p2DamageDie
-                    << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "<br>";
+        if ((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)) {
+          std::cout << ">> Place " << p2DamageDie << " damage die onto "
+                    << player2Name << "'s " << p2BattleParticipant.entityName
+                    << "<br>";
         }
       }
       else if (isP2FightingBuilding == true) {
-        if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
-          std::cout << ">> Place " << p1DamageDie
-                    << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "<br>";
+        if ((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)) {
+          std::cout << ">> Place " << p1DamageDie << " damage die onto "
+                    << player1Name << "'s " << p1BattleParticipant.entityName
+                    << "<br>";
         }
       }
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost
+                  << " points"
                   << "<br>";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost
+                  << " points"
                   << "<br>";
       }
 
@@ -1920,13 +1929,6 @@ void standardRounds::roundOutcome(
     }
   }
 
-
-
-
-
-
-
-
   // Behaviour: Give the person who played the card more attack
   if (inputP1Events[35] == 1) {
     // [35] The Jester Is Dead, Let's Get Em (Celt) = Sacrifice 1 of your
@@ -2020,64 +2022,81 @@ void standardRounds::roundOutcome(
 
   // Behaviour: Run the standard battle round for X times
   for (int i = 0; i < inputRunTimes; i++) {
-     // Give the player who played the card a weakened defender
-    // [24] Black Knight: “Play this card when you are the attacking Cavalry unit.
-    // Two tokens on the defending unit have 0 AP for the first round of normal combat
-    if (inputP1Events[24] == 1){
+    // Give the player who played the card a weakened defender
+    // [24] Black Knight: “Play this card when you are the attacking Cavalry
+    // unit. Two tokens on the defending unit have 0 AP for the first round of
+    // normal combat
+    if (inputP1Events[24] == 1) {
       int getHowMuchAttackIndividualUnitsDo;
       int getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
 
       // If there's cavalry in play
-      if(p1BattleParticipant.armorClass[4]){
+      if (p1BattleParticipant.armorClass[4]) {
         // If it's round 1
-        if(i == 0){
-          // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
-          getHowMuchAttackIndividualUnitsDo = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
+        if (i == 0) {
+          // Do not re-calculate this value again in the second round or you're
+          // going to get a result that doesn't reflect the individual attack of
+          // the unit (it will be divided too much)
+          getHowMuchAttackIndividualUnitsDo
+            = (p2BattleParticipant.standardDamage / p2BattleParticipant.entityQuantity);
 
-          if(p2BattleParticipant.entityQuantity > 2){
-            getHowMuchAttackTheGroupDoesWithTwoLazyUnits = (p2BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo;
-            p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+          if (p2BattleParticipant.entityQuantity > 2) {
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits
+              = (p2BattleParticipant.entityQuantity - 2)
+                * getHowMuchAttackIndividualUnitsDo;
+            p2BattleParticipant.standardDamage
+              = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
           }
-          else{
+          else {
             getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
-            p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+            p2BattleParticipant.standardDamage
+              = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
           }
         }
         // If it's round 2
-        else if(i == 1){
-          p2BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo * p2BattleParticipant.entityQuantity;
+        else if (i == 1) {
+          p2BattleParticipant.standardDamage
+            = getHowMuchAttackIndividualUnitsDo
+              * p2BattleParticipant.entityQuantity;
         }
       }
     }
 
-    if (inputP2Events[24] == 1){
+    if (inputP2Events[24] == 1) {
       int getHowMuchAttackIndividualUnitsDo2;
       int getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
 
-             // If there's cavalry in play
-      if(p2BattleParticipant.armorClass[4]){
+      // If there's cavalry in play
+      if (p2BattleParticipant.armorClass[4]) {
         // If it's round 1
-        if(i == 0){
-          // Do not re-calculate this value again in the second round or you're going to get a result that doesn't reflect the individual attack of the unit (it will be divided too much)
-          getHowMuchAttackIndividualUnitsDo2 = (p1BattleParticipant.standardDamage / p1BattleParticipant.entityQuantity);
+        if (i == 0) {
+          // Do not re-calculate this value again in the second round or you're
+          // going to get a result that doesn't reflect the individual attack of
+          // the unit (it will be divided too much)
+          getHowMuchAttackIndividualUnitsDo2
+            = (p1BattleParticipant.standardDamage / p1BattleParticipant.entityQuantity);
 
-          if(p1BattleParticipant.entityQuantity > 2){
-            getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = (p1BattleParticipant.entityQuantity - 2) * getHowMuchAttackIndividualUnitsDo2;
-            p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
+          if (p1BattleParticipant.entityQuantity > 2) {
+            getHowMuchAttackTheGroupDoesWithTwoLazyUnits2
+              = (p1BattleParticipant.entityQuantity - 2)
+                * getHowMuchAttackIndividualUnitsDo2;
+            p1BattleParticipant.standardDamage
+              = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
           }
-          else{
+          else {
             getHowMuchAttackTheGroupDoesWithTwoLazyUnits2 = 0;
-            p1BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
+            p1BattleParticipant.standardDamage
+              = getHowMuchAttackTheGroupDoesWithTwoLazyUnits2;
           }
         }
         // If it's round 2
-        else if(i == 1){
-          p1BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo2 * p1BattleParticipant.entityQuantity;
+        else if (i == 1) {
+          p1BattleParticipant.standardDamage
+            = getHowMuchAttackIndividualUnitsDo2
+              * p1BattleParticipant.entityQuantity;
         }
       }
     }
-
-
 
     // Behaviour: Check if the remaining damage value triggers a death
     checkRemainingDamage(inputP1Events, inputP2Events);
@@ -2089,10 +2108,6 @@ void standardRounds::roundOutcome(
     standardRoundActivated = false;
     isP1FightingBuilding   = false;
     isP2FightingBuilding   = false;
-
-
-
-
 
     // Behaviour: Make sure that no deaths have occured and that the attacking
     // entity is not retreating before proceeding
@@ -2136,8 +2151,6 @@ void standardRounds::roundOutcome(
             roundAttackModifiersP1,
             p2BattleParticipant.entityHealth,
             0);
-
-
         }
         else {
           p2EntityDeaths = std::floor(
@@ -2209,9 +2222,6 @@ void standardRounds::roundOutcome(
     else {
       standardRoundActivated = false;
     }
-
-
-
 
     // Behaviour: Clear the results if the entity only attacks once (in the
     // first round of combat) and we are not in the 1st round
@@ -2292,10 +2302,9 @@ void standardRounds::roundOutcome(
             }
 
             // Update the quantity of the building
-              if(p2BattleParticipant.entityHealth < 0){
-                p2BattleParticipant.entityQuantity -= 1;
-              }
-
+            if (p2BattleParticipant.entityHealth < 0) {
+              p2BattleParticipant.entityQuantity -= 1;
+            }
           }
         }
         else {
@@ -2358,11 +2367,9 @@ void standardRounds::roundOutcome(
             }
 
             // Update the quantity of the building
-            if(p1BattleParticipant.entityHealth < 0){
+            if (p1BattleParticipant.entityHealth < 0) {
               p1BattleParticipant.entityQuantity -= 1;
             }
-
-
           }
         }
         else {
@@ -2429,34 +2436,35 @@ void standardRounds::roundOutcome(
     // Behaviour: Display the outcome of the archer combat round only if changes
     // occured
     if (standardRoundActivated == true) {
-      std::string outputString = "Standard round "
-                                 + std::to_string(i + 1) + " calculations...";
+      std::string outputString
+        = "Standard round " + std::to_string(i + 1) + " calculations...";
       outputEntityInformation(outputString);
 
       // Behaviour: Display how many damage die to place if appropriate
       if (isP1FightingBuilding == true) {
-        if((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)){
-          std::cout << ">> Place " << p2DamageDie
-                    << " damage die onto " << player2Name << "'s "
-                    << p2BattleParticipant.entityName << "<br>";
+        if ((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)) {
+          std::cout << ">> Place " << p2DamageDie << " damage die onto "
+                    << player2Name << "'s " << p2BattleParticipant.entityName
+                    << "<br>";
         }
       }
       else if (isP2FightingBuilding == true) {
-        if((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)){
-          std::cout << ">> Place " << p1DamageDie
-                    << " damage die onto " << player1Name << "'s "
-                    << p1BattleParticipant.entityName << "<br>";
+        if ((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)) {
+          std::cout << ">> Place " << p1DamageDie << " damage die onto "
+                    << player1Name << "'s " << p1BattleParticipant.entityName
+                    << "<br>";
         }
-
       }
 
       // Behaviour: Display how many points were added if appropriate
       if (p2PointsLost != 0) {
-        std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
+        std::cout << ">> " << player1Name << " gets " << p2PointsLost
+                  << " points"
                   << "<br>";
       }
       if (p1PointsLost != 0) {
-        std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
+        std::cout << ">> " << player2Name << " gets " << p1PointsLost
+                  << " points"
                   << "<br>";
       }
 

@@ -3,7 +3,6 @@
 
 #include "stream_buffer.h"
 
-
 StreamBuffer::StreamBuffer(
   std::ostream&             destination,
   std::function<void(char)> callback)
@@ -24,5 +23,5 @@ StreamBuffer::~StreamBuffer()
 int StreamBuffer::overflow(int ch)
 {
   m_callback(ch);
-  return m_destination->sputc(ch);
+  return traits_type::to_int_type(ch);
 }

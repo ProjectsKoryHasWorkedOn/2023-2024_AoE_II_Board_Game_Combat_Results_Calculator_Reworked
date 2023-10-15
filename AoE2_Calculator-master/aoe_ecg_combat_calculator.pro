@@ -36,7 +36,8 @@ SOURCES += \
     output_redirector.cpp \
     soundEffects.cpp \
     stream_buffer.cpp \
-    uicoloring.cpp
+    uicoloring.cpp \
+    user_input_handler.cpp
 
 HEADERS += \
     aboutwindow.h \
@@ -66,7 +67,8 @@ HEADERS += \
     player.h \
     soundEffects.h \
     stream_buffer.h \
-    uicoloring.h
+    uicoloring.h \
+    user_input_handler.h
 
 FORMS += \
     aboutwindow.ui \

@@ -8,7 +8,7 @@
 #include "csv/player_names.h"
 #include "csv/technologies.h"
 #include "output_redirector.h"
-#include "stream_buffer.h"
+#include "user_input_handler.h"
 
 #include <QDir>
 #include <QHash>
@@ -120,6 +120,7 @@ private:
 
   Ui::MainWindow     ui;
   OutputRedirector   m_outputRedirector;
+  UserInputHandler   m_userInputHandler;
   Aliases            m_aliases;
   QString            m_player1EntityName;
   QString            m_player2EntityName;

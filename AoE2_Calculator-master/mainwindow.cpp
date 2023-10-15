@@ -84,6 +84,7 @@ QStringList backFromAForeignLandCivilizationBonuses;
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
   , m_outputRedirector{std::cout, ui.gameOutputTextEdit}
+  , m_userInputHandler{}
   , m_aliases{}
   , m_entities{}
   , m_player_names{}
