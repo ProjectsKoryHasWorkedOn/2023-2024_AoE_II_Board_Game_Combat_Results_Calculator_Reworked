@@ -16,7 +16,6 @@ Entity::Entity()
   rangedDamage   = 0;
   garrisonValue  = 0;
   pointValue     = 0;
-  numberOfArmorClasses = 44;
   for (int i = 0; i < numberOfArmorClasses; i++) {
     armorClass[i] = false;
   }
@@ -2092,13 +2091,14 @@ void Entity::displayColorfulText(
   bool        isLineBreak)
 {
   // Variables: Store the color codes
-  std::string textDecorationValue = "none";
-  std::string fontWeightValue = "normal";
-  std::string textColorValue = "default";
+  std::string textDecorationValue  = "none";
+  std::string fontWeightValue      = "normal";
+  std::string textColorValue       = "default";
   std::string backgroundColorValue = "default";
 
-  // There are 19 predefined QColor objects: white, black, red, darkRed, green, darkGreen, blue, darkBlue, cyan, darkCyan, magenta, darkMagenta, yellow, darkYellow, gray, darkGray, lightGray
-  // Get error if hex code is used
+  // There are 19 predefined QColor objects: white, black, red, darkRed, green,
+  // darkGreen, blue, darkBlue, cyan, darkCyan, magenta, darkMagenta, yellow,
+  // darkYellow, gray, darkGray, lightGray Get error if hex code is used
   /*
    *
 QCssParser::parseHexColor: Unknown color name '#F'
@@ -2109,7 +2109,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
 
   // Behaviour: Convert the input text into a color code for the attribute
   if (inputFormatAttribute == "default" || inputFormatAttribute == "") {
-    fontWeightValue = "normal";
+    fontWeightValue     = "normal";
     textDecorationValue = "none";
   }
   else if (inputFormatAttribute == "bold") {
@@ -2118,8 +2118,8 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputFormatAttribute == "underlined") {
     textDecorationValue = "underline";
   }
-  else if(inputFormatAttribute == "bold_and_underlined"){
-    fontWeightValue = "bold";
+  else if (inputFormatAttribute == "bold_and_underlined") {
+    fontWeightValue     = "bold";
     textDecorationValue = "underline";
   }
   else {
@@ -2257,16 +2257,19 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
     // Behaviour: Do not add a line break
 
     std::cout << "<span style=\"text-decoration: " << textDecorationValue
-              << ";font-weight: " << fontWeightValue << ";color: " << textColorValue
+              << ";font-weight: " << fontWeightValue
+              << ";color: " << textColorValue
               << ";background-color: " << backgroundColorValue << "\">"
               << inputText << "</span>";
   }
   else {
     // Behaviour: Add a line break
     std::cout << "<span style=\"text-decoration: " << textDecorationValue
-              << ";font-weight: " << fontWeightValue << ";color: " << textColorValue
+              << ";font-weight: " << fontWeightValue
+              << ";color: " << textColorValue
               << ";background-color: " << backgroundColorValue << "\">"
-              << inputText << "</span>" << "<br>";
+              << inputText << "</span>"
+              << "<br>";
   }
 }
 
@@ -2274,8 +2277,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
 void Entity::outputEntity(std::string playerName)
 {
   // Behaviour: Display the player's name first (no matter what)
-  displayColorfulText(
-    "bold", "white", "default", playerName + "'s", false);
+  displayColorfulText("bold", "white", "default", playerName + "'s", false);
   std::cout << " ";
 
   // Behaviour: Check that the entity is not dead before proceeding
@@ -2351,10 +2353,11 @@ void Entity::outputEntity(std::string playerName)
     // Behaviour: Only display each armor class once and add a space after each
     // armor class except for the last class
 
-    // Don't have an armor class for "base melee" and "base pierce" as there's no armor stat in the board game
-    // Just attack bonuses
+    // Don't have an armor class for "base melee" and "base pierce" as there's
+    // no armor stat in the board game Just attack bonuses
 
-    // Could have fewer armor classes if I referred to entityName (e.g. for capped ram) instead of having an armor class for it in
+    // Could have fewer armor classes if I referred to entityName (e.g. for
+    // capped ram) instead of having an armor class for it in
     // modifiersCalculator.cpp
 
     for (int i = 0; i != entitiesArmorClasses; i++) {
@@ -2415,7 +2418,8 @@ void Entity::outputEntity(std::string playerName)
         displayedArmorClass[13] = true;
       }
       else if ((armorClass[14] == true) && (displayedArmorClass[14] == false)) {
-        displayColorfulText("bold", "white", "blue", "Standard_Building", false);
+        displayColorfulText(
+          "bold", "white", "blue", "Standard_Building", false);
         displayedArmorClass[14] = true;
       }
       else if ((armorClass[15] == true) && (displayedArmorClass[15] == false)) {

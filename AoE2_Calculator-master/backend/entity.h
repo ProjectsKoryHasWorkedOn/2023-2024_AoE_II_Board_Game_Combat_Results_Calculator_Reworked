@@ -16,13 +16,13 @@ struct Entity {
   int         rangedDamage;
   int         garrisonValue;
   int         pointValue;
-  int         numberOfArmorClasses;
-  bool        armorClass[44]; // numberOfArmorClasses = 44
-  bool        onlyAttacksInTheSecondRoundOfStandardCombat;
-  bool        onlyAttacksOnce;
-  bool        dealsAreaEffectDamage;
-  bool        isKamikaze;
-  int         entitiesArmorClasses;
+  static int constexpr numberOfArmorClasses = 44;
+  bool armorClass[44]; // numberOfArmorClasses = 44
+  bool onlyAttacksInTheSecondRoundOfStandardCombat;
+  bool onlyAttacksOnce;
+  bool dealsAreaEffectDamage;
+  bool isKamikaze;
+  int  entitiesArmorClasses;
 
   // Functions: The constructor and deconstructor
   Entity();
