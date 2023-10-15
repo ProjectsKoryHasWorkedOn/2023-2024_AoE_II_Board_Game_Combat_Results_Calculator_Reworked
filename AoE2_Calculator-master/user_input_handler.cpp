@@ -2,6 +2,8 @@
 
 #include "user_input_handler.h"
 
+// TODO: Get user input from a InputDialog
+// TODO: Put nice text in there from cout.
 class RedirectingStreamBuf : public std::streambuf {
 public:
   explicit RedirectingStreamBuf(std::streambuf* buf)
