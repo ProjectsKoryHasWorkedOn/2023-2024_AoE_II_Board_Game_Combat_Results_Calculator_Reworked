@@ -180,7 +180,7 @@ MainWindow::MainWindow(QWidget* parent)
               << "Elite Longboat (Viking)"
               << "Elite Longbowman (Briton)"
               << "Elite Mameluke (Saracen)"
-              << "Elite Manugdai (Mongol)"
+              << "Elite Mangudai (Mongol)"
               << "Elite Samurai (Japanese)"
               << "Elite Skirmisher"
               << "Elite Throwing Axeman (Frank)"

@@ -8,6 +8,7 @@
 #include <sstream>        // Using: stringstream
 #include <stdlib.h>       // Using: atoi
 #include <string>         // Using: string
+#include <unordered_map> // Using: std::unordered_map
 
 // Functions: The constructor and deconstructor
 fileImporter::fileImporter()
@@ -22,718 +23,200 @@ Entity fileImporter::conductASearch(
   std::string inputEntityName,
   int         inputEntityQuantity)
 {
+
+
   // Struct: Declare a blank entity to store the return information
   Entity returnEntity;
 
+  std::unordered_map<std::string, Entity> map =
+    {
+      {"ARCHER", Archer{}},
+      {"ARCHER_(SARACEN)", Archer_Saracen{}},
+      {"ARBALEST", Arbalest{}},
+      {"ARBALEST_(BRITON)", Arbalest_Briton{}},
+      {"ARBALEST_(SARACEN)", Arbalest_Saracen{}},
+      {"ARCHERY_RANGE", Archery_Range{}},
+      {"BARRACKS", Barracks{}},
+      {"BATTERING_RAM", Battering_Ram{}},
+      {"BATTERING_RAM", Battering_Ram_Celt{}},
+      {"BERSERK_(VIKING)", Berserk_Viking{}},
+      {"BLACKSMITH", Blacksmith{}},
+      {"CAPPED_RAM", Capped_Ram{}},
+      {"CAPPED_RAM_(CELT)", Capped_Ram_Celt{}},
+      {"CASTLE", Castle{}},
+      {"CASTLE_(FRANK)", Castle_Frank{}},
+      {"CAVALIER", Cavalier{}},
+      {"CAVALIER_(FRANK)", Cavalier_Frank{}},
+      {"CAVALIER_(PERSIAN)", Cavalier_Persian{}},
+      {"CAVALRY_ARCHER", Cavalry_Archer{}},
+      {"CAVALRY_ARCHER_(MONGOL)", Cavalry_Archer_Mongol{}},
+      {"CHAMPION", Champion{}},
+      {"CHAMPION_(CELT)", Champion_Celt{}},
+      {"CHAMPION_(GOTH)", Champion_Goth{}},
+      {"CHAMPION_(JAPANESE)", Champion_Japanese{}},
+      {"CHAMPION_(VIKING)", Champion_Viking{}},
+      {"CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)", Wonder{}},
+      {"ROCK_OF_CASHEL_(CELT)", Wonder{}},
+      {"THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)", Wonder{}},
+      {"THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)", Wonder{}},
+      {"TOMB_OF_THEODORIC_(GOTH)", Wonder{}},
+      {"NOTRE-DAME_CATHEDRAL_(FRANK)", Wonder{}},
+      {"STAVE_CHURCH_AT_URNES_(VIKING)", Wonder{}},
+      {"THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)", Wonder{}},
+      {"CROSSBOWMAN", Crossbowman{}},
+      {"CROSSBOWMAN_(SARACEN)", Crossbowman_Saracen{}},
+      {"DEMOLITION_SHIP", Demolition_Ship{}},
+      {"DEMOLITION_SHIP_(VIKING)", Demolition_Ship_Viking{}},
+      {"DOCK", Dock{}},
+      {"DOCK_(PERSIAN)", Dock_Persian{}},
+      {"DOCK_(VIKING)", Dock_Viking{}},
+      {"ELITE_BERSERK_(VIKING)", Elite_Berserk_Viking{}},
+      {"ELITE_HUSKARL_(GOTH)", Elite_Huskarl_Goth{}},
+      {"ELITE_LONGBOAT_(VIKING)", Elite_Longboat_Viking{}},
+    {"ELITE_LONGBOWMAN_(Briton)", Elite_Longbowman_Briton{}},
+    {"ELITE_MAMELUKE_(SARACEN)", Elite_Mameluke_Saracen{}},
+    {"ELITE_MANGUDAI_(MONGOL)", Elite_Mangudai_Mongol{}},
+    {"ELITE_SAMURAI_(JAPANESE)", Elite_Samurai_Japanese{}},
+    {"ELITE_SKIRMISHER", Elite_Skirmisher{}},
+    {"ELITE_THROWING_AXEMAN_(FRANK)", Elite_Throwing_Axeman_Frank{}},
+    {"ELITE_WAR_ELEPHANT_(PERSIAN)", Elite_War_Elephant_Persian{}},
+    {"ELITE_WOAD_RAIDER_(CELT)", Elite_Woad_Raider_Celt{}},
+    {"FARM", Farm{}},
+    {"FAST_FIRE_SHIP", Fast_Fire_Ship{}},
+    {"FIRE_SHIP", Fire_Ship{}},
+    {"FISHING_SHIP_(JAPANESE)", Fishing_Ship_Japanese{}},
+    {"FISHING_SHIP_(PERSIAN)", Fishing_Ship_Persian{}},
+    {"FORTIFIED_WALL", Fortified_Wall{}},
+    {"GALLEY", Galley{}},
+    {"GALLEY_(JAPANESE)", Galley_Japanese{}},
+    {"GALLEY_(SARACEN)", Galley_Saracen{}},
+    {"GALLEY_(VIKING)", Galley_Viking{}},
+    {"HERO", Hero{}},
+    {"STONE_GATE", Stone_Gate{}},
+    {"GALLEON", Galleon{}},
+    {"GALLEON_(SARACEN)", Galleon_Saracen{}},
+    {"GALLEON_(VIKING)", Galleon_Viking{}},
+    {"GALLEON_(JAPANESE)", Galleon_Japanese{}},
+    {"GOLD_MINE", Gold_Mine{}},
+    {"GOLD_MINE_(JAPANESE)", Gold_Mine_Japanese{}},
+    {"CAMEL", Camel{}},
+    {"HEAVY_CAMEL", Heavy_Camel{}},
+    {"HEAVY_CAVALRY_ARCHER", Heavy_Cavalry_Archer{}},
+    {"HEAVY_CAVALRY_ARCHER_(MONGOL)", Heavy_Cavalry_Archer_Mongol{}},
+    {"HEAVY_CAVALRY_ARCHER_(SARACEN)", Heavy_Cavalry_Archer_Saracen{}},
+    {"HEAVY_DEMOLITION_SHIP", Heavy_Demolition_Ship{}},
+    {"HEAVY_DEMOLITION_SHIP_(VIKING)", Heavy_Demolition_Ship_Viking{}},
+    {"HEAVY_SCORPION", Heavy_Scorpion{}},
+    {"HEAVY_SCORPION_(CELT)", Heavy_Scorpion_Celt{}},
+    {"HOUSE", House{}},
+    {"HUSKARL_(GOTH)", Huskarl_Goth{}},
+    {"KNIGHT", Knight{}},
+    {"KNIGHT_(FRANK)", Knight_Frank{}},
+    {"KNIGHT_(PERSIAN)", Knight_Persian{}},
+    {"LIGHT_CAVALRY", Light_Cavalry{}},
+    {"LIGHT_CAVALRY_(MONGOL)", Light_Cavalry_Mongol{}},
+    {"LONG_SWORDSMAN", Long_Swordsman{}},
+    {"LONG_SWORDSMAN_(CELT)", Long_Swordsman_Celt{}},
+    {"LONG_SWORDSMAN_(GOTH)", Long_Swordsman_Goth{}},
+    {"LONG_SWORDSMAN_(JAPANESE)", Long_Swordsman_Japanese{}},
+    {"LONG_SWORDSMAN_(VIKING)", Long_Swordsman_Viking{}},
+    {"LONGBOAT_(VIKING)", Longboat_Viking{}},
+    {"LONGBOWMAN_(BRITON)", Longbowman_Briton{}},
+    {"LUMBER_CAMP", Lumber_Camp{}},
+    {"LUMBER_CAMP_(JAPANESE)", Lumber_Camp_Japanese{}},
+    {"MAMELUKE_(SARACEN)", Mameluke_Saracen{}},
+    {"MAN-AT-ARMS", Man_At_Arms{}},
+    {"MAN_AT_ARMS_(VIKING)", Man_At_Arms_Viking{}},
+    {"MAN_AT_ARMS_(CELT)", Man_At_Arms_Celt{}},
+    {"MAN_AT_ARMS_(GOTH)", Man_At_Arms_Goth{}},
+    {"MAN_AT_ARMS_(JAPANESE)", Man_At_Arms_Japanese{}},
+    {"MANGONEL", Mangonel{}},
+    {"MANGONEL_(CELT)", Mangonel_Celt{}},
+    {"MANGUDAI_(MONGOL)", Mangudai_Mongol{}},
+    {"MARKET", Market{}},
+    {"MARKET_(SARACEN)", Market_Saracen{}},
+    {"MILITIA", Militia{}},
+    {"MILITIA_(CELT)", Militia_Celt{}},
+    {"MILITIA_(GOTH)", Militia_Goth{}},
+    {"MILL", Mill{}},
+    {"MILL_(JAPANESE)", Mill_Japanese{}},
+    {"MONASTERY", Monastery{}},
+    {"MONK", Monk{}},
+    {"ONAGER", Onager{}},
+    {"ONAGER_(CELT)", Onager_Celt{}},
+    {"OUTPOST", Outpost{}},
+    {"PALADIN", Paladin{}},
+    {"PALADIN_(PERSIAN)", Paladin_Persian{}},
+    {"PALADIN_(FRANK)", Paladin_Frank{}},
+    {"PALISADE_WALL", Palisade_Wall{}},
+    {"PIKEMAN", Pikeman{}},
+    {"PIKEMAN_(CELT)", Pikeman_Celt{}},
+    {"PIKEMAN_(GOTH)", Pikeman_Goth{}},
+    {"PIKEMAN_(JAPANESE)", Pikeman_Japanese{}},
+    {"PIKEMAN_(VIKING)", Pikeman_Viking{}},
+    {"SAMURAI_(JAPANESE)", Samurai_Japanese{}},
+    {"SCORPION", Scorpion{}},
+    {"SCORPION_(CELT)", Scorpion_Celt{}},
+    {"SCOUT_CAVALRY", Scout_Cavalry{}},
+    {"SIEGE_ONAGER", Siege_Onager{}},
+    {"SIEGE_ONAGER_(CELT)", Siege_Onager_Celt{}},
+    {"SIEGE_RAM", Siege_Ram{}},
+    {"SIEGE_RAM_(CELT)", Long_Swordsman{}},
+    {"SIEGE_WORKSHOP", Siege_Workshop{}},
+    {"SKIRMISHER", Skirmisher{}},
+    {"SPEARMAN", Spearman{}},
+    {"SPEARMAN_(JAPANESE)", Spearman_Japanese{}},
+    {"SPEARMAN_(VIKING)", Spearman_Viking{}},
+    {"SPEARMAN_(CELT)", Spearman_Celt{}},
+    {"SPEARMAN_(GOTH)", Spearman_Goth{}},
+    {"STABLE", Stable{}},
+    {"STONE_MINE", Stone_Mine{}},
+    {"STONE_MINE_(JAPANESE)", Stone_Mine_Japanese{}},
+    {"STONE_WALL", Stone_Wall{}},
+    {"THROWING_AXEMAN_(FRANK)", Throwing_Axeman_Frank{}},
+    {"TOWN_CENTER", Town_Center{}},
+    {"TOWN_CENTER_(BRITON)", Town_Center_Briton{}},
+    {"TOWN_CENTER_(PERSIAN)", Town_Center_Persian{}},
+    {"TRADE_COG", Trade_Cog{}},
+    {"TREBUCHET", Trebuchet{}},
+    {"TWO-HANDED_SWORDSMAN", Two_Handed_Swordsman{}},
+    {"TWO-HANDED_SWORDSMAN_(CELT)", Two_Handed_Swordsman_Celt{}},
+    {"TWO-HANDED_SWORDSMAN_(GOTH)", Two_Handed_Swordsman_Goth{}},
+    {"TWO-HANDED_SWORDSMAN_(JAPANESE)", Two_Handed_Swordsman_Japanese{}},
+    {"TWO-HANDED_SWORDSMAN_(VIKING)", Two_Handed_Swordsman_Viking{}},
+    {"VILLAGER", Villager{}},
+    {"WAR_ELEPHANT_(PERSIAN)", War_Elephant_Persian{}},
+    {"WAR_GALLEY", War_Galley{}},
+    {"WAR_GALLEY_(JAPANESE)", War_Galley_Japanese{}},
+    {"WAR_GALLEY_(SARACEN)", War_Galley_Saracen{}},
+    {"WAR_GALLEY_(VIKING)", War_Galley_Viking{}},
+    {"WATCH_TOWER", Watch_Tower{}},
+    {"WOAD_RAIDER_(CELT)", Woad_Raider_Celt{}}
+    };
+
+
+   returnEntity = map[inputEntityName];
+
+
+   // @ PHillip could perhaps do this more eleganty with map function?
+   // Behaviour: if it's a trebuchet, get further information about the Trebuchet
+   if(inputEntityName == "Trebuchet"){
+     Trebuchet returnTrebuchet;
+     returnTrebuchet.updateTrebuchetArmorClass();
+     returnEntity = returnTrebuchet;
+   }
+
+
+   // Behaviour: if it's a wonder, get further information about the Wonder
+   if(returnEntity.entityName == "Wonder"){
+     Wonder returnWonder;
+     returnWonder.updateWonderHP();
+     returnEntity = returnWonder;
+   }
+
+
   // Behaviour: Search for the input entity name and return the associated
   // entity
-  if (inputEntityName == "ARCHER") {
-    Archer returnArcher;
-    returnEntity = returnArcher;
-  }
-  else if (inputEntityName == "ARCHER_(SARACEN)") {
-    Archer_Saracen returnArcherSaracen;
-    returnEntity = returnArcherSaracen;
-  }
-  else if (inputEntityName == "ARBALEST") {
-    Arbalest returnArbalest;
-    returnEntity = returnArbalest;
-  }
-  else if (inputEntityName == "ARBALEST_(BRITON)") {
-    Arbalest_Briton returnArbalestBriton;
-    returnEntity = returnArbalestBriton;
-  }
-  else if (inputEntityName == "ARBALEST_(SARACEN)") {
-    Arbalest_Saracen returnArbalestSaracen;
-    returnEntity = returnArbalestSaracen;
-  }
-  else if (inputEntityName == "ARCHERY_RANGE") {
-    Archery_Range returnArcheryRange;
-    returnEntity = returnArcheryRange;
-  }
-  else if (inputEntityName == "BARRACKS") {
-    Barracks returnBarracks;
-    returnEntity = returnBarracks;
-  }
-  else if (inputEntityName == "BATTERING_RAM") {
-    Battering_Ram returnBatteringRam;
-    returnEntity = returnBatteringRam;
-  }
-  else if (inputEntityName == "BATTERING_RAM_(CELT)") {
-    Battering_Ram_Celt returnBatteringRamCelt;
-    returnEntity = returnBatteringRamCelt;
-  }
-  else if (inputEntityName == "BERSERK_(VIKING)") {
-    Berserk_Viking returnBerserkViking;
-    returnEntity = returnBerserkViking;
-  }
-  else if (inputEntityName == "BLACKSMITH") {
-    Blacksmith returnBlacksmith;
-    returnEntity = returnBlacksmith;
-  }
-  else if (inputEntityName == "CAPPED_RAM") {
-    Capped_Ram returnCappedRam;
-    returnEntity = returnCappedRam;
-  }
-  else if (inputEntityName == "CAPPED_RAM_(CELT)") {
-    Capped_Ram_Celt returnCappedRamCelt;
-    returnEntity = returnCappedRamCelt;
-  }
-  else if (inputEntityName == "CASTLE") {
-    Castle returnCastle;
-    returnEntity = returnCastle;
-  }
-  else if (inputEntityName == "CASTLE_(FRANK)") {
-    Castle_Frank returnCastleFrank;
-    returnEntity = returnCastleFrank;
-  }
-  else if (inputEntityName == "CAVALIER") {
-    Cavalier returnCavalier;
-    returnEntity = returnCavalier;
-  }
-  else if (inputEntityName == "CAVALIER_(FRANK)") {
-    Cavalier_Frank returnCavalierFrank;
-    returnEntity = returnCavalierFrank;
-  }
-  else if (inputEntityName == "CAVALIER_(PERSIAN)") {
-    Cavalier_Persian returnCavalierPersian;
-    returnEntity = returnCavalierPersian;
-  }
-  else if (inputEntityName == "CAVALRY_ARCHER") {
-    Cavalry_Archer returnCavalryArcher;
-    returnEntity = returnCavalryArcher;
-  }
-  else if (inputEntityName == "CAVALRY_ARCHER_(MONGOL)") {
-    Cavalry_Archer_Mongol returnCavalryArcherMongol;
-    returnEntity = returnCavalryArcherMongol;
-  }
-  else if (inputEntityName == "CHAMPION") {
-    Champion returnChampion;
-    returnEntity = returnChampion;
-  }
-  else if (inputEntityName == "CHAMPION_(CELT)") {
-    Champion_Celt returnChampionCelt;
-    returnEntity = returnChampionCelt;
-  }
-  else if (inputEntityName == "CHAMPION_(GOTH)") {
-    Champion_Goth returnChampionGoth;
-    returnEntity = returnChampionGoth;
-  }
-  else if (inputEntityName == "CHAMPION_(JAPANESE)") {
-    Champion_Japanese returnChampionJapanese;
-    returnEntity = returnChampionJapanese;
-  }
-  else if (inputEntityName == "CHAMPION_(VIKING)") {
-    Champion_Viking returnChampionViking;
-    returnEntity = returnChampionViking;
-  }
-  else if (
-    (inputEntityName == "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)")
-    || (inputEntityName == "WONDER_(BRITON)")
-    || (inputEntityName == "ROCK_OF_CASHEL_(CELT)")
-    || (inputEntityName == "WONDER_(CELT)")
-    || (inputEntityName == "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)")
-    || (inputEntityName == "WONDER_(MONGOL)")
-    || (inputEntityName == "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)")
-    || (inputEntityName == "WONDER_(PERSIAN)")
-    || (inputEntityName == "TOMB_OF_THEODORIC_(GOTH)")
-    || (inputEntityName == "WONDER_(GOTH)")
-    || (inputEntityName == "NOTRE-DAME_CATHEDRAL_(FRANK)")
-    || (inputEntityName == "NOTRE_DAME_CATHEDRAL_(FRANK)")
-    || (inputEntityName == "WONDER_(FRANK)")
-    || (inputEntityName == "STAVE_CHURCH_AT_URNES_(VIKING)")
-    || (inputEntityName == "WONDER_(VIKING)")
-    || (inputEntityName == "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)")
-    || (inputEntityName == "WONDER_(JAPANESE)")
-    || (inputEntityName == "WONDER")) {
-    Wonder returnWonder;
-
-    // Behaviour: Get further information about the Wonder
-    returnWonder.updateWonderHP();
-
-    returnEntity = returnWonder;
-  }
-  else if (inputEntityName == "CROSSBOWMAN") {
-    Crossbowman returnCrossbowman;
-    returnEntity = returnCrossbowman;
-  }
-  else if (inputEntityName == "CROSSBOWMAN_(SARACEN)") {
-    Crossbowman_Saracen returnCrossbowmanSaracen;
-    returnEntity = returnCrossbowmanSaracen;
-  }
-  else if (inputEntityName == "DEMOLITION_SHIP") {
-    Demolition_Ship returnDemolitionShip;
-    returnEntity = returnDemolitionShip;
-  }
-  else if (inputEntityName == "DEMOLITION_SHIP_(VIKING)") {
-    Demolition_Ship_Viking returnDemolitionShipViking;
-    returnEntity = returnDemolitionShipViking;
-  }
-  else if (inputEntityName == "DOCK") {
-    Dock returnDock;
-    returnEntity = returnDock;
-  }
-  else if (inputEntityName == "DOCK_(PERSIAN)") {
-    Dock_Persian returnDockPersian;
-    returnEntity = returnDockPersian;
-  }
-  else if (inputEntityName == "DOCK_(VIKING)") {
-    Dock_Viking returnDockViking;
-    returnEntity = returnDockViking;
-  }
-  else if (inputEntityName == "ELITE_BERSERK_(VIKING)") {
-    Elite_Berserk_Viking returnEliteBerserkViking;
-    returnEntity = returnEliteBerserkViking;
-  }
-  else if (inputEntityName == "ELITE_HUSKARL_(GOTH)") {
-    Elite_Huskarl_Goth returnEliteHuskarlGoth;
-    returnEntity = returnEliteHuskarlGoth;
-  }
-  else if (inputEntityName == "ELITE_LONGBOAT_(VIKING)") {
-    Elite_Longboat_Viking returnEliteLongboatViking;
-    returnEntity = returnEliteLongboatViking;
-  }
-  else if (inputEntityName == "ELITE_LONGBOWMAN_(Briton)") {
-    Elite_Longbowman_Briton returnEliteLongbowmanBriton;
-    returnEntity = returnEliteLongbowmanBriton;
-  }
-  else if (inputEntityName == "ELITE_MAMELUKE_(SARACEN)") {
-    Elite_Mameluke_Saracen returnEliteMamelukeSaracen;
-    returnEntity = returnEliteMamelukeSaracen;
-  }
-  else if (inputEntityName == "ELITE_MANGUDAI_(MONGOL)") {
-    Elite_Mangudai_Mongol returnEliteMangudaiMongol;
-    returnEntity = returnEliteMangudaiMongol;
-  }
-  else if (inputEntityName == "ELITE_SAMURAI_(JAPANESE)") {
-    Elite_Samurai_Japanese returnEliteSamurai;
-    returnEntity = returnEliteSamurai;
-  }
-  else if (inputEntityName == "ELITE_SKIRMISHER") {
-    Elite_Skirmisher returnEliteSkirmisher;
-    returnEntity = returnEliteSkirmisher;
-  }
-  else if (inputEntityName == "ELITE_THROWING_AXEMAN_(FRANK)") {
-    Elite_Throwing_Axeman_Frank returnEliteThrowingAxemanFrank;
-    returnEntity = returnEliteThrowingAxemanFrank;
-  }
-  else if (inputEntityName == "ELITE_WAR_ELEPHANT_(PERSIAN)") {
-    Elite_War_Elephant_Persian returnEliteWarElephantPersian;
-    returnEntity = returnEliteWarElephantPersian;
-
-    // Behaviour: The current entity is limited to 1 token per card
-    if (inputEntityQuantity != 1) {
-      std::cout << "Error: " << returnEntity.entityName
-                << " can only be of 1 quantity"
-                << "\n";
-      exit(EXIT_FAILURE);
-    }
-  }
-  else if (inputEntityName == "ELITE_WOAD_RAIDER_(CELT)") {
-    Elite_Woad_Raider_Celt returnEliteWoadRaiderCelt;
-    returnEntity = returnEliteWoadRaiderCelt;
-  }
-  else if (inputEntityName == "FARM") {
-    Farm returnFarm;
-    returnEntity = returnFarm;
-  }
-  else if (inputEntityName == "FAST_FIRE_SHIP") {
-    Fast_Fire_Ship returnFastFireShip;
-    returnEntity = returnFastFireShip;
-  }
-  else if (inputEntityName == "FIRE_SHIP") {
-    Fire_Ship returnFireShip;
-    returnEntity = returnFireShip;
-  }
-  else if (inputEntityName == "FISHING_SHIP_(JAPANESE)") {
-    Fishing_Ship_Japanese returnFishingShipJapanese;
-    returnEntity = returnFishingShipJapanese;
-  }
-  else if (inputEntityName == "FISHING_SHIP_(PERSIAN)") {
-    Fishing_Ship_Persian returnFishingShipPersian;
-    returnEntity = returnFishingShipPersian;
-  }
-  else if (inputEntityName == "FORTIFIED_WALL") {
-    Fortified_Wall returnFortifiedWall;
-    returnEntity = returnFortifiedWall;
-  }
-  else if (inputEntityName == "GALLEY") {
-    Galley returnGalley;
-    returnEntity = returnGalley;
-  }
-  else if (inputEntityName == "GALLEY_(JAPANESE)") {
-    Galley_Japanese returnGalleyJapanese;
-    returnEntity = returnGalleyJapanese;
-  }
-  else if (inputEntityName == "GALLEY_(SARACEN)") {
-    Galley_Saracen returnGalleySaracen;
-    returnEntity = returnGalleySaracen;
-  }
-  else if (inputEntityName == "GALLEY_(VIKING)") {
-    Galley_Viking returnGalleyViking;
-    returnEntity = returnGalleyViking;
-  }
-  else if (inputEntityName == "HERO") {
-    Hero returnHero;
-    returnEntity = returnHero;
-
-    // Behaviour: The current entity is limited to 1 token per card
-    if (inputEntityQuantity != 1) {
-      std::cout << "Error: " << returnEntity.entityName
-                << " can only be of 1 quantity"
-                << "\n";
-      exit(EXIT_FAILURE);
-    }
-  }
-  else if (inputEntityName == "STONE_GATE") {
-    Stone_Gate returnStoneGate;
-    returnEntity = returnStoneGate;
-  }
-  else if (inputEntityName == "GALLEON") {
-    Galleon returnGalleon;
-    returnEntity = returnGalleon;
-  }
-  else if (inputEntityName == "GALLEON_(SARACEN)") {
-    Galleon_Saracen returnGalleonSaracen;
-    returnEntity = returnGalleonSaracen;
-  }
-  else if (inputEntityName == "GALLEON_(VIKING)") {
-    Galleon_Viking returnGalleonViking;
-    returnEntity = returnGalleonViking;
-  }
-  else if (inputEntityName == "GALLEON_(JAPANESE)") {
-    Galleon_Japanese returnGalleonJapanese;
-    returnEntity = returnGalleonJapanese;
-  }
-  else if (inputEntityName == "GOLD_MINE") {
-    Gold_Mine returnGoldMine;
-    returnEntity = returnGoldMine;
-  }
-  else if (inputEntityName == "GOLD_MINE_(JAPANESE)") {
-    Gold_Mine_Japanese returnGoldMineJapanese;
-    returnEntity = returnGoldMineJapanese;
-  }
-  else if (inputEntityName == "CAMEL") {
-    Camel returnCamel;
-    returnEntity = returnCamel;
-  }
-  else if (inputEntityName == "HEAVY_CAMEL") {
-    Heavy_Camel returnHeavyCamel;
-    returnEntity = returnHeavyCamel;
-  }
-  else if (inputEntityName == "HEAVY_CAVALRY_ARCHER") {
-    Heavy_Cavalry_Archer returnHeavyCavalryArhcer;
-    returnEntity = returnHeavyCavalryArhcer;
-  }
-  else if (inputEntityName == "HEAVY_CAVALRY_ARCHER_(MONGOL)") {
-    Heavy_Cavalry_Archer_Mongol returnHeavyCavalryArcherMongol;
-    returnEntity = returnHeavyCavalryArcherMongol;
-  }
-  else if (inputEntityName == "HEAVY_CAVALRY_ARCHER_(SARACEN)") {
-    Heavy_Cavalry_Archer_Saracen returnHeavyCavalryArcherSaracen;
-    returnEntity = returnHeavyCavalryArcherSaracen;
-  }
-  else if (inputEntityName == "HEAVY_DEMOLITION_SHIP") {
-    Heavy_Demolition_Ship returnHeavyDemolitionShip;
-    returnEntity = returnHeavyDemolitionShip;
-  }
-  else if (inputEntityName == "HEAVY_DEMOLITION_SHIP_(VIKING)") {
-    Heavy_Demolition_Ship_Viking returnHeavyDemolitionShipViking;
-    returnEntity = returnHeavyDemolitionShipViking;
-  }
-  else if (inputEntityName == "HEAVY_SCORPION") {
-    Heavy_Scorpion returnHeavyScorpion;
-    returnEntity = returnHeavyScorpion;
-  }
-  else if (inputEntityName == "HEAVY_SCORPION_(CELT)") {
-    Heavy_Scorpion_Celt returnHeavyScorpionCelt;
-    returnEntity = returnHeavyScorpionCelt;
-  }
-  else if (inputEntityName == "HOUSE") {
-    House returnHouse;
-    returnEntity = returnHouse;
-  }
-  else if (inputEntityName == "HUSKARL_(GOTH)") {
-    Huskarl_Goth returnHuskarlGoth;
-    returnEntity = returnHuskarlGoth;
-  }
-  else if (inputEntityName == "KNIGHT") {
-    Knight returnKnight;
-    returnEntity = returnKnight;
-  }
-  else if (inputEntityName == "KNIGHT_(FRANK)") {
-    Knight_Frank returnKnightFrank;
-    returnEntity = returnKnightFrank;
-  }
-  else if (inputEntityName == "KNIGHT_(PERSIAN)") {
-    Knight_Persian returnKnightPersian;
-    returnEntity = returnKnightPersian;
-  }
-  else if (inputEntityName == "LIGHT_CAVALRY") {
-    Light_Cavalry returnLightCavalry;
-    returnEntity = returnLightCavalry;
-  }
-  else if (inputEntityName == "LIGHT_CAVALRY_(MONGOL)") {
-    Light_Cavalry_Mongol returnLightCavalryMongol;
-    returnEntity = returnLightCavalryMongol;
-  }
-  else if (inputEntityName == "LONG_SWORDSMAN") {
-    Long_Swordsman returnLongSwordsman;
-    returnEntity = returnLongSwordsman;
-  }
-  else if (inputEntityName == "LONG_SWORDSMAN_(CELT)") {
-    Long_Swordsman_Celt returnLongSwordsmanCelt;
-    returnEntity = returnLongSwordsmanCelt;
-  }
-  else if (inputEntityName == "LONG_SWORDSMAN_(GOTH)") {
-    Long_Swordsman_Goth returnLongSwordsmanGoth;
-    returnEntity = returnLongSwordsmanGoth;
-  }
-  else if (inputEntityName == "LONG_SWORDSMAN_(JAPANESE)") {
-    Long_Swordsman_Japanese returnLongSwordsmanJapanese;
-    returnEntity = returnLongSwordsmanJapanese;
-  }
-  else if (inputEntityName == "LONG_SWORDSMAN_(VIKING)") {
-    Long_Swordsman_Viking returnLongswordsmanViking;
-    returnEntity = returnLongswordsmanViking;
-  }
-  else if (inputEntityName == "LONGBOAT_(VIKING)") {
-    Longboat_Viking returnLongboatViking;
-    returnEntity = returnLongboatViking;
-  }
-  else if (inputEntityName == "LONGBOWMAN_(BRITON)") {
-    Longbowman_Briton returnLongbowmanBriton;
-    returnEntity = returnLongbowmanBriton;
-  }
-  else if (inputEntityName == "LUMBER_CAMP") {
-    Lumber_Camp returnLumberCamp;
-    returnEntity = returnLumberCamp;
-  }
-  else if (inputEntityName == "LUMBER_CAMP_(JAPANESE)") {
-    Lumber_Camp_Japanese returnLumberCampJapanese;
-    returnEntity = returnLumberCampJapanese;
-  }
-  else if (inputEntityName == "MAMELUKE_(SARACEN)") {
-    Mameluke_Saracen returnMamelukeSaracen;
-    returnEntity = returnMamelukeSaracen;
-  }
-  else if (
-    (inputEntityName == "MAN_AT_ARMS") || (inputEntityName == "MAN-AT-ARMS")) {
-    Man_At_Arms returnManAtArms;
-    returnEntity = returnManAtArms;
-  }
-  else if (
-    (inputEntityName == "MAN_AT_ARMS_(VIKING)")
-    || (inputEntityName == "MAN-AT-ARMS_(VIKING)")) {
-    Man_At_Arms_Viking returnManAtArmsViking;
-    returnEntity = returnManAtArmsViking;
-  }
-  else if (
-    (inputEntityName == "MAN_AT_ARMS_(CELT)")
-    || (inputEntityName == "MAN-AT-ARMS_(CELT)")) {
-    Man_At_Arms_Celt returnManAtArmsCelt;
-    returnEntity = returnManAtArmsCelt;
-  }
-  else if (
-    (inputEntityName == "MAN_AT_ARMS_(GOTH)")
-    || (inputEntityName == "MAN-AT-ARMS_(GOTH)")) {
-    Man_At_Arms_Goth returnManAtArmsGoth;
-    returnEntity = returnManAtArmsGoth;
-  }
-  else if (
-    (inputEntityName == "MAN_AT_ARMS_(JAPANESE)")
-    || (inputEntityName == "MAN-AT-ARMS_(JAPANESE)")) {
-    Man_At_Arms_Japanese returnManAtArmsJapanese;
-    returnEntity = returnManAtArmsJapanese;
-  }
-  else if (inputEntityName == "MANGONEL") {
-    Mangonel returnMangonel;
-    returnEntity = returnMangonel;
-  }
-  else if (inputEntityName == "MANGONEL_(CELT)") {
-    Mangonel_Celt returnMangonelCelt;
-    returnEntity = returnMangonelCelt;
-  }
-  else if (inputEntityName == "MANGUDAI_(MONGOL)") {
-    Mangudai_Mongol returnMangudaiMongol;
-    returnEntity = returnMangudaiMongol;
-  }
-  else if (inputEntityName == "MARKET") {
-    Market returnMarket;
-    returnEntity = returnMarket;
-  }
-  else if (inputEntityName == "MARKET_(SARACEN)") {
-    Market_Saracen returnMarketSaracen;
-    returnEntity = returnMarketSaracen;
-  }
-  else if (inputEntityName == "MILITIA") {
-    Militia returnMilitia;
-    returnEntity = returnMilitia;
-  }
-  else if (inputEntityName == "MILITIA_(CELT)") {
-    Militia_Celt returnMilitiaCelt;
-    returnEntity = returnMilitiaCelt;
-  }
-  else if (inputEntityName == "MILITIA_(GOTH)") {
-    Militia_Goth returnMilitiaGoth;
-    returnEntity = returnMilitiaGoth;
-  }
-  else if (inputEntityName == "MILL") {
-    Mill returnMill;
-    returnEntity = returnMill;
-  }
-  else if (inputEntityName == "MILL_(JAPANESE)") {
-    Mill_Japanese returnMillJapanese;
-    returnEntity = returnMillJapanese;
-  }
-  else if (inputEntityName == "MONASTERY") {
-    Monastery returnMonastery;
-    returnEntity = returnMonastery;
-  }
-  else if (inputEntityName == "MONK") {
-    Monk returnMonk;
-    returnEntity = returnMonk;
-
-    // Behaviour: The current entity is limited to < 5 tokens
-    if (inputEntityQuantity > 5) {
-      std::cout << "Error: " << returnEntity.entityName
-                << " cannot be > 5 quantity"
-                << "\n";
-      std::cout
-        << "Checks for a non-0 quantity of the primary monk already occured"
-        << "\n";
-      exit(EXIT_FAILURE);
-    }
-  }
-  else if (inputEntityName == "ONAGER") {
-    Onager returnOnager;
-    returnEntity = returnOnager;
-  }
-  else if (inputEntityName == "ONAGER_(CELT)") {
-    Onager_Celt returnOnagerCelt;
-    returnEntity = returnOnagerCelt;
-  }
-  else if (inputEntityName == "OUTPOST") {
-    Outpost returnOutpost;
-    returnEntity = returnOutpost;
-  }
-  else if (inputEntityName == "PALADIN") {
-    Paladin returnPaladin;
-    returnEntity = returnPaladin;
-  }
-  else if (inputEntityName == "PALADIN_(PERSIAN)") {
-    Paladin_Persian returnPaladinPersian;
-    returnEntity = returnPaladinPersian;
-  }
-  else if (inputEntityName == "PALADIN_(FRANK)") {
-    Paladin_Frank returnPaladinFrank;
-    returnEntity = returnPaladinFrank;
-  }
-  else if (inputEntityName == "PALISADE_WALL") {
-    Palisade_Wall returnPalisadeWall;
-    returnEntity = returnPalisadeWall;
-  }
-  else if (inputEntityName == "PIKEMAN") {
-    Pikeman returnPikeman;
-    returnEntity = returnPikeman;
-  }
-  else if (inputEntityName == "PIKEMAN_(CELT)") {
-    Pikeman_Celt returnPikemanCelt;
-    returnEntity = returnPikemanCelt;
-  }
-  else if (inputEntityName == "PIKEMAN_(GOTH)") {
-    Pikeman_Goth returnPikemanGoth;
-    returnEntity = returnPikemanGoth;
-  }
-  else if (inputEntityName == "PIKEMAN_(JAPANESE)") {
-    Pikeman_Japanese returnPikemanJapanese;
-    returnEntity = returnPikemanJapanese;
-  }
-  else if (inputEntityName == "PIKEMAN_(VIKING)") {
-    Pikeman_Viking returnPikemanViking;
-    returnEntity = returnPikemanViking;
-  }
-  else if (inputEntityName == "SAMURAI_(JAPANESE)") {
-    Samurai_Japanese returnSamurai;
-    returnEntity = returnSamurai;
-  }
-  else if (inputEntityName == "SCORPION") {
-    Scorpion returnScorpion;
-    returnEntity = returnScorpion;
-  }
-  else if (inputEntityName == "SCORPION_(CELT)") {
-    Scorpion_Celt returnScorpionCelt;
-    returnEntity = returnScorpionCelt;
-  }
-  else if (inputEntityName == "SCOUT_CAVALRY") {
-    Scout_Cavalry returnScoutCavalry;
-    returnEntity = returnScoutCavalry;
-  }
-  else if (inputEntityName == "SIEGE_ONAGER") {
-    Siege_Onager returnSiegeOnager;
-    returnEntity = returnSiegeOnager;
-  }
-  else if (inputEntityName == "SIEGE_ONAGER_(CELT)") {
-    Siege_Onager_Celt returnSiegeOnagerCelt;
-    returnEntity = returnSiegeOnagerCelt;
-  }
-  else if (inputEntityName == "SIEGE_RAM") {
-    Siege_Ram returnSiegeRam;
-    returnEntity = returnSiegeRam;
-  }
-  else if (inputEntityName == "SIEGE_RAM_(CELT)") {
-    Siege_Ram_Celt returnSiegeRamCelt;
-    returnEntity = returnSiegeRamCelt;
-  }
-  else if (inputEntityName == "SIEGE_WORKSHOP") {
-    Siege_Workshop returnSiegeWorkshop;
-    returnEntity = returnSiegeWorkshop;
-  }
-  else if (inputEntityName == "SKIRMISHER") {
-    Skirmisher returnSkirmisher;
-    returnEntity = returnSkirmisher;
-  }
-  else if (inputEntityName == "SPEARMAN") {
-    Spearman returnSpearman;
-    returnEntity = returnSpearman;
-  }
-  else if (inputEntityName == "SPEARMAN_(JAPANESE)") {
-    Spearman_Japanese returnSpearmanJapanese;
-    returnEntity = returnSpearmanJapanese;
-  }
-  else if (inputEntityName == "SPEARMAN_(VIKING)") {
-    Spearman_Viking returnSpearmanViking;
-    returnEntity = returnSpearmanViking;
-  }
-  else if (inputEntityName == "SPEARMAN_(CELT)") {
-    Spearman_Celt returnSpearmanCelt;
-    returnEntity = returnSpearmanCelt;
-  }
-  else if (inputEntityName == "SPEARMAN_(GOTH)") {
-    Spearman_Goth returnSpearmanGoth;
-    returnEntity = returnSpearmanGoth;
-  }
-  else if (inputEntityName == "STABLE") {
-    Stable returnStable;
-    returnEntity = returnStable;
-  }
-  else if (inputEntityName == "STONE_MINE") {
-    Stone_Mine returnStoneMine;
-    returnEntity = returnStoneMine;
-  }
-  else if (inputEntityName == "STONE_MINE_(JAPANESE)") {
-    Stone_Mine_Japanese returnStoneMineJapanese;
-    returnEntity = returnStoneMineJapanese;
-  }
-  else if (inputEntityName == "STONE_WALL") {
-    Stone_Wall returnStoneWall;
-    returnEntity = returnStoneWall;
-  }
-  else if (inputEntityName == "THROWING_AXEMAN_(FRANK)") {
-    Throwing_Axeman_Frank returnThrowingAxemanFrank;
-    returnEntity = returnThrowingAxemanFrank;
-  }
-  else if (inputEntityName == "TOWN_CENTER") {
-    Town_Center returnTownCenter;
-    returnEntity = returnTownCenter;
-  }
-  else if (inputEntityName == "TOWN_CENTER_(BRITON)") {
-    Town_Center_Briton returnTownCenterBriton;
-    returnEntity = returnTownCenterBriton;
-  }
-  else if (inputEntityName == "TOWN_CENTER_(PERSIAN)") {
-    Town_Center_Persian returnTownCenterPersian;
-    returnEntity = returnTownCenterPersian;
-  }
-  else if (inputEntityName == "TRADE_COG") {
-    Trade_Cog returnTradeCog;
-    returnEntity = returnTradeCog;
-  }
-  else if (inputEntityName == "TREBUCHET") {
-    Trebuchet returnTrebuchet;
-    // Behaviour: Get further information about the Trebuchet
-    returnTrebuchet.updateTrebuchetArmorClass();
-    returnEntity = returnTrebuchet;
-  }
-  else if (
-    (inputEntityName == "TWO-HANDED_SWORDSMAN")
-    || (inputEntityName == "TWO_HANDED_SWORDSMAN")) {
-    Two_Handed_Swordsman returnTwoHandedSwordsman;
-    returnEntity = returnTwoHandedSwordsman;
-  }
-  else if (
-    (inputEntityName == "TWO-HANDED_SWORDSMAN_(CELT)")
-    || (inputEntityName == "TWO_HANDED_SWORDSMAN_(CELT)")) {
-    Two_Handed_Swordsman_Celt returnTwoHandedSwordsmanCelt;
-    returnEntity = returnTwoHandedSwordsmanCelt;
-  }
-  else if (
-    (inputEntityName == "TWO-HANDED_SWORDSMAN_(GOTH)")
-    || (inputEntityName == "TWO_HANDED_SWORDSMAN_(GOTH)")) {
-    Two_Handed_Swordsman_Goth returnTwoHandedSwordsmanGoth;
-    returnEntity = returnTwoHandedSwordsmanGoth;
-  }
-  else if (
-    (inputEntityName == "TWO-HANDED_SWORDSMAN_(JAPANESE)")
-    || (inputEntityName == "TWO_HANDED_SWORDSMAN_(JAPANESE)")) {
-    Two_Handed_Swordsman_Japanese returnTwoHandedSwordsmanJapanese;
-    returnEntity = returnTwoHandedSwordsmanJapanese;
-  }
-  else if (
-    (inputEntityName == "TWO-HANDED_SWORDSMAN_(VIKING)")
-    || (inputEntityName == "TWO_HANDED_SWORDSMAN_(VIKING)")) {
-    Two_Handed_Swordsman_Viking returnTwoHandedSwordsmanViking;
-    returnEntity = returnTwoHandedSwordsmanViking;
-  }
-  else if (inputEntityName == "VILLAGER") {
-    Villager returnVillager;
-    returnEntity = returnVillager;
-  }
-  else if (inputEntityName == "WAR_ELEPHANT_(PERSIAN)") {
-    War_Elephant_Persian returnWarElephantPersian;
-    returnEntity = returnWarElephantPersian;
-
-    // The current entity is limited to 1 token per card
-    if (inputEntityQuantity != 1) {
-      std::cout << "Error: " << returnEntity.entityName
-                << " can only be of 1 quantity"
-                << "\n";
-      exit(EXIT_FAILURE);
-    }
-  }
-  else if (inputEntityName == "WAR_GALLEY") {
-    War_Galley returnWarGalley;
-    returnEntity = returnWarGalley;
-  }
-  else if (inputEntityName == "WAR_GALLEY_(JAPANESE)") {
-    War_Galley_Japanese returnWarGalleyJapanese;
-    returnEntity = returnWarGalleyJapanese;
-  }
-  else if (inputEntityName == "WAR_GALLEY_(SARACEN)") {
-    War_Galley_Saracen returnWarGalleySaracen;
-    returnEntity = returnWarGalleySaracen;
-  }
-  else if (inputEntityName == "WAR_GALLEY_(VIKING)") {
-    War_Galley_Viking returnWarGalleyViking;
-    returnEntity = returnWarGalleyViking;
-  }
-  else if (inputEntityName == "WATCH_TOWER") {
-    Watch_Tower returnWatchTower;
-    returnEntity = returnWatchTower;
-  }
-  else if (inputEntityName == "WOAD_RAIDER_(CELT)") {
-    Woad_Raider_Celt returnWoadRaiderCelt;
-    returnEntity = returnWoadRaiderCelt;
-  }
-  else {
-    std::cout << "Error: " << inputEntityName
-              << " inside of entities.csv is an unrecognized name of an entity"
-              << "\n";
-    std::cout << "Either I have not implemented the entity or you mistyped the "
-                 "name of the entity"
-              << "\n";
-    exit(EXIT_FAILURE);
-  }
 
   // Behaviour: Make sure that the quantity is > 0 for non-Monks
   if ((inputEntityName != "MONK") && (inputEntityQuantity <= 0)) {
