@@ -36,11 +36,9 @@ public:
     std::string inputTechnologyOrEventsOrPlayerAgeFilename,
     int         inputNumberOfRows);
 
-
-std::string* playerNames(
-  std::string inputPlayerNamesFilename,
-  int         inputNumberOfRows);
-
+  std::string* playerNames(
+    std::string inputPlayerNamesFilename,
+    int         inputNumberOfRows);
 };
 
 #endif // FILE_IMPORTER_H

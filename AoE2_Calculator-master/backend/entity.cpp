@@ -42,12 +42,9 @@ Archer::Archer()
   armorClass[0]  = true; // The archer armor class
 }
 
-
 Archer::~Archer()
 {
 }
-
-
 
 Archer_Saracen::Archer_Saracen()
 {
@@ -819,8 +816,8 @@ Throwing_Axeman_Frank::Throwing_Axeman_Frank()
   standardDamage = 7;
   rangedDamage   = 4;
   entityHealth   = 14;
-  pointValue     = 2; // 1 fold, 1 gold
-                      // 9 standardDamage vs Building (I)
+  pointValue     = 2;    // 1 fold, 1 gold
+                         // 9 standardDamage vs Building (I)
   armorClass[17] = true; // Unique unit armor class
 }
 

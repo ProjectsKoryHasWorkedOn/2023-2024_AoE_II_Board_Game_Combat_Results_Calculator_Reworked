@@ -5,6 +5,6 @@
 #define CROSSWINDOW_PALETTE_H
 
 extern colorPalettes palettes;
-extern QPalette selectedPalette;
+extern QPalette      selectedPalette;
 
 #endif // CROSSWINDOW_PALETTE_H

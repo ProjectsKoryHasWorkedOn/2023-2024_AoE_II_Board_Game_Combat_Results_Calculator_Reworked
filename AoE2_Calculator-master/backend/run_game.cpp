@@ -36,7 +36,6 @@ int runGame()
   // Constant integer: The number of rows inside of the technology, event, and
   // player details files
 
-
   // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
   const int technologiesRows = 18, eventsRows = 41, playerAgeRows = 2;
 
@@ -65,12 +64,10 @@ int runGame()
   int* p2_events_array;
 
   // Integer array: The player details
-  int * player_age_array;
+  int* player_age_array;
 
   // String: The player names. Obtained from player_age_array
-  std::string * playerNamesArray;
-
-
+  std::string* playerNamesArray;
 
   /** Complex declarations **/
   // Structure: The entities
@@ -126,8 +123,8 @@ int runGame()
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
-  player_age_array = importFile.aSplitColumnFile(
-    "import/playerAge.csv", playerAgeRows);
+  player_age_array
+    = importFile.aSplitColumnFile("import/playerAge.csv", playerAgeRows);
 
   playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
 
@@ -138,7 +135,6 @@ int runGame()
     p2BattleParticipant,
     p1AssistingMonkBattleParticipant,
     p2AssistingMonkBattleParticipant);
-
 
   // Behaviour: Set the values for player 1
   theModifiersCalculator.setAdditionalValues(
@@ -358,7 +354,8 @@ int runGame()
     theCombatCalculator = &bombardmentRounds;
 
     // Set the player names
-    theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+    theCombatCalculator->setPlayerNames(
+      playerNamesArray[0], playerNamesArray[1]);
 
     // Behaviour: Set the protected values
     theCombatCalculator->setCombatParticipants(
@@ -405,10 +402,6 @@ int runGame()
     p2AssistingMonkBattleParticipant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
-
-
-
-
 
   // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(

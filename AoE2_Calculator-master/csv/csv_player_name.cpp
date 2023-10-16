@@ -13,19 +13,23 @@ CsvPlayerName CsvPlayerName::fromLine(const QString& line)
 {
   const QString& playerName{line};
 
-  return CsvPlayerName{
-    playerName};
+  return CsvPlayerName{playerName};
 }
 
-CsvPlayerName::CsvPlayerName(
-  QString playerName)
+CsvPlayerName::CsvPlayerName(QString playerName)
   : m_player_name{std::move(playerName)}
 {
 }
 
-void CsvPlayerName::setPlayerName(QString newName) { m_player_name = newName; }
+void CsvPlayerName::setPlayerName(QString newName)
+{
+  m_player_name = newName;
+}
 
-const QString& CsvPlayerName::playerName() const { return m_player_name; }
+const QString& CsvPlayerName::playerName() const
+{
+  return m_player_name;
+}
 
 QString CsvPlayerName::toString() const
 {

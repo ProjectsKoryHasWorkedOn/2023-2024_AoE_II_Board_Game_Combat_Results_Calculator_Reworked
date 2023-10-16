@@ -7,10 +7,6 @@ public:
 
   CsvPlayerName(QString playerName);
 
-
-
-
-
   void setPlayerName(QString newName);
 
   const QString& playerName() const;

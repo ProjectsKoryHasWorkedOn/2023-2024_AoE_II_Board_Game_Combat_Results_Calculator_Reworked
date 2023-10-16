@@ -21,21 +21,13 @@ extern const QString programOptionsIconFilename;
 extern const QString aboutIconFilename;
 extern const QString aboutInvertedIconFilename;
 
-
-
 extern const QString documentationIconFilename;
 extern const QString documentationInvertedIconFilename;
-
 
 extern const QString playerDetailsIconFilename;
 extern const QString playerDetailsIconInvertedFilename;
 
-
-
-
 extern const QString checkedIconFilename;
 extern const QString checkedIconInvertedFilename;
-
-
 
 #endif // FILE_PATHS_H

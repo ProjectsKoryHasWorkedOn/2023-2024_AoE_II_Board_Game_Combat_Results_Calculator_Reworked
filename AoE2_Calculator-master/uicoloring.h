@@ -3,7 +3,6 @@
 #include <QPalette>
 #include <QString>
 
-
 class colorPalettes {
 public:
   QPalette darkPalette;
@@ -25,12 +24,9 @@ public:
 
   QString getLineEditStyling();
 
-
   QString getDialogBoxTextTags(QString middleValue);
 
   QString getColorDialogBoxStyling();
-
-
 };
 
 #endif // UICOLORING_H

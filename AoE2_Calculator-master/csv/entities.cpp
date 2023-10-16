@@ -45,7 +45,9 @@ void writeEntities(const std::vector<CsvEntity>& entities)
 }
 } // anonymous namespace
 
-Entities::Entities() : m_entities{readEntities()} {}
+Entities::Entities() : m_entities{readEntities()}
+{
+}
 
 void Entities::changePlayer1EntityName(QString entityName)
 {
@@ -95,10 +97,22 @@ void Entities::changePlayer2AssistantQuantity(int newQuantity)
   writeEntities(m_entities);
 }
 
-CsvEntity& Entities::player1Entity() { return m_entities[0]; }
+CsvEntity& Entities::player1Entity()
+{
+  return m_entities[0];
+}
 
-CsvEntity& Entities::player2Entity() { return m_entities[1]; }
+CsvEntity& Entities::player2Entity()
+{
+  return m_entities[1];
+}
 
-const CsvEntity& Entities::player1Entity() const { return m_entities[0]; }
+const CsvEntity& Entities::player1Entity() const
+{
+  return m_entities[0];
+}
 
-const CsvEntity& Entities::player2Entity() const { return m_entities[1]; }
+const CsvEntity& Entities::player2Entity() const
+{
+  return m_entities[1];
+}

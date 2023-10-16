@@ -1,6 +1,8 @@
 #include "aliases.h"
 
-Aliases::Aliases() : m_entityNameToAlias{}, m_aliasToEntityName{} {}
+Aliases::Aliases() : m_entityNameToAlias{}, m_aliasToEntityName{}
+{
+}
 
 void Aliases::add(QString entityName, QString alias)
 {

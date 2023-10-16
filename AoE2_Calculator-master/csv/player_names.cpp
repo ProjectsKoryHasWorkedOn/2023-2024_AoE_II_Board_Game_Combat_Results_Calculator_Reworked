@@ -17,7 +17,7 @@ std::vector<CsvPlayerName> readNames()
       "Could not open \"" + playerNamesFilename.toStdString() + "\""};
   }
 
-  QTextStream            stream{&file};
+  QTextStream                stream{&file};
   std::vector<CsvPlayerName> playernames{};
 
   for (QString line{}; !(line = stream.readLine()).isNull();) {
@@ -45,10 +45,9 @@ void writeNames(const std::vector<CsvPlayerName>& playernames)
 }
 } // anonymous namespace
 
-PlayerName::PlayerName() : m_player_names{readNames()} {}
-
-
-
+PlayerName::PlayerName() : m_player_names{readNames()}
+{
+}
 
 void PlayerName::changePlayer1Name(QString newName)
 {
@@ -62,11 +61,22 @@ void PlayerName::changePlayer2Name(QString newName)
   writeNames(m_player_names);
 }
 
+CsvPlayerName& PlayerName::play1Name()
+{
+  return m_player_names[0];
+}
 
-CsvPlayerName& PlayerName::play1Name() { return m_player_names[0]; }
+CsvPlayerName& PlayerName::play2Name()
+{
+  return m_player_names[1];
+}
 
-CsvPlayerName& PlayerName::play2Name() { return m_player_names[1]; }
+const CsvPlayerName& PlayerName::play1Name() const
+{
+  return m_player_names[0];
+}
 
-const CsvPlayerName& PlayerName::play1Name() const { return m_player_names[0]; }
-
-const CsvPlayerName& PlayerName::play2Name() const { return m_player_names[1]; }
+const CsvPlayerName& PlayerName::play2Name() const
+{
+  return m_player_names[1];
+}

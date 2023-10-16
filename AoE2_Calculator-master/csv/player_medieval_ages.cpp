@@ -17,7 +17,7 @@ std::vector<CsvPlayerMedievalAge> readMedievalAges()
       "Could not open \"" + playerMedievalAgesFilename.toStdString() + "\""};
   }
 
-  QTextStream            stream{&file};
+  QTextStream                       stream{&file};
   std::vector<CsvPlayerMedievalAge> playerMedievalAges{};
 
   for (QString line{}; !(line = stream.readLine()).isNull();) {
@@ -27,7 +27,8 @@ std::vector<CsvPlayerMedievalAge> readMedievalAges()
   return playerMedievalAges;
 }
 
-void writeMedievalAges(const std::vector<CsvPlayerMedievalAge>& playerMedievalAges)
+void writeMedievalAges(
+  const std::vector<CsvPlayerMedievalAge>& playerMedievalAges)
 {
   QFile file{workingDirectory.absolutePath() + playerMedievalAgesFilename};
   if (!file.open(
@@ -45,8 +46,10 @@ void writeMedievalAges(const std::vector<CsvPlayerMedievalAge>& playerMedievalAg
 }
 } // anonymous namespace
 
-playerMedievalAges::playerMedievalAges() : m_player_medieval_age{readMedievalAges()} {}
-
+playerMedievalAges::playerMedievalAges()
+  : m_player_medieval_age{readMedievalAges()}
+{
+}
 
 void playerMedievalAges::changePlayer1MedievalAge(int newAge)
 {
@@ -60,10 +63,22 @@ void playerMedievalAges::changePlayer2MedievalAge(int newAge)
   writeMedievalAges(m_player_medieval_age);
 }
 
-CsvPlayerMedievalAge& playerMedievalAges::player1MedievalAge() { return m_player_medieval_age[0]; }
+CsvPlayerMedievalAge& playerMedievalAges::player1MedievalAge()
+{
+  return m_player_medieval_age[0];
+}
 
-CsvPlayerMedievalAge& playerMedievalAges::player2MedievalAge() { return m_player_medieval_age[1]; }
+CsvPlayerMedievalAge& playerMedievalAges::player2MedievalAge()
+{
+  return m_player_medieval_age[1];
+}
 
-const CsvPlayerMedievalAge& playerMedievalAges::player1MedievalAge() const { return m_player_medieval_age[0]; }
+const CsvPlayerMedievalAge& playerMedievalAges::player1MedievalAge() const
+{
+  return m_player_medieval_age[0];
+}
 
-const CsvPlayerMedievalAge& playerMedievalAges::player2MedievalAge() const { return m_player_medieval_age[1]; }
+const CsvPlayerMedievalAge& playerMedievalAges::player2MedievalAge() const
+{
+  return m_player_medieval_age[1];
+}
