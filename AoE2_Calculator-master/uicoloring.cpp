@@ -26,7 +26,7 @@ void colorPalettes::setPaletteValues()
   lightPalette.setColor(QPalette::Text, Qt::black);
 
   // Set the color of highlighted text
-  lightPalette.setColor(QPalette::Highlight, QColor(229, 243, 255));
+  lightPalette.setColor(QPalette::Highlight, QColor(0, 120, 215));
 
   /* Dark palette */
   // Set background color of the window
@@ -45,7 +45,7 @@ void colorPalettes::setPaletteValues()
   darkPalette.setColor(QPalette::Text, Qt::white);
 
   // Set the color of highlighted text
-  darkPalette.setColor(QPalette::Highlight, QColor(229, 243, 255));
+  darkPalette.setColor(QPalette::Highlight, QColor(0, 120, 215));
 }
 
 QString colorPalettes::getButtonBackgroundColor()
