@@ -23,5 +23,5 @@ StreamBuffer::~StreamBuffer()
 int StreamBuffer::overflow(int ch)
 {
   m_callback(ch);
-  return traits_type::to_int_type(ch);
+  return m_destination->sputc(ch);
 }

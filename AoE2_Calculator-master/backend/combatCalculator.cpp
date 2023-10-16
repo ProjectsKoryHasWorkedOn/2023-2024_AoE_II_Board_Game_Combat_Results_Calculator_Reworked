@@ -82,7 +82,7 @@ float combatCalculator::returnRemaningDamage(int inputPlayerNumber)
   else {
     std::cout << "Error: Input player number not recognized"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 }
 
@@ -141,7 +141,7 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
   else {
     std::cout << "Error: Input player number not recognized"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 }
 
@@ -174,7 +174,7 @@ void combatCalculator::checkIfRetreating()
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 }
 
@@ -528,7 +528,7 @@ void monkRounds::roundOutcome(
                     << "'s "
                        "conversion/healing attempt"
                     << "<br>";
-          exit(EXIT_FAILURE);
+          std::terminate();
         }
 
         // Behaviour: Generate, validate, and return d6 dice input before
@@ -695,7 +695,7 @@ void monkRounds::roundOutcome(
                         << "'s conversion attempt cannot be "
                         << "applied to " << player2Name << "'s siege unit"
                         << "<br>";
-              exit(EXIT_FAILURE);
+              std::terminate();
             }
 
             // Behaviour: Act on the conversion attempt being successful
@@ -756,7 +756,7 @@ void monkRounds::roundOutcome(
               && (p1AssistingMonkTarget != "1")) {
               std::cout << "Error: The input must be 0 or 1"
                         << "<br>";
-              exit(EXIT_FAILURE);
+              std::terminate();
             }
 
             // Behaviour: Act on the conversion attempt being successful based
@@ -770,7 +770,7 @@ void monkRounds::roundOutcome(
                              "applied to "
                           << player2Name << "'s siege unit"
                           << "<br>";
-                exit(EXIT_FAILURE);
+                std::terminate();
               }
 
               // Behaviour: Convert the combat participant
@@ -817,7 +817,7 @@ void monkRounds::roundOutcome(
                     << "'s"
                        "conversion/healing attempt"
                     << "<br>";
-          exit(EXIT_FAILURE);
+          std::terminate();
         }
 
         // Behaviour: Generate, validate, and return d6 dice input before
@@ -984,7 +984,7 @@ void monkRounds::roundOutcome(
                         << "'s conversion attempt cannot be "
                         << "applied to " << player1Name << "'s siege unit"
                         << "<br>";
-              exit(EXIT_FAILURE);
+              std::terminate();
             }
 
             // Behaviour: Act on the conversion attempt being successful
@@ -1045,7 +1045,7 @@ void monkRounds::roundOutcome(
               && (p2AssistingMonkTarget != "1")) {
               std::cout << "Error: The input must be 0 or 1"
                         << "<br>";
-              exit(EXIT_FAILURE);
+              std::terminate();
             }
 
             // Behaviour: Act on the conversion attempt being successful based
@@ -1059,7 +1059,7 @@ void monkRounds::roundOutcome(
                              "applied to"
                           << player1Name << "'s siege unit"
                           << "<br>";
-                exit(EXIT_FAILURE);
+                std::terminate();
               }
 
               // Behaviour: Convert the combat participant

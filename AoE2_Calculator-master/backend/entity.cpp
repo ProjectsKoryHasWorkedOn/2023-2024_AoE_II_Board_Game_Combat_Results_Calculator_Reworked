@@ -2035,7 +2035,7 @@ void Wonder::updateWonderHP()
   if ((turnsInPlay < 1) || (turnsInPlay > 6)) {
     std::cout << "Error: Wonder ought to be in play for 1-6 turns only"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   // Behaviour: Update wonder HP based on the number of turns in play
   else if (turnsInPlay == 1) {
@@ -2129,7 +2129,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else {
     std::cout << "Error: formatAttributeCode not found"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Convert the input text into a color code for the foreground
@@ -2191,7 +2191,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else {
     std::cout << "Error: foregroundColorCode not found"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Convert the input text into a color code for the background
@@ -2253,7 +2253,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else {
     std::cout << "Error: backgroundColorCode not found"
               << "<br>";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Display the text to the terminal
@@ -2305,7 +2305,7 @@ void Entity::outputEntity(std::string playerName)
       break;
     default:
       std::cout << "Error: Age not recognized for " << entityName << "<br>";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
 
     // Behaviour: Return standard information about the entity to the console

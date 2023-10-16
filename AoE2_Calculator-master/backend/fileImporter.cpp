@@ -8,7 +8,7 @@
 #include <sstream>        // Using: stringstream
 #include <stdlib.h>       // Using: atoi
 #include <string>         // Using: string
-#include <unordered_map> // Using: std::unordered_map
+#include <unordered_map>  // Using: std::unordered_map
 
 // Functions: The constructor and deconstructor
 fileImporter::fileImporter()
@@ -23,56 +23,53 @@ Entity fileImporter::conductASearch(
   std::string inputEntityName,
   int         inputEntityQuantity)
 {
-
-
   // Struct: Declare a blank entity to store the return information
   Entity returnEntity;
 
-  std::unordered_map<std::string, Entity> map =
-    {
-      {"ARCHER", Archer{}},
-      {"ARCHER_(SARACEN)", Archer_Saracen{}},
-      {"ARBALEST", Arbalest{}},
-      {"ARBALEST_(BRITON)", Arbalest_Briton{}},
-      {"ARBALEST_(SARACEN)", Arbalest_Saracen{}},
-      {"ARCHERY_RANGE", Archery_Range{}},
-      {"BARRACKS", Barracks{}},
-      {"BATTERING_RAM", Battering_Ram{}},
-      {"BATTERING_RAM", Battering_Ram_Celt{}},
-      {"BERSERK_(VIKING)", Berserk_Viking{}},
-      {"BLACKSMITH", Blacksmith{}},
-      {"CAPPED_RAM", Capped_Ram{}},
-      {"CAPPED_RAM_(CELT)", Capped_Ram_Celt{}},
-      {"CASTLE", Castle{}},
-      {"CASTLE_(FRANK)", Castle_Frank{}},
-      {"CAVALIER", Cavalier{}},
-      {"CAVALIER_(FRANK)", Cavalier_Frank{}},
-      {"CAVALIER_(PERSIAN)", Cavalier_Persian{}},
-      {"CAVALRY_ARCHER", Cavalry_Archer{}},
-      {"CAVALRY_ARCHER_(MONGOL)", Cavalry_Archer_Mongol{}},
-      {"CHAMPION", Champion{}},
-      {"CHAMPION_(CELT)", Champion_Celt{}},
-      {"CHAMPION_(GOTH)", Champion_Goth{}},
-      {"CHAMPION_(JAPANESE)", Champion_Japanese{}},
-      {"CHAMPION_(VIKING)", Champion_Viking{}},
-      {"CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)", Wonder{}},
-      {"ROCK_OF_CASHEL_(CELT)", Wonder{}},
-      {"THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)", Wonder{}},
-      {"THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)", Wonder{}},
-      {"TOMB_OF_THEODORIC_(GOTH)", Wonder{}},
-      {"NOTRE-DAME_CATHEDRAL_(FRANK)", Wonder{}},
-      {"STAVE_CHURCH_AT_URNES_(VIKING)", Wonder{}},
-      {"THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)", Wonder{}},
-      {"CROSSBOWMAN", Crossbowman{}},
-      {"CROSSBOWMAN_(SARACEN)", Crossbowman_Saracen{}},
-      {"DEMOLITION_SHIP", Demolition_Ship{}},
-      {"DEMOLITION_SHIP_(VIKING)", Demolition_Ship_Viking{}},
-      {"DOCK", Dock{}},
-      {"DOCK_(PERSIAN)", Dock_Persian{}},
-      {"DOCK_(VIKING)", Dock_Viking{}},
-      {"ELITE_BERSERK_(VIKING)", Elite_Berserk_Viking{}},
-      {"ELITE_HUSKARL_(GOTH)", Elite_Huskarl_Goth{}},
-      {"ELITE_LONGBOAT_(VIKING)", Elite_Longboat_Viking{}},
+  std::unordered_map<std::string, Entity> map = {
+    {"ARCHER", Archer{}},
+    {"ARCHER_(SARACEN)", Archer_Saracen{}},
+    {"ARBALEST", Arbalest{}},
+    {"ARBALEST_(BRITON)", Arbalest_Briton{}},
+    {"ARBALEST_(SARACEN)", Arbalest_Saracen{}},
+    {"ARCHERY_RANGE", Archery_Range{}},
+    {"BARRACKS", Barracks{}},
+    {"BATTERING_RAM", Battering_Ram{}},
+    {"BATTERING_RAM", Battering_Ram_Celt{}},
+    {"BERSERK_(VIKING)", Berserk_Viking{}},
+    {"BLACKSMITH", Blacksmith{}},
+    {"CAPPED_RAM", Capped_Ram{}},
+    {"CAPPED_RAM_(CELT)", Capped_Ram_Celt{}},
+    {"CASTLE", Castle{}},
+    {"CASTLE_(FRANK)", Castle_Frank{}},
+    {"CAVALIER", Cavalier{}},
+    {"CAVALIER_(FRANK)", Cavalier_Frank{}},
+    {"CAVALIER_(PERSIAN)", Cavalier_Persian{}},
+    {"CAVALRY_ARCHER", Cavalry_Archer{}},
+    {"CAVALRY_ARCHER_(MONGOL)", Cavalry_Archer_Mongol{}},
+    {"CHAMPION", Champion{}},
+    {"CHAMPION_(CELT)", Champion_Celt{}},
+    {"CHAMPION_(GOTH)", Champion_Goth{}},
+    {"CHAMPION_(JAPANESE)", Champion_Japanese{}},
+    {"CHAMPION_(VIKING)", Champion_Viking{}},
+    {"CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)", Wonder{}},
+    {"ROCK_OF_CASHEL_(CELT)", Wonder{}},
+    {"THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)", Wonder{}},
+    {"THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)", Wonder{}},
+    {"TOMB_OF_THEODORIC_(GOTH)", Wonder{}},
+    {"NOTRE-DAME_CATHEDRAL_(FRANK)", Wonder{}},
+    {"STAVE_CHURCH_AT_URNES_(VIKING)", Wonder{}},
+    {"THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)", Wonder{}},
+    {"CROSSBOWMAN", Crossbowman{}},
+    {"CROSSBOWMAN_(SARACEN)", Crossbowman_Saracen{}},
+    {"DEMOLITION_SHIP", Demolition_Ship{}},
+    {"DEMOLITION_SHIP_(VIKING)", Demolition_Ship_Viking{}},
+    {"DOCK", Dock{}},
+    {"DOCK_(PERSIAN)", Dock_Persian{}},
+    {"DOCK_(VIKING)", Dock_Viking{}},
+    {"ELITE_BERSERK_(VIKING)", Elite_Berserk_Viking{}},
+    {"ELITE_HUSKARL_(GOTH)", Elite_Huskarl_Goth{}},
+    {"ELITE_LONGBOAT_(VIKING)", Elite_Longboat_Viking{}},
     {"ELITE_LONGBOWMAN_(Briton)", Elite_Longbowman_Briton{}},
     {"ELITE_MAMELUKE_(SARACEN)", Elite_Mameluke_Saracen{}},
     {"ELITE_MANGUDAI_(MONGOL)", Elite_Mangudai_Mongol{}},
@@ -191,29 +188,24 @@ Entity fileImporter::conductASearch(
     {"WAR_GALLEY_(SARACEN)", War_Galley_Saracen{}},
     {"WAR_GALLEY_(VIKING)", War_Galley_Viking{}},
     {"WATCH_TOWER", Watch_Tower{}},
-    {"WOAD_RAIDER_(CELT)", Woad_Raider_Celt{}}
-    };
+    {"WOAD_RAIDER_(CELT)", Woad_Raider_Celt{}}};
 
+  returnEntity = map[inputEntityName];
 
-   returnEntity = map[inputEntityName];
+  // @ PHillip could perhaps do this more eleganty with map function?
+  // Behaviour: if it's a trebuchet, get further information about the Trebuchet
+  if (inputEntityName == "Trebuchet") {
+    Trebuchet returnTrebuchet;
+    returnTrebuchet.updateTrebuchetArmorClass();
+    returnEntity = returnTrebuchet;
+  }
 
-
-   // @ PHillip could perhaps do this more eleganty with map function?
-   // Behaviour: if it's a trebuchet, get further information about the Trebuchet
-   if(inputEntityName == "Trebuchet"){
-     Trebuchet returnTrebuchet;
-     returnTrebuchet.updateTrebuchetArmorClass();
-     returnEntity = returnTrebuchet;
-   }
-
-
-   // Behaviour: if it's a wonder, get further information about the Wonder
-   if(returnEntity.entityName == "Wonder"){
-     Wonder returnWonder;
-     returnWonder.updateWonderHP();
-     returnEntity = returnWonder;
-   }
-
+  // Behaviour: if it's a wonder, get further information about the Wonder
+  if (returnEntity.entityName == "Wonder") {
+    Wonder returnWonder;
+    returnWonder.updateWonderHP();
+    returnEntity = returnWonder;
+  }
 
   // Behaviour: Search for the input entity name and return the associated
   // entity
@@ -223,7 +215,7 @@ Entity fileImporter::conductASearch(
     std::cout << "Error: All entities (except assisting monks) must have a "
                  "quantity of at least 1"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Make sure that an Age within the range of 1-4 was entered
@@ -232,7 +224,7 @@ Entity fileImporter::conductASearch(
     std::cout << "Error: " << returnEntity.entityName
               << " contains an Age other than 1-4"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Make sure that each entity (except for Villagers) has at least 1
@@ -249,7 +241,7 @@ Entity fileImporter::conductASearch(
       std::cout << "Error: " << returnEntity.entityName
                 << " is missing at least 1 armor class"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
   }
 
@@ -265,7 +257,7 @@ Entity fileImporter::conductASearch(
     std::cout << "Error: " << returnEntity.entityName
               << " is a building and buildings can only be of 1 quantity"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   // Behaviour: Make sure that entities with the siege weapon armor class only
   // have a quantity of 1
@@ -274,7 +266,7 @@ Entity fileImporter::conductASearch(
       << "Error: " << returnEntity.entityName
       << " is a siege weapon and siege weapons can only be of 1 quantity"
       << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   // Behavuour: Make sure that entities with the ship armor class only have a
   // quantity of 1
@@ -282,7 +274,7 @@ Entity fileImporter::conductASearch(
     std::cout << "Error: " << returnEntity.entityName
               << " is a ship and ships can only be of 1 quantity"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   return returnEntity;
@@ -305,14 +297,14 @@ int fileImporter::checkIsInteger(std::string inputWord)
   if (wordConversion.good()) {
     std::cout << "Error: No valid first quantity"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   else if (anInteger == 0) {
     if (inputWord != "0") {
       std::cout << "Error: The output was 0 but the input was not 0 for the "
                    "first quantity"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
     else {
       // A quantity of < 1 is acceptable for the non-monk values
@@ -322,7 +314,7 @@ int fileImporter::checkIsInteger(std::string inputWord)
   else if (anInteger > 99) {
     std::cout << "Error: A limit of 100 units is more than reasonable"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   return anInteger;
@@ -343,7 +335,7 @@ Entity fileImporter::entitiesFile(
     std::cout
       << "Error: Input filename supposed to be called 'import/entities.csv'"
       << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Open "entities.csv"
@@ -353,12 +345,12 @@ Entity fileImporter::entitiesFile(
   if (!inputFile.is_open()) {
     std::cout << "Error: Failed to open the file called" << inputEntityFilename
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   else {
-    // Array: Hold up to four words to represent the four words inside of
-    // 'entites.csv'
-    std::string words[inputNumberOfWords];
+    // Vector: Hold up to four words to represent the four words inside of
+    // 'entites.csv'. ISO C++ does not support variable length arrays (VLA).
+    std::vector<std::string> words(inputNumberOfWords);
     for (int i = 0; i < inputNumberOfWords; i++) {
       words[i] = "";
     }
@@ -386,7 +378,7 @@ Entity fileImporter::entitiesFile(
         std::cout << "[P2_Non-Monk_Entity_Name] [P2_Entity_Quantity] Monk "
                      "[P2_Monk_Quantity]"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
       else {
         // Behaviour: Pass the word into the words array and increment the
@@ -410,7 +402,7 @@ Entity fileImporter::entitiesFile(
       std::cout << "[P2_Non-Monk_Entity_Name] [P2_Entity_Quantity] Monk "
                    "[P2_Monk_Quantity]"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
 
     // Behaviour: Make sure that the second words are both monks
@@ -418,13 +410,13 @@ Entity fileImporter::entitiesFile(
       std::cout << "Error: Non-Monk entity name for player 1's 'assisting "
                    "monks' data field"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
     else if (words[6] != "Monk") {
       std::cout << "Error: Non-Monk entity name for player 2's 'assisting "
                    "monks' data field"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
 
     // Behaviour: Check what player's values ought to be returned and if the
@@ -506,7 +498,7 @@ Entity fileImporter::entitiesFile(
       if (p1Quantity1 <= 0) {
         std::cout << "Error: Player 1's first monk must be of > 1 quantity"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
       else if (p1Quantity2 >= 1) {
         std::cout << "Error: Player 1 cannot have the second monk 'assisting' "
@@ -514,7 +506,7 @@ Entity fileImporter::entitiesFile(
                   << "\n";
         std::cout << "The second monk must have a quantity of 0"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
     }
 
@@ -525,7 +517,7 @@ Entity fileImporter::entitiesFile(
       if (p2Quantity1 <= 0) {
         std::cout << "Error: Player 2's first monk must be of > 1 quantity"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
       else if (p2Quantity2 >= 1) {
         std::cout << "Error: Player 2 cannot have the second monk 'assisting' "
@@ -533,7 +525,7 @@ Entity fileImporter::entitiesFile(
                   << "\n";
         std::cout << "The second monk must have a quantity of 0"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
     }
 
@@ -571,7 +563,7 @@ int* fileImporter::aSplitColumnFile(
                  "'import/[p1/p2]_technologies.csv', "
                  "'import/[p1/p2]_events.csv', or 'import/playerDetails.csv'"
               << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
 
   // Behaviour: Check if "technologies_[p1/p2].csv" or "[p1/p2]_events.csv"
@@ -579,10 +571,11 @@ int* fileImporter::aSplitColumnFile(
   if (!inputFile.is_open()) {
     std::cout << "Error: Failed to open the file called "
               << inputTechnologyOrEventsOrPlayerAgeFilename << "\n";
-    exit(EXIT_FAILURE);
+    std::terminate();
   }
   else {
-    // Variable: Declare the number of rows in the .csv files for events, technologies, ...
+    // Variable: Declare the number of rows in the .csv files for events,
+    // technologies, ...
     int rows = inputNumberOfRows;
 
     // Variable: Declare the layout (an active column and the name column)
@@ -591,8 +584,8 @@ int* fileImporter::aSplitColumnFile(
     // Variable: Declare an array to store the number of words in the file
     int arrayWords = columns * rows;
 
-    // Array: Declare and initialize the words array
-    std::string words[arrayWords];
+    // Vector: Declare and initialize the words array
+    std::vector<std::string> words(arrayWords);
     for (int i = 0; i < arrayWords; i++) {
       words[i] = "";
     }
@@ -614,7 +607,7 @@ int* fileImporter::aSplitColumnFile(
                   << inputTechnologyOrEventsOrPlayerAgeFilename
                   << " file with the default one"
                   << "\n";
-        exit(EXIT_FAILURE);
+        std::terminate();
       }
       else {
         // Behaviour: Pass the word into the words array and increment the
@@ -632,7 +625,7 @@ int* fileImporter::aSplitColumnFile(
                 << inputTechnologyOrEventsOrPlayerAgeFilename
                 << " file with the default one"
                 << "\n";
-      exit(EXIT_FAILURE);
+      std::terminate();
     }
 
     // Pointer: Declare an array to store the even words
@@ -678,7 +671,7 @@ int* fileImporter::aSplitColumnFile(
           std::cout << "Note that you must leave the names next to the numbers"
                     << "\n";
 
-          exit(EXIT_FAILURE);
+          std::terminate();
         }
         // Behaviour: Get the even element of the words array and pass this into
         // the every second element array
@@ -695,43 +688,39 @@ int* fileImporter::aSplitColumnFile(
     inputFile.close();
 
     // Behaviour: Return a string of technologies
-      return everySecondElement;
-
-
+    return everySecondElement;
   }
 }
 
 // Read from the player names file
 std::string* fileImporter::playerNames(
-    std::string inputPlayerNamesFilename,
-    int         inputNumberOfRows)
+  std::string inputPlayerNamesFilename,
+  int         inputNumberOfRows)
 {
-
   inputFile.open(inputPlayerNamesFilename);
 
   // Behaviour: Check that the filename is correct
   if (inputPlayerNamesFilename != "import/playerNames.csv") {
-      std::cout << "Error: Input filename supposed to be called "
-                   "'import/playerNames.csv'"
-                << "\n";
-      exit(EXIT_FAILURE);
+    std::cout << "Error: Input filename supposed to be called "
+                 "'import/playerNames.csv'"
+              << "\n";
+    std::terminate();
   }
 
-  std::string *lineString  = new std::string[inputNumberOfRows];
+  std::string* lineString = new std::string[inputNumberOfRows];
 
   std::string myline;
 
   if (inputFile.is_open()) {
-      for (int i = 0; i < inputNumberOfRows; i ++){
-        inputFile >> myline;
+    for (int i = 0; i < inputNumberOfRows; i++) {
+      inputFile >> myline;
       std::replace(myline.begin(), myline.end(), '_', ' ');
-        lineString[i] = myline;
-      }
-
+      lineString[i] = myline;
+    }
   }
-  else{
-      std::cout << "Error: couldn't open the file";
-      exit(EXIT_FAILURE);
+  else {
+    std::cout << "Error: couldn't open the file";
+    std::terminate();
   }
 
   return lineString;
