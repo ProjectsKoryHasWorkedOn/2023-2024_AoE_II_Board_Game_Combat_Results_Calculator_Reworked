@@ -1696,3 +1696,73 @@ void MainWindow::on_actionEnableDisableDarkMode_triggered()
   palettes.darkModeEnabled = !palettes.darkModeEnabled;
   setColorTheUIElements();
 }
+
+
+
+
+void MainWindow::on_p1ActiveTechnologiesToggle_toggled(bool checked)
+{
+  QListWidget filteredList;
+  QListWidgetItem *listItem;
+  int count = 0;
+
+  if(checked == true){
+
+    // Get all of the checked items
+    for(int i = 0; i < ui.player1Technologies->count(); i++){
+      if(ui.player1Technologies->item(i)->checkState() == Qt::Checked){
+        // Gets only the checked items
+        listItem = ui.player1Technologies->item(i);
+
+        // Doesn't seem to add anything to the list
+        filteredList.insertItem(count, listItem);
+        count++;
+      }
+    }
+    // Clear the current list
+    ui.player1Technologies->clear();
+
+    qDebug() << filteredList.count();
+
+    for(int y = 0; y < filteredList.count(); y++){
+      ui.player1Technologies->addItem(filteredList.item(y));
+      }
+  }
+}
+
+
+void MainWindow::on_p2ActiveTechnologiesToggle_toggled(bool checked)
+{
+  if(checked == true){
+  ui.player2Technologies->clear();
+  }
+  else{
+
+  }
+
+}
+
+
+void MainWindow::on_p1ActiveEventsToggle_toggled(bool checked)
+{
+  if(checked == true){
+      ui.player1Events->clear();
+  }
+  else{
+
+  }
+
+}
+
+
+void MainWindow::on_p2ActiveEventsToggle_toggled(bool checked)
+{
+  if(checked == true){
+  ui.player2Events->clear();
+  }
+  else{
+
+  }
+
+}
+

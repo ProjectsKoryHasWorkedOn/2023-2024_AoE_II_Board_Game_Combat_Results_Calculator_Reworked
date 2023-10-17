@@ -94,6 +94,14 @@ private slots:
 
   void setColorTheToggleElements();
 
+  void on_p1ActiveTechnologiesToggle_toggled(bool checked);
+
+  void on_p2ActiveTechnologiesToggle_toggled(bool checked);
+
+  void on_p1ActiveEventsToggle_toggled(bool checked);
+
+  void on_p2ActiveEventsToggle_toggled(bool checked);
+
 private:
   void initializeEntityAliases();
 

@@ -27,91 +27,6 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="6" column="0">
-           <widget class="QComboBox" name="player1BattleAssistantNames"/>
-          </item>
-          <item row="12" column="0">
-           <widget class="QListWidget" name="player1Events"/>
-          </item>
-          <item row="7" column="1">
-           <widget class="QLabel" name="player2AssistingUnitsQuantityLabel">
-            <property name="text">
-             <string>Quantity</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="player1AssistingUnitsLabel">
-            <property name="text">
-             <string>Player 1's battle assistant</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QSpinBox" name="player1EntityQuantity"/>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="player1AssistingUnitsQuantityLabel">
-            <property name="text">
-             <string>Quantity</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLabel" name="player2AssistingUnitsLabel">
-            <property name="text">
-             <string>Player 2's battle assistant</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QListWidget" name="player1Technologies"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLineEdit" name="player1EntityNamesFilter">
-            <property name="inputMask">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="player2EntityQuantityLabel">
-            <property name="text">
-             <string>Quantity</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QSpinBox" name="player2EntityQuantity"/>
-          </item>
-          <item row="11" column="0">
-           <widget class="QLabel" name="player1EventsLabel">
-            <property name="text">
-             <string>Player 1's event cards</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="player1TechnologiesLabel">
-            <property name="text">
-             <string>Player 1's technologies</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QLabel" name="player2EventsLabel">
-            <property name="text">
-             <string>Player 2's event cards</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QListWidget" name="player1EntityNames">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="player1EntityQuantityLabel">
             <property name="text">
@@ -119,17 +34,13 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="player1UnitsLabel">
-            <property name="text">
-             <string>Player 1's battle participant</string>
-            </property>
-           </widget>
+          <item row="13" column="1">
+           <widget class="QListWidget" name="player2Events"/>
           </item>
-          <item row="9" column="1">
-           <widget class="QLabel" name="player2TechnologiesLabel">
+          <item row="7" column="0">
+           <widget class="QLabel" name="player1AssistingUnitsQuantityLabel">
             <property name="text">
-             <string>Player 2's technologies</string>
+             <string>Quantity</string>
             </property>
            </widget>
           </item>
@@ -140,26 +51,187 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
-           <widget class="QSpinBox" name="player2EntityAssistantQuantity"/>
+          <item row="13" column="0">
+           <widget class="QListWidget" name="player1Events"/>
           </item>
-          <item row="8" column="0">
-           <widget class="QSpinBox" name="player1EntityAssistantQuantity"/>
+          <item row="4" column="0">
+           <widget class="QSpinBox" name="player1EntityQuantity"/>
           </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="player2EntityNamesFilter"/>
+          <item row="2" column="0">
+           <widget class="QListWidget" name="player1EntityNames">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
            <widget class="QListWidget" name="player2EntityNames"/>
           </item>
+          <item row="11" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="p2ActiveTechnologiesToggleText">
+              <property name="text">
+               <string>Show active technologies</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="p2ActiveTechnologiesToggle">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="player2EntityNamesFilter"/>
+          </item>
           <item row="6" column="1">
            <widget class="QComboBox" name="player2BattleAssistantNames"/>
+          </item>
+          <item row="12" column="1">
+           <widget class="QLabel" name="player2EventsLabel">
+            <property name="text">
+             <string>Player 2's event cards</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="player1EntityNamesFilter">
+            <property name="inputMask">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QComboBox" name="player1BattleAssistantNames"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="player1UnitsLabel">
+            <property name="text">
+             <string>Player 1's battle participant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QSpinBox" name="player2EntityAssistantQuantity"/>
+          </item>
+          <item row="12" column="0">
+           <widget class="QLabel" name="player1EventsLabel">
+            <property name="text">
+             <string>Player 1's event cards</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="player2AssistingUnitsQuantityLabel">
+            <property name="text">
+             <string>Quantity</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QSpinBox" name="player1EntityAssistantQuantity"/>
+          </item>
+          <item row="11" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="p1ActiveTechnologiesToggleText">
+              <property name="text">
+               <string>Show active technologies</string>
+              </property>
+             </widget>
+            </item>
+            <item alignment="Qt::AlignLeft">
+             <widget class="QCheckBox" name="p1ActiveTechnologiesToggle">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="player1AssistingUnitsLabel">
+            <property name="text">
+             <string>Player 1's battle assistant</string>
+            </property>
+           </widget>
           </item>
           <item row="10" column="1">
            <widget class="QListWidget" name="player2Technologies"/>
           </item>
-          <item row="12" column="1">
-           <widget class="QListWidget" name="player2Events"/>
+          <item row="5" column="1">
+           <widget class="QLabel" name="player2AssistingUnitsLabel">
+            <property name="text">
+             <string>Player 2's battle assistant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="player2EntityQuantityLabel">
+            <property name="text">
+             <string>Quantity</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="player1TechnologiesLabel">
+            <property name="text">
+             <string>Player 1's technologies</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QLabel" name="player2TechnologiesLabel">
+            <property name="text">
+             <string>Player 2's technologies</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QListWidget" name="player1Technologies"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="player2EntityQuantity"/>
+          </item>
+          <item row="14" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="p2ActiveEventsToggleText">
+              <property name="text">
+               <string>Show active events</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="p2ActiveEventsToggle">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="14" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLabel" name="p1ActiveEventsToggleText">
+              <property name="text">
+               <string>Show active events</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="p1ActiveEventsToggle">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
