@@ -7,16 +7,15 @@
 
 int main(int argc, char* argv[])
 {
-  std::cout << std::unitbuf;
-
   QApplication application(argc, argv);
 
   MainWindow w;
 
+  std::cout << std::unitbuf;
+
+
   // Set the application icon
   w.setWindowIcon(QIcon("abacus.ico"));
-
-  // application.setStyle(QStyleFactory::create("Fusion"));
 
   w.show();
   return application.exec();
