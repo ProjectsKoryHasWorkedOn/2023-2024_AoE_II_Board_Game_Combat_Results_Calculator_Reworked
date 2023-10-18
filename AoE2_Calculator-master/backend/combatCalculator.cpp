@@ -168,8 +168,8 @@ void combatCalculator::checkIfRetreating()
 
   // TODO: HERE, try to have this read from a QInputDialog and fill in cin
   //             programatically.
-  isRetreating = "0";
-  // std::cin >> isRetreating;
+  // isRetreating = "0";
+  std::cin >> isRetreating;
 
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"

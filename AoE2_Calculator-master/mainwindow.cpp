@@ -533,6 +533,8 @@ MainWindow::MainWindow(QWidget* parent)
   ui.player1BattleAssistantNames->addItem("Monk");
   ui.player2BattleAssistantNames->addItem("Monk");
 
+
+
   // These are like placeholder (lorem ipsum) values
   // Player 1 UI elements starting state
   ui.player1EntityNamesFilter->setText("");
@@ -1652,12 +1654,22 @@ void MainWindow::selectInitialEntities()
   if (player1SelectedEntity != nullptr) {
     ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
     ui.player1EntityNames->scrollToItem(player1SelectedEntity);
+
+    ui.player1EntityQuantity->setValue(
+      m_entities.player1Entity().entityQuantity());
+
+    //@Phillip: For some reason this returns 1
+    qDebug() << m_entities.player1Entity().entityQuantity();
+
     updateRangeAllowed(m_entities.player1Entity().entityName(), 1);
   }
 
   if (player2SelectedEntity != nullptr) {
     ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
+    ui.player2EntityQuantity->setValue(
+      m_entities.player2Entity().entityQuantity());
+
     updateRangeAllowed(m_entities.player2Entity().entityName(), 2);
   }
 }
