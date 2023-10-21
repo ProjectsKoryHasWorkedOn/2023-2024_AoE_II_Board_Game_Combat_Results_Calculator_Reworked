@@ -1,19 +1,12 @@
 #ifndef USER_INPUT_HANDLER_H
 #define USER_INPUT_HANDLER_H
 #include <memory>
-#include <sstream>
+
+class MainWindow;
 
 class UserInputHandler {
 public:
-  template<typename Any>
-  friend UserInputHandler& operator<<(
-    UserInputHandler& userInputHandler,
-    const Any&        any)
-  {
-    userInputHandler.m_stringStream << any;
-  }
-
-  UserInputHandler();
+  explicit UserInputHandler(MainWindow* mainWindow);
 
   UserInputHandler(const UserInputHandler&) = delete;
 
@@ -22,8 +15,7 @@ public:
   ~UserInputHandler();
 
 private:
-  std::stringstream               m_stringStream;
-  std::streambuf*                 m_stringStreamBuf;
+  MainWindow*                     m_mainWindow;
   std::streambuf*                 m_cinStreamBuf;
   std::unique_ptr<std::streambuf> m_redirectingStreamBuf;
 };

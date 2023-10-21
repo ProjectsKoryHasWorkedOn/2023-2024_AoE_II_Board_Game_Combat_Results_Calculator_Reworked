@@ -81,12 +81,10 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
-
-
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
   , m_outputRedirector{std::cout, ui.gameOutputTextEdit}
-  , m_userInputHandler{}
+  , m_userInputHandler{this}
   , m_aliases{}
   , m_entities{}
   , m_player_names{}
@@ -532,8 +530,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   ui.player1BattleAssistantNames->addItem("Monk");
   ui.player2BattleAssistantNames->addItem("Monk");
-
-
 
   // These are like placeholder (lorem ipsum) values
   // Player 1 UI elements starting state
@@ -1711,93 +1707,86 @@ void MainWindow::on_actionEnableDisableDarkMode_triggered()
   setColorTheUIElements();
 }
 
-
-
-
 void MainWindow::on_p1ActiveTechnologiesToggle_toggled(bool checked)
 {
-  QListWidgetItem *p1TechnologiesListItem;
+  QListWidgetItem* p1TechnologiesListItem;
 
-  for(int i = 0; i < ui.player1Technologies->count(); i++){
+  for (int i = 0; i < ui.player1Technologies->count(); i++) {
     p1TechnologiesListItem = ui.player1Technologies->item(i);
 
-    if(p1TechnologiesListItem->checkState() == Qt::Checked){
+    if (p1TechnologiesListItem->checkState() == Qt::Checked) {
       p1TechnologiesListItem->setHidden(false);
     }
-    else{
-      if(checked == true){
+    else {
+      if (checked == true) {
         p1TechnologiesListItem->setHidden(true);
       }
-      else if(checked == false){
+      else if (checked == false) {
         p1TechnologiesListItem->setHidden(false);
       }
     }
   }
 }
 
-
 void MainWindow::on_p2ActiveTechnologiesToggle_toggled(bool checked)
 {
-  QListWidgetItem *p2TechnologiesListItem;
+  QListWidgetItem* p2TechnologiesListItem;
 
-  for(int i = 0; i < ui.player2Technologies->count(); i++){
+  for (int i = 0; i < ui.player2Technologies->count(); i++) {
     p2TechnologiesListItem = ui.player2Technologies->item(i);
 
-    if(p2TechnologiesListItem->checkState() == Qt::Checked){
+    if (p2TechnologiesListItem->checkState() == Qt::Checked) {
       p2TechnologiesListItem->setHidden(false);
     }
-    else{
-      if(checked == true){
+    else {
+      if (checked == true) {
         p2TechnologiesListItem->setHidden(true);
       }
-      else if(checked == false){
+      else if (checked == false) {
         p2TechnologiesListItem->setHidden(false);
       }
     }
   }
 }
 
-
 void MainWindow::on_p1ActiveEventsToggle_toggled(bool checked)
 {
-  QListWidgetItem *p1EventsListItem;
+  QListWidgetItem* p1EventsListItem;
 
-  for(int i = 0; i < ui.player1Events->count(); i++){
+  for (int i = 0; i < ui.player1Events->count(); i++) {
     p1EventsListItem = ui.player1Events->item(i);
 
-    if(p1EventsListItem->checkState() == Qt::Checked){
+    if (p1EventsListItem->checkState() == Qt::Checked) {
       p1EventsListItem->setHidden(false);
     }
-    else{
-      if(checked == true){
+    else {
+      if (checked == true) {
         p1EventsListItem->setHidden(true);
       }
-      else if(checked == false){
+      else if (checked == false) {
         p1EventsListItem->setHidden(false);
       }
     }
   }
 }
 
-
 void MainWindow::on_p2ActiveEventsToggle_toggled(bool checked)
 {
-  QListWidgetItem *p2EventsListItem;
+  QListWidgetItem* p2EventsListItem;
 
-  for(int i = 0; i < ui.player2Events->count(); i++){
+  for (int i = 0; i < ui.player2Events->count(); i++) {
     p2EventsListItem = ui.player2Events->item(i);
 
-    if(p2EventsListItem->checkState() == Qt::Checked){
+    if (p2EventsListItem->checkState() == Qt::Checked) {
       p2EventsListItem->setHidden(false);
     }
-    else{
-      if(checked == true){
+    else {
+      if (checked == true) {
         p2EventsListItem->setHidden(true);
       }
-      else if(checked == false){
+      else if (checked == false) {
         p2EventsListItem->setHidden(false);
       }
     }
   }
 }
-

@@ -1,16 +1,16 @@
 #include <iostream>
 
+#include <QInputDialog>
+
+#include "mainwindow.hpp"
 #include "user_input_handler.h"
 
-// TODO: Get user input from a InputDialog
 // TODO: Put nice text in there from cout.
 class RedirectingStreamBuf : public std::streambuf {
 public:
-  explicit RedirectingStreamBuf(std::streambuf* buf)
-    : m_string{}, m_index{0}, m_src{buf}, m_buffer{}
+  explicit RedirectingStreamBuf(MainWindow* mainWindow)
+    : m_mainWindow{mainWindow}, m_string{}, m_index{0}, m_buffer{}
   {
-    // TODO: HERE: No idea about this thing.
-
     // buffer is initially full
     setg(&m_buffer, &m_buffer + 1, &m_buffer + 1);
   }
@@ -19,7 +19,15 @@ protected:
   int underflow() override
   {
     if (m_string.empty()) {
-      // TODO: Ask the user for input.
+      bool          ok{};
+      const QString userInput{QInputDialog::getText(
+        m_mainWindow, "Title", "Label", QLineEdit::Normal, QString{}, &ok)};
+
+      if (ok && !userInput.isEmpty()) {
+        m_index  = 0;
+        m_buffer = '\0';
+        m_string = userInput.toStdString();
+      }
     }
 
     if (m_index == m_string.size()) {
@@ -36,18 +44,16 @@ protected:
   }
 
 private:
+  MainWindow*            m_mainWindow;
   std::string            m_string;
   std::string::size_type m_index;
-  std::streambuf*        m_src;
   char                   m_buffer;
 };
 
-UserInputHandler::UserInputHandler()
-  : m_stringStream{}
-  , m_stringStreamBuf{m_stringStream.rdbuf()}
+UserInputHandler::UserInputHandler(MainWindow* mainWindow)
+  : m_mainWindow{mainWindow}
   , m_cinStreamBuf{std::cin.rdbuf()}
-  , m_redirectingStreamBuf{
-      std::make_unique<RedirectingStreamBuf>(m_stringStreamBuf)}
+  , m_redirectingStreamBuf{std::make_unique<RedirectingStreamBuf>(m_mainWindow)}
 {
   std::cin.rdbuf(m_redirectingStreamBuf.get());
 }
