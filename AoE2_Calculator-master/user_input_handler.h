@@ -1,6 +1,7 @@
 #ifndef USER_INPUT_HANDLER_H
 #define USER_INPUT_HANDLER_H
 #include <memory>
+#include <sstream>
 
 class MainWindow;
 
@@ -16,6 +17,8 @@ public:
 
 private:
   MainWindow*                     m_mainWindow;
+  std::stringstream               m_stringStream;
+  std::streambuf*                 m_stringStreamBuf;
   std::streambuf*                 m_cinStreamBuf;
   std::unique_ptr<std::streambuf> m_redirectingStreamBuf;
 };
