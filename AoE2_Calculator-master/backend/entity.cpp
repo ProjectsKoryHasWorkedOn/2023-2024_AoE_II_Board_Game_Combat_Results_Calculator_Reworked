@@ -224,6 +224,8 @@ Castle::Castle()
   entityAge      = 3;
   entityHealth   = 440;
   garrisonValue  = 10;
+  standardDamage = 0;
+  rangedDamage   = 0;
   pointValue     = 30;   // 15 stone, 15 bodies
   armorClass[1]  = true; // Building armor class
   armorClass[3]  = true; // Castle armor class
@@ -2312,41 +2314,45 @@ void Entity::outputEntity(std::string playerName)
     displayColorfulText("bold", "white", "dark_gray", medievalAge, false);
     std::cout << " ";
     displayColorfulText("bold", "white", "dark_cyan", entityName, false);
-    std::cout << " has a total of ";
+    std::cout << " has a total of: ";
+
     displayColorfulText(
       "bold", "red", "default", std::to_string(entityHealth), false);
-    std::cout << "HP";
+    std::cout << " " << "HP";
 
     // Behaviour: Return further information about the entities values if the
     // value is present
     if (standardDamage != 0) {
-      std::cout << ", ";
+      std::cout << "; ";
       displayColorfulText(
         "bold", "yellow", "default", std::to_string(standardDamage), false);
-      std::cout << "SD";
+      std::cout << " " << "base attack";
     }
     if (rangedDamage != 0) {
-      std::cout << ", ";
+      std::cout << "; ";
       displayColorfulText(
         "bold", "magenta", "default", std::to_string(rangedDamage), false);
-      std::cout << "RD";
+      std::cout << " " << "pierce attack";
     }
-    if (pointValue != 0) {
-      std::cout << ", ";
-      displayColorfulText(
-        "bold", "cyan", "default", std::to_string(pointValue), false);
-      std::cout << "PV";
-    }
+    /* Show garrrison value
     if (garrisonValue != 0) {
-      std::cout << ", ";
+      std::cout << "; ";
       displayColorfulText(
         "bold", "green", "default", std::to_string(garrisonValue), false);
-      std::cout << "GV";
+      std::cout << "garrison value";
+    }
+    */
+    if (pointValue != 0) {
+      std::cout << ". It's worth ";
+      displayColorfulText(
+        "bold", "cyan", "default", std::to_string(pointValue), false);
+      std::cout << " " << "points";
     }
 
     // Behaviour: Return further information about the entities armor classes if
     // the armor class is present
-    std::cout << " of type: ";
+    /* Show armour classes
+    std::cout << ". It's of type: ";
 
     // Array: Store whether or not an armor class has been displayed
     bool displayedArmorClass[numberOfArmorClasses] = {false};
@@ -2543,7 +2549,9 @@ void Entity::outputEntity(std::string playerName)
       if (i != entitiesArmorClasses - 1) {
         std::cout << " ";
       }
+
     }
+  */
   }
   // Behaviour: Display something different if the entity is dead
   else if (entityQuantity <= 0) {
