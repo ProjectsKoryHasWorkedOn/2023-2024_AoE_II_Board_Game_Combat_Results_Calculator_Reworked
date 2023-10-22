@@ -127,6 +127,11 @@ private:
 
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
 
+  void overrideTechnologies(QStringList technologiesToCancelOut, Technologies * playerTechnologies);
+
+  void technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies);
+
+
   Ui::MainWindow     ui;
   QString            m_lastLine;
   OutputRedirector   m_outputRedirector;

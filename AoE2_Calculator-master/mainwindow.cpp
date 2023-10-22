@@ -1022,6 +1022,46 @@ void MainWindow::on_player2EntityNames_itemClicked(
   m_entities.changePlayer2EntityName(m_player2EntityName);
 }
 
+// Input validation. Superior technologies take the place of lesser technologies
+void MainWindow::overrideTechnologies(QStringList technologiesToCancelOut, Technologies * playerTechnologies){
+  for(int i = 0; i < technologiesToCancelOut.size(); i++){
+    QString technologyNameBackend = convertSpacesToUnderscores(technologiesToCancelOut[i]);
+
+    // Disable it in file
+    if(playerTechnologies->isActive(technologyNameBackend)){
+      playerTechnologies->disable(technologyNameBackend);
+    }
+
+    // Disable it in the GUI
+    QList<QListWidgetItem *> list = ui.player1Technologies->findItems(technologiesToCancelOut[i], Qt::MatchExactly);
+    for ( QListWidgetItem *item : list ){
+      item->setCheckState(Qt::Unchecked);
+    }
+  }
+}
+
+// Should have the listCombinations (as input) in order of what overrides what
+void MainWindow::technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies){
+  QStringList combinationsFound;
+
+  for(int i = 0; i < listCombinations.size(); i ++){
+    if(playerTechnologies->isActive(convertSpacesToUnderscores(listCombinations[i]))){
+
+      // Get all other combinations
+      for (int y = 0; y < listCombinations.size(); y++){
+        if(listCombinations[i] != listCombinations[y]){
+          combinationsFound.append(listCombinations[y]);
+        }
+      }
+
+      overrideTechnologies(combinationsFound, playerTechnologies);
+    }
+  }
+
+  combinationsFound.clear(); // @Phillip: Is this even necessary?
+}
+
+
 // Run on change of what technologies are toggled by player 1
 void MainWindow::on_player1Technologies_itemChanged(
   QListWidgetItem* checkedItem)
@@ -1037,6 +1077,12 @@ void MainWindow::on_player1Technologies_itemChanged(
   else {
     m_player1Technologies.disable(technology);
   }
+
+  /* Input validation - Up to 1 selected */
+  technologyOverrider({"Bracer", "Bodkin Arrow", "Fletching"}, &m_player1Technologies);
+  technologyOverrider({"Blast Furnace", "Iron Casting", "Forging"}, &m_player1Technologies);
+  technologyOverrider({"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"}, &m_player1Technologies);
+  technologyOverrider({"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"}, &m_player1Technologies);
 }
 
 // Run on change of what events are toggled by player 1
@@ -1121,6 +1167,12 @@ void MainWindow::on_player2Technologies_itemChanged(
   else {
     m_player2Technologies.disable(technology);
   }
+
+  /* Input validation - Up to 1 selected */
+  technologyOverrider({"Bracer", "Bodkin Arrow", "Fletching"}, &m_player2Technologies);
+  technologyOverrider({"Blast Furnace", "Iron Casting", "Forging"}, &m_player2Technologies);
+  technologyOverrider({"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"}, &m_player2Technologies);
+  technologyOverrider({"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"}, &m_player2Technologies);
 }
 
 void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
