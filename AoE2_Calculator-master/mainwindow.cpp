@@ -2,6 +2,7 @@
 #include "mainwindow.hpp"     // This window
 #include "aboutwindow.h"      // A window this window can open
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
+#include "dialog_input.h"
 #include "file_paths.h"
 
 #include <QLabel>
@@ -84,7 +85,6 @@ QStringList backFromAForeignLandCivilizationBonuses;
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
   , m_outputRedirector{std::cout, ui.gameOutputTextEdit}
-  , m_userInputHandler{this}
   , m_aliases{}
   , m_entities{}
   , m_player_names{}
@@ -94,6 +94,7 @@ MainWindow::MainWindow(QWidget* parent)
   , m_player2Technologies{Player::Player2}
 {
   ui.setupUi(this);
+  DialogInput::initialize(this);
 
   QIntValidator myName;
   myName.setRange(100, 999);

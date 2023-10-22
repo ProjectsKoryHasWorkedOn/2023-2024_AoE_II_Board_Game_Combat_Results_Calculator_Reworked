@@ -2,7 +2,8 @@
 /** Combat Results Calculator **/ /** Coded by: BGG user Karate_Dog **/
 
 /** The libaries **/
-#include "combatCalculator.h"    // Using: combat calculator class
+#include "combatCalculator.h" // Using: combat calculator class
+#include "dialog_input.h"
 #include "entity.h"              // Using: entity class
 #include "fileImporter.h"        // Using: fileImporter class
 #include "modifiersCalculator.h" // Using: modifiers calculator class
@@ -196,7 +197,7 @@ int runGame()
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
               << "<br>";
-    std::cin >> getResponse;
+    DIN >> getResponse;
 
     // Behaviour: Apply the results
     if (getResponse == "1") {
@@ -218,7 +219,7 @@ int runGame()
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
               << "<br>";
-    std::cin >> getResponse;
+    DIN >> getResponse;
 
     // Behaviour: Apply the results
     if (getResponse == "1") {

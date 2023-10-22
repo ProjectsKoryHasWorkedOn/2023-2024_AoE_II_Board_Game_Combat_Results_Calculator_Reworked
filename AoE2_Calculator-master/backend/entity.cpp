@@ -1,5 +1,6 @@
 /** The libaries **/
 #include "entity.h" // Using: entity class
+#include "dialog_input.h"
 #include <cstdlib>  // Using: exit(EXIT_FAILURE)
 #include <iostream> // Using: cin and cout
 #include <string>   // Using: string, to_string
@@ -2029,7 +2030,7 @@ void Wonder::updateWonderHP()
   turnsInPlay = 0;
   std::cout << "How many turns have the Wonder been in play for?"
             << "<br>";
-  std::cin >> turnsInPlay;
+  DIN >> turnsInPlay;
 
   if ((turnsInPlay < 1) || (turnsInPlay > 6)) {
     std::cout << "Error: Wonder ought to be in play for 1-6 turns only"
@@ -2059,7 +2060,7 @@ void Trebuchet::updateTrebuchetArmorClass()
   packed = false;
   std::cout << "Enter 1 if the Trebuchet is packed. Enter 0 if unpacked"
             << "<br>";
-  std::cin >> packed;
+  DIN >> packed;
 
   if (packed == 0) {
     armorClass[10] = true; // Ram armor class
@@ -2318,7 +2319,8 @@ void Entity::outputEntity(std::string playerName)
 
     displayColorfulText(
       "bold", "red", "default", std::to_string(entityHealth), false);
-    std::cout << " " << "HP";
+    std::cout << " "
+              << "HP";
 
     // Behaviour: Return further information about the entities values if the
     // value is present
@@ -2326,13 +2328,15 @@ void Entity::outputEntity(std::string playerName)
       std::cout << "; ";
       displayColorfulText(
         "bold", "yellow", "default", std::to_string(standardDamage), false);
-      std::cout << " " << "base attack";
+      std::cout << " "
+                << "base attack";
     }
     if (rangedDamage != 0) {
       std::cout << "; ";
       displayColorfulText(
         "bold", "magenta", "default", std::to_string(rangedDamage), false);
-      std::cout << " " << "pierce attack";
+      std::cout << " "
+                << "pierce attack";
     }
     /* Show garrrison value
     if (garrisonValue != 0) {
@@ -2346,7 +2350,8 @@ void Entity::outputEntity(std::string playerName)
       std::cout << ". It's worth ";
       displayColorfulText(
         "bold", "cyan", "default", std::to_string(pointValue), false);
-      std::cout << " " << "points";
+      std::cout << " "
+                << "points";
     }
 
     // Behaviour: Return further information about the entities armor classes if

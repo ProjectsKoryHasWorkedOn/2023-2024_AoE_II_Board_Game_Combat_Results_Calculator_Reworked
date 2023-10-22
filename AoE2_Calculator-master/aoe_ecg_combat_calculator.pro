@@ -30,14 +30,14 @@ SOURCES += \
     csv/entities.cpp \
     csv/player_medieval_ages.cpp \
     csv/player_names.cpp \
+    dialog_input.cpp \
     file_paths.cpp \
     main.cpp \
     mainwindow.cpp \
     output_redirector.cpp \
     soundEffects.cpp \
     stream_buffer.cpp \
-    uicoloring.cpp \
-    user_input_handler.cpp
+    uicoloring.cpp
 
 HEADERS += \
     aboutwindow.h \
@@ -60,6 +60,7 @@ HEADERS += \
     csv/player_medieval_ages.h \
     csv/player_names.h \
     csv/technologies.h \
+    dialog_input.h \
     file_paths.h \
     mainwindow.h \
     mainwindow.hpp \
@@ -67,8 +68,7 @@ HEADERS += \
     player.h \
     soundEffects.h \
     stream_buffer.h \
-    uicoloring.h \
-    user_input_handler.h
+    uicoloring.h
 
 FORMS += \
     aboutwindow.ui \

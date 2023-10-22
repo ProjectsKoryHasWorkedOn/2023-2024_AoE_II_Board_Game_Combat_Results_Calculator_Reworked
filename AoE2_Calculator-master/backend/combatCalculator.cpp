@@ -1,9 +1,10 @@
 /** The libaries **/
 #include "combatCalculator.h" // Using: calculator class
-#include "entity.h"           // Using: entity class
-#include <cmath>              // Using: floor
-#include <cstdlib>            // Using: exit(EXIT_FAILURE), srand(), rand()
-#include <iostream>           // Using: cin, cout
+#include "dialog_input.h"
+#include "entity.h" // Using: entity class
+#include <cmath>    // Using: floor
+#include <cstdlib>  // Using: exit(EXIT_FAILURE), srand(), rand()
+#include <iostream> // Using: cin, cout
 #include <random>
 #include <stdlib.h> // Using: atoi
 #include <string>   // Using: string
@@ -169,17 +170,7 @@ void combatCalculator::checkIfRetreating()
   // TODO: HERE, try to have this read from a QInputDialog and fill in cin
   //             programatically.
   isRetreating = "0";
-  if (!(std::cin >> isRetreating)) {
-    bool bad  = std::cin.bad();
-    bool fail = std::cin.fail();
-    bool eof  = std::cin.eof();
-
-    std::cout << std::boolalpha << "bad: " << bad << " fail: " << fail
-              << " eof: " << eof << '\n';
-    std::cout << std::flush;
-    std::cout << "Failed to read from cin.\n";
-    std::terminate();
-  }
+  DIN >> isRetreating;
 
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"
@@ -530,7 +521,7 @@ void monkRounds::roundOutcome(
                   << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
                   << "<br>";
-        std::cin >> calculationModeP1;
+        DIN >> calculationModeP1;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP1 != "0") && (calculationModeP1 != "1")) {
@@ -646,7 +637,7 @@ void monkRounds::roundOutcome(
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "<br>";
-                std::cin >> getP1Response;
+                DIN >> getP1Response;
               }
             }
             // Behaviour: Check if there are just monks
@@ -656,7 +647,7 @@ void monkRounds::roundOutcome(
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "<br>";
-                std::cin >> getP1Response;
+                DIN >> getP1Response;
               }
             }
 
@@ -757,7 +748,7 @@ void monkRounds::roundOutcome(
                         << "'s 'assistant monk' targeting " << player2Name
                         << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
                         << "<br>";
-              std::cin >> p1AssistingMonkTarget;
+              DIN >> p1AssistingMonkTarget;
             }
 
             // Behaviour: Validate the input before proceeding
@@ -819,7 +810,7 @@ void monkRounds::roundOutcome(
                   << "'s monk performing a conversion (enter 0) or "
                      "healing attempt (enter 1)?"
                   << "<br>";
-        std::cin >> calculationModeP2;
+        DIN >> calculationModeP2;
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP2 != "0") && (calculationModeP2 != "1")) {
@@ -934,7 +925,7 @@ void monkRounds::roundOutcome(
                 std::cout << "The conversion attempt for p2 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "<br>";
-                std::cin >> getP2Response;
+                DIN >> getP2Response;
               }
             }
             // Behaviour: Check if there are just monks
@@ -945,7 +936,7 @@ void monkRounds::roundOutcome(
                   << "The conversion attempt for p2 failed failed. Pay 2 gold "
                      "and enter 1 to try again. Otherwise enter 0"
                   << "<br>";
-                std::cin >> getP2Response;
+                DIN >> getP2Response;
               }
             }
 
@@ -1046,7 +1037,7 @@ void monkRounds::roundOutcome(
                         << "'s 'assistant monk' targeting " << player1Name
                         << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
                         << "<br>";
-              std::cin >> p2AssistingMonkTarget;
+              DIN >> p2AssistingMonkTarget;
             }
 
             // Behaviour: Validate the input before proceeding
@@ -1487,7 +1478,7 @@ void archerRounds::roundOutcome(
           std::cout << "Did the conditions of Shots_In_The_Back_(Briton) get "
                        "satisfied for player 1 or 2? Enter 1 for yes. 0 for no"
                     << "<br>";
-          std::cin >> getAnswer;
+          DIN >> getAnswer;
 
           if (getAnswer == "1") {
             // Behaviour: Have another round of ranged combat

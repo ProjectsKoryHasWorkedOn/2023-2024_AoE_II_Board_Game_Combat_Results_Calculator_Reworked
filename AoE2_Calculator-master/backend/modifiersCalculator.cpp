@@ -1,9 +1,10 @@
 /** The libaries **/
 #include "modifiersCalculator.h" // Using: calculator class
-#include "entity.h"              // Using: entity class
-#include <cstdlib>               // Using: exit(EXIT_FAILURE)
-#include <iostream>              // Using: cin, cout
-#include <string>                // Using: string
+#include "dialog_input.h"
+#include "entity.h" // Using: entity class
+#include <cstdlib>  // Using: exit(EXIT_FAILURE)
+#include <iostream> // Using: cin, cout
+#include <string>   // Using: string
 
 // Functions: The constructor and deconstructor
 modifiersCalculator::modifiersCalculator()
@@ -221,10 +222,10 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Huskarl_(Goth) line
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Huskarl_(Goth)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[0] == true) // Archer
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Huskarl_(Goth)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[0] == true) // Archer
+  )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 12;
     }
@@ -241,23 +242,23 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Longboat_(Viking) line
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Longboat_(Viking)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[21] == true) || // Demolition Ship
-		(comparisonEntity.armorClass[22] == true) || // Galley
-		(comparisonEntity.entityName == "Longboat_(Viking)") ||
-		(comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Longboat_(Viking)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[21] == true) || // Demolition Ship
+    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.entityName == "Longboat_(Viking)") ||
+    (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
+  )){
     applyRockPaperScissorsModifiers.standardDamage = 40;
   }
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Elite_Longboat_(Viking)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[21] == true) || // Demolition Ship
-		(comparisonEntity.armorClass[22] == true) || // Galley
-		(comparisonEntity.entityName == "Longboat_(Viking)") ||
-		(comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Elite_Longboat_(Viking)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[21] == true) || // Demolition Ship
+    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.entityName == "Longboat_(Viking)") ||
+    (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
+  )){
     applyRockPaperScissorsModifiers.standardDamage = 50;
   }
 
@@ -291,10 +292,10 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Samurai_(Japanese) line
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Samurai_(Japanese)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[17] == true) // Unique Unit
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Samurai_(Japanese)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[17] == true) // Unique Unit
+  )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 10;
     }
@@ -303,10 +304,10 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     }
   }
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Elite_Samurai_(Japanese)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[17] == true) // Unique Unit
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Elite_Samurai_(Japanese)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[17] == true) // Unique Unit
+  )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 15;
     }
@@ -430,30 +431,30 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Galley_(Saracen) line
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Galley_(Saracen)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[22] == true) || // Galley
-		(comparisonEntity.entityName == "Longboat_(Viking)") ||
-		(comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Galley_(Saracen)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.entityName == "Longboat_(Viking)") ||
+    (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
+  )){
     applyRockPaperScissorsModifiers.standardDamage = 35;
   }
   if(
-	(applyRockPaperScissorsModifiers.entityName == "War_Galley_(Saracen)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[22] == true) || // Galley
-		(comparisonEntity.entityName == "Longboat_(Viking)") ||
-		(comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "War_Galley_(Saracen)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.entityName == "Longboat_(Viking)") ||
+    (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
+  )){
     applyRockPaperScissorsModifiers.standardDamage = 50;
   }
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Galleon_(Saracen)") && (
-		(comparisonEntity.armorClass[1] == true) || // Building
-		(comparisonEntity.armorClass[22] == true) || // Galley
-		(comparisonEntity.entityName == "Longboat_(Viking)") ||
-		(comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Galleon_(Saracen)") && (
+    (comparisonEntity.armorClass[1] == true) || // Building
+    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.entityName == "Longboat_(Viking)") ||
+    (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
+  )){
     applyRockPaperScissorsModifiers.standardDamage = 60;
   }
 
@@ -515,19 +516,19 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Spearman_(Goth) line
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Spearman_(Goth)") && (
-		(comparisonEntity.armorClass[4] == true) || // Cavalry
-		(comparisonEntity.armorClass[1] == true) // Building
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Spearman_(Goth)") && (
+    (comparisonEntity.armorClass[4] == true) || // Cavalry
+    (comparisonEntity.armorClass[1] == true) // Building
+  )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage += 2;
     }
   }
   if(
-	(applyRockPaperScissorsModifiers.entityName == "Pikeman_(Goth)") && (
-		(comparisonEntity.armorClass[4] == true) || // Cavalry
-		(comparisonEntity.armorClass[1] == true) // Building
-	)){
+  (applyRockPaperScissorsModifiers.entityName == "Pikeman_(Goth)") && (
+    (comparisonEntity.armorClass[4] == true) || // Cavalry
+    (comparisonEntity.armorClass[1] == true) // Building
+  )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage += 2;
     }
@@ -770,7 +771,7 @@ void modifiersCalculator::applyEventCardEffects()
     // calculate now)
     std::cout << "Is " << applyEventCardModifiers.entityName << " Celt?"
               << "<br>";
-    std::cin >> isThisRelevant;
+    DIN >> isThisRelevant;
 
     if (isThisRelevant == "1") {
       applyEventCardModifiers.entityHealth += 2;
@@ -796,7 +797,7 @@ void modifiersCalculator::applyEventCardEffects()
       std::cout << "Is Dangerous_Times attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
                 << "<br>";
-      std::cin >> isThisRelevant;
+      DIN >> isThisRelevant;
 
       if (isThisRelevant == "1") {
         applyEventCardModifiers.garrisonValue += 5;
@@ -819,7 +820,7 @@ void modifiersCalculator::applyEventCardEffects()
       std::cout << "Is Flaming_Arrows attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
                 << "<br>";
-      std::cin >> isThisRelevant;
+      DIN >> isThisRelevant;
 
       if (isThisRelevant == "1") {
         applyEventCardModifiers.standardDamage += 2;
@@ -841,7 +842,7 @@ void modifiersCalculator::applyEventCardEffects()
       std::cout << "Is High_Ground attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
                 << "<br>";
-      std::cin >> isThisRelevant;
+      DIN >> isThisRelevant;
 
       if (isThisRelevant == "1") {
         switch (playerAge) {
@@ -868,7 +869,7 @@ void modifiersCalculator::applyEventCardEffects()
       std::cout << "Is Husbandry attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
                 << "<br>";
-      std::cin >> isThisRelevant;
+      DIN >> isThisRelevant;
 
       if (isThisRelevant == "1") {
         applyEventCardModifiers.entityHealth += 2;
@@ -925,7 +926,7 @@ void modifiersCalculator::applyEventCardEffects()
       << "Is it player " << playerNumber
       << "'s next turn in regards to Spirits of the Ancestors? Enter 1 if so"
       << "<br>";
-    std::cin >> isThisRelevant;
+    DIN >> isThisRelevant;
 
     if (isThisRelevant == "1") {
       applyEventCardModifiers.standardDamage += 3;
@@ -939,7 +940,7 @@ void modifiersCalculator::applyEventCardEffects()
       std::cout << "Is Squires attached to "
                 << applyEventCardModifiers.entityName << "? Enter 1 if so"
                 << "<br>";
-      std::cin >> isThisRelevant;
+      DIN >> isThisRelevant;
 
       if (isThisRelevant == "1") {
         applyEventCardModifiers.entityHealth += 2;
@@ -955,7 +956,7 @@ void modifiersCalculator::applyEventCardEffects()
     std::cout << "Is Vengeance_Is_Mine! attached to "
               << applyEventCardModifiers.entityName << "? Enter 1 if so"
               << "<br>";
-    std::cin >> isThisRelevant;
+    DIN >> isThisRelevant;
 
     if (isThisRelevant == "1") {
       applyEventCardModifiers.standardDamage += 2;
