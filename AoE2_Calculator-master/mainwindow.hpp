@@ -22,6 +22,8 @@ public:
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
 
+  const QString& lastLine() const;
+
   // Delete redundant references to functions or it'll re-create them in
   // moc_mainwindow.cpp under slots and throw up an error Add new references to
   // functions if it hasn't added them automatically or it'll throw up an error
@@ -126,6 +128,7 @@ private:
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
 
   Ui::MainWindow     ui;
+  QString            m_lastLine;
   OutputRedirector   m_outputRedirector;
   Aliases            m_aliases;
   QString            m_player1EntityName;

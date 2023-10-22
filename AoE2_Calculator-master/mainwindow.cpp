@@ -84,7 +84,8 @@ QStringList backFromAForeignLandCivilizationBonuses;
 
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow{parent}
-  , m_outputRedirector{std::cout, ui.gameOutputTextEdit}
+  , m_lastLine{}
+  , m_outputRedirector{std::cout, ui.gameOutputTextEdit, m_lastLine}
   , m_aliases{}
   , m_entities{}
   , m_player_names{}
@@ -561,6 +562,11 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow()
 {
+}
+
+const QString& MainWindow::lastLine() const
+{
+  return m_lastLine;
 }
 
 // Run this when there's a call to play a button SFX

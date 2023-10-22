@@ -10,9 +10,13 @@ QT_FORWARD_DECLARE_CLASS(QTextEdit)
 
 class OutputRedirector {
 public:
-  OutputRedirector(std::ostream& ostream, QTextEdit*& textEdit);
+  OutputRedirector(
+    std::ostream& ostream,
+    QTextEdit*&   textEdit,
+    QString&      lastLine);
 
 private:
+  QString&      m_lastLine;
   std::ostream& m_ostream;
   QString       m_buffer;
   QTextEdit*&   m_textEdit;

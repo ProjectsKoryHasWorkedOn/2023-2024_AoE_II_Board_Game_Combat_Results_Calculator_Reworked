@@ -167,10 +167,9 @@ void combatCalculator::checkIfRetreating()
                "fighting in the next round"
             << "<br>";
 
-  // TODO: HERE, try to have this read from a QInputDialog and fill in cin
-  //             programatically.
-  isRetreating = "0";
-  DIN >> isRetreating;
+  bool bIsRetreating{};
+  DIN >> bIsRetreating;
+  isRetreating = bIsRetreating ? "1" : "0";
 
   if ((isRetreating != "1") && (isRetreating != "0")) {
     std::cout << "Error: The retreating value can only be a 0 or 1"
