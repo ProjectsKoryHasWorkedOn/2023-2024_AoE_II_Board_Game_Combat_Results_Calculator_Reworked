@@ -488,6 +488,8 @@
      </property>
      <addaction name="actionEnableDisableSFX"/>
      <addaction name="actionEnableDisableDarkMode"/>
+     <addaction name="actionSetDefaultAnswerToRetreatingPrompt"/>
+     <addaction name="actionSetDefaultAnswerToConvertingHealingPrompt"/>
     </widget>
     <widget class="QMenu" name="menuDocumentation">
      <property name="title">
@@ -608,6 +610,16 @@
   <action name="actionDeveloper_wishlist">
    <property name="text">
     <string>Developer wishlist</string>
+   </property>
+  </action>
+  <action name="actionSetDefaultAnswerToRetreatingPrompt">
+   <property name="text">
+    <string>Set default answer to retreating prompt</string>
+   </property>
+  </action>
+  <action name="actionSetDefaultAnswerToConvertingHealingPrompt">
+   <property name="text">
+    <string>Set default answer to converting/healing prompt </string>
    </property>
   </action>
  </widget>

@@ -18,6 +18,10 @@ bool readFromDialog(MainWindow* mainWindow, Any& any)
   const QString title{"Data entry prompt"};
   const QString label{mainWindow->lastLine()};
 
+
+
+
+
   if constexpr (std::is_same_v<UnCvRef, double>) {
     const double result{QInputDialog::getDouble(
       /* parent */ mainWindow,

@@ -103,6 +103,10 @@ private slots:
 
   void on_p2ActiveEventsToggle_toggled(bool checked);
 
+  void on_actionSetDefaultAnswerToRetreatingPrompt_triggered();
+
+  void on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered();
+
 private:
   void initializeEntityAliases();
 

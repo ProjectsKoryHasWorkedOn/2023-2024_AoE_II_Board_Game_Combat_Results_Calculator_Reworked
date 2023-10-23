@@ -50,6 +50,12 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
+
+// Getting default selection for the prompts
+QString retreatingPromptAnswer;
+QString convertingHealingPromptAnswer;
+
+
 // More global variables
 bool    isP1BackFromAForeignLandEventInPlay;
 QString player1BackFromAForeignLandCivilizationBonusSelection;
@@ -1849,3 +1855,39 @@ void MainWindow::on_p2ActiveEventsToggle_toggled(bool checked)
     }
   }
 }
+
+void MainWindow::on_actionSetDefaultAnswerToRetreatingPrompt_triggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  QStringList options = {"Ask each time", "Always retreating", "Never retreating"};
+
+  QInputDialog defaultAnswerToRetreatingPromptDialog;
+  QLabel       dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
+  defaultAnswerToRetreatingPromptDialog.setLabelText(dialogLabel.text());
+  defaultAnswerToRetreatingPromptDialog.setWindowTitle("Handling of the retreating prompt");
+  defaultAnswerToRetreatingPromptDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  defaultAnswerToRetreatingPromptDialog.setComboBoxItems(options);
+  defaultAnswerToRetreatingPromptDialog.exec();
+
+  retreatingPromptAnswer = defaultAnswerToRetreatingPromptDialog.textValue();
+}
+
+void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  QStringList options = {"Ask each time", "Always converting", "Always healing"};
+
+  QInputDialog defaultAnswerToConversionHealingPromptDialog;
+  QLabel       dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
+  defaultAnswerToConversionHealingPromptDialog.setLabelText(dialogLabel.text());
+  defaultAnswerToConversionHealingPromptDialog.setWindowTitle("Handling of the conversion/healing prompt");
+  defaultAnswerToConversionHealingPromptDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  defaultAnswerToConversionHealingPromptDialog.setComboBoxItems(options);
+  defaultAnswerToConversionHealingPromptDialog.exec();
+
+  convertingHealingPromptAnswer = defaultAnswerToConversionHealingPromptDialog.textValue();
+}
+
+
