@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <type_traits>
 
 #include "mainwindow.hpp"
@@ -18,11 +19,13 @@ bool readFromDialog(MainWindow* mainWindow, Any& any)
   const QString title{"Data entry prompt"};
   const QString label{mainWindow->lastLine()};
 
-
-
-
-
-  if constexpr (std::is_same_v<UnCvRef, double>) {
+  if constexpr (std::is_same_v<UnCvRef, bool>) {
+    const QMessageBox::StandardButton buttonPressed{
+      QMessageBox::question(mainWindow, title, label)};
+    any = buttonPressed == QMessageBox::Yes;
+    return true;
+  }
+  else if constexpr (std::is_same_v<UnCvRef, double>) {
     const double result{QInputDialog::getDouble(
       /* parent */ mainWindow,
       /* title */ title,
@@ -85,6 +88,8 @@ bool readFromDialog(MainWindow* mainWindow, Any& any)
 
 class DialogInput {
 public:
+  enum class MonkAction { Heal, Convert };
+
   static void initialize(MainWindow* mainWindow);
 
   template<typename Any>
@@ -101,6 +106,8 @@ public:
   }
 
   explicit DialogInput(MainWindow* mainWindow);
+
+  MonkAction queryForMonkAction(const std::string& playerName) const;
 
 private:
   MainWindow* m_mainWindow;

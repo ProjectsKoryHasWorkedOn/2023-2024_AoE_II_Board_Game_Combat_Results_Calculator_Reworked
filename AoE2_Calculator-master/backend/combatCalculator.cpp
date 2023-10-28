@@ -163,9 +163,7 @@ void combatCalculator::checkIfRetreating()
 {
   // Behaviour: Ask the attacker if they want to retreat with their archer if
   // they are not versing cavalry or an archer
-  std::cout << "For entities that can retreat: Enter 1 if retreating or 0 if "
-               "fighting in the next round"
-            << "<br>";
+  std::cout << "Do you want to retreat?<br>";
 
   bool bIsRetreating{};
   DIN >> bIsRetreating;
@@ -514,13 +512,18 @@ void monkRounds::roundOutcome(
       if (monkPresentP1 == true) {
         // Behaviour: Ask the user if they are performing a conversion or
         // healing attempt and store the answer
-        std::string calculationModeP1 = "0";
-        std::cout << "<br>"
-                  << "Is " << player1Name
-                  << "'s monk performing a conversion (enter 0) or "
-                     "healing attempt (enter 1)?"
-                  << "<br>";
-        DIN >> calculationModeP1;
+        std::string                   calculationModeP1 = "0";
+        const DialogInput::MonkAction monkAction{
+          DIN.queryForMonkAction(player1Name)};
+
+        switch (monkAction) {
+        case DialogInput::MonkAction::Convert:
+          calculationModeP1 = "0";
+          break;
+        case DialogInput::MonkAction::Heal:
+          calculationModeP1 = "1";
+          break;
+        }
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP1 != "0") && (calculationModeP1 != "1")) {
@@ -804,12 +807,18 @@ void monkRounds::roundOutcome(
       if (monkPresentP2 == true) {
         // Behaviour: Ask the user if they are performing a conversion or
         // healing attempt and store the answer
-        std::string calculationModeP2 = "0";
-        std::cout << "Is " << player2Name
-                  << "'s monk performing a conversion (enter 0) or "
-                     "healing attempt (enter 1)?"
-                  << "<br>";
-        DIN >> calculationModeP2;
+        std::string                   calculationModeP2 = "0";
+        const DialogInput::MonkAction monkAction{
+          DIN.queryForMonkAction(player2Name)};
+
+        switch (monkAction) {
+        case DialogInput::MonkAction::Convert:
+          calculationModeP2 = "0";
+          break;
+        case DialogInput::MonkAction::Heal:
+          calculationModeP2 = "1";
+          break;
+        }
 
         // Behaviour: Validate the input before proceeding
         if ((calculationModeP2 != "0") && (calculationModeP2 != "1")) {
@@ -1475,9 +1484,11 @@ void archerRounds::roundOutcome(
           std::string getAnswer = "";
 
           std::cout << "Did the conditions of Shots_In_The_Back_(Briton) get "
-                       "satisfied for player 1 or 2? Enter 1 for yes. 0 for no"
+                       "satisfied for player 1 or 2?"
                     << "<br>";
-          DIN >> getAnswer;
+          bool isShotsInTheBackSatisfied{};
+          DIN >> isShotsInTheBackSatisfied;
+          getAnswer = isShotsInTheBackSatisfied ? "0" : "1";
 
           if (getAnswer == "1") {
             // Behaviour: Have another round of ranged combat

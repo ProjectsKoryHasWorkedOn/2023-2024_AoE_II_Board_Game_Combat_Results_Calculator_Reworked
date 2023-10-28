@@ -2057,10 +2057,11 @@ void Trebuchet::updateTrebuchetArmorClass()
 {
   // Behaviour: Ram armor class if unpacked (deployed)
   // So it takes bonus damage from units that deal bonus damage vs rams
-  packed = false;
   std::cout << "Enter 1 if the Trebuchet is packed. Enter 0 if unpacked"
             << "<br>";
-  DIN >> packed;
+  bool isPacked{};
+  DIN >> isPacked;
+  packed = isPacked;
 
   if (packed == 0) {
     armorClass[10] = true; // Ram armor class
