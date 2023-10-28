@@ -308,6 +308,13 @@ int runGame()
   p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
   /** Part 4.2: Round 2 **/
+  // Proceed with archer round of combat so long as archers are not fighting buildings
+  // Ranged damage applies only to units and villagers, not to buildings
+  if( (p1BattleParticipant.armorClass[1] != true) && (p2BattleParticipant.armorClass[1] != true) ){
+
+
+
+
   // Behaviour: Set the combat calculator to the archer rounds
   theCombatCalculator = &rangedRounds;
 
@@ -387,6 +394,8 @@ int runGame()
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
   }
+
+    }
 
   /** Part 4.4: Round 3 & 4 **/
   // Behaviour: Set the combat calculator to the standard rounds

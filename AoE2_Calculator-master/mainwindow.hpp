@@ -107,6 +107,11 @@ private slots:
 
   void on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered();
 
+  void on_actionSet_civilization_of_player_1_triggered();
+
+  void on_actionSet_civilization_of_player_2_triggered();
+
+
 private:
   void initializeEntityAliases();
 
@@ -134,6 +139,9 @@ private:
   void overrideTechnologies(QStringList technologiesToCancelOut, Technologies * playerTechnologies);
 
   void technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies);
+
+
+  void removeFromList();
 
 
   Ui::MainWindow     ui;

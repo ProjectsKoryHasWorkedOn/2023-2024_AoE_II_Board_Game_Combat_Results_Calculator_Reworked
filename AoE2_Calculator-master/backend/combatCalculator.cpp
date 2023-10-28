@@ -154,13 +154,16 @@ void combatCalculator::checkIfDead()
   if (p1BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
 
-    // TODO: Add sound for Wonder.
     if (p1BattleParticipant.entityName == "Wonder") {
-      // SFXToPlay()
+        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
     }
   }
   else if (p2BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
+
+    if (p2BattleParticipant.entityName == "Wonder") {
+        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+    }
   }
 }
 
@@ -169,15 +172,36 @@ void combatCalculator::checkIfRetreating()
 {
   // Behaviour: Ask the attacker if they want to retreat with their archer if
   // they are not versing cavalry or an archer
-  std::cout << "Do you want to retreat?<br>";
 
-  const bool bIsRetreating{DIN.queryForIsRetreating()};
-  isRetreating = bIsRetreating ? "1" : "0";
+  // Todo: Hit and run not working how it should
 
-  if ((isRetreating != "1") && (isRetreating != "0")) {
-    std::cout << "Error: The retreating value can only be a 0 or 1"
-              << "<br>";
-    std::terminate();
+
+
+
+
+  // Behavior: Do not ask the question if 2 buildings are fighting one another
+  if((p1BattleParticipant.armorClass[1] != true) && (p2BattleParticipant.armorClass[1] != true)){
+    // Behavior: Do not ask the question if opposing unit is dead
+    if( ( p1BattleParticipant.entityQuantity > 0) && (p2BattleParticipant.entityQuantity > 0) ){
+      std::cout << "Do you want to retreat?<br>";
+
+      const bool bIsRetreating{DIN.queryForIsRetreating()};
+      isRetreating = bIsRetreating ? "1" : "0";
+
+      if ((isRetreating != "1") && (isRetreating != "0")) {
+        std::cout << "Error: The retreating value can only be a 0 or 1"
+                  << "<br>";
+        std::terminate();
+      }
+    }
+    else{
+      // Set value to 0 if opposing unit is dead
+      isRetreating = "0";
+    }
+  }
+  else{
+    // Set value to 0 if 2 buildings are fighting one another
+    isRetreating = "0";
   }
 }
 
@@ -1192,6 +1216,8 @@ void archerRounds::roundOutcome(
     // unit this turn
     rangedUnitAttacksCavalryP2 = true;
   }
+
+
 
   // Behaviour: Run the ranged battle round for X times
   for (int i = 0; i < inputRunTimes; i++) {

@@ -14,6 +14,8 @@ int main(int argc, char* argv[])
   std::cout << std::unitbuf;
 
 
+
+
   // Set the application icon
   w.setWindowIcon(QIcon("abacus.ico"));
 

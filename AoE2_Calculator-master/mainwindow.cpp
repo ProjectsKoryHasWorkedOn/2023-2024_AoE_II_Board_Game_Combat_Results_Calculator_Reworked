@@ -11,6 +11,9 @@
 
 #include "cross-window_palette.h" // Coloring of the UI
 
+// Libraries for gifs
+#include <QMovie>
+
 // Libraries used for std::cout
 #include <iostream>
 
@@ -60,6 +63,12 @@ QString player1BackFromAForeignLandCivilizationBonusSelection;
 
 bool    isP2BackFromAForeignLandEventInPlay;
 QString player2BackFromAForeignLandCivilizationBonusSelection;
+
+// Civilization selection
+QStringList civilizations
+  = {"Britons", "Celts", "Goths", "Mongols", "Persians", "Franks", "Japanese", "Saracens", "Vikings"};
+QString player1Civilization;
+QString player2Civilization;
 
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
@@ -118,6 +127,10 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
+
+
+
+
 
   // What the working directory is
   workingDirectory = QCoreApplication::applicationDirPath();
@@ -559,6 +572,19 @@ MainWindow::MainWindow(QWidget* parent)
   palettes.darkModeEnabled = false;
 
   setColorTheUIElements();
+
+
+  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + "/animations/spearman.gif");
+
+  ui.player2Animation->setMovie(GifAnimation);
+  ui.player2Animation->setVisible(true);
+ui.player2Animation->resize(50,50);
+ui.player2Animation->raise();
+ui.player2Animation->setScaledContents(true);
+  GifAnimation->start();
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -706,6 +732,8 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
 
     ui.player1EntityNames->addItem(listWidgetItem);
   }
+
+  removeFromList();
 }
 
 // Run this when the text inside of the player 2 entities search field changes
@@ -737,6 +765,8 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
 
     ui.player2EntityNames->addItem(listWidgetItem);
   }
+
+  removeFromList();
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -1329,6 +1359,12 @@ void MainWindow::setColorTheUIElements()
     ui.actionSet_set_color_of_player_2->setIcon(QIcon(
       workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
 
+
+    ui.actionSet_civilization_of_player_1->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+    ui.actionSet_civilization_of_player_2->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+
     // Update the player names
     if (player1Color == "black" || player2Color == "black") {
       player1Color = "white";
@@ -1365,6 +1401,12 @@ void MainWindow::setColorTheUIElements()
       QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
     ui.actionSet_set_color_of_player_2->setIcon(
       QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+
+
+    ui.actionSet_civilization_of_player_1->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_civilization_of_player_2->setIcon(QIcon(
+      workingDirectory.absolutePath() + playerDetailsIconFilename));
 
     // Update the player names
     if (player1Color == "white" || player2Color == "white") {
@@ -1449,6 +1491,12 @@ void MainWindow::updatePlayerNames()
   ui.actionSet_name_of_player_2->setText("Set " + player2Name + "'s name");
   ui.actionSet_set_color_of_player_2->setText(
     "Set " + player2Name + "'s color");
+
+
+  ui.actionSet_civilization_of_player_1->setText(
+    "Set " + player1Name + "'s civilization");
+  ui.actionSet_civilization_of_player_2->setText(
+    "Set " + player2Name + "'s civilization");
 
   ui.player1UnitsLabel->setText(
     "<font color=" + player1Color + ">" + player1Name + "'s" + "</font>" + " "
@@ -1873,6 +1921,7 @@ void MainWindow::on_actionSetDefaultAnswerToRetreatingPrompt_triggered()
     = {"Ask each time", "Always retreating", "Never retreating"};
 
   QInputDialog defaultAnswerToRetreatingPromptDialog;
+
   QLabel dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
   defaultAnswerToRetreatingPromptDialog.setLabelText(dialogLabel.text());
   defaultAnswerToRetreatingPromptDialog.setWindowTitle(
@@ -1905,3 +1954,131 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
   convertingHealingPromptAnswer
     = defaultAnswerToConversionHealingPromptDialog.textValue();
 }
+
+
+
+void MainWindow::removeFromList(){
+
+  //@Phillip: Can probably do this in a lot better way
+  // Player 1
+    QString player1alternativeOptions = civilizations.join(",,");
+
+  player1alternativeOptions = player1alternativeOptions.remove(QRegularExpression(player1Civilization));
+    player1alternativeOptions = player1alternativeOptions.remove(QRegularExpression("s,"));
+  player1alternativeOptions = player1alternativeOptions.replace(QRegularExpression(",,"),",");
+
+    if( (player1alternativeOptions == "Briton") ){
+    player1alternativeOptions = player1alternativeOptions.mid(1, player1alternativeOptions.length() - 2);
+    }
+  else{
+    player1alternativeOptions = player1alternativeOptions.mid(0, player1alternativeOptions.length() - 1);
+    }
+
+  QStringList player1alternativeOptionsList = player1alternativeOptions.split(",");
+
+
+  for(int i = 0; i < ui.player1EntityNames->count(); i++){
+    QString player1listItem = ui.player1EntityNames->item(i)->text();
+
+    if(player1listItem.contains(player1Civilization)){
+     //  qDebug() << ui.player1EntityNames->item(i)->text();
+
+      ui.player1EntityNames->item(i)->setHidden(false);
+    }
+    else{
+      for(int y = 0; y < player1alternativeOptionsList.length(); y ++){
+        if(player1listItem.contains(player1alternativeOptionsList[y])){
+         ui.player1EntityNames->item(i)->setHidden(true);
+        }
+      }
+    }
+}
+
+
+
+       // Player 2
+QString player2alternativeOptions = civilizations.join(",,");
+
+player2alternativeOptions = player2alternativeOptions.remove(QRegularExpression(player2Civilization));
+player2alternativeOptions = player2alternativeOptions.remove(QRegularExpression("s,"));
+player2alternativeOptions = player2alternativeOptions.replace(QRegularExpression(",,"),",");
+
+if( (player2alternativeOptions == "Briton") ){
+    player2alternativeOptions = player2alternativeOptions.mid(1, player2alternativeOptions.length() - 2);
+}
+else{
+    player2alternativeOptions = player2alternativeOptions.mid(0, player2alternativeOptions.length() - 1);
+}
+QStringList player2alternativeOptionsList = player2alternativeOptions.split(",");
+
+
+
+for(int i = 0; i < ui.player2EntityNames->count(); i++){
+    QString player2listItem = ui.player2EntityNames->item(i)->text();
+
+    if(player2listItem.contains(player2Civilization)){
+      //  qDebug() << ui.player1EntityNames->item(i)->text();
+
+      ui.player2EntityNames->item(i)->setHidden(false);
+    }
+    else{
+      for(int y = 0; y < player2alternativeOptionsList.length(); y ++){
+        if(player2listItem.contains(player2alternativeOptionsList[y])){
+         ui.player2EntityNames->item(i)->setHidden(true);
+        }
+      }
+    }
+}
+
+}
+
+
+void MainWindow::on_actionSet_civilization_of_player_1_triggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+
+
+  QInputDialog player1CivilizationSelection;
+
+  QLabel dialogLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s civilization:"));
+  player1CivilizationSelection.setLabelText(dialogLabel.text());
+  player1CivilizationSelection.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player1Name) + "'s civilization");
+  player1CivilizationSelection.setStyleSheet(
+    palettes.getDialogBoxStyling());
+  player1CivilizationSelection.setComboBoxItems(civilizations);
+  player1CivilizationSelection.exec();
+
+  player1Civilization
+    = player1CivilizationSelection.textValue();
+
+  // Remove the last character
+  player1Civilization = player1Civilization.mid(0, player1Civilization.length() - 1);
+
+  removeFromList();
+}
+
+
+void MainWindow::on_actionSet_civilization_of_player_2_triggered()
+{
+  QInputDialog player2CivilizationSelection;
+
+  QLabel dialogLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s civilization:"));
+  player2CivilizationSelection.setLabelText(dialogLabel.text());
+  player2CivilizationSelection.setWindowTitle(
+    "Enter " + convertUnderscoresToSpaces(player2Name) + "'s civilization");
+  player2CivilizationSelection.setStyleSheet(
+    palettes.getDialogBoxStyling());
+  player2CivilizationSelection.setComboBoxItems(civilizations);
+  player2CivilizationSelection.exec();
+
+  player2Civilization
+    = player2CivilizationSelection.textValue();
+
+  // Remove the last character
+  player2Civilization = player2Civilization.mid(0, player2Civilization.length() - 1);
+
+  removeFromList();
+}
+
