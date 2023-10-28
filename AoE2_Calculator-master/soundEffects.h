@@ -14,4 +14,7 @@ public:
   QString fileLocation;
   void    playSoundEffect();
 };
+
+void SFXToPlay(QString filePath);
+
 #endif // SOUNDEFFECTS_H

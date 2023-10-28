@@ -2,6 +2,7 @@
 #include "combatCalculator.h" // Using: calculator class
 #include "dialog_input.h"
 #include "entity.h" // Using: entity class
+#include "soundEffects.h"
 #include <cmath>    // Using: floor
 #include <cstdlib>  // Using: exit(EXIT_FAILURE), srand(), rand()
 #include <iostream> // Using: cin, cout
@@ -152,6 +153,11 @@ void combatCalculator::checkIfDead()
 {
   if (p1BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
+
+    // TODO: Add sound for Wonder.
+    if (p1BattleParticipant.entityName == "Wonder") {
+      // SFXToPlay()
+    }
   }
   else if (p2BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
@@ -708,7 +714,7 @@ void monkRounds::roundOutcome(
             getTotalValues();
 
             // Play a SFX for a successful conversion attempt
-            // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
+            SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
           }
           else if (
             (monkPowersActivatedP1 == true) && (calculationModeP1 == "1")) {
@@ -720,7 +726,7 @@ void monkRounds::roundOutcome(
             getTotalValues();
 
             // Play a SFX for a successful healing attempt
-            // SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
+            SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
         // Behaviour: Cover the case where there are 'assisting monks'
@@ -798,6 +804,7 @@ void monkRounds::roundOutcome(
             getIndividualValues();
             p1BattleParticipant.entityQuantity += p1EntitiesHealed;
             getTotalValues();
+            SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
       }
@@ -1003,7 +1010,7 @@ void monkRounds::roundOutcome(
             getTotalValues();
 
             // Play a SFX for a successful conversion attempt
-            // SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
+            SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
           }
           else if (
             (monkPowersActivatedP2 == true) && (calculationModeP2 == "1")) {
@@ -1015,7 +1022,7 @@ void monkRounds::roundOutcome(
             getTotalValues();
 
             // Play a SFX for a successful healing attempt
-            // SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
+            SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
         // Behaviour: Cover the case where there are 'assisting monks'
@@ -1091,6 +1098,7 @@ void monkRounds::roundOutcome(
             healingEffectP2    = true;
             startingQuantityP2 = p2BattleParticipant.entityQuantity;
             p2BattleParticipant.entityQuantity += p2EntitiesHealed;
+            SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
           }
         }
       }
