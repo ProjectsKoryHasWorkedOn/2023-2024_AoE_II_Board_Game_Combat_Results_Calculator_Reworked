@@ -50,11 +50,9 @@ SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
-
 // Getting default selection for the prompts
 QString retreatingPromptAnswer;
 QString convertingHealingPromptAnswer;
-
 
 // More global variables
 bool    isP1BackFromAForeignLandEventInPlay;
@@ -542,13 +540,9 @@ MainWindow::MainWindow(QWidget* parent)
   // These are like placeholder (lorem ipsum) values
   // Player 1 UI elements starting state
   ui.player1EntityNamesFilter->setText("");
-  ui.player1EntityQuantity->setValue(1);
-  ui.player1EntityAssistantQuantity->setValue(0);
 
   // Player 2 UI elements starting state
   ui.player2EntityNamesFilter->setText("");
-  ui.player2EntityQuantity->setValue(1);
-  ui.player2EntityAssistantQuantity->setValue(0);
 
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
@@ -1029,33 +1023,41 @@ void MainWindow::on_player2EntityNames_itemClicked(
 }
 
 // Input validation. Superior technologies take the place of lesser technologies
-void MainWindow::overrideTechnologies(QStringList technologiesToCancelOut, Technologies * playerTechnologies){
-  for(int i = 0; i < technologiesToCancelOut.size(); i++){
-    QString technologyNameBackend = convertSpacesToUnderscores(technologiesToCancelOut[i]);
+void MainWindow::overrideTechnologies(
+  QStringList   technologiesToCancelOut,
+  Technologies* playerTechnologies)
+{
+  for (int i = 0; i < technologiesToCancelOut.size(); i++) {
+    QString technologyNameBackend
+      = convertSpacesToUnderscores(technologiesToCancelOut[i]);
 
     // Disable it in file
-    if(playerTechnologies->isActive(technologyNameBackend)){
+    if (playerTechnologies->isActive(technologyNameBackend)) {
       playerTechnologies->disable(technologyNameBackend);
     }
 
     // Disable it in the GUI
-    QList<QListWidgetItem *> list = ui.player1Technologies->findItems(technologiesToCancelOut[i], Qt::MatchExactly);
-    for ( QListWidgetItem *item : list ){
+    QList<QListWidgetItem*> list = ui.player1Technologies->findItems(
+      technologiesToCancelOut[i], Qt::MatchExactly);
+    for (QListWidgetItem* item : list) {
       item->setCheckState(Qt::Unchecked);
     }
   }
 }
 
 // Should have the listCombinations (as input) in order of what overrides what
-void MainWindow::technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies){
+void MainWindow::technologyOverrider(
+  QStringList   listCombinations,
+  Technologies* playerTechnologies)
+{
   QStringList combinationsFound;
 
-  for(int i = 0; i < listCombinations.size(); i ++){
-    if(playerTechnologies->isActive(convertSpacesToUnderscores(listCombinations[i]))){
-
+  for (int i = 0; i < listCombinations.size(); i++) {
+    if (playerTechnologies->isActive(
+          convertSpacesToUnderscores(listCombinations[i]))) {
       // Get all other combinations
-      for (int y = 0; y < listCombinations.size(); y++){
-        if(listCombinations[i] != listCombinations[y]){
+      for (int y = 0; y < listCombinations.size(); y++) {
+        if (listCombinations[i] != listCombinations[y]) {
           combinationsFound.append(listCombinations[y]);
         }
       }
@@ -1063,10 +1065,7 @@ void MainWindow::technologyOverrider(QStringList listCombinations, Technologies 
       overrideTechnologies(combinationsFound, playerTechnologies);
     }
   }
-
-  combinationsFound.clear(); // @Phillip: Is this even necessary?
 }
-
 
 // Run on change of what technologies are toggled by player 1
 void MainWindow::on_player1Technologies_itemChanged(
@@ -1085,10 +1084,16 @@ void MainWindow::on_player1Technologies_itemChanged(
   }
 
   /* Input validation - Up to 1 selected */
-  technologyOverrider({"Bracer", "Bodkin Arrow", "Fletching"}, &m_player1Technologies);
-  technologyOverrider({"Blast Furnace", "Iron Casting", "Forging"}, &m_player1Technologies);
-  technologyOverrider({"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"}, &m_player1Technologies);
-  technologyOverrider({"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"}, &m_player1Technologies);
+  technologyOverrider(
+    {"Bracer", "Bodkin Arrow", "Fletching"}, &m_player1Technologies);
+  technologyOverrider(
+    {"Blast Furnace", "Iron Casting", "Forging"}, &m_player1Technologies);
+  technologyOverrider(
+    {"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"},
+    &m_player1Technologies);
+  technologyOverrider(
+    {"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"},
+    &m_player1Technologies);
 }
 
 // Run on change of what events are toggled by player 1
@@ -1175,10 +1180,16 @@ void MainWindow::on_player2Technologies_itemChanged(
   }
 
   /* Input validation - Up to 1 selected */
-  technologyOverrider({"Bracer", "Bodkin Arrow", "Fletching"}, &m_player2Technologies);
-  technologyOverrider({"Blast Furnace", "Iron Casting", "Forging"}, &m_player2Technologies);
-  technologyOverrider({"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"}, &m_player2Technologies);
-  technologyOverrider({"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"}, &m_player2Technologies);
+  technologyOverrider(
+    {"Bracer", "Bodkin Arrow", "Fletching"}, &m_player2Technologies);
+  technologyOverrider(
+    {"Blast Furnace", "Iron Casting", "Forging"}, &m_player2Technologies);
+  technologyOverrider(
+    {"Plate Barding Armor", "Chain Barding Armor", "Scale Barding Armor"},
+    &m_player2Technologies);
+  technologyOverrider(
+    {"Ring Archer Armor", "Leather Archer Armor", "Padded Archer Armor"},
+    &m_player2Technologies);
 }
 
 void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
@@ -1860,13 +1871,16 @@ void MainWindow::on_actionSetDefaultAnswerToRetreatingPrompt_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  QStringList options = {"Ask each time", "Always retreating", "Never retreating"};
+  QStringList options
+    = {"Ask each time", "Always retreating", "Never retreating"};
 
   QInputDialog defaultAnswerToRetreatingPromptDialog;
-  QLabel       dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
+  QLabel dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
   defaultAnswerToRetreatingPromptDialog.setLabelText(dialogLabel.text());
-  defaultAnswerToRetreatingPromptDialog.setWindowTitle("Handling of the retreating prompt");
-  defaultAnswerToRetreatingPromptDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  defaultAnswerToRetreatingPromptDialog.setWindowTitle(
+    "Handling of the retreating prompt");
+  defaultAnswerToRetreatingPromptDialog.setStyleSheet(
+    palettes.getDialogBoxStyling());
   defaultAnswerToRetreatingPromptDialog.setComboBoxItems(options);
   defaultAnswerToRetreatingPromptDialog.exec();
 
@@ -1877,17 +1891,19 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-  QStringList options = {"Ask each time", "Always converting", "Always healing"};
+  QStringList options
+    = {"Ask each time", "Always converting", "Always healing"};
 
   QInputDialog defaultAnswerToConversionHealingPromptDialog;
-  QLabel       dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
+  QLabel dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
   defaultAnswerToConversionHealingPromptDialog.setLabelText(dialogLabel.text());
-  defaultAnswerToConversionHealingPromptDialog.setWindowTitle("Handling of the conversion/healing prompt");
-  defaultAnswerToConversionHealingPromptDialog.setStyleSheet(palettes.getDialogBoxStyling());
+  defaultAnswerToConversionHealingPromptDialog.setWindowTitle(
+    "Handling of the conversion/healing prompt");
+  defaultAnswerToConversionHealingPromptDialog.setStyleSheet(
+    palettes.getDialogBoxStyling());
   defaultAnswerToConversionHealingPromptDialog.setComboBoxItems(options);
   defaultAnswerToConversionHealingPromptDialog.exec();
 
-  convertingHealingPromptAnswer = defaultAnswerToConversionHealingPromptDialog.textValue();
+  convertingHealingPromptAnswer
+    = defaultAnswerToConversionHealingPromptDialog.textValue();
 }
-
-
