@@ -23,6 +23,7 @@ bool readFromDialog(MainWindow* mainWindow, Any& any)
     const QMessageBox::StandardButton buttonPressed{
       QMessageBox::question(mainWindow, title, label)};
     any = buttonPressed == QMessageBox::Yes;
+    std::cout << (any ? "Yes" : "No") << "<br>";
     return true;
   }
   else if constexpr (std::is_same_v<UnCvRef, double>) {
@@ -90,7 +91,10 @@ class DialogInput {
 public:
   enum class MonkAction { Heal, Convert };
 
-  static void initialize(MainWindow* mainWindow);
+  static void initialize(
+    MainWindow* mainWindow,
+    QString&    retreatingPromptAnswer,
+    QString&    convertingHealingPromptAnswer);
 
   template<typename Any>
   friend DialogInput& operator>>(DialogInput& din, Any& any)
@@ -105,12 +109,19 @@ public:
     return din;
   }
 
-  explicit DialogInput(MainWindow* mainWindow);
+  explicit DialogInput(
+    MainWindow* mainWindow,
+    QString&    retreatingPromptAnswer,
+    QString&    convertingHealingPromptAnswer);
 
-  MonkAction queryForMonkAction(const std::string& playerName) const;
+  MonkAction queryForMonkAction(const std::string& playerName);
+
+  bool queryForIsRetreating();
 
 private:
   MainWindow* m_mainWindow;
+  QString&    m_retreatingPromptAnswer;
+  QString&    m_convertingHealingPromptAnswer;
 };
 
 extern std::unique_ptr<DialogInput> din;

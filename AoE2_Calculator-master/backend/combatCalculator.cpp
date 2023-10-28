@@ -165,8 +165,7 @@ void combatCalculator::checkIfRetreating()
   // they are not versing cavalry or an archer
   std::cout << "Do you want to retreat?<br>";
 
-  bool bIsRetreating{};
-  DIN >> bIsRetreating;
+  const bool bIsRetreating{DIN.queryForIsRetreating()};
   isRetreating = bIsRetreating ? "1" : "0";
 
   if ((isRetreating != "1") && (isRetreating != "0")) {

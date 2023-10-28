@@ -4,18 +4,38 @@
 
 std::unique_ptr<DialogInput> din{};
 
-void DialogInput::initialize(MainWindow* mainWindow)
+void DialogInput::initialize(
+  MainWindow* mainWindow,
+  QString&    retreatingPromptAnswer,
+  QString&    convertingHealingPromptAnswer)
 {
-  din = std::make_unique<DialogInput>(mainWindow);
+  din = std::make_unique<DialogInput>(
+    mainWindow, retreatingPromptAnswer, convertingHealingPromptAnswer);
 }
 
-DialogInput::DialogInput(MainWindow* mainWindow) : m_mainWindow{mainWindow}
+DialogInput::DialogInput(
+  MainWindow* mainWindow,
+  QString&    retreatingPromptAnswer,
+  QString&    convertingHealingPromptAnswer)
+  : m_mainWindow{mainWindow}
+  , m_retreatingPromptAnswer{retreatingPromptAnswer}
+  , m_convertingHealingPromptAnswer{convertingHealingPromptAnswer}
 {
 }
 
 DialogInput::MonkAction DialogInput::queryForMonkAction(
-  const std::string& playerName) const
+  const std::string& playerName)
 {
+  if (m_convertingHealingPromptAnswer == "Always converting") {
+    std::cout << "Converting<br>";
+    return MonkAction::Convert;
+  }
+
+  if (m_convertingHealingPromptAnswer == "Always healing") {
+    std::cout << "Healing<br>";
+    return MonkAction::Heal;
+  }
+
   QMessageBox messageBox{
     /* icon */ QMessageBox::Icon::Question,
     /* title */ "Monk action query",
@@ -30,11 +50,31 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   QAbstractButton* clickedButton{messageBox.clickedButton()};
 
   if (clickedButton == convertButton) {
+    std::cout << "Converting<br>";
     return DialogInput::MonkAction::Convert;
   }
   else if (clickedButton == healButton) {
+    std::cout << "Healing<br>";
     return DialogInput::MonkAction::Heal;
   }
 
+  assert(false && "It went wrong.");
   return DialogInput::MonkAction::Heal;
+}
+
+bool DialogInput::queryForIsRetreating()
+{
+  if (m_retreatingPromptAnswer == "Always retreating") {
+    std::cout << "Yes<br>";
+    return true;
+  }
+
+  if (m_retreatingPromptAnswer == "Never retreating") {
+    std::cout << "No<br>";
+    return false;
+  }
+
+  bool result{};
+  *this >> result;
+  return result;
 }

@@ -51,8 +51,8 @@ bool        soundEffectsEnabled   = true;
 bool        hasProgramInitialized = false;
 
 // Getting default selection for the prompts
-QString retreatingPromptAnswer;
-QString convertingHealingPromptAnswer;
+QString retreatingPromptAnswer        = "Ask each time";
+QString convertingHealingPromptAnswer = "Ask each time";
 
 // More global variables
 bool    isP1BackFromAForeignLandEventInPlay;
@@ -99,7 +99,8 @@ MainWindow::MainWindow(QWidget* parent)
   , m_player2Technologies{Player::Player2}
 {
   ui.setupUi(this);
-  DialogInput::initialize(this);
+  DialogInput::initialize(
+    this, retreatingPromptAnswer, convertingHealingPromptAnswer);
 
   QIntValidator myName;
   myName.setRange(100, 999);
@@ -1729,9 +1730,6 @@ void MainWindow::selectInitialEntities()
 
     ui.player1EntityQuantity->setValue(
       m_entities.player1Entity().entityQuantity());
-
-    //@Phillip: For some reason this returns 1
-    qDebug() << m_entities.player1Entity().entityQuantity();
 
     updateRangeAllowed(m_entities.player1Entity().entityName(), 1);
   }

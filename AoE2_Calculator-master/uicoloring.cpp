@@ -5,8 +5,6 @@
 
 // Set how we want elements to be colored
 
-// @Phillip Does not seem to work for buttons (QPalette::Button) or the menu bar
-
 void colorPalettes::setPaletteValues()
 {
   /* Light palette */
