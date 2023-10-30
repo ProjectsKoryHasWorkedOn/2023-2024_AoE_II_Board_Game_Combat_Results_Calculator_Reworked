@@ -141,7 +141,9 @@ private:
   void technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies);
 
 
-  void removeFromList();
+  void removeFromList(QString player);
+
+  void getEntityAnimationForSelectedEntity(QString currentSelection, QString player);
 
 
   Ui::MainWindow     ui;

@@ -335,7 +335,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>p1Anim</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -429,7 +429,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>p2Anim</string>
+                 <string/>
                 </property>
                </widget>
               </item>

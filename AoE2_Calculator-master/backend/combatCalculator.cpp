@@ -168,25 +168,29 @@ void combatCalculator::checkIfDead()
 }
 
 // Function: Check if the attacking ranged archer is retreating
-void combatCalculator::checkIfRetreating()
+void combatCalculator::checkIfRetreating(std::string roundType)
 {
   // Behaviour: Ask the attacker if they want to retreat with their archer if
   // they are not versing cavalry or an archer
 
   // Todo: Hit and run not working how it should
 
-
-
-
-
   // Behavior: Do not ask the question if 2 buildings are fighting one another
   if((p1BattleParticipant.armorClass[1] != true) && (p2BattleParticipant.armorClass[1] != true)){
     // Behavior: Do not ask the question if opposing unit is dead
     if( ( p1BattleParticipant.entityQuantity > 0) && (p2BattleParticipant.entityQuantity > 0) ){
-      std::cout << "Do you want to retreat?<br>";
+        if( (roundType == "Archer") ){
+             std::cout << "Do you want to hit and run?<br>";
+        }
+        else{
+           std::cout << "Do you want to retreat?<br>";
+        }
+
 
       const bool bIsRetreating{DIN.queryForIsRetreating()};
       isRetreating = bIsRetreating ? "1" : "0";
+
+      qDebug() << "What's going on" << isRetreating;
 
       if ((isRetreating != "1") && (isRetreating != "0")) {
         std::cout << "Error: The retreating value can only be a 0 or 1"
@@ -203,6 +207,10 @@ void combatCalculator::checkIfRetreating()
     // Set value to 0 if 2 buildings are fighting one another
     isRetreating = "0";
   }
+
+
+      qDebug() << "What's going on 2" << isRetreating;
+
 }
 
 // Function: Output the entity information with a message
@@ -1508,7 +1516,7 @@ void archerRounds::roundOutcome(
 
       // Behaviour: Check if the attacking archer is retreating
       if (aDeathHasOccured == false) {
-        checkIfRetreating();
+        checkIfRetreating("Archer");
 
         if ((inputP1Events[29] == 1) || (inputP2Events[29] == 1)) {
           //  [29] Shots In The Back (Briton) - If a unit in combat with your
@@ -1849,7 +1857,7 @@ void bombardmentRounds::roundOutcome(
       // the last round
       if (aDeathHasOccured == false) {
         if (i != inputRunTimes - 1) {
-          checkIfRetreating();
+          checkIfRetreating("Bombardment");
         }
       }
     }
@@ -1881,6 +1889,11 @@ void standardRounds::roundOutcome(
   int* inputP1Events,
   int* inputP2Events)
 {
+
+  //@Phillip: Should be equal to 1???
+  qDebug() << "Heyyyyy" << isRetreating;
+
+
   // Bool: Track if the standard attack round got activated
   bool standardRoundActivated = false;
 
@@ -2066,6 +2079,9 @@ void standardRounds::roundOutcome(
 
   // Behaviour: Run the standard battle round for X times
   for (int i = 0; i < inputRunTimes; i++) {
+
+    if ((aDeathHasOccured == false) && (isRetreating != "1")) {
+
     // Give the player who played the card a weakened defender
     // [24] Black Knight: “Play this card when you are the attacking Cavalry
     // unit. Two tokens on the defending unit have 0 AP for the first round of
@@ -2553,7 +2569,7 @@ void standardRounds::roundOutcome(
             isRetreating = "1";
           }
           else {
-            checkIfRetreating();
+            checkIfRetreating("Standard");
           }
         }
       }
@@ -2568,6 +2584,7 @@ void standardRounds::roundOutcome(
       }
     }
   }
+}
 
   // Behaviour: Make some final checks in regards to the healing modifiers
   finalChecks();

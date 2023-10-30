@@ -409,6 +409,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui.player2EntityNames->addItem(entityNames[i]);
   }
 
+
   // Can only have one list widget item per list
   // C++11 range based for loop
   for (const QString& technology : technologies) {
@@ -574,17 +575,6 @@ MainWindow::MainWindow(QWidget* parent)
   setColorTheUIElements();
 
 
-  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + "/animations/spearman.gif");
-
-  ui.player2Animation->setMovie(GifAnimation);
-  ui.player2Animation->setVisible(true);
-ui.player2Animation->resize(50,50);
-ui.player2Animation->raise();
-ui.player2Animation->setScaledContents(true);
-  GifAnimation->start();
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -733,7 +723,7 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
     ui.player1EntityNames->addItem(listWidgetItem);
   }
 
-  removeFromList();
+  removeFromList("1");
 }
 
 // Run this when the text inside of the player 2 entities search field changes
@@ -766,7 +756,7 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
     ui.player2EntityNames->addItem(listWidgetItem);
   }
 
-  removeFromList();
+  removeFromList("2");
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -861,11 +851,16 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
 void MainWindow::on_player1BattleAssistantNames_textActivated(
   const QString& currentSelection)
 {
+
+
+
   SFXToPlay("/sfx/ui/button_pressed.wav");
+
 
   player1BattleAssistantName = currentSelection;
 
   m_entities.changePlayer1AssistantName(player1BattleAssistantName);
+
 }
 
 // Run on change of what battle assistant is selected by player 2
@@ -877,6 +872,7 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(
   player2BattleAssistantName = currentSelection;
 
   m_entities.changePlayer2AssistantName(player2BattleAssistantName);
+
 }
 
 void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
@@ -1036,6 +1032,9 @@ void MainWindow::on_player1EntityNames_itemClicked(
   m_player1EntityName       = currentSelectionFormatted;
 
   m_entities.changePlayer1EntityName(m_player1EntityName);
+
+
+  getEntityAnimationForSelectedEntity(selectedItem->text(), "1");
 }
 
 void MainWindow::on_player2EntityNames_itemClicked(
@@ -1051,6 +1050,8 @@ void MainWindow::on_player2EntityNames_itemClicked(
   m_player2EntityName       = currentSelectionFormatted;
 
   m_entities.changePlayer2EntityName(m_player2EntityName);
+
+  getEntityAnimationForSelectedEntity(selectedItem->text(), "2");
 }
 
 // Input validation. Superior technologies take the place of lesser technologies
@@ -1957,78 +1958,52 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
 
 
 
-void MainWindow::removeFromList(){
-
-  //@Phillip: Can probably do this in a lot better way
-  // Player 1
-    QString player1alternativeOptions = civilizations.join(",,");
-
-  player1alternativeOptions = player1alternativeOptions.remove(QRegularExpression(player1Civilization));
-    player1alternativeOptions = player1alternativeOptions.remove(QRegularExpression("s,"));
-  player1alternativeOptions = player1alternativeOptions.replace(QRegularExpression(",,"),",");
-
-    if( (player1alternativeOptions == "Briton") ){
-    player1alternativeOptions = player1alternativeOptions.mid(1, player1alternativeOptions.length() - 2);
-    }
-  else{
-    player1alternativeOptions = player1alternativeOptions.mid(0, player1alternativeOptions.length() - 1);
-    }
-
-  QStringList player1alternativeOptionsList = player1alternativeOptions.split(",");
+void MainWindow::removeFromList(QString player){
 
 
-  for(int i = 0; i < ui.player1EntityNames->count(); i++){
-    QString player1listItem = ui.player1EntityNames->item(i)->text();
+  QString theCivilizationOfTheCurrentPlayer;
+  QStringList listOfAllOtherCivilizations = civilizations;
 
-    if(player1listItem.contains(player1Civilization)){
-     //  qDebug() << ui.player1EntityNames->item(i)->text();
+  QListWidget *theListOfTheCurrentPlayer;
 
-      ui.player1EntityNames->item(i)->setHidden(false);
-    }
-    else{
-      for(int y = 0; y < player1alternativeOptionsList.length(); y ++){
-        if(player1listItem.contains(player1alternativeOptionsList[y])){
-         ui.player1EntityNames->item(i)->setHidden(true);
-        }
+  if(player == "1"){
+    theCivilizationOfTheCurrentPlayer = player1Civilization;
+    theListOfTheCurrentPlayer = ui.player1EntityNames;
+  }
+  else if (player == "2"){
+    theCivilizationOfTheCurrentPlayer = player2Civilization;
+    theListOfTheCurrentPlayer = ui.player2EntityNames;
+  }
+
+
+
+  for(int i = 0; i < listOfAllOtherCivilizations.length(); i++){
+    // Remove civilization player has selected from the list of all other civilizations
+    if(listOfAllOtherCivilizations[i].contains(theCivilizationOfTheCurrentPlayer)){
+      listOfAllOtherCivilizations[i].remove(QRegularExpression(theCivilizationOfTheCurrentPlayer));
+      if(listOfAllOtherCivilizations[i].isEmpty() == true){
+        listOfAllOtherCivilizations.removeOne("");
       }
     }
-}
-
-
-
-       // Player 2
-QString player2alternativeOptions = civilizations.join(",,");
-
-player2alternativeOptions = player2alternativeOptions.remove(QRegularExpression(player2Civilization));
-player2alternativeOptions = player2alternativeOptions.remove(QRegularExpression("s,"));
-player2alternativeOptions = player2alternativeOptions.replace(QRegularExpression(",,"),",");
-
-if( (player2alternativeOptions == "Briton") ){
-    player2alternativeOptions = player2alternativeOptions.mid(1, player2alternativeOptions.length() - 2);
-}
-else{
-    player2alternativeOptions = player2alternativeOptions.mid(0, player2alternativeOptions.length() - 1);
-}
-QStringList player2alternativeOptionsList = player2alternativeOptions.split(",");
-
-
-
-for(int i = 0; i < ui.player2EntityNames->count(); i++){
-    QString player2listItem = ui.player2EntityNames->item(i)->text();
-
-    if(player2listItem.contains(player2Civilization)){
-      //  qDebug() << ui.player1EntityNames->item(i)->text();
-
-      ui.player2EntityNames->item(i)->setHidden(false);
+    // Remove "s" character from end of civilization mame if it is present
+    if(listOfAllOtherCivilizations[i].endsWith("s", Qt::CaseSensitive)){
+      listOfAllOtherCivilizations[i] = listOfAllOtherCivilizations[i].mid(0, listOfAllOtherCivilizations[i].length() - 1);
     }
-    else{
-      for(int y = 0; y < player2alternativeOptionsList.length(); y ++){
-        if(player2listItem.contains(player2alternativeOptionsList[y])){
-         ui.player2EntityNames->item(i)->setHidden(true);
-        }
+  }
+
+  // Now remove all other civilizations from the list on the GUI
+  for(int i = 0; i < theListOfTheCurrentPlayer->count(); i++){
+
+    // Set the current item to be visible
+    theListOfTheCurrentPlayer->item(i)->setHidden(false);
+
+    // Set all current items to be invisible for each item that belongs to another civilization
+    for(int y = 0; y < listOfAllOtherCivilizations.count(); y++){
+      if(theListOfTheCurrentPlayer->item(i)->text().contains(listOfAllOtherCivilizations[y])){
+        theListOfTheCurrentPlayer->item(i)->setHidden(true);
       }
     }
-}
+  }
 
 }
 
@@ -2053,10 +2028,8 @@ void MainWindow::on_actionSet_civilization_of_player_1_triggered()
   player1Civilization
     = player1CivilizationSelection.textValue();
 
-  // Remove the last character
-  player1Civilization = player1Civilization.mid(0, player1Civilization.length() - 1);
 
-  removeFromList();
+  removeFromList("1");
 }
 
 
@@ -2076,9 +2049,41 @@ void MainWindow::on_actionSet_civilization_of_player_2_triggered()
   player2Civilization
     = player2CivilizationSelection.textValue();
 
-  // Remove the last character
-  player2Civilization = player2Civilization.mid(0, player2Civilization.length() - 1);
 
-  removeFromList();
+  removeFromList("2");
 }
 
+
+
+
+void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player){
+  QString filename;
+
+  qDebug() << currentSelection;
+
+  QLabel *theLabelOfTheCurrentPlayer;
+
+  if(player == "1"){
+    theLabelOfTheCurrentPlayer = ui.player1Animation;
+  }
+  else if (player == "2"){
+    theLabelOfTheCurrentPlayer = ui.player2Animation;
+  }
+
+
+  if(currentSelection.contains("Cavalry Archer", Qt::CaseInsensitive)){
+    filename = "/animations/cavalry_archer.gif";
+  }
+  else{
+    filename = "/animations/bird_falcon.gif";
+  }
+
+  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filename);
+
+  theLabelOfTheCurrentPlayer->setMovie(GifAnimation);
+  theLabelOfTheCurrentPlayer->setVisible(true);
+  theLabelOfTheCurrentPlayer->resize(50,50);
+  theLabelOfTheCurrentPlayer->raise();
+  theLabelOfTheCurrentPlayer->setScaledContents(true);
+  GifAnimation->start();
+}

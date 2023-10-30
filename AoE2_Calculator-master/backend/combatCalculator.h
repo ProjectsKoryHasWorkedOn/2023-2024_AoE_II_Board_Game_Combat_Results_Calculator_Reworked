@@ -103,7 +103,7 @@ public:
   void checkIfDead();
 
   // Function: Check if the attacking ranged archer is retreating
-  void checkIfRetreating();
+  void checkIfRetreating(std::string roundType);
 
   /** Update entity values based on the quantity functions **/
   // Function: Divide the values by the quantity (to get the individual values)
