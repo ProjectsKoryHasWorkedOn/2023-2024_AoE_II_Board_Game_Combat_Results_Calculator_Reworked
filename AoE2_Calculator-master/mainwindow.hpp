@@ -143,6 +143,12 @@ private:
 
   void removeFromList(QString player);
 
+  void setUnitBuildingStyleBasedOnCivilizationSelected(QString * playerCivilization, QString * playerArchitecturalStyle, QString * playerUnitStyle);
+
+
+
+  void getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player);
+
   void getEntityAnimationForSelectedEntity(QString currentSelection, QString player);
 
 

@@ -194,6 +194,19 @@
                </widget>
               </item>
               <item>
+               <widget class="QLabel" name="p2AssistantAnimation">
+                <property name="maximumSize">
+                 <size>
+                  <width>75</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QComboBox" name="player2BattleAssistantNames"/>
               </item>
              </layout>
@@ -330,8 +343,8 @@
                <widget class="QLabel" name="player1Animation">
                 <property name="maximumSize">
                  <size>
-                  <width>50</width>
-                  <height>50</height>
+                  <width>75</width>
+                  <height>75</height>
                  </size>
                 </property>
                 <property name="text">
@@ -398,6 +411,19 @@
                </widget>
               </item>
               <item>
+               <widget class="QLabel" name="p1AssistantAnimation">
+                <property name="maximumSize">
+                 <size>
+                  <width>75</width>
+                  <height>75</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QComboBox" name="player1BattleAssistantNames"/>
               </item>
              </layout>
@@ -424,8 +450,8 @@
                <widget class="QLabel" name="player2Animation">
                 <property name="maximumSize">
                  <size>
-                  <width>50</width>
-                  <height>50</height>
+                  <width>75</width>
+                  <height>75</height>
                  </size>
                 </property>
                 <property name="text">

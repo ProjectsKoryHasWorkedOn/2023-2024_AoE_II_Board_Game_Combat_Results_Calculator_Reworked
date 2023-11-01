@@ -6,7 +6,6 @@
 #include "file_paths.h"
 
 #include <QLabel>
-
 #include "soundEffects.h" // Sound playing class
 
 #include "cross-window_palette.h" // Coloring of the UI
@@ -47,6 +46,22 @@
 
 // Librraries used for hotkeys
 #include <QShortcut>
+
+
+// Animation variables
+QString p1EntityStatus = "_idle"; // _idle, _attack, _death
+QString p1BuildingArchitecturalStyle;
+QString p1UnitStyle = "_western"; // _western, _mesoamerican, _asian
+QString p1AssistantStatus = "_idle"; // _idle, _attack, _death
+
+
+QString p2EntityStatus = "_idle"; // _idle, _attack, _death
+QString p2BuildingArchitecturalStyle;
+QString p2UnitStyle = "_western"; // _western, _mesoamerican, _asian
+QString p2AssistantStatus = "_idle"; // _idle, _attack, _death
+
+// Regex expressions
+QRegularExpression removeBracketedTextExpression("(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
 
 // Declaring class
 SoundPlayer playSound;
@@ -805,6 +820,20 @@ void MainWindow::on_calculateResultsButton_clicked()
 
   ui.gameOutputTextEdit->setHtml("");
 
+  // Update animation
+  p1EntityStatus = "_attack";
+  p2EntityStatus = "_attack";
+
+  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1");
+  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2");
+
+  p1AssistantStatus = "_attack";
+  p2AssistantStatus = "_attack";
+
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1");
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2");
+
+
   // Calculate the results of a battle
   runGame();
 }
@@ -847,6 +876,9 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
   m_entities.changePlayer2EntityQuantity(player2EntityQuantity);
 }
 
+
+
+
 // Run on change of what battle assistant is selected by player 1
 void MainWindow::on_player1BattleAssistantNames_textActivated(
   const QString& currentSelection)
@@ -861,6 +893,11 @@ void MainWindow::on_player1BattleAssistantNames_textActivated(
 
   m_entities.changePlayer1AssistantName(player1BattleAssistantName);
 
+
+
+
+  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "1");
+
 }
 
 // Run on change of what battle assistant is selected by player 2
@@ -872,6 +909,8 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(
   player2BattleAssistantName = currentSelection;
 
   m_entities.changePlayer2AssistantName(player2BattleAssistantName);
+
+  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "2");
 
 }
 
@@ -2008,6 +2047,113 @@ void MainWindow::removeFromList(QString player){
 }
 
 
+void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(QString * playerCivilization, QString * playerArchitecturalStyle, QString * playerUnitStyle){
+
+
+  if(
+  (*playerCivilization == "Ethiopians") ||
+  (*playerCivilization == "Malians")
+    ){
+      *playerArchitecturalStyle = "_african";
+  }
+  else if(
+    (*playerCivilization == "Cumans") ||
+    (*playerCivilization == "Tatars")
+    ){
+      *playerArchitecturalStyle = "_central_asian";
+      *playerUnitStyle = "_asian";
+  }
+  else if(
+    (*playerCivilization == "Goths") ||
+    (*playerCivilization == "Huns") ||
+    (*playerCivilization == "Teutons") ||
+    (*playerCivilization == "Vikings")
+    ){
+      *playerArchitecturalStyle = "_central_european";
+      *playerUnitStyle = "_western";
+  }
+  else if(
+    (*playerCivilization == "Chinese") ||
+    (*playerCivilization == "Japanese") ||
+    (*playerCivilization == "Koreans") ||
+    (*playerCivilization == "Mongols") ||
+    (*playerCivilization == "Vietnamese")
+    ){
+      *playerArchitecturalStyle = "_east_asian";
+      *playerUnitStyle = "_asian";
+  }
+  else if(
+    (*playerCivilization == "Bohemians") ||
+    (*playerCivilization == "Bulgarians") ||
+    (*playerCivilization == "Lithuanians") ||
+    (*playerCivilization == "Poles") ||
+    (*playerCivilization == "Slavs")
+    ){
+      *playerArchitecturalStyle = "_eastern_european";
+      *playerUnitStyle = "_asian";
+  }
+  else if(
+    (*playerCivilization == "Armenians") ||
+    (*playerCivilization == "Byzantines") ||
+    (*playerCivilization == "Georgians") ||
+    (*playerCivilization == "Italians") ||
+    (*playerCivilization == "Portuguese") ||
+    (*playerCivilization == "Romans") ||
+    (*playerCivilization == "Italians") ||
+    (*playerCivilization == "Sicilians") ||
+    (*playerCivilization == "Spanish")
+    ){
+      *playerArchitecturalStyle = "_mediterranean";
+      *playerUnitStyle = "_western";
+  }
+  else if(
+    (*playerCivilization == "Berbers") ||
+    (*playerCivilization == "Persians") ||
+    (*playerCivilization == "Saracens") ||
+    (*playerCivilization == "Turks")
+    ){
+      *playerArchitecturalStyle = "_middle_eastern";
+  }
+  else if(
+    (*playerCivilization == "Aztecs") ||
+    (*playerCivilization == "Incas") ||
+    (*playerCivilization == "Mayans")
+    ){
+      *playerArchitecturalStyle = "_native_american";
+      *playerUnitStyle = "_mesoamerican";
+  }
+  else if(
+    (*playerCivilization == "Bengalis") ||
+    (*playerCivilization == "Dravidians") ||
+    (*playerCivilization == "Gurjaras") ||
+    (*playerCivilization == "Hindustanis")
+    ){
+      *playerArchitecturalStyle = "_south_asian";
+      *playerUnitStyle = "_asian";
+  }
+  else if(
+    (*playerCivilization == "Burmese") ||
+    (*playerCivilization == "Khmer") ||
+    (*playerCivilization == "Malay")
+    ){
+      *playerArchitecturalStyle = "_southeast_asian";
+      *playerUnitStyle = "_asian";
+  }
+  else if(
+    (*playerCivilization == "Britons") ||
+    (*playerCivilization == "Burgundians") ||
+    (*playerCivilization == "Celts") ||
+    (*playerCivilization == "Franks")
+    ){
+      *playerArchitecturalStyle = "_western_european";
+      *playerUnitStyle = "_western";
+  }
+
+
+
+}
+
+
 void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
@@ -2030,6 +2176,9 @@ void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 
 
   removeFromList("1");
+
+
+  setUnitBuildingStyleBasedOnCivilizationSelected(&player1Civilization, &p1BuildingArchitecturalStyle, &p1UnitStyle);
 }
 
 
@@ -2051,39 +2200,106 @@ void MainWindow::on_actionSet_civilization_of_player_2_triggered()
 
 
   removeFromList("2");
+
+
+  setUnitBuildingStyleBasedOnCivilizationSelected(&player2Civilization, &p2BuildingArchitecturalStyle, &p2UnitStyle);
 }
 
+void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player){
+  QLabel *theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
+  QString fileName;
+  QString filePath;
 
-
-
-void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player){
-  QString filename;
-
-  qDebug() << currentSelection;
-
-  QLabel *theLabelOfTheCurrentPlayer;
+  fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
+  fileName = fileName.remove(removeBracketedTextExpression);
 
   if(player == "1"){
-    theLabelOfTheCurrentPlayer = ui.player1Animation;
+    theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
+    filePath = "/animations/" + fileName + p1UnitStyle + p1AssistantStatus + ".gif";
   }
   else if (player == "2"){
-    theLabelOfTheCurrentPlayer = ui.player2Animation;
+    theLabelOfTheCurrentPlayer = ui.p2AssistantAnimation;
+    filePath = "/animations/" + fileName + p2UnitStyle + p2AssistantStatus + ".gif";
   }
 
+  qDebug() << filePath;
 
-  if(currentSelection.contains("Cavalry Archer", Qt::CaseInsensitive)){
-    filename = "/animations/cavalry_archer.gif";
-  }
-  else{
-    filename = "/animations/bird_falcon.gif";
-  }
-
-  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filename);
+  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
   theLabelOfTheCurrentPlayer->setMovie(GifAnimation);
   theLabelOfTheCurrentPlayer->setVisible(true);
-  theLabelOfTheCurrentPlayer->resize(50,50);
-  theLabelOfTheCurrentPlayer->raise();
+  theLabelOfTheCurrentPlayer->resize(75,75);
   theLabelOfTheCurrentPlayer->setScaledContents(true);
+
+  GifAnimation->setSpeed(70); // 70% of original speed
+  GifAnimation->setScaledSize(QSize().scaled(75, 75, Qt::KeepAspectRatio));
   GifAnimation->start();
+
+         // Reset attack status for both players back to idle status
+  if(player == "1"){
+    if(p1AssistantStatus == "_attack"){
+      p2AssistantStatus = "_idle";
+    }
+  }
+  else if(player == "2"){
+    if(p1AssistantStatus == "_attack"){
+      p2AssistantStatus = "_idle";
+    }
+  }
+}
+
+
+void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player){
+  QLabel *theLabelOfTheCurrentPlayer = ui.player1Animation;
+  QString fileName;
+  QString filePath;
+
+  // Make the currentSelection string have the same name as it's corresponding file
+  fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
+  fileName = fileName.remove(removeBracketedTextExpression);
+
+  // Set which UI element is being modified
+  // Set the path to the filename
+  if(player == "1"){
+    theLabelOfTheCurrentPlayer = ui.player1Animation;
+    filePath = "/animations/" + fileName + p1EntityStatus + ".gif";
+  }
+  else if (player == "2"){
+    theLabelOfTheCurrentPlayer = ui.player2Animation;
+    filePath = "/animations/" + fileName + p2EntityStatus + ".gif";
+  }
+
+  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
+
+  theLabelOfTheCurrentPlayer->setMovie(GifAnimation);
+  theLabelOfTheCurrentPlayer->setVisible(true);
+  theLabelOfTheCurrentPlayer->resize(75,75);
+  theLabelOfTheCurrentPlayer->setScaledContents(true);
+
+  if(
+    (currentSelection.contains("ship", Qt::CaseInsensitive)) ||
+    (currentSelection.contains("galle", Qt::CaseInsensitive)) ||
+    (currentSelection.contains("boat", Qt::CaseInsensitive))
+  ){
+    theLabelOfTheCurrentPlayer->setStyleSheet("background-color: rgb(35,137,218);");
+  }
+  else{
+    theLabelOfTheCurrentPlayer->setStyleSheet("background-color: none;");
+  }
+
+  GifAnimation->setSpeed(70); // 70% of original speed
+  GifAnimation->setScaledSize(QSize().scaled(75, 75, Qt::KeepAspectRatio));
+  GifAnimation->start();
+
+  // Reset attack status for both players back to idle status
+  if(player == "1"){
+      if(p1EntityStatus == "_attack"){
+          p1EntityStatus = "_idle";
+      }
+  }
+  else if(player == "2"){
+      if(p2EntityStatus == "_attack"){
+          p2EntityStatus = "_idle";
+      }
+  }
 }
