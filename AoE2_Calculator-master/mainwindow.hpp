@@ -140,16 +140,15 @@ private:
 
   void technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies);
 
-
   void removeFromList(QString player);
 
   void setUnitBuildingStyleBasedOnCivilizationSelected(QString * playerCivilization, QString * playerArchitecturalStyle, QString * playerUnitStyle);
 
+  void getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player, QString assistantStatus);
 
+  void getEntityAnimationForSelectedEntity(QString currentSelection, QString player, QString entityStatus);
 
-  void getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player);
-
-  void getEntityAnimationForSelectedEntity(QString currentSelection, QString player);
+  void initializeAnimations();
 
 
   Ui::MainWindow     ui;

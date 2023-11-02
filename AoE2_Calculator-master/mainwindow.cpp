@@ -49,16 +49,11 @@
 
 
 // Animation variables
-QString p1EntityStatus = "_idle"; // _idle, _attack, _death
-QString p1BuildingArchitecturalStyle;
+QString p1BuildingArchitecturalStyle = "_western_european"; // _african, _asian, _central_european, _east_asian, _eastern_european, _mediterranean, _middle_eastern,_native_american,_south_asian,_southeast_asian, _western_european,
 QString p1UnitStyle = "_western"; // _western, _mesoamerican, _asian
-QString p1AssistantStatus = "_idle"; // _idle, _attack, _death
 
-
-QString p2EntityStatus = "_idle"; // _idle, _attack, _death
-QString p2BuildingArchitecturalStyle;
+QString p2BuildingArchitecturalStyle = "_western_european";
 QString p2UnitStyle = "_western"; // _western, _mesoamerican, _asian
-QString p2AssistantStatus = "_idle"; // _idle, _attack, _death
 
 // Regex expressions
 QRegularExpression removeBracketedTextExpression("(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
@@ -87,6 +82,10 @@ QString player2Civilization;
 
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
+QStringList unitNames;
+QStringList buildingNames;
+
+
 int         player1EntityQuantity;
 int         player1AssistingEntityQuantity;
 int         player2EntityQuantity;
@@ -175,166 +174,168 @@ MainWindow::MainWindow(QWidget* parent)
   player1Color = "black";
   player2Color = "black";
 
+  unitNames << "Archer"
+            << "Archer (Saracen)"
+            << "Arbalest"
+            << "Arbalest (Briton)"
+            << "Arbalest (Saracen)"
+            << "Battering Ram"
+            << "Battering Ram (Celt)"
+            << "Berserk (Viking)"
+            << "Capped Ram"
+            << "Capped Ram (Celt)"
+            << "Camel"
+            << "Cavalier"
+            << "Cavalier (Frank)"
+            << "Cavalier (Persian)"
+            << "Cavalry Archer"
+            << "Cavalry Archer (Mongol)"
+            << "Champion"
+            << "Champion (Celt)"
+            << "Champion (Goth)"
+            << "Champion (Japanese)"
+            << "Champion (Viking)"
+            << "Crossbowman"
+            << "Crossbowman (Saracen)"
+            << "Demolition Ship"
+            << "Demolition Ship (Viking)"
+            << "Elite Berserk (Viking)"
+            << "Elite Huskarl (Goth)"
+            << "Elite Longboat (Viking)"
+            << "Elite Longbowman (Briton)"
+            << "Elite Mameluke (Saracen)"
+            << "Elite Mangudai (Mongol)"
+            << "Elite Samurai (Japanese)"
+            << "Elite Skirmisher"
+            << "Elite Throwing Axeman (Frank)"
+            << "Elite War Elephant (Persian)"
+            << "Elite Woad Raider (Celt)"
+            << "Fast Fire Ship"
+            << "Fire Ship"
+            << "Fishing Ship (Japanese)"
+            << "Fishing Ship (Persian)"
+            << "Galley"
+            << "Galley (Japanese)"
+            << "Galley (Saracen)"
+            << "Galley (Viking)"
+            << "Galleon"
+            << "Galleon (Saracen)"
+            << "Galleon (Viking)"
+            << "Galleon (Japanese)"
+            << "Heavy Camel"
+            << "Heavy Cavalry Archer"
+            << "Heavy Cavalry Archer (Mongol)"
+            << "Heavy Cavalry Archer (Saracen)"
+            << "Heavy Demolition Ship"
+            << "Heavy Demolition Ship (Viking)"
+            << "Heavy Scorpion"
+            << "Heavy Scorpion (Celt)"
+            << "Huskarl (Goth)"
+            << "Knight"
+            << "Knight (Frank)"
+            << "Knight (Persian)"
+            << "Light Cavalry"
+            << "Light Cavalry (Mongol)"
+            << "Long Swordsman"
+            << "Long Swordsman (Celt)"
+            << "Long Swordsman (Goth)"
+            << "Long Swordsman (Japanese)"
+            << "Long Swordsman (Viking)"
+            << "Longboat (Viking)"
+            << "Longbowman (Briton)"
+            << "Mameluke (Saracen)"
+            << "Man-at-Arms"
+            << "Man-at-Arms (Viking)"
+            << "Man-at-Arms (Celt)"
+            << "Man-at-Arms (Goth)"
+            << "Man-at-Arms (Japanese)"
+            << "Mangonel"
+            << "Mangonel (Celt)"
+            << "Mangudai (Mongol)"
+            << "Militia"
+            << "Militia (Celt)"
+            << "Militia (Goth)"
+            << "Onager"
+            << "Onager (Celt)"
+            << "Paladin"
+            << "Paladin (Persian)"
+            << "Paladin (Frank)"
+            << "Pikeman"
+            << "Pikeman (Celt)"
+            << "Pikeman (Goth)"
+            << "Pikeman (Japanese)"
+            << "Pikeman (Viking)"
+            << "Samurai (Japanese)"
+            << "Scorpion"
+            << "Scorpion (Celt)"
+            << "Scout Cavalry"
+            << "Siege Onager"
+            << "Siege Onager (Celt)"
+            << "Siege Ram"
+            << "Siege Ram (Celt)"
+            << "Skirmisher"
+            << "Spearman"
+            << "Spearman (Japanese)"
+            << "Spearman (Viking)"
+            << "Spearman (Celt)"
+            << "Spearman (Goth)"
+            << "Throwing Axeman (Frank)"
+            << "Trebuchet"
+            << "Two-handed Swordsman"
+            << "Two-handed Swordsman (Celt)"
+            << "Two-handed Swordsman (Goth)"
+            << "Two-handed Swordsman (Japanese)"
+            << "Two-handed Swordsman (Viking)"
+            << "Villager"
+            << "War Elephant (Persian)"
+            << "War Galley"
+            << "War Galley (Japanese)"
+            << "War Galley (Saracen)"
+            << "War Galley (Viking)"
+            << "Woad Raider (Celt)";
+  buildingNames << "Archery Range"
+                << "Barracks"
+                << "Blacksmith"
+                << "Castle"
+                << "Castle (Frank)"
+                << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
+                << "Dock"
+                << "Dock (Persian)"
+                << "Dock (Viking)"
+                << "Farm"
+                << "Fortified Wall"
+                << "Gold Mine"
+                << "Gold Mine (Japanese)"
+                << "House"
+                << "Lumber Camp"
+                << "Lumber Camp (Japanese)"
+                << "Market"
+                << "Mill"
+                << "Mill (Japanese)"
+                << "Monastery"
+                << "Notre-Dame Cathedral (Frank)"
+                << "Outpost"
+                << "Palisade Wall"
+                << "Rock Of Cashel (Celt)"
+                << "Siege Workshop"
+                << "Stable"
+                << "Stave Church At Urnes (Viking)"
+                << "Stone Gate"
+                << "Stone Mine"
+                << "Stone Mine (Japanese)"
+                << "Stone Wall"
+                << "The Golden Tent Of The Great Khan (Mongol)"
+                << "The Great Temple At Nara (Japanese)"
+                << "The Palace Of Ctesiphon On The Tigris (Persian)"
+                << "Tomb Of Theodoric (Goth)"
+                << "Town Center"
+                << "Town Center (Briton)"
+                << "Town Center (Persian)"
+                << "Watch Tower";
+
+
   initializeEntityAliases();
-  entityNames << "Archer"
-              << "Archer (Saracen)"
-              << "Arbalest"
-              << "Arbalest (Briton)"
-              << "Arbalest (Saracen)"
-              << "Archery Range"
-              << "Barracks"
-              << "Battering Ram"
-              << "Battering Ram (Celt)"
-              << "Berserk (Viking)"
-              << "Blacksmith"
-              << "Capped Ram"
-              << "Capped Ram (Celt)"
-              << "Castle"
-              << "Camel"
-              << "Castle (Frank)"
-              << "Cavalier"
-              << "Cavalier (Frank)"
-              << "Cavalier (Persian)"
-              << "Cavalry Archer"
-              << "Cavalry Archer (Mongol)"
-              << "Champion"
-              << "Champion (Celt)"
-              << "Champion (Goth)"
-              << "Champion (Japanese)"
-              << "Champion (Viking)"
-              << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
-              << "Crossbowman"
-              << "Crossbowman (Saracen)"
-              << "Demolition Ship"
-              << "Demolition Ship (Viking)"
-              << "Dock"
-              << "Dock (Persian)"
-              << "Dock (Viking)"
-              << "Elite Berserk (Viking)"
-              << "Elite Huskarl (Goth)"
-              << "Elite Longboat (Viking)"
-              << "Elite Longbowman (Briton)"
-              << "Elite Mameluke (Saracen)"
-              << "Elite Mangudai (Mongol)"
-              << "Elite Samurai (Japanese)"
-              << "Elite Skirmisher"
-              << "Elite Throwing Axeman (Frank)"
-              << "Elite War Elephant (Persian)"
-              << "Elite Woad Raider (Celt)"
-              << "Farm"
-              << "Fast Fire Ship"
-              << "Fire Ship"
-              << "Fishing Ship (Japanese)"
-              << "Fishing Ship (Persian)"
-              << "Fortified Wall"
-              << "Galley"
-              << "Galley (Japanese)"
-              << "Galley (Saracen)"
-              << "Galley (Viking)"
-              << "Galleon"
-              << "Galleon (Saracen)"
-              << "Galleon (Viking)"
-              << "Galleon (Japanese)"
-              << "Gold Mine"
-              << "Gold Mine (Japanese)"
-              << "Heavy Camel"
-              << "Heavy Cavalry Archer"
-              << "Heavy Cavalry Archer (Mongol)"
-              << "Heavy Cavalry Archer (Saracen)"
-              << "Heavy Demolition Ship"
-              << "Heavy Demolition Ship (Viking)"
-              << "Heavy Scorpion"
-              << "Heavy Scorpion (Celt)"
-              << "House"
-              << "Huskarl (Goth)"
-              << "Knight"
-              << "Knight (Frank)"
-              << "Knight (Persian)"
-              << "Light Cavalry"
-              << "Light Cavalry (Mongol)"
-              << "Long Swordsman"
-              << "Long Swordsman (Celt)"
-              << "Long Swordsman (Goth)"
-              << "Long Swordsman (Japanese)"
-              << "Long Swordsman (Viking)"
-              << "Longboat (Viking)"
-              << "Longbowman (Briton)"
-              << "Lumber Camp"
-              << "Lumber Camp (Japanese)"
-              << "Mameluke (Saracen)"
-              << "Man-at-Arms"
-              << "Man-at-Arms (Viking)"
-              << "Man-at-Arms (Celt)"
-              << "Man-at-Arms (Goth)"
-              << "Man-at-Arms (Japanese)"
-              << "Mangonel"
-              << "Mangonel (Celt)"
-              << "Mangudai (Mongol)"
-              << "Market"
-              << "Market (Saracen)"
-              << "Militia"
-              << "Militia (Celt)"
-              << "Militia (Goth)"
-              << "Mill"
-              << "Mill (Japanese)"
-              << "Monastery"
-              << "Notre-Dame Cathedral (Frank)"
-              << "Onager"
-              << "Onager (Celt)"
-              << "Outpost"
-              << "Paladin"
-              << "Paladin (Persian)"
-              << "Paladin (Frank)"
-              << "Palisade Wall"
-              << "Pikeman"
-              << "Pikeman (Celt)"
-              << "Pikeman (Goth)"
-              << "Pikeman (Japanese)"
-              << "Pikeman (Viking)"
-              << "Rock Of Cashel (Celt)"
-              << "Samurai (Japanese)"
-              << "Scorpion"
-              << "Scorpion (Celt)"
-              << "Scout Cavalry"
-              << "Siege Onager"
-              << "Siege Onager (Celt)"
-              << "Siege Ram"
-              << "Siege Ram (Celt)"
-              << "Siege Workshop"
-              << "Skirmisher"
-              << "Spearman"
-              << "Spearman (Japanese)"
-              << "Spearman (Viking)"
-              << "Spearman (Celt)"
-              << "Spearman (Goth)"
-              << "Stable"
-              << "Stave Church At Urnes (Viking)"
-              << "Stone Gate"
-              << "Stone Mine"
-              << "Stone Mine (Japanese)"
-              << "Stone Wall"
-              << "The Golden Tent Of The Great Khan (Mongol)"
-              << "The Great Temple At Nara (Japanese)"
-              << "The Palace Of Ctesiphon On The Tigris (Persian)"
-              << "Throwing Axeman (Frank)"
-              << "Tomb Of Theodoric (Goth)"
-              << "Town Center"
-              << "Town Center (Briton)"
-              << "Town Center (Persian)"
-              << "Trebuchet"
-              << "Two-handed Swordsman"
-              << "Two-handed Swordsman (Celt)"
-              << "Two-handed Swordsman (Goth)"
-              << "Two-handed Swordsman (Japanese)"
-              << "Two-handed Swordsman (Viking)"
-              << "Villager"
-              << "War Elephant (Persian)"
-              << "War Galley"
-              << "War Galley (Japanese)"
-              << "War Galley (Saracen)"
-              << "War Galley (Viking)"
-              << "Watch Tower"
-              << "Woad Raider (Celt)";
+  entityNames = unitNames + buildingNames;
 
   // Sort the list in alphabetical order
   entityNames.sort();
@@ -582,6 +583,7 @@ MainWindow::MainWindow(QWidget* parent)
   selectInitialEntities();
   selectInitialAssistants();
   markInitialPlayerMedievalAge();
+  initializeAnimations();
 
   // Set up palettes
   palettes.setPaletteValues();
@@ -821,17 +823,10 @@ void MainWindow::on_calculateResultsButton_clicked()
   ui.gameOutputTextEdit->setHtml("");
 
   // Update animation
-  p1EntityStatus = "_attack";
-  p2EntityStatus = "_attack";
-
-  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1");
-  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2");
-
-  p1AssistantStatus = "_attack";
-  p2AssistantStatus = "_attack";
-
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1");
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2");
+  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1", "_attack");
+  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2", "_attack");
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1", "_attack");
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
 
   // Calculate the results of a battle
@@ -896,7 +891,7 @@ void MainWindow::on_player1BattleAssistantNames_textActivated(
 
 
 
-  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "1");
+  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "1", "_idle");
 
 }
 
@@ -910,7 +905,7 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(
 
   m_entities.changePlayer2AssistantName(player2BattleAssistantName);
 
-  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "2");
+  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "2", "_idle");
 
 }
 
@@ -1073,7 +1068,7 @@ void MainWindow::on_player1EntityNames_itemClicked(
   m_entities.changePlayer1EntityName(m_player1EntityName);
 
 
-  getEntityAnimationForSelectedEntity(selectedItem->text(), "1");
+  getEntityAnimationForSelectedEntity(selectedItem->text(), "1", "_idle");
 }
 
 void MainWindow::on_player2EntityNames_itemClicked(
@@ -1090,7 +1085,7 @@ void MainWindow::on_player2EntityNames_itemClicked(
 
   m_entities.changePlayer2EntityName(m_player2EntityName);
 
-  getEntityAnimationForSelectedEntity(selectedItem->text(), "2");
+  getEntityAnimationForSelectedEntity(selectedItem->text(), "2", "_idle");
 }
 
 // Input validation. Superior technologies take the place of lesser technologies
@@ -2154,6 +2149,9 @@ void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(QString * playe
 }
 
 
+
+
+
 void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
@@ -2205,7 +2203,18 @@ void MainWindow::on_actionSet_civilization_of_player_2_triggered()
   setUnitBuildingStyleBasedOnCivilizationSelected(&player2Civilization, &p2BuildingArchitecturalStyle, &p2UnitStyle);
 }
 
-void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player){
+
+
+void MainWindow::initializeAnimations(){
+  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1", "_idle");
+  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2", "_idle");
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1", "_idle");
+  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2", "_idle");
+
+}
+
+
+void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player, QString assistantStatus){
   QLabel *theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
   QString fileName;
   QString filePath;
@@ -2215,14 +2224,12 @@ void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString current
 
   if(player == "1"){
     theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
-    filePath = "/animations/" + fileName + p1UnitStyle + p1AssistantStatus + ".gif";
+    filePath = "/animations/" + fileName + p1UnitStyle + assistantStatus + ".gif";
   }
   else if (player == "2"){
     theLabelOfTheCurrentPlayer = ui.p2AssistantAnimation;
-    filePath = "/animations/" + fileName + p2UnitStyle + p2AssistantStatus + ".gif";
+    filePath = "/animations/" + fileName + p2UnitStyle + assistantStatus + ".gif";
   }
-
-  qDebug() << filePath;
 
   QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
@@ -2234,25 +2241,28 @@ void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString current
   GifAnimation->setSpeed(70); // 70% of original speed
   GifAnimation->setScaledSize(QSize().scaled(75, 75, Qt::KeepAspectRatio));
   GifAnimation->start();
-
-         // Reset attack status for both players back to idle status
-  if(player == "1"){
-    if(p1AssistantStatus == "_attack"){
-      p2AssistantStatus = "_idle";
-    }
-  }
-  else if(player == "2"){
-    if(p1AssistantStatus == "_attack"){
-      p2AssistantStatus = "_idle";
-    }
-  }
 }
 
 
-void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player){
+void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player, QString entityStatus){
   QLabel *theLabelOfTheCurrentPlayer = ui.player1Animation;
   QString fileName;
   QString filePath;
+
+  bool unit = false;
+  bool building = false;
+
+  if(unitNames.contains(currentSelection)){
+    unit = true;
+  }
+
+  if(buildingNames.contains(currentSelection)){
+    building = true;
+
+    if(entityStatus == "_attack"){
+      entityStatus = "_idle";
+    }
+  }
 
   // Make the currentSelection string have the same name as it's corresponding file
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
@@ -2262,11 +2272,26 @@ void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, Q
   // Set the path to the filename
   if(player == "1"){
     theLabelOfTheCurrentPlayer = ui.player1Animation;
-    filePath = "/animations/" + fileName + p1EntityStatus + ".gif";
+
+    if(building == true){
+      filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle + "_" + (convertSpacesToUnderscores(player1Age)).toLower() + entityStatus + ".gif";
+    }
+
+    if(unit == true){
+      filePath = "/animations/" + fileName + entityStatus + ".gif";
+    }
+
   }
   else if (player == "2"){
     theLabelOfTheCurrentPlayer = ui.player2Animation;
-    filePath = "/animations/" + fileName + p2EntityStatus + ".gif";
+
+    if(building == true){
+      filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle + "_"  + (convertSpacesToUnderscores(player2Age)).toLower() + entityStatus + ".gif";
+    }
+
+    if(unit == true){
+      filePath = "/animations/" + fileName + entityStatus + ".gif";
+    }
   }
 
   QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
@@ -2290,16 +2315,4 @@ void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, Q
   GifAnimation->setSpeed(70); // 70% of original speed
   GifAnimation->setScaledSize(QSize().scaled(75, 75, Qt::KeepAspectRatio));
   GifAnimation->start();
-
-  // Reset attack status for both players back to idle status
-  if(player == "1"){
-      if(p1EntityStatus == "_attack"){
-          p1EntityStatus = "_idle";
-      }
-  }
-  else if(player == "2"){
-      if(p2EntityStatus == "_attack"){
-          p2EntityStatus = "_idle";
-      }
-  }
 }
