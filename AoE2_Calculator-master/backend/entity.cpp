@@ -99,7 +99,7 @@ Archery_Range::Archery_Range()
   garrisonValue  = 10;
   pointValue     = 11;   // 6 wood, 5 villagers
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Archery_Range::~Archery_Range()
@@ -114,7 +114,7 @@ Barracks::Barracks()
   garrisonValue  = 10;
   pointValue     = 11;   // 6 wood, 5 villagers
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Barracks::~Barracks()
@@ -144,10 +144,6 @@ Battering_Ram::Battering_Ram()
   pointValue     = 11;   // 7 wood, 4 gold
   armorClass[10] = true; // Ram armor class
   armorClass[12] = true; // Siege weapon armor class
-  armorClass[27] = true; // Battering ram armor class
-                         // 60 standard damage vs Building (implemented)
-  // There is a rule that Archers and Villagers cannot attack Rams.
-  // There is a rule that this unit can only attack buildings
 }
 
 Battering_Ram::~Battering_Ram()
@@ -172,7 +168,7 @@ Blacksmith::Blacksmith()
   entityHealth   = 180;
   pointValue     = 10;   // 6 wood, 4 gold
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Blacksmith::~Blacksmith()
@@ -199,10 +195,6 @@ Capped_Ram::Capped_Ram()
   entityName     = "Capped_Ram";
   entityAge      = 4;
   entityHealth   = 46;
-  armorClass[28] = true; // Capped ram armor class
-                         // 110 standard damage vs Building (implemented)
-  // There is a rule that Archers and Villagers cannot attack Rams.
-  // There is a rule that this is unit can only attack buildings
 }
 
 Capped_Ram::~Capped_Ram()
@@ -230,7 +222,7 @@ Castle::Castle()
   pointValue     = 30;   // 15 stone, 15 bodies
   armorClass[1]  = true; // Building armor class
   armorClass[3]  = true; // Castle armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Castle::~Castle()
@@ -429,7 +421,7 @@ Dock::Dock()
   garrisonValue  = 5;
   pointValue     = 8;    // 5 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Dock::~Dock()
@@ -559,8 +551,6 @@ Elite_Skirmisher::Elite_Skirmisher()
   entityHealth   = 8;
   standardDamage = 3;
   rangedDamage   = 5;
-  armorClass[33] = true; // Elite_Skirmisher armor class
-                         // 16 standardDamage against Archers (implemented)
 }
 
 Elite_Skirmisher::~Elite_Skirmisher()
@@ -615,7 +605,7 @@ Farm::Farm()
   entityHealth   = 40;
   pointValue     = 4;    // 2 wood, 2 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Farm::~Farm()
@@ -628,10 +618,6 @@ Fast_Fire_Ship::Fast_Fire_Ship()
   entityAge      = 4;
   entityHealth   = 30;
   standardDamage = 6;
-  armorClass[34] = true; // Fast Fire Ship armor class
-  // Roll a 1d6. Multiply the result by standardDamage to determine damage per
-  // round 12 AP vs. Galley, Longboat, Building, Land Units & Fire Ship
-  // (implemented) Bombardment 2
 }
 
 Fast_Fire_Ship::~Fast_Fire_Ship()
@@ -662,7 +648,6 @@ Fishing_Ship::Fishing_Ship()
   entityAge      = 1;
   pointValue     = 2;    // 2 wood
   armorClass[11] = true; // Ship armor class
-  armorClass[30] = true; // Fishing ship armor calss
 }
 
 Fishing_Ship::~Fishing_Ship()
@@ -706,9 +691,6 @@ Galleon::Galleon()
   entityAge      = 4;
   entityHealth   = 40;
   standardDamage = 18;
-  armorClass[36] = true; // Galleon armor class
-  // 50 standardDamage versus Longboat, Land Unit, Buildings, and Galley
-  // (implemented) Bombardment 2
 }
 
 Galleon::~Galleon()
@@ -846,7 +828,7 @@ Gold_Mine::Gold_Mine()
   entityHealth   = 80;
   pointValue     = 6;    // 3 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Gold_Mine::~Gold_Mine()
@@ -884,8 +866,6 @@ Heavy_Camel::Heavy_Camel()
   entityAge      = 4;
   entityHealth   = 30;
   standardDamage = 7;
-  armorClass[31] = true; // Heavy Camel armor class
-                         // 30 standardDamage against Cavalry (I)
 }
 
 Heavy_Camel::~Heavy_Camel()
@@ -980,7 +960,7 @@ House::House()
   entityHealth   = 80;
   pointValue     = 2;    // 1 wood, 1 body
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 House::~House()
@@ -1154,7 +1134,7 @@ Lumber_Camp::Lumber_Camp()
   entityHealth   = 80;
   pointValue     = 6;    // 3 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Lumber_Camp::~Lumber_Camp()
@@ -1249,10 +1229,7 @@ Mangonel::Mangonel()
   standardDamage  = 40;
   pointValue      = 12;   // 7 wood, 5 gold
   armorClass[12]  = true; // Siege weapon armor class
-  armorClass[37]  = true; // Mangonel armor class
   onlyAttacksOnce = true;
-  // 80 standardDamage vs Building (I)
-  // Bombardment 1 (only attacks in first round of normal combat)
 }
 
 Mangonel::~Mangonel()
@@ -1296,7 +1273,7 @@ Market::Market()
   entityHealth   = 180;
   pointValue     = 12;   // 6 wood, 6 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Market::~Market()
@@ -1352,7 +1329,7 @@ Mill::Mill()
   entityHealth   = 80;
   pointValue     = 6;    // 3 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Mill::~Mill()
@@ -1377,7 +1354,7 @@ Monastery::Monastery()
   garrisonValue  = 10;
   pointValue     = 10;   // 7 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Monastery::~Monastery()
@@ -1403,9 +1380,6 @@ Onager::Onager()
   entityAge      = 4;
   entityHealth   = 16;
   standardDamage = 50;
-  armorClass[38] = true; // Onager armor class
-                         // 120 standardAttack vs Building (I)
-                         // Bombardment 2 (only attacks in the first round)
 }
 
 Onager::~Onager()
@@ -1430,7 +1404,7 @@ Outpost::Outpost()
   entityHealth   = 40;
   pointValue     = 3;    // 1 wood, 1 stone, 1 body
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Outpost::~Outpost()
@@ -1477,7 +1451,7 @@ Palisade_Wall::Palisade_Wall()
   entityHealth   = 20;
   pointValue     = 2;    // 1 wood, 1 body
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
   armorClass[18] = true; // Wall & Gate armor class
 }
 
@@ -1491,8 +1465,6 @@ Pikeman::Pikeman()
   entityAge      = 3;
   entityHealth   = 14;
   standardDamage = 4;
-  armorClass[41] = true; // Pikeman armor class
-                         // 40 standardDamage versus Cavalry (I)
 }
 
 Pikeman::~Pikeman()
@@ -1604,9 +1576,6 @@ Siege_Onager::Siege_Onager()
   entityAge      = 4;
   entityHealth   = 20;
   standardDamage = 75;
-  armorClass[39] = true; // Siege Onager armor class
-                         // 180 standardAttack vs Building (I)
-                         // Bombardment 2 (only attacks in the first round)
 }
 
 Siege_Onager::~Siege_Onager()
@@ -1628,9 +1597,6 @@ Siege_Ram::Siege_Ram()
   entityName     = "Siege_Ram";
   entityAge      = 4;
   entityHealth   = 60;
-  armorClass[29] = true; // Siege_Ram armor class
-                         // 220 standardAttack vs Building (I)
-                         // Only attacks buildings
 }
 
 Siege_Ram::~Siege_Ram()
@@ -1655,7 +1621,7 @@ Siege_Workshop::Siege_Workshop()
   garrisonValue  = 3;
   pointValue     = 11;   // 7 wood, 4 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Siege_Workshop::~Siege_Workshop()
@@ -1671,9 +1637,6 @@ Skirmisher::Skirmisher()
   rangedDamage   = 3;
   pointValue     = 2;    // 1 food, 1 wood
   armorClass[0]  = true; // Archer armor class
-  armorClass[32] = true; // Skirmisher armor class
-                         // 12 standardDamage vs Archers (I)
-                         // 13 rangedDamage vs Archers (I)
 }
 
 Skirmisher::~Skirmisher()
@@ -1744,7 +1707,7 @@ Stable::Stable()
   garrisonValue  = 10;
   pointValue     = 11;   // 6 wood, 5 body
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Stable::~Stable()
@@ -1758,7 +1721,7 @@ Stone_Mine::Stone_Mine()
   entityHealth   = 80;
   pointValue     = 6;    // 3 wood, 3 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
 }
 
 Stone_Mine::~Stone_Mine()
@@ -1782,7 +1745,7 @@ Stone_Wall::Stone_Wall()
   entityHealth   = 150;
   pointValue     = 2;    // 1 stone, 1 body
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
   armorClass[15] = true; // Stone defence armor class
   armorClass[18] = true; // Wall & Gate armor class
 }
@@ -1798,7 +1761,7 @@ Town_Center::Town_Center()
   entityHealth   = 220;
   pointValue     = 17;   // 9 wood, 8 bodies
   armorClass[1]  = true; // Building armor class
-  armorClass[14] = true; // Standard building armor class
+
   armorClass[25] = true; // Town Center armor class
 }
 
@@ -1835,10 +1798,7 @@ Trebuchet::Trebuchet()
   standardDamage  = 200;
   pointValue      = 17;   // 7 wood, 5 gold, 5 bodies
   armorClass[12]  = true; // Siege weapon armor class
-  armorClass[42]  = true; // Trebuchet armor class
   onlyAttacksOnce = true;
-  // 450 standardAttack vs Buildings (I)
-  // Bombardment 3 (only attacks in first round)
 }
 
 Trebuchet::~Trebuchet()
@@ -1904,8 +1864,7 @@ Villager::Villager()
   entityHealth   = 4;
   standardDamage = 3;
   pointValue     = 1;    // 1 food
-  armorClass[26] = true; // Villager armor class
-                         // No armor class
+  armorClass[26] = true; // Land unit armor class
 }
 
 Villager::~Villager()
@@ -1921,7 +1880,7 @@ War_Elephant_Persian::War_Elephant_Persian()
   pointValue     = 15;   // 15 food, 5 gold
   armorClass[4]  = true; // Cavalry armor class
   armorClass[17] = true; // Unique unit armor class
-  armorClass[19] = true; // War Elephant armor class
+  armorClass[19] = true; //  Elephant armor class
                          // Limit of 1 token
 }
 
@@ -1935,9 +1894,6 @@ War_Galley::War_Galley()
   entityAge      = 3;
   entityHealth   = 34;
   standardDamage = 16;
-  armorClass[35] = true; // War Galley armor class
-  // Bombardment 1 (only attacks in the first round of normal combat)
-  // 40 standardDamage versus Longboat, Land unit, Building, and Galley (I)
 }
 
 War_Galley::~War_Galley()
@@ -1982,7 +1938,7 @@ Watch_Tower::Watch_Tower()
   standardDamage  = 15;
   pointValue      = 9;    // 5 stone, 5 bodies
   armorClass[1]   = true; // Building armor class
-  armorClass[14]  = true; // Standard building armor class
+  armorClass[14]  = true;
   armorClass[15]  = true; // Stone defence armor class
   armorClass[24]  = true; // Watch tower armor class
   onlyAttacksOnce = true;
@@ -2433,7 +2389,7 @@ void Entity::outputEntity(std::string playerName)
       else if ((armorClass[14] == true) && (displayedArmorClass[14] == false)) {
         displayColorfulText(
           "bold", "white", "blue", "Standard_Building", false);
-        displayedArmorClass[14] = true;
+        displayed
       }
       else if ((armorClass[15] == true) && (displayedArmorClass[15] == false)) {
         displayColorfulText("bold", "white", "blue", "Stone_Defence", false);
@@ -2452,11 +2408,11 @@ void Entity::outputEntity(std::string playerName)
         displayedArmorClass[18] = true;
       }
       else if ((armorClass[19] == true) && (displayedArmorClass[19] == false)) {
-        displayColorfulText("bold", "white", "blue", "War_Elephant", false);
+        displayColorfulText("bold", "white", "blue", "Elephant", false);
         displayedArmorClass[19] = true;
       }
       else if ((armorClass[20] == true) && (displayedArmorClass[20] == false)) {
-        displayColorfulText("bold", "white", "blue", "King", false);
+        displayColorfulText("bold", "white", "blue", "Hero", false);
         displayedArmorClass[20] = true;
       }
       else if ((armorClass[21] == true) && (displayedArmorClass[21] == false)) {
@@ -2480,76 +2436,12 @@ void Entity::outputEntity(std::string playerName)
         displayedArmorClass[25] = true;
       }
       else if ((armorClass[26] == true) && (displayedArmorClass[26] == false)) {
-        displayColorfulText("bold", "white", "blue", "Villager", false);
+        displayColorfulText("bold", "white", "blue", "Land_Unit", false);
         displayedArmorClass[26] = true;
       }
-      else if ((armorClass[27] == true) && (displayedArmorClass[27] == false)) {
-        displayColorfulText("bold", "white", "blue", "Battering_Ram", false);
+      else if ((armorClass[26] == true) && (displayedArmorClass[27] == false)) {
+        displayColorfulText("bold", "white", "blue", "Longboat", false);
         displayedArmorClass[27] = true;
-      }
-      else if ((armorClass[28] == true) && (displayedArmorClass[28] == false)) {
-        displayColorfulText("bold", "white", "blue", "Capped_Ram", false);
-        displayedArmorClass[28] = true;
-      }
-      else if ((armorClass[29] == true) && (displayedArmorClass[29] == false)) {
-        displayColorfulText("bold", "white", "blue", "Siege_Ram", false);
-        displayedArmorClass[29] = true;
-      }
-      else if ((armorClass[30] == true) && (displayedArmorClass[30] == false)) {
-        displayColorfulText("bold", "white", "blue", "Fishing_Ship", false);
-        displayedArmorClass[30] = true;
-      }
-      else if ((armorClass[31] == true) && (displayedArmorClass[31] == false)) {
-        displayColorfulText("bold", "white", "blue", "Heavy_Camel", false);
-        displayedArmorClass[31] = true;
-      }
-      else if ((armorClass[32] == true) && (displayedArmorClass[32] == false)) {
-        displayColorfulText("bold", "white", "blue", "Skirmisher", false);
-        displayedArmorClass[32] = true;
-      }
-      else if ((armorClass[33] == true) && (displayedArmorClass[33] == false)) {
-        displayColorfulText("bold", "white", "blue", "Elite_Skirmisher", false);
-        displayedArmorClass[33] = true;
-      }
-      else if ((armorClass[34] == true) && (displayedArmorClass[34] == false)) {
-        displayColorfulText("bold", "white", "blue", "Fast_Fire_Ship", false);
-        displayedArmorClass[34] = true;
-      }
-      else if ((armorClass[35] == true) && (displayedArmorClass[35] == false)) {
-        displayColorfulText("bold", "white", "blue", "War_Galley", false);
-        displayedArmorClass[35] = true;
-      }
-      else if ((armorClass[36] == true) && (displayedArmorClass[36] == false)) {
-        displayColorfulText("bold", "white", "blue", "Galleon", false);
-        displayedArmorClass[36] = true;
-      }
-      else if ((armorClass[37] == true) && (displayedArmorClass[37] == false)) {
-        displayColorfulText("bold", "white", "blue", "Mangonel", false);
-        displayedArmorClass[37] = true;
-      }
-      else if ((armorClass[38] == true) && (displayedArmorClass[38] == false)) {
-        displayColorfulText("bold", "white", "blue", "Onager", false);
-        displayedArmorClass[38] = true;
-      }
-      else if ((armorClass[39] == true) && (displayedArmorClass[39] == false)) {
-        displayColorfulText("bold", "white", "blue", "Siege_Onager", false);
-        displayedArmorClass[39] = true;
-      }
-      else if ((armorClass[40] == true) && (displayedArmorClass[40] == false)) {
-        displayColorfulText("bold", "white", "blue", "Predator_Animal", false);
-        displayedArmorClass[40] = true;
-      }
-      else if ((armorClass[41] == true) && (displayedArmorClass[41] == false)) {
-        displayColorfulText("bold", "white", "blue", "Pikeman", false);
-        displayedArmorClass[41] = true;
-      }
-      else if ((armorClass[42] == true) && (displayedArmorClass[42] == false)) {
-        displayColorfulText("bold", "white", "blue", "Trebuchet", false);
-        displayedArmorClass[42] = true;
-      }
-      else if ((armorClass[43] == true) && (displayedArmorClass[43] == false)) {
-        displayColorfulText("bold", "white", "blue", "Hero", false);
-        displayedArmorClass[43] = true;
       }
 
       if (i != entitiesArmorClasses - 1) {

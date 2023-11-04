@@ -16,53 +16,37 @@ struct Entity {
   int         rangedDamage;
   int         garrisonValue;
   int         pointValue;
-  static int constexpr numberOfArmorClasses = 44;
-  bool armorClass[44]; // numberOfArmorClasses = 44
+  static int constexpr numberOfArmorClasses = 28;
+  bool armorClass[28]; // numberOfArmorClasses = 8
   /*
   armorClass[0] -> archer
-    armorClass[1] -> building
-        armorClass[2] -> camel
-        armorClass[3] -> castle
-        armorClass[4] -> cavalry
-        armorClass[5] -> cavalry archer
-        armorClass[6] -> eagle_warrior
-        armorClass[7] -> gunpowder_unit
-        armorClass[8] -> infantry
-        armorClass[9] -> monk
-        armorClass[10] -> ram
-        armorClass[11] -> ship
-        armorClass[12] -> siege_weapon
-        armorClass[13] -> spearman
-        armorClass[14] -> standard_building
-        armorClass[15] -> stone_defence
-        armorClass[16] -> turtle_ship
-        armorClass[17] -> unique_unit
-        armorClass[18] -> wall_&_gate
-        armorClass[19] -> war_elephant
-        armorClass[20] -> king
-        armorClass[21] -> demolition_ship
-        armorClass[22] -> galley
-        armorClass[23] -> fire_ship
-        armorClass[24] -> watch_tower
-        armorClass[25] -> town_center
-        armorClass[26] -> villager
-        armorClass[27] -> battering_ram
-        armorClass[28] -> capped_ram
-        armorClass[29] -> siege_ram
-        armorClass[30] -> fishing_ship
-        armorClass[31] -> heavy_camel
-        armorClass[32] -> skirmisher
-        armorClass[33] -> elite_skirmisher
-        armorClass[34] -> fast_fire_ship
-        armorClass[35] -> war_galley
-        armorClass[36] -> galleon
-        armorClass[37] -> mangonel
-        armorClass[38] -> onager
-        armorClass[39] -> siege_onager
-        armorClass[40] -> predator_animal
-        armorClass[41] -> pikeman
-        armorClass[42] -> trebuchet
-                  armorClass[43] -> hero
+  armorClass[1] -> building
+  armorClass[2] -> camel
+  armorClass[3] -> castle
+  armorClass[4] -> cavalry
+  armorClass[5] -> cavalry archer
+  armorClass[6] -> eagle_warrior
+  armorClass[7] -> gunpowder_unit
+  armorClass[8] -> infantry
+  armorClass[9] -> monk
+  armorClass[10] -> ram
+  armorClass[11] -> ship
+  armorClass[12] -> siege_weapon
+  armorClass[13] -> spearman
+  armorClass[14] XXXXXXXXXXXXXXXXXXXX cut
+  armorClass[15] -> stone_defence
+  armorClass[16] -> turtle_ship
+  armorClass[17] -> unique_unit
+  armorClass[18] -> wall_&_gate
+  armorClass[19] -> elephant
+  armorClass[20] -> hero
+  armorClass[21] -> demolition_ship
+  armorClass[22] -> galley
+  armorClass[23] -> fire_ship
+  armorClass[24] -> watch_tower
+  armorClass[25] -> town_center
+  armorClass[26] -> land_unit
+  armorClass[27] -> longboat
   */
   bool onlyAttacksInTheSecondRoundOfStandardCombat;
   bool onlyAttacksOnce;

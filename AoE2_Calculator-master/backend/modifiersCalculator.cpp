@@ -83,19 +83,19 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Battering_Ram line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[27] == true) && // Battering Ram
+    (applyRockPaperScissorsModifiers.entityName == "Battering_Ram") && // Battering Ram
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 60;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[28] == true) && // Capped ram
+    (applyRockPaperScissorsModifiers.entityName == "Capped_Ram") && // Capped ram
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 110;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[29] == true) && // Siege ram
+    (applyRockPaperScissorsModifiers.entityName == "Siege_Ram") && // Siege ram
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 220;
@@ -149,7 +149,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.standardDamage = 20;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[31] == true)
+    (applyRockPaperScissorsModifiers.entityName == "Heavy_Camel")
     &&                                       // Heavy camel armor class
     (comparisonEntity.armorClass[4] == true) // Cavalry
   ) {
@@ -318,7 +318,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Skirmisher line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[32] == true)
+    (applyRockPaperScissorsModifiers.entityName == "Skirmisher")
     && (                                          // Skirmisher
       (comparisonEntity.armorClass[0] == true) || // Archer
       (comparisonEntity.armorClass[5] == true)    // Cavalry Archer
@@ -327,7 +327,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.rangedDamage   = 13;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[33] == true)
+    (applyRockPaperScissorsModifiers.entityName == "Elite_Skirmisher")
     && (                                          // Elite Skirmisher
       (comparisonEntity.armorClass[0] == true) || // Archer
       (comparisonEntity.armorClass[5] == true)    // Cavalry Archer
@@ -386,7 +386,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.standardDamage = 10;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[34] == true)
+    (applyRockPaperScissorsModifiers.entityName == "Fast_Fire_Ship")
     && (                                           // Fast Fire Ship
       (comparisonEntity.armorClass[1] == true) ||  // Building
       (comparisonEntity.armorClass[23] == true) || // Fire Ship
@@ -409,7 +409,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.standardDamage = 30;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[35] == true)
+    (applyRockPaperScissorsModifiers.entityName == "War_Galley")
     && (                                           // War Galley
       (comparisonEntity.armorClass[1] == true) ||  // Building
       (comparisonEntity.armorClass[22] == true) || // Galley
@@ -419,7 +419,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.standardDamage = 40;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[36] == true)
+    (applyRockPaperScissorsModifiers.entityName == "Galleon")
     && (                                           // Galleon
       (comparisonEntity.armorClass[1] == true) ||  // Building
       (comparisonEntity.armorClass[22] == true) || // Galley
@@ -460,19 +460,19 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Mangonel line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[37] == true) && // Mangonel
+    (applyRockPaperScissorsModifiers.entityName == "Mangonel") && // Mangonel
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 80;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[38] == true) && // Onager
+    (applyRockPaperScissorsModifiers.entityName == "Onager") && // Onager
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 120;
   }
   if (
-    (applyRockPaperScissorsModifiers.armorClass[39] == true) && // Siege Onager
+    (applyRockPaperScissorsModifiers.entityName == "Siege_Onager") && // Siege Onager
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 180;
@@ -508,7 +508,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Pikeman line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[41] == true) && // Pikeman
+    (applyRockPaperScissorsModifiers.entityName == "Pikeman") && // Pikeman
     (comparisonEntity.armorClass[4] == true)                    // Cavalry
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 40;
@@ -544,7 +544,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Trebuchet line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[42] == true) && // Trebuchet
+    (applyRockPaperScissorsModifiers.entityName == "Trebuchet") && // Trebuchet
     (comparisonEntity.armorClass[1] == true)                    // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 450;
@@ -682,7 +682,7 @@ void modifiersCalculator::applyTechnologyEffects()
   }
   if (playerTechnologies[10] == 1) {
     // Loom - +2 HP for Villagers
-    if (applyTechnologyModifiers.armorClass[26] == true) { // Villager
+    if (applyTechnologyModifiers.entityName == "Villager") { // Villager
       applyTechnologyModifiers.entityHealth += 2;
     }
   }
