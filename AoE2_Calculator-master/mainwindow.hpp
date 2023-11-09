@@ -151,6 +151,11 @@ private:
   void initializeAnimations();
 
 
+  void filterBasedOnAge(QString player);
+
+  void hideOrShowBasedOnAge(QString player, QString itemToCheckFor, bool hideOrShow);
+
+
   Ui::MainWindow     ui;
   QString            m_lastLine;
   OutputRedirector   m_outputRedirector;
