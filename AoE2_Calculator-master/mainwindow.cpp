@@ -96,7 +96,16 @@ QString player2Civilization;
 // Declaring the variables, arrays for the UI elements
 QStringList entityNames;
 QStringList unitNames;
+
 QStringList buildingNames;
+QStringList age1UnitNames;
+QStringList age2UnitNames;
+QStringList age3UnitNames;
+QStringList age4UnitNames;
+QStringList age1BuildingNames;
+QStringList age2BuildingNames;
+QStringList age3BuildingNames;
+QStringList age4BuildingNames;
 
 int     player1EntityQuantity;
 int     player1AssistingEntityQuantity;
@@ -115,8 +124,8 @@ int representationOfPlayer1Age;
 int representationOfPlayer2Age;
 
 // Get what age the player is in
-QString     player1Age;
-QString     player2Age;
+QString     player1Age = "Dark Age";
+QString     player2Age = "Dark Age";
 QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
@@ -177,164 +186,172 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   player1Color = "black";
   player2Color = "black";
 
-  unitNames << "Archer"
-            << "Archer (Saracen)"
-            << "Arbalest"
-            << "Arbalest (Briton)"
-            << "Arbalest (Saracen)"
-            << "Battering Ram"
-            << "Battering Ram (Celt)"
-            << "Berserk (Viking)"
-            << "Capped Ram"
-            << "Capped Ram (Celt)"
-            << "Camel"
-            << "Cavalier"
-            << "Cavalier (Frank)"
-            << "Cavalier (Persian)"
-            << "Cavalry Archer"
-            << "Cavalry Archer (Mongol)"
-            << "Champion"
-            << "Champion (Celt)"
-            << "Champion (Goth)"
-            << "Champion (Japanese)"
-            << "Champion (Viking)"
-            << "Crossbowman"
-            << "Crossbowman (Saracen)"
-            << "Demolition Ship"
-            << "Demolition Ship (Viking)"
-            << "Elite Berserk (Viking)"
-            << "Elite Huskarl (Goth)"
-            << "Elite Longboat (Viking)"
-            << "Elite Longbowman (Briton)"
-            << "Elite Mameluke (Saracen)"
-            << "Elite Mangudai (Mongol)"
-            << "Elite Samurai (Japanese)"
-            << "Elite Skirmisher"
-            << "Elite Throwing Axeman (Frank)"
-            << "Elite War Elephant (Persian)"
-            << "Elite Woad Raider (Celt)"
-            << "Fast Fire Ship"
-            << "Fire Ship"
-            << "Fishing Ship (Japanese)"
-            << "Fishing Ship (Persian)"
-            << "Galley"
-            << "Galley (Japanese)"
-            << "Galley (Saracen)"
-            << "Galley (Viking)"
-            << "Galleon"
-            << "Galleon (Saracen)"
-            << "Galleon (Viking)"
-            << "Galleon (Japanese)"
-            << "Heavy Camel"
-            << "Heavy Cavalry Archer"
-            << "Heavy Cavalry Archer (Mongol)"
-            << "Heavy Cavalry Archer (Saracen)"
-            << "Heavy Demolition Ship"
-            << "Heavy Demolition Ship (Viking)"
-            << "Heavy Scorpion"
-            << "Heavy Scorpion (Celt)"
-            << "Huskarl (Goth)"
-            << "Knight"
-            << "Knight (Frank)"
-            << "Knight (Persian)"
-            << "Light Cavalry"
-            << "Light Cavalry (Mongol)"
-            << "Long Swordsman"
-            << "Long Swordsman (Celt)"
-            << "Long Swordsman (Goth)"
-            << "Long Swordsman (Japanese)"
-            << "Long Swordsman (Viking)"
-            << "Longboat (Viking)"
-            << "Longbowman (Briton)"
-            << "Mameluke (Saracen)"
-            << "Man-at-Arms"
-            << "Man-at-Arms (Viking)"
-            << "Man-at-Arms (Celt)"
-            << "Man-at-Arms (Goth)"
-            << "Man-at-Arms (Japanese)"
-            << "Mangonel"
-            << "Mangonel (Celt)"
-            << "Mangudai (Mongol)"
-            << "Militia"
-            << "Militia (Celt)"
-            << "Militia (Goth)"
-            << "Onager"
-            << "Onager (Celt)"
-            << "Paladin"
-            << "Paladin (Persian)"
-            << "Paladin (Frank)"
-            << "Pikeman"
-            << "Pikeman (Celt)"
-            << "Pikeman (Goth)"
-            << "Pikeman (Japanese)"
-            << "Pikeman (Viking)"
-            << "Samurai (Japanese)"
-            << "Scorpion"
-            << "Scorpion (Celt)"
-            << "Scout Cavalry"
-            << "Siege Onager"
-            << "Siege Onager (Celt)"
-            << "Siege Ram"
-            << "Siege Ram (Celt)"
-            << "Skirmisher"
-            << "Spearman"
-            << "Spearman (Japanese)"
-            << "Spearman (Viking)"
-            << "Spearman (Celt)"
-            << "Spearman (Goth)"
-            << "Throwing Axeman (Frank)"
-            << "Trebuchet"
-            << "Two-handed Swordsman"
-            << "Two-handed Swordsman (Celt)"
-            << "Two-handed Swordsman (Goth)"
-            << "Two-handed Swordsman (Japanese)"
-            << "Two-handed Swordsman (Viking)"
-            << "Villager"
-            << "War Elephant (Persian)"
-            << "War Galley"
-            << "War Galley (Japanese)"
-            << "War Galley (Saracen)"
-            << "War Galley (Viking)"
-            << "Woad Raider (Celt)";
-  buildingNames << "Archery Range"
-                << "Barracks"
-                << "Blacksmith"
-                << "Castle"
-                << "Castle (Frank)"
-                << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
-                << "Dock"
-                << "Dock (Persian)"
-                << "Dock (Viking)"
-                << "Farm"
-                << "Fortified Wall"
-                << "Gold Mine"
-                << "Gold Mine (Japanese)"
-                << "House"
-                << "Lumber Camp"
-                << "Lumber Camp (Japanese)"
-                << "Market"
-                << "Mill"
-                << "Mill (Japanese)"
-                << "Monastery"
-                << "Notre-Dame Cathedral (Frank)"
-                << "Outpost"
-                << "Palisade Wall"
-                << "Rock Of Cashel (Celt)"
-                << "Siege Workshop"
-                << "Stable"
-                << "Stave Church At Urnes (Viking)"
-                << "Stone Gate"
-                << "Stone Mine"
-                << "Stone Mine (Japanese)"
-                << "Stone Wall"
-                << "The Golden Tent Of The Great Khan (Mongol)"
-                << "The Great Temple At Nara (Japanese)"
-                << "The Palace Of Ctesiphon On The Tigris (Persian)"
-                << "Tomb Of Theodoric (Goth)"
-                << "Town Center"
-                << "Town Center (Briton)"
-                << "Town Center (Persian)"
-                << "Watch Tower";
+  age1UnitNames << "Militia"
+                << "Militia (Celt)"
+                << "Militia (Goth)"
+                << "Fishing Ship (Japanese)"
+                << "Fishing Ship (Persian)"
+                << "Villager";
+
+  age2UnitNames << "Archer"
+                << "Archer (Saracen)"
+                << "Galley"
+                << "Galley (Japanese)"
+                << "Galley (Saracen)"
+                << "Galley (Viking)"
+                << "Scout Cavalry"
+                << "Skirmisher"
+                << "Spearman"
+                << "Spearman (Japanese)"
+                << "Spearman (Viking)"
+                << "Spearman (Celt)"
+                << "Spearman (Goth)"
+                << "Trade Cog"
+                << "Man-at-Arms"
+                << "Man-at-Arms (Viking)"
+                << "Man-at-Arms (Celt)"
+                << "Man-at-Arms (Goth)"
+                << "Man-at-Arms (Japanese)";
+  age3UnitNames << "Camel"
+                << "Battering Ram"
+                << "Battering Ram (Celt)"
+                << "Berserk (Viking)"
+                << "Cavalry Archer"
+                << "Cavalry Archer (Mongol)"
+                << "Demolition Ship"
+                << "Demolition Ship (Viking)"
+                << "Fire Ship"
+                << "Huskarl (Goth)"
+                << "Knight"
+                << "Knight (Frank)"
+                << "Knight (Persian)"
+                << "Longboat (Viking)"
+                << "Longbowman (Briton)"
+                << "Mameluke (Saracen)"
+                << "Mangonel"
+                << "Mangonel (Celt)"
+                << "Mangudai (Mongol)"
+                << "Samurai (Japanese)"
+                << "Scorpion"
+                << "Scorpion (Celt)"
+                << "Throwing Axeman (Frank)"
+                << "War Elephant (Persian)"
+                << "Woad Raider (Celt)"
+                << "Crossbowman"
+                << "Crossbowman (Saracen)"
+                << "Elite Skirmisher"
+                << "Light Cavalry"
+                << "Light Cavalry (Mongol)"
+                << "Long Swordsman"
+                << "Long Swordsman (Celt)"
+                << "Long Swordsman (Goth)"
+                << "Long Swordsman (Japanese)"
+                << "Long Swordsman (Viking)"
+                << "Pikeman"
+                << "Pikeman (Celt)"
+                << "Pikeman (Goth)"
+                << "Pikeman (Japanese)"
+                << "Pikeman (Viking)"
+                << "War Galley"
+                << "War Galley (Japanese)"
+                << "War Galley (Saracen)"
+                << "War Galley (Viking)";
+  age4UnitNames << "Elite Berserk (Viking)"
+                << "Elite Huskarl (Goth)"
+                << "Elite Longboat (Viking)"
+                << "Elite Longbowman (Briton)"
+                << "Elite Mameluke (Saracen)"
+                << "Elite Mangudai (Mongol)"
+                << "Elite Samurai (Japanese)"
+                << "Elite Throwing Axeman (Frank)"
+                << "Elite War Elephant (Persian)"
+                << "Elite Woad Raider (Celt)"
+                << "Trebuchet"
+                << "Arbalest"
+                << "Arbalest (Briton)"
+                << "Arbalest (Saracen)"
+                << "Capped Ram"
+                << "Capped Ram (Celt)"
+                << "Cavalier"
+                << "Cavalier (Frank)"
+                << "Cavalier (Persian)"
+                << "Champion"
+                << "Champion (Celt)"
+                << "Champion (Goth)"
+                << "Champion (Japanese)"
+                << "Champion (Viking)"
+                << "Fast Fire Ship"
+                << "Galleon"
+                << "Galleon (Saracen)"
+                << "Galleon (Viking)"
+                << "Galleon (Japanese)"
+                << "Heavy Camel"
+                << "Heavy Cavalry Archer"
+                << "Heavy Cavalry Archer (Mongol)"
+                << "Heavy Cavalry Archer (Saracen)"
+                << "Heavy Demolition Ship"
+                << "Heavy Demolition Ship (Viking)"
+                << "Heavy Scorpion"
+                << "Heavy Scorpion (Celt)"
+                << "Onager"
+                << "Onager (Celt)"
+                << "Paladin"
+                << "Paladin (Persian)"
+                << "Paladin (Frank)"
+                << "Siege Onager"
+                << "Siege Onager (Celt)"
+                << "Siege Ram"
+                << "Siege Ram (Celt)"
+                << "Two-handed Swordsman"
+                << "Two-handed Swordsman (Celt)"
+                << "Two-handed Swordsman (Goth)"
+                << "Two-handed Swordsman (Japanese)"
+                << "Two-handed Swordsman (Viking)";
+
+  unitNames = age1UnitNames + age2UnitNames + age3UnitNames + age4UnitNames;
+
+  age1BuildingNames << "Barracks"
+                    << "Dock"
+                    << "Dock (Persian)"
+                    << "Dock (Viking)"
+                    << "Farm"
+                    << "Gold Mine"
+                    << "Gold Mine (Japanese)"
+                    << "House"
+                    << "Lumber Camp"
+                    << "Lumber Camp (Japanese)"
+                    << "Mill"
+                    << "Mill (Japanese)"
+                    << "Outpost"
+                    << "Palisade Wall"
+                    << "Stone Mine"
+                    << "Stone Mine (Japanese)"
+                    << "Town Center"
+                    << "Town Center (Briton)"
+                    << "Town Center (Persian)";
+  age2BuildingNames << "Archery Range"
+                    << "Blacksmith"
+                    << "Stone Gate"
+                    << "Stone Wall"
+                    << "Market"
+                    << "Stable"
+                    << "Watch Tower";
+  age3BuildingNames << "Castle"
+                    << "Castle (Frank)"
+                    << "Monastery"
+                    << "Siege Workshop"
+                    << "Fortified Wall";
+  age4BuildingNames << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
+                    << "Notre-Dame Cathedral (Frank)"
+                    << "Rock Of Cashel (Celt)"
+                    << "Stave Church At Urnes (Viking)"
+                    << "The Golden Tent Of The Great Khan (Mongol)"
+                    << "The Great Temple At Nara (Japanese)"
+                    << "The Palace Of Ctesiphon On The Tigris (Persian)"
+                    << "Tomb Of Theodoric (Goth)";
+
+  buildingNames = age1BuildingNames + age2BuildingNames + age3BuildingNames
+                  + age4BuildingNames;
 
   initializeEntityAliases();
   entityNames = unitNames + buildingNames;
@@ -370,15 +387,15 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   // What the possible names of event cards are
   // @Reference: What row in the .csv file it goes to
   QStringList events = {
-    "A Just Cause",             // [Row 1]
-    "Back From A Foreign Land", // [Row 2]  (Byzantine civ bonus: +2 healing
-                                // rate modifier)
-    // (has multiple slots in .csv file)
-    "Barrel Of Grog",                // [Row 3]
-    "Bone Shaft Arrows (Mongol)",    // [Row 4]
-    "Caught From The Crow's Nest",   // [Row 5]
-    "Celtic Battle Cry (Celt)",      // [Row 6]
-    "Dangerous Times",               // [Row 7]
+    "A Just Cause",                // [Row 1]
+    "Back From A Foreign Land",    // [Row 2]  (Byzantine civ bonus: +2 healing
+                                   // rate modifier)
+                                   // (has multiple slots in .csv file)
+    "Barrel Of Grog",              // [Row 3]
+    "Bone Shaft Arrows (Mongol)",  // [Row 4]
+    "Caught From The Crow's Nest", // [Row 5]
+    "Celtic Battle Cry (Celt)",    // [Row 6]
+    "Dangerous Times",             // [Row 7]
     "Fat Friar's Tavern O' Spirits", // [Row 8]
     "Field Testing",                 // [Row 9]
     "First Battle Jitters",          // [Row 10]
@@ -394,9 +411,9 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     "Listen To A Story",             // [Row 20]
     "Muddy Battlefield",             // [Row 21]
     "Non-Compos Mentis",             // [Row 22]
-    // Back_From_A_Foreign_Land (Byzantine civ bonus:
-    // All building get a HP bonus: Age I – 10 HP, Age II – 20 HP, Age III – 30
-    // HP, Age IV – 40 HP) [Row 23]
+                         // Back_From_A_Foreign_Land (Byzantine civ bonus:
+                         // All building get a HP bonus: Age I – 10 HP, Age II –
+                         // 20 HP, Age III – 30 HP, Age IV – 40 HP) [Row 23]
     "Piety",                                     // [Row 24]
     "Black Knight",                              // [Row 25]
     "Rally The Workers",                         // [Row 26]
@@ -591,6 +608,10 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   palettes.darkModeEnabled = false;
 
   setColorTheUIElements();
+
+  // Filter list based on age player is in for both player 1 and 2
+  filterBasedOnAge("1");
+  filterBasedOnAge("2");
 }
 
 MainWindow::~MainWindow()
@@ -1734,6 +1755,9 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
 
   // update file
   m_player_medieval_age.changePlayer1MedievalAge(representationOfPlayer1Age);
+
+  // filter list based on age
+  filterBasedOnAge("1");
 }
 
 void MainWindow::on_actionSet_player_2_Age_triggered()
@@ -1765,6 +1789,9 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
 
   // update file
   m_player_medieval_age.changePlayer2MedievalAge(representationOfPlayer2Age);
+
+  // filter list based on age
+  filterBasedOnAge("2");
 }
 
 void MainWindow::setInitialNames()
@@ -2209,6 +2236,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   QLabel* theLabelOfTheCurrentPlayer = ui.player1Animation;
   QString fileName;
   QString filePath;
+  QString fileAge;
 
   bool unit     = false;
   bool building = false;
@@ -2230,15 +2258,61 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
   fileName = fileName.remove(removeBracketedTextExpression);
 
+  // Work out what age the entity belongs in
+  if (player == "1") {
+    fileAge = (convertSpacesToUnderscores(player1Age)).toLower();
+  }
+  else if (player == "2") {
+    fileAge = (convertSpacesToUnderscores(player2Age)).toLower();
+  }
+
+  // Manually correct it for edge cases
+  if (
+    ((currentSelection.contains("Barracks"))
+     || (currentSelection.contains("Archery Range"))
+     || (currentSelection.contains("Blacksmith"))
+     || (currentSelection.contains("Castle"))
+     || (currentSelection.contains("Dock"))
+     || (currentSelection.contains("House"))
+     || (currentSelection.contains("Mill"))
+     || (currentSelection.contains("Monastery")))
+    && (fileAge == "imperial_age")) {
+    fileAge = "castle_age";
+  }
+
+  if (
+    ((currentSelection.contains("Stone Mine"))
+     || (currentSelection.contains("Gold Mine"))
+     || (currentSelection.contains("Lumber Camp")))
+    && ((fileAge == "castle_age") || (fileAge == "imperial_age"))) {
+    fileAge = "feudal_age";
+  }
+
+  bool isADarkAgeBuilding = false;
+
+  if (building == true) {
+    for (int i = 0; i < age1BuildingNames.length(); i++) {
+      if (currentSelection.contains(age1BuildingNames[i])) {
+        isADarkAgeBuilding = true;
+        fileAge            = "dark_age";
+      }
+    }
+  }
+
   // Set which UI element is being modified
   // Set the path to the filename
   if (player == "1") {
     theLabelOfTheCurrentPlayer = ui.player1Animation;
 
     if (building == true) {
-      filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle + "_"
-                 + (convertSpacesToUnderscores(player1Age)).toLower()
-                 + entityStatus + ".gif";
+      if (isADarkAgeBuilding == false) {
+        filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle
+                   + "_" + fileAge + entityStatus + ".gif";
+      }
+      else {
+        filePath
+          = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
+      }
     }
 
     if (unit == true) {
@@ -2249,15 +2323,22 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     theLabelOfTheCurrentPlayer = ui.player2Animation;
 
     if (building == true) {
-      filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle + "_"
-                 + (convertSpacesToUnderscores(player2Age)).toLower()
-                 + entityStatus + ".gif";
+      if (isADarkAgeBuilding == false) {
+        filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle
+                   + "_" + fileAge + entityStatus + ".gif";
+      }
+      else {
+        filePath
+          = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
+      }
     }
 
     if (unit == true) {
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
   }
+
+  qDebug() << filePath;
 
   QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
@@ -2269,7 +2350,8 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   if (
     (currentSelection.contains("ship", Qt::CaseInsensitive))
     || (currentSelection.contains("galle", Qt::CaseInsensitive))
-    || (currentSelection.contains("boat", Qt::CaseInsensitive))) {
+    || (currentSelection.contains("boat", Qt::CaseInsensitive))
+    || (currentSelection.contains("dock", Qt::CaseInsensitive))) {
     theLabelOfTheCurrentPlayer->setStyleSheet(
       "background-color: rgb(35,137,218);");
   }
@@ -2280,4 +2362,123 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   GifAnimation->setSpeed(70); // 70% of original speed
   GifAnimation->setScaledSize(QSize().scaled(75, 75, Qt::KeepAspectRatio));
   GifAnimation->start();
+}
+
+void MainWindow::hideOrShowBasedOnAge(
+  QString player,
+  QString itemToCheckFor,
+  bool    hideOrShow)
+{
+  QListWidget* theListOfTheCurrentPlayer;
+  theListOfTheCurrentPlayer = ui.player1EntityNames;
+
+  if (player == "1") {
+    theListOfTheCurrentPlayer = ui.player1EntityNames;
+  }
+  else if (player == "2") {
+    theListOfTheCurrentPlayer = ui.player2EntityNames;
+  }
+
+  for (int i = 0; i < theListOfTheCurrentPlayer->count(); i++) {
+    if (theListOfTheCurrentPlayer->item(i)->text().contains(itemToCheckFor)) {
+      theListOfTheCurrentPlayer->item(i)->setHidden(hideOrShow);
+    }
+  }
+}
+
+void MainWindow::filterBasedOnAge(QString player)
+{
+  QString* playerAge = &player1Age;
+
+  if (player == "1") {
+    *playerAge = player1Age;
+  }
+  else if (player == "2") {
+    *playerAge = player2Age;
+  }
+
+  bool removeAge2ListElements = false;
+  bool removeAge3ListElements = false;
+  bool removeAge4ListElements = false;
+
+  if (*playerAge == "Dark Age") {
+    removeAge2ListElements = true;
+    removeAge3ListElements = true;
+    removeAge4ListElements = true;
+  }
+  else if (*playerAge == "Feudal Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = true;
+    removeAge4ListElements = true;
+  }
+  else if (*playerAge == "Castle Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = false;
+    removeAge4ListElements = true;
+  }
+  else if (*playerAge == "Imperial Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = false;
+    removeAge4ListElements = false;
+  }
+
+  for (int i = 0; i < age2UnitNames.count(); i++) {
+    QString age2UnitName = age2UnitNames[i];
+    if (removeAge2ListElements == true) {
+      hideOrShowBasedOnAge(player, age2UnitName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age2UnitName, false);
+    }
+  }
+
+  for (int i = 0; i < age2BuildingNames.count(); i++) {
+    QString age2BuildingName = age2BuildingNames[i];
+    if (removeAge2ListElements == true) {
+      hideOrShowBasedOnAge(player, age2BuildingName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age2BuildingName, false);
+    }
+  }
+
+  for (int i = 0; i < age3UnitNames.count(); i++) {
+    QString age3UnitName = age3UnitNames[i];
+    if (removeAge3ListElements == true) {
+      hideOrShowBasedOnAge(player, age3UnitName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age3UnitName, false);
+    }
+  }
+
+  for (int i = 0; i < age3BuildingNames.count(); i++) {
+    QString age3BuildingName = age3BuildingNames[i];
+    if (removeAge3ListElements == true) {
+      hideOrShowBasedOnAge(player, age3BuildingName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age3BuildingName, false);
+    }
+  }
+
+  for (int i = 0; i < age4UnitNames.count(); i++) {
+    QString age4UnitName = age4UnitNames[i];
+    if (removeAge4ListElements == true) {
+      hideOrShowBasedOnAge(player, age4UnitName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age4UnitName, false);
+    }
+  }
+
+  for (int i = 0; i < age4BuildingNames.count(); i++) {
+    QString age4BuildingName = age4BuildingNames[i];
+    if (removeAge4ListElements == true) {
+      hideOrShowBasedOnAge(player, age4BuildingName, true);
+    }
+    else {
+      hideOrShowBasedOnAge(player, age4BuildingName, false);
+    }
+  }
 }

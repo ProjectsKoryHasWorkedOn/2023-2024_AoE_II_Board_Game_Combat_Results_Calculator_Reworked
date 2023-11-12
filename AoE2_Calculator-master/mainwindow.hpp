@@ -164,6 +164,11 @@ private:
 
   void initializeAnimations();
 
+  void filterBasedOnAge(QString player);
+
+  void
+  hideOrShowBasedOnAge(QString player, QString itemToCheckFor, bool hideOrShow);
+
   Database*          m_database;
   Ui::MainWindow     ui;
   QString            m_lastLine;
