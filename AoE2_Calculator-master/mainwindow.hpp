@@ -15,11 +15,13 @@
 #include <QPalette>
 #include <QString>
 
+class Database;
+
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(QWidget* parent = nullptr);
+  MainWindow(Database* database, QWidget* parent = nullptr);
   ~MainWindow();
 
   const QString& lastLine() const;
@@ -111,7 +113,6 @@ private slots:
 
   void on_actionSet_civilization_of_player_2_triggered();
 
-
 private:
   void initializeEntityAliases();
 
@@ -136,21 +137,34 @@ private:
 
   void updateRangeAllowed(QString nameOfSelection, int playerNumber);
 
-  void overrideTechnologies(QStringList technologiesToCancelOut, Technologies * playerTechnologies);
+  void overrideTechnologies(
+    QStringList   technologiesToCancelOut,
+    Technologies* playerTechnologies);
 
-  void technologyOverrider(QStringList listCombinations, Technologies * playerTechnologies);
+  void technologyOverrider(
+    QStringList   listCombinations,
+    Technologies* playerTechnologies);
 
   void removeFromList(QString player);
 
-  void setUnitBuildingStyleBasedOnCivilizationSelected(QString * playerCivilization, QString * playerArchitecturalStyle, QString * playerUnitStyle);
+  void setUnitBuildingStyleBasedOnCivilizationSelected(
+    QString* playerCivilization,
+    QString* playerArchitecturalStyle,
+    QString* playerUnitStyle);
 
-  void getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player, QString assistantStatus);
+  void getAssistantEntityAnimationForSelectedAssistant(
+    QString currentSelection,
+    QString player,
+    QString assistantStatus);
 
-  void getEntityAnimationForSelectedEntity(QString currentSelection, QString player, QString entityStatus);
+  void getEntityAnimationForSelectedEntity(
+    QString currentSelection,
+    QString player,
+    QString entityStatus);
 
   void initializeAnimations();
 
-
+  Database*          m_database;
   Ui::MainWindow     ui;
   QString            m_lastLine;
   OutputRedirector   m_outputRedirector;

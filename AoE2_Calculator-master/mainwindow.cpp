@@ -2,11 +2,12 @@
 #include "mainwindow.hpp"     // This window
 #include "aboutwindow.h"      // A window this window can open
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
+#include "database.hpp"
 #include "dialog_input.h"
 #include "file_paths.h"
 
-#include <QLabel>
 #include "soundEffects.h" // Sound playing class
+#include <QLabel>
 
 #include "cross-window_palette.h" // Coloring of the UI
 
@@ -47,16 +48,20 @@
 // Librraries used for hotkeys
 #include <QShortcut>
 
-
 // Animation variables
-QString p1BuildingArchitecturalStyle = "_western_european"; // _african, _asian, _central_european, _east_asian, _eastern_european, _mediterranean, _middle_eastern,_native_american,_south_asian,_southeast_asian, _western_european,
+QString p1BuildingArchitecturalStyle
+  = "_western_european"; // _african, _asian, _central_european, _east_asian,
+                         // _eastern_european, _mediterranean,
+                         // _middle_eastern,_native_american,_south_asian,_southeast_asian,
+                         // _western_european,
 QString p1UnitStyle = "_western"; // _western, _mesoamerican, _asian
 
 QString p2BuildingArchitecturalStyle = "_western_european";
 QString p2UnitStyle = "_western"; // _western, _mesoamerican, _asian
 
 // Regex expressions
-QRegularExpression removeBracketedTextExpression("(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
+QRegularExpression removeBracketedTextExpression(
+  "(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
 
 // Declaring class
 SoundPlayer playSound;
@@ -75,8 +80,16 @@ bool    isP2BackFromAForeignLandEventInPlay;
 QString player2BackFromAForeignLandCivilizationBonusSelection;
 
 // Civilization selection
-QStringList civilizations
-  = {"Britons", "Celts", "Goths", "Mongols", "Persians", "Franks", "Japanese", "Saracens", "Vikings"};
+QStringList civilizations = {
+  "Britons",
+  "Celts",
+  "Goths",
+  "Mongols",
+  "Persians",
+  "Franks",
+  "Japanese",
+  "Saracens",
+  "Vikings"};
 QString player1Civilization;
 QString player2Civilization;
 
@@ -85,19 +98,18 @@ QStringList entityNames;
 QStringList unitNames;
 QStringList buildingNames;
 
-
-int         player1EntityQuantity;
-int         player1AssistingEntityQuantity;
-int         player2EntityQuantity;
-int         player2AssistingEntityQuantity;
-QString     player1Name;
-QString     player2Name;
-QString     player1Color;
-QString     player2Color;
-QString     player1BattleAssistantName;
-QString     player2BattleAssistantName;
-bool        expectingSingleEntityForPlayer1;
-bool        expectingSingleEntityForPlayer2;
+int     player1EntityQuantity;
+int     player1AssistingEntityQuantity;
+int     player2EntityQuantity;
+int     player2AssistingEntityQuantity;
+QString player1Name;
+QString player2Name;
+QString player1Color;
+QString player2Color;
+QString player1BattleAssistantName;
+QString player2BattleAssistantName;
+bool    expectingSingleEntityForPlayer1;
+bool    expectingSingleEntityForPlayer2;
 
 int representationOfPlayer1Age;
 int representationOfPlayer2Age;
@@ -109,8 +121,9 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(Database* database, QWidget* parent)
   : QMainWindow{parent}
+  , m_database{database}
   , m_lastLine{}
   , m_outputRedirector{std::cout, ui.gameOutputTextEdit, m_lastLine}
   , m_aliases{}
@@ -141,16 +154,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
-
-
-
-
-
-  // What the working directory is
-  workingDirectory = QCoreApplication::applicationDirPath();
-
-  // gets debug folder for some reason so go up a level
-  workingDirectory.cdUp();
 
   // What the civ bonuses are
   backFromAForeignLandCivilizationBonuses
@@ -333,7 +336,6 @@ MainWindow::MainWindow(QWidget* parent)
                 << "Town Center (Persian)"
                 << "Watch Tower";
 
-
   initializeEntityAliases();
   entityNames = unitNames + buildingNames;
 
@@ -424,7 +426,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui.player1EntityNames->addItem(entityNames[i]);
     ui.player2EntityNames->addItem(entityNames[i]);
   }
-
 
   // Can only have one list widget item per list
   // C++11 range based for loop
@@ -590,8 +591,6 @@ MainWindow::MainWindow(QWidget* parent)
   palettes.darkModeEnabled = false;
 
   setColorTheUIElements();
-
-
 }
 
 MainWindow::~MainWindow()
@@ -823,11 +822,14 @@ void MainWindow::on_calculateResultsButton_clicked()
   ui.gameOutputTextEdit->setHtml("");
 
   // Update animation
-  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1", "_attack");
-  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2", "_attack");
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1", "_attack");
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2", "_attack");
-
+  getEntityAnimationForSelectedEntity(
+    ui.player1EntityNames->currentItem()->text(), "1", "_attack");
+  getEntityAnimationForSelectedEntity(
+    ui.player2EntityNames->currentItem()->text(), "2", "_attack");
+  getAssistantEntityAnimationForSelectedAssistant(
+    ui.player1BattleAssistantNames->currentText(), "1", "_attack");
+  getAssistantEntityAnimationForSelectedAssistant(
+    ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
   // Calculate the results of a battle
   runGame();
@@ -871,28 +873,18 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
   m_entities.changePlayer2EntityQuantity(player2EntityQuantity);
 }
 
-
-
-
 // Run on change of what battle assistant is selected by player 1
 void MainWindow::on_player1BattleAssistantNames_textActivated(
   const QString& currentSelection)
 {
-
-
-
   SFXToPlay("/sfx/ui/button_pressed.wav");
-
 
   player1BattleAssistantName = currentSelection;
 
   m_entities.changePlayer1AssistantName(player1BattleAssistantName);
 
-
-
-
-  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "1", "_idle");
-
+  getAssistantEntityAnimationForSelectedAssistant(
+    currentSelection, "1", "_idle");
 }
 
 // Run on change of what battle assistant is selected by player 2
@@ -905,8 +897,8 @@ void MainWindow::on_player2BattleAssistantNames_textActivated(
 
   m_entities.changePlayer2AssistantName(player2BattleAssistantName);
 
-  getAssistantEntityAnimationForSelectedAssistant(currentSelection, "2", "_idle");
-
+  getAssistantEntityAnimationForSelectedAssistant(
+    currentSelection, "2", "_idle");
 }
 
 void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
@@ -1066,7 +1058,6 @@ void MainWindow::on_player1EntityNames_itemClicked(
   m_player1EntityName       = currentSelectionFormatted;
 
   m_entities.changePlayer1EntityName(m_player1EntityName);
-
 
   getEntityAnimationForSelectedEntity(selectedItem->text(), "1", "_idle");
 }
@@ -1394,7 +1385,6 @@ void MainWindow::setColorTheUIElements()
     ui.actionSet_set_color_of_player_2->setIcon(QIcon(
       workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
 
-
     ui.actionSet_civilization_of_player_1->setIcon(QIcon(
       workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
     ui.actionSet_civilization_of_player_2->setIcon(QIcon(
@@ -1437,11 +1427,10 @@ void MainWindow::setColorTheUIElements()
     ui.actionSet_set_color_of_player_2->setIcon(
       QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
 
-
-    ui.actionSet_civilization_of_player_1->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconFilename));
-    ui.actionSet_civilization_of_player_2->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_civilization_of_player_1->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+    ui.actionSet_civilization_of_player_2->setIcon(
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
 
     // Update the player names
     if (player1Color == "white" || player2Color == "white") {
@@ -1526,7 +1515,6 @@ void MainWindow::updatePlayerNames()
   ui.actionSet_name_of_player_2->setText("Set " + player2Name + "'s name");
   ui.actionSet_set_color_of_player_2->setText(
     "Set " + player2Name + "'s color");
-
 
   ui.actionSet_civilization_of_player_1->setText(
     "Set " + player1Name + "'s civilization");
@@ -1990,252 +1978,222 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
     = defaultAnswerToConversionHealingPromptDialog.textValue();
 }
 
-
-
-void MainWindow::removeFromList(QString player){
-
-
-  QString theCivilizationOfTheCurrentPlayer;
+void MainWindow::removeFromList(QString player)
+{
+  QString     theCivilizationOfTheCurrentPlayer;
   QStringList listOfAllOtherCivilizations = civilizations;
 
-  QListWidget *theListOfTheCurrentPlayer;
+  QListWidget* theListOfTheCurrentPlayer;
 
-  if(player == "1"){
+  if (player == "1") {
     theCivilizationOfTheCurrentPlayer = player1Civilization;
-    theListOfTheCurrentPlayer = ui.player1EntityNames;
+    theListOfTheCurrentPlayer         = ui.player1EntityNames;
   }
-  else if (player == "2"){
+  else if (player == "2") {
     theCivilizationOfTheCurrentPlayer = player2Civilization;
-    theListOfTheCurrentPlayer = ui.player2EntityNames;
+    theListOfTheCurrentPlayer         = ui.player2EntityNames;
   }
 
-
-
-  for(int i = 0; i < listOfAllOtherCivilizations.length(); i++){
-    // Remove civilization player has selected from the list of all other civilizations
-    if(listOfAllOtherCivilizations[i].contains(theCivilizationOfTheCurrentPlayer)){
-      listOfAllOtherCivilizations[i].remove(QRegularExpression(theCivilizationOfTheCurrentPlayer));
-      if(listOfAllOtherCivilizations[i].isEmpty() == true){
+  for (int i = 0; i < listOfAllOtherCivilizations.length(); i++) {
+    // Remove civilization player has selected from the list of all other
+    // civilizations
+    if (listOfAllOtherCivilizations[i].contains(
+          theCivilizationOfTheCurrentPlayer)) {
+      listOfAllOtherCivilizations[i].remove(
+        QRegularExpression(theCivilizationOfTheCurrentPlayer));
+      if (listOfAllOtherCivilizations[i].isEmpty() == true) {
         listOfAllOtherCivilizations.removeOne("");
       }
     }
     // Remove "s" character from end of civilization mame if it is present
-    if(listOfAllOtherCivilizations[i].endsWith("s", Qt::CaseSensitive)){
-      listOfAllOtherCivilizations[i] = listOfAllOtherCivilizations[i].mid(0, listOfAllOtherCivilizations[i].length() - 1);
+    if (listOfAllOtherCivilizations[i].endsWith("s", Qt::CaseSensitive)) {
+      listOfAllOtherCivilizations[i] = listOfAllOtherCivilizations[i].mid(
+        0, listOfAllOtherCivilizations[i].length() - 1);
     }
   }
 
   // Now remove all other civilizations from the list on the GUI
-  for(int i = 0; i < theListOfTheCurrentPlayer->count(); i++){
-
+  for (int i = 0; i < theListOfTheCurrentPlayer->count(); i++) {
     // Set the current item to be visible
     theListOfTheCurrentPlayer->item(i)->setHidden(false);
 
-    // Set all current items to be invisible for each item that belongs to another civilization
-    for(int y = 0; y < listOfAllOtherCivilizations.count(); y++){
-      if(theListOfTheCurrentPlayer->item(i)->text().contains(listOfAllOtherCivilizations[y])){
+    // Set all current items to be invisible for each item that belongs to
+    // another civilization
+    for (int y = 0; y < listOfAllOtherCivilizations.count(); y++) {
+      if (theListOfTheCurrentPlayer->item(i)->text().contains(
+            listOfAllOtherCivilizations[y])) {
         theListOfTheCurrentPlayer->item(i)->setHidden(true);
       }
     }
   }
-
 }
 
-
-void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(QString * playerCivilization, QString * playerArchitecturalStyle, QString * playerUnitStyle){
-
-
-  if(
-  (*playerCivilization == "Ethiopians") ||
-  (*playerCivilization == "Malians")
-    ){
-      *playerArchitecturalStyle = "_african";
+void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(
+  QString* playerCivilization,
+  QString* playerArchitecturalStyle,
+  QString* playerUnitStyle)
+{
+  if (
+    (*playerCivilization == "Ethiopians")
+    || (*playerCivilization == "Malians")) {
+    *playerArchitecturalStyle = "_african";
   }
-  else if(
-    (*playerCivilization == "Cumans") ||
-    (*playerCivilization == "Tatars")
-    ){
-      *playerArchitecturalStyle = "_central_asian";
-      *playerUnitStyle = "_asian";
+  else if (
+    (*playerCivilization == "Cumans") || (*playerCivilization == "Tatars")) {
+    *playerArchitecturalStyle = "_central_asian";
+    *playerUnitStyle          = "_asian";
   }
-  else if(
-    (*playerCivilization == "Goths") ||
-    (*playerCivilization == "Huns") ||
-    (*playerCivilization == "Teutons") ||
-    (*playerCivilization == "Vikings")
-    ){
-      *playerArchitecturalStyle = "_central_european";
-      *playerUnitStyle = "_western";
+  else if (
+    (*playerCivilization == "Goths") || (*playerCivilization == "Huns")
+    || (*playerCivilization == "Teutons")
+    || (*playerCivilization == "Vikings")) {
+    *playerArchitecturalStyle = "_central_european";
+    *playerUnitStyle          = "_western";
   }
-  else if(
-    (*playerCivilization == "Chinese") ||
-    (*playerCivilization == "Japanese") ||
-    (*playerCivilization == "Koreans") ||
-    (*playerCivilization == "Mongols") ||
-    (*playerCivilization == "Vietnamese")
-    ){
-      *playerArchitecturalStyle = "_east_asian";
-      *playerUnitStyle = "_asian";
+  else if (
+    (*playerCivilization == "Chinese") || (*playerCivilization == "Japanese")
+    || (*playerCivilization == "Koreans") || (*playerCivilization == "Mongols")
+    || (*playerCivilization == "Vietnamese")) {
+    *playerArchitecturalStyle = "_east_asian";
+    *playerUnitStyle          = "_asian";
   }
-  else if(
-    (*playerCivilization == "Bohemians") ||
-    (*playerCivilization == "Bulgarians") ||
-    (*playerCivilization == "Lithuanians") ||
-    (*playerCivilization == "Poles") ||
-    (*playerCivilization == "Slavs")
-    ){
-      *playerArchitecturalStyle = "_eastern_european";
-      *playerUnitStyle = "_asian";
+  else if (
+    (*playerCivilization == "Bohemians")
+    || (*playerCivilization == "Bulgarians")
+    || (*playerCivilization == "Lithuanians")
+    || (*playerCivilization == "Poles") || (*playerCivilization == "Slavs")) {
+    *playerArchitecturalStyle = "_eastern_european";
+    *playerUnitStyle          = "_asian";
   }
-  else if(
-    (*playerCivilization == "Armenians") ||
-    (*playerCivilization == "Byzantines") ||
-    (*playerCivilization == "Georgians") ||
-    (*playerCivilization == "Italians") ||
-    (*playerCivilization == "Portuguese") ||
-    (*playerCivilization == "Romans") ||
-    (*playerCivilization == "Italians") ||
-    (*playerCivilization == "Sicilians") ||
-    (*playerCivilization == "Spanish")
-    ){
-      *playerArchitecturalStyle = "_mediterranean";
-      *playerUnitStyle = "_western";
+  else if (
+    (*playerCivilization == "Armenians")
+    || (*playerCivilization == "Byzantines")
+    || (*playerCivilization == "Georgians")
+    || (*playerCivilization == "Italians")
+    || (*playerCivilization == "Portuguese")
+    || (*playerCivilization == "Romans") || (*playerCivilization == "Italians")
+    || (*playerCivilization == "Sicilians")
+    || (*playerCivilization == "Spanish")) {
+    *playerArchitecturalStyle = "_mediterranean";
+    *playerUnitStyle          = "_western";
   }
-  else if(
-    (*playerCivilization == "Berbers") ||
-    (*playerCivilization == "Persians") ||
-    (*playerCivilization == "Saracens") ||
-    (*playerCivilization == "Turks")
-    ){
-      *playerArchitecturalStyle = "_middle_eastern";
+  else if (
+    (*playerCivilization == "Berbers") || (*playerCivilization == "Persians")
+    || (*playerCivilization == "Saracens")
+    || (*playerCivilization == "Turks")) {
+    *playerArchitecturalStyle = "_middle_eastern";
   }
-  else if(
-    (*playerCivilization == "Aztecs") ||
-    (*playerCivilization == "Incas") ||
-    (*playerCivilization == "Mayans")
-    ){
-      *playerArchitecturalStyle = "_native_american";
-      *playerUnitStyle = "_mesoamerican";
+  else if (
+    (*playerCivilization == "Aztecs") || (*playerCivilization == "Incas")
+    || (*playerCivilization == "Mayans")) {
+    *playerArchitecturalStyle = "_native_american";
+    *playerUnitStyle          = "_mesoamerican";
   }
-  else if(
-    (*playerCivilization == "Bengalis") ||
-    (*playerCivilization == "Dravidians") ||
-    (*playerCivilization == "Gurjaras") ||
-    (*playerCivilization == "Hindustanis")
-    ){
-      *playerArchitecturalStyle = "_south_asian";
-      *playerUnitStyle = "_asian";
+  else if (
+    (*playerCivilization == "Bengalis") || (*playerCivilization == "Dravidians")
+    || (*playerCivilization == "Gurjaras")
+    || (*playerCivilization == "Hindustanis")) {
+    *playerArchitecturalStyle = "_south_asian";
+    *playerUnitStyle          = "_asian";
   }
-  else if(
-    (*playerCivilization == "Burmese") ||
-    (*playerCivilization == "Khmer") ||
-    (*playerCivilization == "Malay")
-    ){
-      *playerArchitecturalStyle = "_southeast_asian";
-      *playerUnitStyle = "_asian";
+  else if (
+    (*playerCivilization == "Burmese") || (*playerCivilization == "Khmer")
+    || (*playerCivilization == "Malay")) {
+    *playerArchitecturalStyle = "_southeast_asian";
+    *playerUnitStyle          = "_asian";
   }
-  else if(
-    (*playerCivilization == "Britons") ||
-    (*playerCivilization == "Burgundians") ||
-    (*playerCivilization == "Celts") ||
-    (*playerCivilization == "Franks")
-    ){
-      *playerArchitecturalStyle = "_western_european";
-      *playerUnitStyle = "_western";
+  else if (
+    (*playerCivilization == "Britons") || (*playerCivilization == "Burgundians")
+    || (*playerCivilization == "Celts") || (*playerCivilization == "Franks")) {
+    *playerArchitecturalStyle = "_western_european";
+    *playerUnitStyle          = "_western";
   }
-
-
-
 }
-
-
-
-
 
 void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 {
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
-
-
   QInputDialog player1CivilizationSelection;
 
-  QLabel dialogLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player1Name) + "'s civilization:"));
+  QLabel dialogLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player1Name) + "'s civilization:"));
   player1CivilizationSelection.setLabelText(dialogLabel.text());
   player1CivilizationSelection.setWindowTitle(
     "Enter " + convertUnderscoresToSpaces(player1Name) + "'s civilization");
-  player1CivilizationSelection.setStyleSheet(
-    palettes.getDialogBoxStyling());
+  player1CivilizationSelection.setStyleSheet(palettes.getDialogBoxStyling());
   player1CivilizationSelection.setComboBoxItems(civilizations);
   player1CivilizationSelection.exec();
 
-  player1Civilization
-    = player1CivilizationSelection.textValue();
-
+  player1Civilization = player1CivilizationSelection.textValue();
 
   removeFromList("1");
 
-
-  setUnitBuildingStyleBasedOnCivilizationSelected(&player1Civilization, &p1BuildingArchitecturalStyle, &p1UnitStyle);
+  setUnitBuildingStyleBasedOnCivilizationSelected(
+    &player1Civilization, &p1BuildingArchitecturalStyle, &p1UnitStyle);
 }
-
 
 void MainWindow::on_actionSet_civilization_of_player_2_triggered()
 {
   QInputDialog player2CivilizationSelection;
 
-  QLabel dialogLabel(palettes.getDialogBoxTextTags(convertUnderscoresToSpaces(player2Name) + "'s civilization:"));
+  QLabel dialogLabel(palettes.getDialogBoxTextTags(
+    convertUnderscoresToSpaces(player2Name) + "'s civilization:"));
   player2CivilizationSelection.setLabelText(dialogLabel.text());
   player2CivilizationSelection.setWindowTitle(
     "Enter " + convertUnderscoresToSpaces(player2Name) + "'s civilization");
-  player2CivilizationSelection.setStyleSheet(
-    palettes.getDialogBoxStyling());
+  player2CivilizationSelection.setStyleSheet(palettes.getDialogBoxStyling());
   player2CivilizationSelection.setComboBoxItems(civilizations);
   player2CivilizationSelection.exec();
 
-  player2Civilization
-    = player2CivilizationSelection.textValue();
-
+  player2Civilization = player2CivilizationSelection.textValue();
 
   removeFromList("2");
 
-
-  setUnitBuildingStyleBasedOnCivilizationSelected(&player2Civilization, &p2BuildingArchitecturalStyle, &p2UnitStyle);
+  setUnitBuildingStyleBasedOnCivilizationSelected(
+    &player2Civilization, &p2BuildingArchitecturalStyle, &p2UnitStyle);
 }
 
-
-
-void MainWindow::initializeAnimations(){
-  getEntityAnimationForSelectedEntity(ui.player1EntityNames->currentItem()->text(), "1", "_idle");
-  getEntityAnimationForSelectedEntity(ui.player2EntityNames->currentItem()->text(), "2", "_idle");
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "1", "_idle");
-  getAssistantEntityAnimationForSelectedAssistant(ui.player1BattleAssistantNames->currentText(), "2", "_idle");
-
+void MainWindow::initializeAnimations()
+{
+  getEntityAnimationForSelectedEntity(
+    ui.player1EntityNames->currentItem()->text(), "1", "_idle");
+  getEntityAnimationForSelectedEntity(
+    ui.player2EntityNames->currentItem()->text(), "2", "_idle");
+  getAssistantEntityAnimationForSelectedAssistant(
+    ui.player1BattleAssistantNames->currentText(), "1", "_idle");
+  getAssistantEntityAnimationForSelectedAssistant(
+    ui.player1BattleAssistantNames->currentText(), "2", "_idle");
 }
 
-
-void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString currentSelection, QString player, QString assistantStatus){
-  QLabel *theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
+void MainWindow::getAssistantEntityAnimationForSelectedAssistant(
+  QString currentSelection,
+  QString player,
+  QString assistantStatus)
+{
+  QLabel* theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
   QString fileName;
   QString filePath;
 
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
   fileName = fileName.remove(removeBracketedTextExpression);
 
-  if(player == "1"){
+  if (player == "1") {
     theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
-    filePath = "/animations/" + fileName + p1UnitStyle + assistantStatus + ".gif";
+    filePath
+      = "/animations/" + fileName + p1UnitStyle + assistantStatus + ".gif";
   }
-  else if (player == "2"){
+  else if (player == "2") {
     theLabelOfTheCurrentPlayer = ui.p2AssistantAnimation;
-    filePath = "/animations/" + fileName + p2UnitStyle + assistantStatus + ".gif";
+    filePath
+      = "/animations/" + fileName + p2UnitStyle + assistantStatus + ".gif";
   }
 
-  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
+  QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
   theLabelOfTheCurrentPlayer->setMovie(GifAnimation);
   theLabelOfTheCurrentPlayer->setVisible(true);
-  theLabelOfTheCurrentPlayer->resize(75,75);
+  theLabelOfTheCurrentPlayer->resize(75, 75);
   theLabelOfTheCurrentPlayer->setScaledContents(true);
 
   GifAnimation->setSpeed(70); // 70% of original speed
@@ -2243,72 +2201,79 @@ void MainWindow::getAssistantEntityAnimationForSelectedAssistant(QString current
   GifAnimation->start();
 }
 
-
-void MainWindow::getEntityAnimationForSelectedEntity(QString currentSelection, QString player, QString entityStatus){
-  QLabel *theLabelOfTheCurrentPlayer = ui.player1Animation;
+void MainWindow::getEntityAnimationForSelectedEntity(
+  QString currentSelection,
+  QString player,
+  QString entityStatus)
+{
+  QLabel* theLabelOfTheCurrentPlayer = ui.player1Animation;
   QString fileName;
   QString filePath;
 
-  bool unit = false;
+  bool unit     = false;
   bool building = false;
 
-  if(unitNames.contains(currentSelection)){
+  if (unitNames.contains(currentSelection)) {
     unit = true;
   }
 
-  if(buildingNames.contains(currentSelection)){
+  if (buildingNames.contains(currentSelection)) {
     building = true;
 
-    if(entityStatus == "_attack"){
+    if (entityStatus == "_attack") {
       entityStatus = "_idle";
     }
   }
 
-  // Make the currentSelection string have the same name as it's corresponding file
+  // Make the currentSelection string have the same name as it's corresponding
+  // file
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
   fileName = fileName.remove(removeBracketedTextExpression);
 
   // Set which UI element is being modified
   // Set the path to the filename
-  if(player == "1"){
+  if (player == "1") {
     theLabelOfTheCurrentPlayer = ui.player1Animation;
 
-    if(building == true){
-      filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle + "_" + (convertSpacesToUnderscores(player1Age)).toLower() + entityStatus + ".gif";
+    if (building == true) {
+      filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle + "_"
+                 + (convertSpacesToUnderscores(player1Age)).toLower()
+                 + entityStatus + ".gif";
     }
 
-    if(unit == true){
+    if (unit == true) {
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
-
   }
-  else if (player == "2"){
+  else if (player == "2") {
     theLabelOfTheCurrentPlayer = ui.player2Animation;
 
-    if(building == true){
-      filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle + "_"  + (convertSpacesToUnderscores(player2Age)).toLower() + entityStatus + ".gif";
+    if (building == true) {
+      filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle + "_"
+                 + (convertSpacesToUnderscores(player2Age)).toLower()
+                 + entityStatus + ".gif";
     }
 
-    if(unit == true){
+    if (unit == true) {
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
   }
 
-  QMovie *GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
+  QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
   theLabelOfTheCurrentPlayer->setMovie(GifAnimation);
   theLabelOfTheCurrentPlayer->setVisible(true);
-  theLabelOfTheCurrentPlayer->resize(75,75);
+  theLabelOfTheCurrentPlayer->resize(75, 75);
   theLabelOfTheCurrentPlayer->setScaledContents(true);
 
-  if(
-    (currentSelection.contains("ship", Qt::CaseInsensitive)) ||
-    (currentSelection.contains("galle", Qt::CaseInsensitive)) ||
-    (currentSelection.contains("boat", Qt::CaseInsensitive))
-  ){
-    theLabelOfTheCurrentPlayer->setStyleSheet("background-color: rgb(35,137,218);");
+  if (
+    (currentSelection.contains("ship", Qt::CaseInsensitive))
+    || (currentSelection.contains("galle", Qt::CaseInsensitive))
+    || (currentSelection.contains("boat", Qt::CaseInsensitive))) {
+    theLabelOfTheCurrentPlayer->setStyleSheet(
+      "background-color: rgb(35,137,218);");
   }
-  else{
+  else {
     theLabelOfTheCurrentPlayer->setStyleSheet("background-color: none;");
   }
 

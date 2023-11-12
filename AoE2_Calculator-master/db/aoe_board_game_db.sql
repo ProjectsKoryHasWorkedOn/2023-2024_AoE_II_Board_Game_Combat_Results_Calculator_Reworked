@@ -1,10 +1,3 @@
-/* Settings */
-PRAGMA foreign_keys = ON;
-.echo off
-.headers on
-.mode column
-.nullvalue NULL
-
 /* Creating and inserting data into the tables */
 
 /* Tables with no FKS */

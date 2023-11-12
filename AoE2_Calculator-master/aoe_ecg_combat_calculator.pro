@@ -6,7 +6,7 @@ QT       += core gui
 RC_ICONS = swords_clashing.ico
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia sql
 
 CONFIG += c++17
 
@@ -30,6 +30,7 @@ SOURCES += \
     csv/entities.cpp \
     csv/player_medieval_ages.cpp \
     csv/player_names.cpp \
+    database.cpp \
     dialog_input.cpp \
     file_paths.cpp \
     main.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     csv/player_medieval_ages.h \
     csv/player_names.h \
     csv/technologies.h \
+    database.hpp \
     dialog_input.h \
     file_paths.h \
     mainwindow.h \
