@@ -186,12 +186,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   player1Color = "black";
   player2Color = "black";
 
-  age1UnitNames << "Militia"
-                << "Militia (Celt)"
-                << "Militia (Goth)"
-                << "Fishing Ship (Japanese)"
-                << "Fishing Ship (Persian)"
-                << "Villager";
+  age1UnitNames = m_database->getUnitNames(1);
 
   age2UnitNames << "Archer"
                 << "Archer (Saracen)"

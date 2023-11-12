@@ -89,11 +89,14 @@ int Database::runSqlScript(const QString& fileName)
   return successCount;
 }
 
-std::vector<QString> Database::getUnitNames()
+QStringList Database::getUnitNames(int ageID)
 {
-  std::vector<QString> unitNames{};
-  QSqlQuery            query{"SELECT * FROM Units", m_database};
-  const int            unitNameIndex{query.record().indexOf("unitName")};
+  QStringList unitNames{};
+
+  // This is considered unsafe by SQL nerds on the internet, :(
+  QSqlQuery query{QString{"SELECT * FROM Units WHERE ageID = %1"}.arg(
+    QString::number(ageID))};
+  const int unitNameIndex{query.record().indexOf("unitName")};
 
   while (query.next()) {
     const QString unitName{query.value(unitNameIndex).toString()};

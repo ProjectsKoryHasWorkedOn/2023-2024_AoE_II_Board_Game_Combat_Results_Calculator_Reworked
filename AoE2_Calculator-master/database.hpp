@@ -1,8 +1,7 @@
 #ifndef DATABASE_HPP
 #define DATABASE_HPP
-#include <vector>
-
 #include <QSqlDatabase>
+#include <QStringList>
 
 class Database {
 public:
@@ -10,7 +9,7 @@ public:
 
   int runSqlScript(const QString& fileName);
 
-  std::vector<QString> getUnitNames();
+  QStringList getUnitNames(int ageID);
 
 private:
   QSqlDatabase m_database;
