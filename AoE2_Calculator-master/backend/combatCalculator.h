@@ -3,13 +3,11 @@
 #include "entity.h" // Using: Entity class
 #include <iostream> // Using: cin, cout
 
-/** The combat calculator class **/
-#ifndef COMBAT_CALCULATOR_H
-#define COMBAT_CALCULATOR_H
-class combatCalculator {
-  // Reference: I do not need to access this data outside of this superclass and
-  // the subclasses
-protected:
+class CombatCalculatorState {
+public:
+  CombatCalculatorState();
+
+public:
   /** Values attained sometime during the running of the combat rounds **/
   // Boolean: Declare whether or not the quantity of the current entities ought
   // to stay increased by 1 due to monk combat Reference: The quantity ought to
@@ -45,10 +43,43 @@ protected:
   // Integer: Store the remaining damage
   float remainingDamageP1;
   float remainingDamageP2;
+};
+
+/** The combat calculator class **/
+#ifndef COMBAT_CALCULATOR_H
+#define COMBAT_CALCULATOR_H
+class combatCalculator {
+  // Reference: I do not need to access this data outside of this superclass and
+  // the subclasses
+protected:
+  CombatCalculatorState* m_state;
+
+  bool &healingEffectP1, &healingEffectP2;
+  int & startingQuantityP1, &startingQuantityP2;
+
+  int& d6DieRoll;
+
+  bool& aDeathHasOccured;
+
+  std::string& isRetreating;
+
+  std::string& player1Name;
+  std::string& player2Name;
+
+  Entity& p1BattleParticipant;
+  Entity& p2BattleParticipant;
+  Entity& p1AssistingMonkParticipant;
+  Entity& p2AssistingMonkParticipant;
+
+  int& roundAttackModifiersP1;
+  int& roundAttackModifiersP2;
+
+  float& remainingDamageP1;
+  float& remainingDamageP2;
 
 public:
   // Functions: The constructor and deconstructor
-  combatCalculator();
+  explicit combatCalculator(CombatCalculatorState* state);
   ~combatCalculator();
 
   /** Set the values functions **/
@@ -135,9 +166,7 @@ public:
 #define COMBAT_CALCULATOR_MONK_ROUNDS_H
 class monkRounds : public combatCalculator {
 public:
-  // Functions: The constructor and deconstructor
-  monkRounds();
-  ~monkRounds();
+  using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a monk battle
   void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
@@ -148,9 +177,7 @@ public:
 #define COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 class archerRounds : public combatCalculator {
 public:
-  // Functions: The constructor and deconstructor
-  archerRounds();
-  ~archerRounds();
+  using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a ranged battle
   void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
@@ -161,9 +188,7 @@ public:
 #define COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 class bombardmentRounds : public combatCalculator {
 public:
-  // Functions: The constructor and deconstructor
-  bombardmentRounds();
-  ~bombardmentRounds();
+  using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
@@ -174,9 +199,7 @@ public:
 #define COMBAT_CALCULATOR_STANDARD_ROUNDS_H
 class standardRounds : public combatCalculator {
 public:
-  // Functions: The constructor and deconstructor
-  standardRounds();
-  ~standardRounds();
+  using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a standard battle
   void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);

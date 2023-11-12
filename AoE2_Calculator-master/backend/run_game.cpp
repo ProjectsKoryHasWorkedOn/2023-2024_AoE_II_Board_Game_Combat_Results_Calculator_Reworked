@@ -83,12 +83,14 @@ int runGame()
   // Object: The modifiers calculator object
   modifiersCalculator theModifiersCalculator;
 
+  // TODO: HERE: Strange things are here
   // Object: The combat calculator superclass and the combat rounds subclasses
-  combatCalculator* theCombatCalculator;
-  monkRounds        monkRounds;
-  archerRounds      rangedRounds;
-  bombardmentRounds bombardmentRounds;
-  standardRounds    standardRounds;
+  CombatCalculatorState combatCalculatorState{};
+  combatCalculator*     theCombatCalculator;
+  monkRounds            monkRounds{&combatCalculatorState};
+  archerRounds          rangedRounds{&combatCalculatorState};
+  bombardmentRounds     bombardmentRounds{&combatCalculatorState};
+  standardRounds        standardRounds{&combatCalculatorState};
 
   /** Part 1: Getting basic information about the input entities **/
   // Behaviour: Load "entities.csv" and get information about the input entities
@@ -308,64 +310,20 @@ int runGame()
   p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
   /** Part 4.2: Round 2 **/
-  // Proceed with archer round of combat so long as archers are not fighting buildings
-  // Ranged damage applies only to units and villagers, not to buildings
-  if( (p1BattleParticipant.armorClass[1] != true) && (p2BattleParticipant.armorClass[1] != true) ){
-
-
-
-
-  // Behaviour: Set the combat calculator to the archer rounds
-  theCombatCalculator = &rangedRounds;
-
-  // Set the player names
-  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
-
-  // Behaviour: Set the battle participants
-  theCombatCalculator->setCombatParticipants(
-    p1BattleParticipant,
-    p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant,
-    modifyRoundAttackP1,
-    modifyRoundAttackP2);
-
-  // Behaviour: Set the remaining damage values for the combat calculator
-  theCombatCalculator->setAdditionalValues(
-    p1RemainingDamage, p2RemainingDamage);
-
-  // Behaviour: Calculate the damage dealt for archerCombatRounds rounds of
-  // archer combat
-  rangedRounds.roundOutcome(
-    archerCombatRounds, p1_events_array, p2_events_array);
-
-  // Behaviour: Get the results after archerCombatRounds rounds of ranged combat
-  // Player 1
-  p1BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player1);
-  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
-
-  // Player 2
-  p2BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player2);
-  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-
-  // Behaviour: Output the remaining damage
-  // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
-
-  /** Part 4.3: Bonus round **/
-  // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
-  // round Reference: I otherwise deal with a single bombardment round within
-  // the standardCombat subclass
-  if (isEvent4Active == true) {
-    // Behaviour: Set the combat calculator to the bombardment rounds
-    theCombatCalculator = &bombardmentRounds;
+  // Proceed with archer round of combat so long as archers are not fighting
+  // buildings Ranged damage applies only to units and villagers, not to
+  // buildings
+  if (
+    (p1BattleParticipant.armorClass[1] != true)
+    && (p2BattleParticipant.armorClass[1] != true)) {
+    // Behaviour: Set the combat calculator to the archer rounds
+    theCombatCalculator = &rangedRounds;
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
       playerNamesArray[0], playerNamesArray[1]);
 
-    // Behaviour: Set the protected values
+    // Behaviour: Set the battle participants
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
       p2BattleParticipant,
@@ -378,13 +336,13 @@ int runGame()
     theCombatCalculator->setAdditionalValues(
       p1RemainingDamage, p2RemainingDamage);
 
-    // Behaviour: Calculate the damage dealt for bombardmentCombatRounds rounds
-    // of bombardment combat and display the results
-    bombardmentRounds.roundOutcome(
-      bombardmentCombatRounds, p1_events_array, p2_events_array);
+    // Behaviour: Calculate the damage dealt for archerCombatRounds rounds of
+    // archer combat
+    rangedRounds.roundOutcome(
+      archerCombatRounds, p1_events_array, p2_events_array);
 
-    // Behaviour: Get the results after bombardmentCombatRounds rounds of
-    // standard combat Player 1
+    // Behaviour: Get the results after archerCombatRounds rounds of ranged
+    // combat Player 1
     p1BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player1);
     p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -393,9 +351,52 @@ int runGame()
     p2BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-  }
 
+    // Behaviour: Output the remaining damage
+    // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
+
+    /** Part 4.3: Bonus round **/
+    // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
+    // round Reference: I otherwise deal with a single bombardment round within
+    // the standardCombat subclass
+    if (isEvent4Active == true) {
+      // Behaviour: Set the combat calculator to the bombardment rounds
+      theCombatCalculator = &bombardmentRounds;
+
+      // Set the player names
+      theCombatCalculator->setPlayerNames(
+        playerNamesArray[0], playerNamesArray[1]);
+
+      // Behaviour: Set the protected values
+      theCombatCalculator->setCombatParticipants(
+        p1BattleParticipant,
+        p2BattleParticipant,
+        p1AssistingMonkBattleParticipant,
+        p2AssistingMonkBattleParticipant,
+        modifyRoundAttackP1,
+        modifyRoundAttackP2);
+
+      // Behaviour: Set the remaining damage values for the combat calculator
+      theCombatCalculator->setAdditionalValues(
+        p1RemainingDamage, p2RemainingDamage);
+
+      // Behaviour: Calculate the damage dealt for bombardmentCombatRounds
+      // rounds of bombardment combat and display the results
+      bombardmentRounds.roundOutcome(
+        bombardmentCombatRounds, p1_events_array, p2_events_array);
+
+      // Behaviour: Get the results after bombardmentCombatRounds rounds of
+      // standard combat Player 1
+      p1BattleParticipant
+        = theCombatCalculator->returnModifiedBattleParticipants(player1);
+      p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
+      // Player 2
+      p2BattleParticipant
+        = theCombatCalculator->returnModifiedBattleParticipants(player2);
+      p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
     }
+  }
 
   /** Part 4.4: Round 3 & 4 **/
   // Behaviour: Set the combat calculator to the standard rounds
