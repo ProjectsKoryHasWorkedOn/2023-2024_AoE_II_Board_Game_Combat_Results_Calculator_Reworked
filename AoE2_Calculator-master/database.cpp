@@ -89,6 +89,54 @@ int Database::runSqlScript(const QString& fileName)
   return successCount;
 }
 
+QStringList Database::getBuildingNames(int ageID)
+{
+  QStringList buildingNames{};
+
+         // This is considered unsafe by SQL nerds on the internet, :(
+  QSqlQuery query{QString{"SELECT * FROM Buildings WHERE ageID = %1"}.arg(
+    QString::number(ageID))};
+  const int buildingNameIndex{query.record().indexOf("buildingName")};
+
+  while (query.next()) {
+    const QString buildingName{query.value(buildingNameIndex).toString()};
+    buildingNames.push_back(buildingName);
+  }
+
+  return buildingNames;
+}
+
+
+QStringList Database::getTechnologyNames()
+{
+  QStringList technologyNames{};
+  QSqlQuery query{QString{"SELECT * FROM Technologies"}};
+  const int technologyNameIndex{query.record().indexOf("technologyName")};
+
+  while (query.next()) {
+    const QString technologyName{query.value(technologyNameIndex).toString()};
+    technologyNames.push_back(technologyName);
+  }
+
+  return technologyNames;
+}
+
+QStringList Database::getEventNames()
+{
+  QStringList eventNames{};
+  QSqlQuery query{QString{"SELECT eventName FROM Events"}};
+  const int eventNameIndex{query.record().indexOf("eventName")};
+
+  while (query.next()) {
+    const QString eventName{query.value(eventNameIndex).toString()};
+    eventNames.push_back(eventName);
+  }
+
+  return eventNames;
+}
+
+
+
 QStringList Database::getUnitNames(int ageID)
 {
   QStringList unitNames{};

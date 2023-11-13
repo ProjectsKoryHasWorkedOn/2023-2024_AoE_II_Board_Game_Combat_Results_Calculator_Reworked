@@ -11,6 +11,12 @@ public:
 
   QStringList getUnitNames(int ageID);
 
+  QStringList getBuildingNames(int ageID);
+
+  QStringList getTechnologyNames();
+
+  QStringList getEventNames();
+
 private:
   QSqlDatabase m_database;
 };

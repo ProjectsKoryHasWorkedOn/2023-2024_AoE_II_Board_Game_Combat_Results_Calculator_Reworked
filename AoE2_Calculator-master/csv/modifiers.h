@@ -88,11 +88,12 @@ private:
       m_modifiers.begin(),
       m_modifiers.end(),
       [&name](const Modifier& modifier) {
+
         return modifier.text().contains(name, Qt::CaseInsensitive);
       })};
     assert(
       (it != m_modifiers.end()) && "Couldn't find something that matches name");
-    return *it;
+    return *it; // Check if file in build directory has right name
   }
 
   const Modifier& find(const QString& name) const

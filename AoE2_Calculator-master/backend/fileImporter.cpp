@@ -219,7 +219,7 @@ Entity fileImporter::conductASearch(
   }
 
   // Behaviour: Make sure that an Age within the range of 1-4 was entered
-  if (returnEntity.entityAge < 1 || returnEntity.entityAge > 5) {
+  if( (returnEntity.entityAge < 1) || (returnEntity.entityAge > 5) ) {
     // Error: Age not recognized
     std::cout << "Error: " << returnEntity.entityName
               << " contains an Age other than 1-4"

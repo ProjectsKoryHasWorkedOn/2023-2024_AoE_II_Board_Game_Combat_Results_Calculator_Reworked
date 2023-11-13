@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 # Updated QT to a newer version (6.5.2)
 
 

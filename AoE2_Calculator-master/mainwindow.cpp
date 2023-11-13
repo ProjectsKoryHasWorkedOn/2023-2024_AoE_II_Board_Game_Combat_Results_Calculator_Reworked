@@ -5,7 +5,6 @@
 #include "database.hpp"
 #include "dialog_input.h"
 #include "file_paths.h"
-
 #include "soundEffects.h" // Sound playing class
 #include <QLabel>
 
@@ -150,39 +149,39 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   QIntValidator myName;
   myName.setRange(100, 999);
 
-  // create shortcut
+         // create shortcut
   QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
 
-  // connect its 'activated' signal to the 'on_calculateResultsButton_clicked'
-  // function
+         // connect its 'activated' signal to the 'on_calculateResultsButton_clicked'
+         // function
   QObject::connect(
     shortcut,
     &QShortcut::activated,
     this,
     &MainWindow::on_calculateResultsButton_clicked);
 
-  // Indicate that there's a hotkey for this in the tooltip
+         // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
 
-  // What the civ bonuses are
+         // What the civ bonuses are
   backFromAForeignLandCivilizationBonuses
     << tr("Byzantine bonus: Monk healing rate has a +2 modifier")
     << tr("Byzantine bonus: All buildings get a HP bonus of + 10 HP per Age")
     << tr("Teuton bonus: Conversion rate modifier is -1");
 
-  // What the ages are
+         // What the ages are
   ages << tr("Dark Age") << tr("Feudal Age") << tr("Castle Age")
        << tr("Imperial Age");
 
-  // What the initial name of the players are
+         // What the initial name of the players are
   player1Name = "Player 1";
   player2Name = "Player 2";
 
-  // What the initial expectation is for number of entities allowed
+         // What the initial expectation is for number of entities allowed
   expectingSingleEntityForPlayer1 = false;
   expectingSingleEntityForPlayer2 = false;
 
-  // What the initial player color of the players are
+         // What the initial player color of the players are
   player1Color = "black";
   player2Color = "black";
 
@@ -192,148 +191,47 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   age4UnitNames = m_database->getUnitNames(4);
   unitNames     = age1UnitNames + age2UnitNames + age3UnitNames + age4UnitNames;
 
-  age1BuildingNames << "Barracks"
-                    << "Dock"
-                    << "Dock (Persian)"
-                    << "Dock (Viking)"
-                    << "Farm"
-                    << "Gold Mine"
-                    << "Gold Mine (Japanese)"
-                    << "House"
-                    << "Lumber Camp"
-                    << "Lumber Camp (Japanese)"
-                    << "Mill"
-                    << "Mill (Japanese)"
-                    << "Outpost"
-                    << "Palisade Wall"
-                    << "Stone Mine"
-                    << "Stone Mine (Japanese)"
-                    << "Town Center"
-                    << "Town Center (Briton)"
-                    << "Town Center (Persian)";
-  age2BuildingNames << "Archery Range"
-                    << "Blacksmith"
-                    << "Stone Gate"
-                    << "Stone Wall"
-                    << "Market"
-                    << "Stable"
-                    << "Watch Tower";
-  age3BuildingNames << "Castle"
-                    << "Castle (Frank)"
-                    << "Monastery"
-                    << "Siege Workshop"
-                    << "Fortified Wall";
-  age4BuildingNames << "Charlamagne's Palace At Aix La'Chapelle (Briton)"
-                    << "Notre-Dame Cathedral (Frank)"
-                    << "Rock Of Cashel (Celt)"
-                    << "Stave Church At Urnes (Viking)"
-                    << "The Golden Tent Of The Great Khan (Mongol)"
-                    << "The Great Temple At Nara (Japanese)"
-                    << "The Palace Of Ctesiphon On The Tigris (Persian)"
-                    << "Tomb Of Theodoric (Goth)";
-
-  buildingNames = age1BuildingNames + age2BuildingNames + age3BuildingNames
-                  + age4BuildingNames;
+  age1BuildingNames = m_database->getBuildingNames(1);
+  age2BuildingNames = m_database->getBuildingNames(2);
+  age3BuildingNames = m_database->getBuildingNames(3);
+  age4BuildingNames = m_database->getBuildingNames(4);
+  buildingNames = age1BuildingNames + age2BuildingNames + age3BuildingNames + age4BuildingNames;
 
   initializeEntityAliases();
   entityNames = unitNames + buildingNames;
 
-  // Sort the list in alphabetical order
+         // Sort the list in alphabetical order
   entityNames.sort();
 
-  // What the possible names of technologies are
-  // @Reference: What row in the .csv file it goes to
-  QStringList technologies = {
-    "Blast Furnace",        // [Row 1]
-    "Bodkin Arrow",         // [Row 2]
-    "Bracer",               // [Row 3]
-    "Chain Barding Armor",  // [Row 4]
-    "Chain Mail Armor",     // [Row 5]
-    "Fletching",            // [Row 6]
-    "Forging",              // [Row 7]
-    "Hoardings",            // [Row 8]
-    "Iron Casting",         // [Row 9]
-    "Leather Archer Armor", // [Row 10]
-    "Loom",                 // [Row 11]
-    "Padded Archer Armor",  // [Row 12]
-    "Plate Barding Armor",  // [Row 13]
-    "Plate Mail Armor",     // [Row 14]
-    "Ring Archer Armor",    // [Row 15]
-    "Scale Barding Armor",  // [Row 16]
-    "Scale Mail Armor",     // [Row 17]
-    "Sanctity {2E}"};       // [Row 18]
+         // What the possible names of technologies are
+         // @Reference: What row in the .csv file it goes to
+  QStringList technologies = m_database->getTechnologyNames();
 
-  // Sort the list in alphabetical order
+         // Sort the list in alphabetical order
   technologies.sort();
 
-  // What the possible names of event cards are
-  // @Reference: What row in the .csv file it goes to
-  QStringList events = {
-    "A Just Cause",                // [Row 1]
-    "Back From A Foreign Land",    // [Row 2]  (Byzantine civ bonus: +2 healing
-                                   // rate modifier)
-                                   // (has multiple slots in .csv file)
-    "Barrel Of Grog",              // [Row 3]
-    "Bone Shaft Arrows (Mongol)",  // [Row 4]
-    "Caught From The Crow's Nest", // [Row 5]
-    "Celtic Battle Cry (Celt)",    // [Row 6]
-    "Dangerous Times",             // [Row 7]
-    "Fat Friar's Tavern O' Spirits", // [Row 8]
-    "Field Testing",                 // [Row 9]
-    "First Battle Jitters",          // [Row 10]
-    "Flaming Arrows",                // [Row 11]
-    "Fortune Favors The Foolish",    // [Row 12]
-    "Gatherin' A Rowdy Bunch",       // [Row 13]
-    "Gladitorial Games",             // [Row 14]
-    "Hard To Starboard",             // [Row 15]
-    "Heavy Tree Cover",              // [Row 16]
-    "High Ground",                   // [Row 17]
-    "Husbandry",                     // [Row 18]
-    "It's A Miracle",                // [Row 19]
-    "Listen To A Story",             // [Row 20]
-    "Muddy Battlefield",             // [Row 21]
-    "Non-Compos Mentis",             // [Row 22]
-                         // Back_From_A_Foreign_Land (Byzantine civ bonus:
-                         // All building get a HP bonus: Age I – 10 HP, Age II –
-                         // 20 HP, Age III – 30 HP, Age IV – 40 HP) [Row 23]
-    "Piety",                                     // [Row 24]
-    "Black Knight",                              // [Row 25]
-    "Rally The Workers",                         // [Row 26]
-    "Relentless Attack",                         // [Row 27]
-    "Retreat",                                   // [Row 28]
-    "Holy War",                                  // [Row 29]
-    "Shots In The Back (Briton)",                // [Row 30]
-    "Soak The Timbers",                          // [Row 31]
-    "Spirits Of The Ancestors",                  // [Row 32]
-    "Squires",                                   // [Row 33]
-    "Steady Hand",                               // [Row 34]
-    "The Hammer's Cavalry (Franks)",             // [Row 35]
-    "The Jester Is Dead Let's Get Them! (Celt)", // [Row 36]
-    "Vengeance Is Mine!",                        // [Row 37]
-    "While They're Sleeping",                    // [Row 38]
-    "You Will Die! (Saracen)",                   // [Row 39]
-    "Zealous Monks"};                            // [Row 40]
-  // Back_From_A_Foreign_Land (Teuton civ bonus: Conversion rate modifier is -1)
-  // [Row 41]
+         // What the possible names of event cards are
+         // @Reference: What row in the .csv file it goes to
+  QStringList events = m_database->getEventNames();
 
   // Sort the list in alphabetical order
   events.sort();
 
-  // Populate the UI elements with elements
-  // Both player 1 & 2 UI elements
+         // Populate the UI elements with elements
+         // Both player 1 & 2 UI elements
   for (int i = 0; i < entityNames.size(); i++) {
     ui.player1EntityNames->addItem(entityNames[i]);
     ui.player2EntityNames->addItem(entityNames[i]);
   }
 
-  // Can only have one list widget item per list
-  // C++11 range based for loop
+         // Can only have one list widget item per list
+         // C++11 range based for loop
   for (const QString& technology : technologies) {
     QListWidgetItem* technologyPlayer1 = new QListWidgetItem(technology);
     QListWidgetItem* technologyPlayer2 = new QListWidgetItem(technology);
 
     const QString technologyWithUnderscores{
-      convertSpacesToUnderscores(technology)};
+                                            convertSpacesToUnderscores(technology)};
     technologyPlayer1->setData(
       Qt::CheckStateRole,
       m_player1Technologies.isActive(technologyWithUnderscores)
@@ -345,7 +243,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
         ? Qt::Checked
         : Qt::Unchecked);
 
-    // Mark which ones correspond to the 2E
+           // Mark which ones correspond to the 2E
     if (technologyPlayer1->text().contains("{2E}")) {
       technologyPlayer1->setForeground(QColor(255, 255, 255));
       technologyPlayer1->setBackground(QColor(90, 90, 90));
@@ -452,7 +350,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
       }
     }
 
-    // Mark which ones I haven't implemented
+           // Mark which ones I haven't implemented
     if (eventPlayer1->text().contains("(unimplemented)")) {
       eventPlayer1->setForeground(QColor(255, 0, 0));
     }
@@ -468,30 +366,30 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   ui.player1BattleAssistantNames->addItem("Monk");
   ui.player2BattleAssistantNames->addItem("Monk");
 
-  // These are like placeholder (lorem ipsum) values
-  // Player 1 UI elements starting state
+         // These are like placeholder (lorem ipsum) values
+         // Player 1 UI elements starting state
   ui.player1EntityNamesFilter->setText("");
 
-  // Player 2 UI elements starting state
+         // Player 2 UI elements starting state
   ui.player2EntityNamesFilter->setText("");
 
   ui.player1EntityAssistantQuantity->setRange(0, 5);
   ui.player2EntityAssistantQuantity->setRange(0, 5);
 
-  // Read in the .csv files and update the UI elements on the basis of this
+         // Read in the .csv files and update the UI elements on the basis of this
   setInitialNames();
   selectInitialEntities();
   selectInitialAssistants();
   markInitialPlayerMedievalAge();
   initializeAnimations();
 
-  // Set up palettes
+         // Set up palettes
   palettes.setPaletteValues();
   palettes.darkModeEnabled = false;
 
   setColorTheUIElements();
 
-  // Filter list based on age player is in for both player 1 and 2
+         // Filter list based on age player is in for both player 1 and 2
   filterBasedOnAge("1");
   filterBasedOnAge("2");
 }
@@ -530,7 +428,7 @@ void MainWindow::on_actionAbout_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Open the about window
+         // Open the about window
   aboutwindow aboutWindow;
   aboutWindow.setModal(true);
   aboutWindow.exec();
@@ -619,20 +517,20 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
   // Get what entity names the user is entering
   QString player1EntityNamesFiltered = textInsideOfElement;
 
-  // Clear what's in the list of entity names
+         // Clear what's in the list of entity names
   ui.player1EntityNames->clear();
 
-  // Store name of filtered item
+         // Store name of filtered item
   QString nameOfFilteredItem;
 
-  // Filter the list based on what entity name the user entered, factoring in
-  // aliases for that entity name
+         // Filter the list based on what entity name the user entered, factoring in
+         // aliases for that entity name
   QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     // Get the name of the filtered item
     nameOfFilteredItem = filteredList[y];
 
-    // Add in the tooltips for the aliases so the user is aware of them
+           // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
     QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
     if (listWidgetItemTooltip != "") {
@@ -652,20 +550,20 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
   // Get what entity names the user is entering
   QString player2EntityNamesFiltered = textInsideOfElement;
 
-  // Clear what's in the list of entity names
+         // Clear what's in the list of entity names
   ui.player2EntityNames->clear();
 
-  // Store name of filtered item
+         // Store name of filtered item
   QString nameOfFilteredItem;
 
-  // Filter the list based on what entity name the user entered, factoring in
-  // aliases for that entity name
+         // Filter the list based on what entity name the user entered, factoring in
+         // aliases for that entity name
   QStringList filteredList = filterEntityNames(player2EntityNamesFiltered);
   for (int y = 0; y < filteredList.size(); y++) {
     // Get the name of the filtered item
     nameOfFilteredItem = filteredList[y];
 
-    // Add in the tooltips for the aliases so the user is aware of them
+           // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
     QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
     if (listWidgetItemTooltip != "") {
@@ -683,11 +581,11 @@ void MainWindow::on_actionDeveloper_guide_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Set the path to it
+         // Set the path to it
   QString fileName = "/documentation/developer_guide.docx";
   QString filePath = workingDirectory.absolutePath() + fileName;
 
-  // Open that path
+         // Open that path
   QDesktopServices::openUrl(filePath);
 }
 
@@ -696,11 +594,11 @@ void MainWindow::on_actionDeveloper_wishlist_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Set the path to it
+         // Set the path to it
   QString fileName = "/documentation/developer_wishlist.docx";
   QString filePath = workingDirectory.absolutePath() + fileName;
 
-  // Open that path
+         // Open that path
   QDesktopServices::openUrl(filePath);
 }
 
@@ -709,11 +607,11 @@ void MainWindow::on_actionUser_guide_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Set the path to it
+         // Set the path to it
   QString fileName = "/documentation/user_guide.docx";
   QString filePath = workingDirectory.absolutePath() + fileName;
 
-  // Open that path
+         // Open that path
   QDesktopServices::openUrl(filePath);
 }
 
@@ -724,7 +622,7 @@ void MainWindow::on_calculateResultsButton_clicked()
 
   ui.gameOutputTextEdit->setHtml("");
 
-  // Update animation
+         // Update animation
   getEntityAnimationForSelectedEntity(
     ui.player1EntityNames->currentItem()->text(), "1", "_attack");
   getEntityAnimationForSelectedEntity(
@@ -734,7 +632,7 @@ void MainWindow::on_calculateResultsButton_clicked()
   getAssistantEntityAnimationForSelectedAssistant(
     ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
-  // Calculate the results of a battle
+         // Calculate the results of a battle
   runGame();
 }
 
@@ -745,7 +643,7 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
   // Get what entity quantity the user is entering
   player1EntityQuantity = valueInsideOfField;
 
-  // Give an error to Console if quantity isn't right
+         // Give an error to Console if quantity isn't right
   if (
     player1EntityQuantity != 1 && player1EntityQuantity != 2
     && player1EntityQuantity != 3 && player1EntityQuantity != 4
@@ -764,7 +662,7 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
   // Get what entity quantity the user is entering
   player2EntityQuantity = valueInsideOfField;
 
-  // Give an error to Console if quantity isn't right
+         // Give an error to Console if quantity isn't right
   if (
     player2EntityQuantity != 1 && player2EntityQuantity != 2
     && player2EntityQuantity != 3 && player2EntityQuantity != 4
@@ -809,7 +707,7 @@ void MainWindow::on_player1EntityAssistantQuantity_valueChanged(
 {
   player1AssistingEntityQuantity = valueInsideOfField;
 
-  // Give an error to Console if quantity isn't right
+         // Give an error to Console if quantity isn't right
   if (
     player1AssistingEntityQuantity != 0 && player1AssistingEntityQuantity != 1
     && player1AssistingEntityQuantity != 2
@@ -828,7 +726,7 @@ void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
 {
   player2AssistingEntityQuantity = valueInsideOfField;
 
-  // Give an error to Console if quantity isn't right
+         // Give an error to Console if quantity isn't right
   if (
     player2AssistingEntityQuantity != 0 && player2AssistingEntityQuantity != 1
     && player2AssistingEntityQuantity != 2
@@ -860,7 +758,7 @@ QListWidgetItem* MainWindow::findByEntityName(
 {
   needle = convertUnderscoresToSpaces(needle);
   const QList<QListWidgetItem*> foundItems{
-    haystack->findItems(needle, Qt::MatchFixedString)};
+                                           haystack->findItems(needle, Qt::MatchFixedString)};
 
   if (foundItems.empty()) {
     return nullptr;
@@ -991,12 +889,12 @@ void MainWindow::overrideTechnologies(
     QString technologyNameBackend
       = convertSpacesToUnderscores(technologiesToCancelOut[i]);
 
-    // Disable it in file
+           // Disable it in file
     if (playerTechnologies->isActive(technologyNameBackend)) {
       playerTechnologies->disable(technologyNameBackend);
     }
 
-    // Disable it in the GUI
+           // Disable it in the GUI
     QList<QListWidgetItem*> list = ui.player1Technologies->findItems(
       technologiesToCancelOut[i], Qt::MatchExactly);
     for (QListWidgetItem* item : list) {
@@ -1262,7 +1160,7 @@ void MainWindow::setColorTheUIElements()
   if (palettes.darkModeEnabled == true) {
     selectedPalette = palettes.darkPalette;
 
-    // Do the icons
+           // Do the icons
     ui.closeProgram->setIcon(QIcon(
       workingDirectory.absolutePath() + closeProgramIconInvertedFilename));
 
@@ -1293,7 +1191,7 @@ void MainWindow::setColorTheUIElements()
     ui.actionSet_civilization_of_player_2->setIcon(QIcon(
       workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
 
-    // Update the player names
+           // Update the player names
     if (player1Color == "black" || player2Color == "black") {
       player1Color = "white";
       player2Color = "white";
@@ -1304,7 +1202,7 @@ void MainWindow::setColorTheUIElements()
   else {
     selectedPalette = palettes.lightPalette;
 
-    // Do the icons
+           // Do the icons
 
     ui.closeProgram->setIcon(
       QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
@@ -1335,7 +1233,7 @@ void MainWindow::setColorTheUIElements()
     ui.actionSet_civilization_of_player_2->setIcon(
       QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
 
-    // Update the player names
+           // Update the player names
     if (player1Color == "white" || player2Color == "white") {
       player1Color = "black";
       player2Color = "black";
@@ -1344,7 +1242,7 @@ void MainWindow::setColorTheUIElements()
     }
   }
 
-  // Do the colors
+         // Do the colors
 
   ui.player1UnitsLabel->setPalette(selectedPalette);
   ui.player2UnitsLabel->setPalette(selectedPalette);
@@ -1449,11 +1347,11 @@ void MainWindow::updatePlayerNames()
     "<font color=" + player2Color + ">" + player2Name + "'s" + "</font>" + " "
     + "event cards");
 
-  // underscores in file
+         // underscores in file
   player1Name = convertSpacesToUnderscores(player1Name);
   player2Name = convertSpacesToUnderscores(player2Name);
 
-  // update file
+         // update file
   m_player_names.changePlayer1Name(player1Name);
   m_player_names.changePlayer2Name(player2Name);
 }
@@ -1476,7 +1374,7 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
 
   player1Name = nameDialog.textValue();
 
-  // Validate the user input
+         // Validate the user input
   if (player1Name.isEmpty()) {
     player1Name = "Player 1";
   }
@@ -1501,7 +1399,7 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
 
   player2Name = nameDialog.textValue();
 
-  // Validate the user input
+         // Validate the user input
   if (player2Name.isEmpty()) {
     player2Name = "Player 2";
   }
@@ -1635,10 +1533,10 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
     representationOfPlayer1Age = 4;
   }
 
-  // update file
+         // update file
   m_player_medieval_age.changePlayer1MedievalAge(representationOfPlayer1Age);
 
-  // filter list based on age
+         // filter list based on age
   filterBasedOnAge("1");
 }
 
@@ -1669,10 +1567,10 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
     representationOfPlayer2Age = 4;
   }
 
-  // update file
+         // update file
   m_player_medieval_age.changePlayer2MedievalAge(representationOfPlayer2Age);
 
-  // filter list based on age
+         // filter list based on age
   filterBasedOnAge("2");
 }
 
@@ -1699,10 +1597,10 @@ void MainWindow::selectInitialEntities()
 {
   const QString          player1Entity{m_entities.player1Entity().entityName()};
   QListWidgetItem* const player1SelectedEntity{
-    findByEntityName(ui.player1EntityNames, player1Entity)};
+                                               findByEntityName(ui.player1EntityNames, player1Entity)};
   const QString          player2Entity{m_entities.player2Entity().entityName()};
   QListWidgetItem* const player2SelectedEntity{
-    findByEntityName(ui.player2EntityNames, player2Entity)};
+                                               findByEntityName(ui.player2EntityNames, player2Entity)};
 
   if (player1SelectedEntity != nullptr) {
     ui.player1EntityNames->setCurrentItem(player1SelectedEntity);
@@ -1921,13 +1819,13 @@ void MainWindow::removeFromList(QString player)
     }
   }
 
-  // Now remove all other civilizations from the list on the GUI
+         // Now remove all other civilizations from the list on the GUI
   for (int i = 0; i < theListOfTheCurrentPlayer->count(); i++) {
     // Set the current item to be visible
     theListOfTheCurrentPlayer->item(i)->setHidden(false);
 
-    // Set all current items to be invisible for each item that belongs to
-    // another civilization
+           // Set all current items to be invisible for each item that belongs to
+           // another civilization
     for (int y = 0; y < listOfAllOtherCivilizations.count(); y++) {
       if (theListOfTheCurrentPlayer->item(i)->text().contains(
             listOfAllOtherCivilizations[y])) {
@@ -2075,6 +1973,11 @@ void MainWindow::initializeAnimations()
     ui.player1BattleAssistantNames->currentText(), "2", "_idle");
 }
 
+
+int p1VillagerMemory = 0;
+int p2VillagerMemory = 0;
+
+
 void MainWindow::getAssistantEntityAnimationForSelectedAssistant(
   QString currentSelection,
   QString player,
@@ -2135,12 +2038,12 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     }
   }
 
-  // Make the currentSelection string have the same name as it's corresponding
-  // file
+         // Make the currentSelection string have the same name as it's corresponding
+         // file
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
   fileName = fileName.remove(removeBracketedTextExpression);
 
-  // Work out what age the entity belongs in
+         // Work out what age the entity belongs in
   if (player == "1") {
     fileAge = (convertSpacesToUnderscores(player1Age)).toLower();
   }
@@ -2148,7 +2051,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     fileAge = (convertSpacesToUnderscores(player2Age)).toLower();
   }
 
-  // Manually correct it for edge cases
+         // Manually correct it for edge cases
   if (
     ((currentSelection.contains("Barracks"))
      || (currentSelection.contains("Archery Range"))
@@ -2181,8 +2084,22 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     }
   }
 
-  // Set which UI element is being modified
-  // Set the path to the filename
+  // Randomly make it choose between female and male villagers
+  // Todo: Make it reset p1VillagerMemory and p2VillagerMemory values to 0 upon unit death
+  // So that it can randomly choose these values again
+  if(unit == true){
+    if(currentSelection.contains("Villager")){
+      if(p1VillagerMemory != 1 && p1VillagerMemory != 2){
+        p1VillagerMemory = 1 + (rand() % 2);
+      }
+
+      if(p2VillagerMemory != 1 && p2VillagerMemory != 2){
+        p2VillagerMemory = 1 + (rand() % 2);
+      }
+    }
+  }
+         // Set which UI element is being modified
+         // Set the path to the filename
   if (player == "1") {
     theLabelOfTheCurrentPlayer = ui.player1Animation;
 
@@ -2192,12 +2109,25 @@ void MainWindow::getEntityAnimationForSelectedEntity(
                    + "_" + fileAge + entityStatus + ".gif";
       }
       else {
+
+
         filePath
           = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
       }
     }
 
     if (unit == true) {
+
+      if(currentSelection.contains("Villager")){
+        if(p1VillagerMemory == 1){
+          fileName += "_male";
+        }
+        else if(p1VillagerMemory == 2){
+          fileName += "_female";
+        }
+      }
+
+
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
   }
@@ -2210,12 +2140,24 @@ void MainWindow::getEntityAnimationForSelectedEntity(
                    + "_" + fileAge + entityStatus + ".gif";
       }
       else {
+
+
         filePath
           = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
       }
     }
 
     if (unit == true) {
+      if(currentSelection.contains("Villager")){
+        if(p2VillagerMemory == 1){
+          fileName += "_male";
+        }
+        else if(p2VillagerMemory == 2){
+          fileName += "_female";
+        }
+      }
+
+
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
   }

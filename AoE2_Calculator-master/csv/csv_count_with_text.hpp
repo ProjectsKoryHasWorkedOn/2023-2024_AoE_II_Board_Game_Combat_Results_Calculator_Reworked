@@ -21,7 +21,7 @@ public:
 
     if (!ok) {
       throw std::runtime_error{
-        "Unexpected input: " + countString.toStdString() + " is not numeric"};
+        "Unexpected input: " + countString.toStdString() + " is not numeric" + " for " + name.toStdString()};
     }
 
     return Derived{count, name};

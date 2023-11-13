@@ -216,8 +216,6 @@ void combatCalculator::checkIfRetreating(std::string roundType)
       const bool bIsRetreating{DIN.queryForIsRetreating()};
       isRetreating = bIsRetreating ? "1" : "0";
 
-      qDebug() << "What's going on" << isRetreating;
-
       if ((isRetreating != "1") && (isRetreating != "0")) {
         std::cout << "Error: The retreating value can only be a 0 or 1"
                   << "<br>";
@@ -234,7 +232,6 @@ void combatCalculator::checkIfRetreating(std::string roundType)
     isRetreating = "0";
   }
 
-  qDebug() << "What's going on 2" << isRetreating;
 }
 
 // Function: Output the entity information with a message
@@ -1876,9 +1873,6 @@ void standardRounds::roundOutcome(
   int* inputP1Events,
   int* inputP2Events)
 {
-  //@Phillip: Should be equal to 1???
-  qDebug() << "Heyyyyy" << isRetreating;
-
   // Bool: Track if the standard attack round got activated
   bool standardRoundActivated = false;
 
@@ -2087,20 +2081,16 @@ void standardRounds::roundOutcome(
               getHowMuchAttackTheGroupDoesWithTwoLazyUnits
                 = (p2BattleParticipant.entityQuantity - 2)
                   * getHowMuchAttackIndividualUnitsDo;
-              p2BattleParticipant.standardDamage
-                = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+              p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
             }
             else {
               getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
-              p2BattleParticipant.standardDamage
-                = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+              p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
             }
           }
           // If it's round 2
           else if (i == 1) {
-            p2BattleParticipant.standardDamage
-              = getHowMuchAttackIndividualUnitsDo
-                * p2BattleParticipant.entityQuantity;
+            p2BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo * p2BattleParticipant.entityQuantity;
           }
         }
       }
@@ -2134,9 +2124,7 @@ void standardRounds::roundOutcome(
           }
           // If it's round 2
           else if (i == 1) {
-            p1BattleParticipant.standardDamage
-              = getHowMuchAttackIndividualUnitsDo2
-                * p1BattleParticipant.entityQuantity;
+            p1BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo2 * p1BattleParticipant.entityQuantity;
           }
         }
       }

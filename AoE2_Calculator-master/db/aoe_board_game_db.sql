@@ -87,9 +87,9 @@ VALUES
 ('2', 'A Just Cause', 'All attacking units +1 AP for this turn'),
 ('1', 'Back From A Foreign Land', 'Use 1 Civilization bonus from target player for this turn. Bonus may not be used if it is a starting bonus, or requires civilization specific cards. Play anytime.'),
 ('2', 'Barrel Of Grog', 'Target unit may not move this turn. If target unit is Celt, they get +2 HP for this turn. Play anytime.'),
-('3', 'Bone Shaft Arrows', '+4 AP for target Cavalry Archer or Elite Cavalry Archer for this turn. Play anytime.'),
+('3', 'Bone Shaft Arrows (Mongol)', '+4 AP for target Cavalry Archer or Elite Cavalry Archer for this turn. Play anytime.'),
 ('2', 'Caught From The Crow''s Nest', 'Target Galley or Fire Ship may deal a bombardment attack before the normal combat begins. This is in addition to their one normal bombardment. Play anytime.'),
-('3', 'Celtic Battle Cry', 'Stand up and give your best Battle Cry. Target infantry gets +2 hp for this battle. Play anytime.'),
+('3', 'Celtic Battle Cry (Celt)', 'Stand up and give your best Battle Cry. Target infantry gets +2 hp for this battle. Play anytime.'),
 ('2', 'Dangerous Times', 'Attachment: Attach to a military building. The building has +5 Garrison until destroyed. Only one Dangerous Times may be in play in your village at any time.'),
 ('3', 'Fat Friar''s Tavern O'' Spirits', 'Monks on target unit may not have any Conversion or Healing attempts this turn. Play anytime.'),
 ('3', 'Field Testing', 'Target unit +2 HP, +1 AP for this battle. If target unit destroys an enemy unit this turn, owner may retrieve a Military Technology from their Play deck and add it to their hand. Reshuffle deck. Play anytime.'),
@@ -112,16 +112,16 @@ VALUES
 ('3', 'Relentless Attack', 'This battle, any damage remaining in a round after casualties have been taken carries over into the next round. Remaining damage at the end of this battle is lost. Play anytime.'),
 ('2', 'Retreat', 'Target unit must retreat before the first round of combat. The Ranged round does count as the first round of combat. Play anytime.'),
 ('4', 'Holy War', 'For the next 3 turns (not including your current turn) all your production is halved (round down) All of your units get +4 AP during this time.'),
-('2', 'Shots In The Back', 'If a unit in combat with your Archer retreats, you Archer deals an additional round of range damage without taking any damage.'),
+('2', 'Shots In The Back (Briton)', 'If a unit in combat with your Archer retreats, you Archer deals an additional round of range damage without taking any damage.'),
 ('3', 'Soak The Timbers', 'All enemy Fire Ships get an automatic result of 1 for their die roll when calculating damage this turn. Play anytime.'),
 ('1', 'Spirits Of The Ancestors', 'Target unit may not attack or move this turn. For unit owner''s next turn, the unit gets +3 AP.'),
 ('3', 'Squires', 'Attachment: Attach to an Infantry unit. That unit gains +2 HP. Snuff Squires if unit is destroyed.'),
 ('3', 'Steady Hand', 'Target Archer unit may do ranged damage to a Cavalry unit this turn. Play anytime.'),
-('3', 'The Hammer''s Cavalry', 'Play when one of your Cavalry units is reduced to one token. Add 2 tokens to the unit at no cost. Play anytime.'),
-('3', 'The Jester Is Dead, Let''s Get Them!', 'Sacrifice 1 of your villagers. +4 AP to all defending units this turn. Play anytime.'),
+('3', 'The Hammer''s Cavalry (Franks)', 'Play when one of your Cavalry units is reduced to one token. Add 2 tokens to the unit at no cost. Play anytime.'),
+('3', 'The Jester Is Dead Let''s Get Them! (Celt)', 'Sacrifice 1 of your villagers. +4 AP to all defending units this turn. Play anytime.'),
 ('2', 'Vengeance Is Mine!', 'Target unit gets +3 HP +3 AP this turn, when defending in your village. Play anytime.'),
 ('4', 'While They''re Sleeping', 'Target attacking Infantry unit takes no damage for the first round of combat. The ranged round does count as the first round of combat. Play anytime.'),
-('3', 'You Will Die!', 'This battle goes for four rounds of normal combat, instead of 2 rounds. No retreat is allowed without event card effect. Play anytime.'),
+('3', 'You Will Die! (Saracen)', 'This battle goes for four rounds of normal combat, instead of 2 rounds. No retreat is allowed without event card effect. Play anytime.'),
 ('3', 'Zealous Monks', 'Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. Limit 2 per deck.');
 
 DROP TABLE IF EXISTS Technologies;
@@ -154,7 +154,9 @@ VALUES
 ('4', 'Plate Mail Armor', '6', '0', '0'),
 ('4', 'Ring Archer Armor', '6', '0', '0'),
 ('2', 'Scale Barding Armor', '2', '0', '0'),
-('2', 'Scale Mail Armor', '2', '0', '0');
+('2', 'Scale Mail Armor', '2', '0', '0'),
+('3', 'Sanctity {2E}', '1', '0', '0');
+
 
 DROP TABLE IF EXISTS Units;
 CREATE TABLE IF NOT EXISTS Units(
@@ -277,14 +279,19 @@ VALUES
 ('4','Two-handed Swordsman (Japanese)','16','14','0','10'),
 ('4','Two-handed Swordsman (Goth)','16','11','0','10'),
 ('3','War Galley','34','16','0','4'),
-('3','War Galley (Saracen)','34','20','0','4');
+('3','War Galley (Saracen)','34','20','0','4'),
+('1','Villager','4','3','0','1'),
+('3','Monk','3','0','0','3'),
+('3','War Galley (Japanese)','34','16','0','4'),
+('2','Spearman (Celt)','10','3','0','10'),
+('2','Galley (Viking)','30','14','0','3'),
+('2','Galley (Japanese)','30','14','0','4');
 
 DROP TABLE IF EXISTS Buildings;
 CREATE TABLE IF NOT EXISTS Buildings(
   /* PK */ buildingID INTEGER PRIMARY KEY AUTOINCREMENT,
   /* FK */ ageID INTEGER NOT NULL,
   buildingName VARCHAR(35) NOT NULL,
-  buildingHealth VARCHAR(3) NOT NULL,
   buildingStandardDamage VARCHAR(2) NOT NULL,
   buildingGarrisonValue VARCHAR(2) NOT NULL,
   buildingPointValue VARCHAR(2) NOT NULL,
@@ -292,42 +299,122 @@ CREATE TABLE IF NOT EXISTS Buildings(
 );
 
 INSERT INTO Buildings
-(ageID, buildingName, buildingHealth, buildingStandardDamage, buildingGarrisonValue, buildingPointValue)
-VALUES /* Events that are unique to a civ */
-('2','Archery Range','120','0','10',''),
-('1','Barracks','120','0','10','11'),
-('2','Blacksmith','210','0','0','10'),
-('3','Castle','440','0','10','30'),
-('3','Castle (Frank)','440','0','10','25'),
-('4','Wonder (Turn 1)','110','0','0',''),
-('4','Wonder (Turn 2)','220','0','0',''),
-('4','Wonder (Turn 3)','330','0','0',''),
-('4','Wonder (Turn >= 4)','440','0','0',''),
-('1','Dock (Persian)','300','0','5','8'),
-('1','Dock','150','0','5','8'),
-('1','Farm','40','0','0','4'),
-('2','Palisade Gate','380','0','0','8'),
-('1','Gold Mine (Japanese)','80','0','0','4'),
-('1','Gold Mine','80','0','0','6'),
-('1','House','80','0','0','2'),
-('1','Lumber Camp (Japanese)','80','0','0','5'),
-('1','Lumber Camp','80','0','0','6'),
-('2','Market','180','0','0','12'),
-('1','Mill (Japanese)','80','0','0','5'),
-('1','Mill','80','0','0','6'),
-('3','Monastery','180','0','10','10'),
-('1','Outpost','40','0','0','4'),
-('1','Palisade Wall','20','0','0','2'),
-('3','Siege Workshop','180','0','3','11'),
-('2','Stable','120','0','10','11'),
-('1','Stone Mine (Japanese)','80','0','0','4'),
-('1','Stone Mine','80','0','0','6'),
-('2','Stone Wall','150','0','0','4'),
-('3','Town Center (Briton)','220','0','0','12'),
-('3','Town Center (Persian)','440','0','0','17'),
-('3','Town Center','220','0','0','17'),
-('2','Watch Tower','100','15','0','9'),
-('3','Fortified Wall','280','0','0','8');
+(ageID, buildingName, buildingStandardDamage, buildingGarrisonValue, buildingPointValue)
+VALUES 
+('2','Archery Range','0','10',''),
+('1','Barracks','0','10','11'),
+('2','Blacksmith','0','0','10'),
+('3','Castle','0','10','30'),
+('3','Castle (Frank)','0','10','25'),
+('4','Charlamagne''s Palace At Aix La''Chapelle (Briton)','0','0',''),
+('4','Notre-Dame Cathedral (Frank)','0','0',''),
+('4','Rock Of Cashel (Celt)','0','0',''),
+('4','Stave Church At Urnes (Viking)','0','0',''),
+('1','Dock (Persian)','0','5','8'),
+('1','Dock','0','5','8'),
+('1','Farm','0','0','4'),
+('2','Palisade Gate','0','0','8'),
+('1','Gold Mine (Japanese)','0','0','4'),
+('1','Gold Mine','0','0','6'),
+('1','House','0','0','2'),
+('1','Lumber Camp (Japanese)','0','0','5'),
+('1','Lumber Camp','0','0','6'),
+('2','Market','0','0','12'),
+('1','Mill (Japanese)','0','0','5'),
+('1','Mill','0','0','6'),
+('3','Monastery','0','10','10'),
+('1','Outpost','0','0','4'),
+('1','Palisade Wall','0','0','2'),
+('3','Siege Workshop','0','3','11'),
+('2','Stable','0','10','11'),
+('1','Stone Mine (Japanese)','0','0','4'),
+('1','Stone Mine','0','0','6'),
+('2','Stone Wall','0','0','4'),
+('1','Town Center (Briton)','0','0','12'),
+('1','Town Center (Persian)','0','0','17'),
+('1','Town Center','0','0','17'),
+('2','Watch Tower','15','0','9'),
+('3','Fortified Wall','0','0','8'),
+('4','The Golden Tent Of The Great Khan (Mongol)','0','0',''),
+('4','The Great Temple At Nara (Japanese)','0','0',''),
+('4','The Palace Of Ctesiphon On The Tigris (Persian)','0','0',''),
+('4','Tomb Of Theodoric (Goth)','0','0','');
+
+DROP TABLE IF EXISTS BuildingHealthBasedOnConstructionStatus;
+CREATE TABLE IF NOT EXISTS BuildingHealthBasedOnConstructionStatus(
+  /* PK */ buildingUnderConstructionID INTEGER PRIMARY KEY AUTOINCREMENT,
+  /* FK */ buildingID INTEGER NOT NULL,
+  constructionPercentageOutOf100 VARCHAR(3) NOT NULL,
+  buildingHealth VARCHAR(3) NOT NULL,
+  /* FK references */ FOREIGN KEY(buildingID) references Buildings(buildingID)
+);
+
+INSERT INTO BuildingHealthBasedOnConstructionStatus
+(buildingID,constructionPercentageOutOf100, buildingHealth)
+VALUES 
+('1','100','120'),
+('2','100','120'),
+('3','100','210'),
+('4','100','440'),
+('5','100','440'),
+('6','25','110'),
+('6','50','220'),
+('6','75','330'),
+('6','100','440'),
+('7','25','110'),
+('7','50','220'),
+('7','75','330'),
+('7','100','440'),
+('8','25','110'),
+('8','50','220'),
+('8','75','330'),
+('8','100','440'),
+('9','25','110'),
+('9','50','220'),
+('9','75','330'),
+('9','100','440'),
+('10','100','300'),
+('11','100','150'),
+('12','100','40'),
+('13','100','380'),
+('14','100','80'),
+('15','100','80'),
+('16','100','80'),
+('17','100','80'),
+('18','100','80'),
+('19','100','180'),
+('20','100','80'),
+('21','100','80'),
+('22','100','180'),
+('23','100','40'),
+('24','100','20'),
+('25','100','180'),
+('26','100','120'),
+('27','100','80'),
+('28','100','80'),
+('29','100','150'),
+('30','100','220'),
+('31','100','440'),
+('32','100','220'),
+('33','100','100'),
+('34','100','280'),
+('35','25','110'),
+('35','50','220'),
+('35','75','330'),
+('35','100','440'),
+('36','25','110'),
+('36','50','220'),
+('36','75','330'),
+('36','100','440'),
+('37','25','110'),
+('37','50','220'),
+('37','75','330'),
+('37','100','440'),
+('38','25','110'),
+('38','50','220'),
+('38','75','330'),
+('38','100','440');
+
 
 /* Tables with 2+ FKs */
 DROP TABLE IF EXISTS CivSpecificEvents;
@@ -465,7 +552,19 @@ VALUES
 ('107','2','50','0'),
 ('107','27','50','0'),
 ('107','26','50','0'),
-('107','22','50','0');
+('107','22','50','0'),
+('110','27','40','0'),
+('110','26','40','0'),
+('110','22','40','0'),
+('111','5','25','0'),
+('112','27','30','0'),
+('112','26','30','0'),
+('112','2','30','0'),
+('112','22','30','0'),
+('113','27','30','0'),
+('113','26','30','0'),
+('113','2','30','0'),
+('113','22','30','0');
 
 DROP TABLE IF EXISTS UnitArmorClasses;
 CREATE TABLE IF NOT EXISTS UnitArmorClasses(
@@ -575,7 +674,9 @@ VALUES
 ('63','9'),
 ('5','9'),
 ('57','9'),
+('111','9'),
 /* Monk unit (10) */
+('109','10'),
 /* Ram unit (11) */
 ('3','11'),
 ('4','11'),
@@ -599,6 +700,9 @@ VALUES
 ('11','12'),
 ('21','12'),
 ('59','12'),
+('110','12'),
+('112','12'),
+('113','12'),
 /* Siege weapon unit (13) */
 ('3','13'),
 ('4','13'),
@@ -624,6 +728,7 @@ VALUES
 ('95','14'),
 ('96','14'),
 ('97','14'),
+('111','14'),
 /* Turtle ship unit (16) */
 /* Unique unit (17) */
 ('22','17'),
@@ -663,6 +768,9 @@ VALUES
 ('71','22'),
 ('106','22'),
 ('107','22'),
+('112','22'),
+('113','22'),
+('110','22'),
 /* Fire ship unit (23) */
 ('12','23'),
 ('68','23'),
@@ -758,6 +866,9 @@ VALUES
 ('103','26'),
 ('104','26'),
 ('105','26'),
+('108','26'),
+('109','26'),
+('111','26'),
 /* Longboat (Viking) (27) */
 ('21','27'),
 ('59','27');
@@ -809,6 +920,10 @@ VALUES
 ('32','2'),
 ('33','2'),
 ('34','2'),
+('35','2'),
+('36','2'),
+('37','2'),
+('38','2'),
 /* Stone defence armor class (15) */
 ('29','15'),
 ('34','15'),
@@ -847,7 +962,15 @@ VALUES
 ('20', '7'),
 ('27', '7'),
 ('30', '1'),
-('31', '5');
+('31', '5'),
+('6','1'),
+('7','6'),
+('8','2'),
+('9','9'),
+('35','4'),
+('36','7'),
+('37','5'),
+('38','3');
 
 DROP TABLE IF EXISTS CivSpecificUnits;
 CREATE TABLE IF NOT EXISTS CivSpecificUnits(
@@ -925,4 +1048,8 @@ VALUES
 ('63','7'),
 ('65','6'),
 ('66','5'),
-('67','2');
+('67','2'),
+('110','7'),
+('111','2'),
+('112','9'),
+('113','7');

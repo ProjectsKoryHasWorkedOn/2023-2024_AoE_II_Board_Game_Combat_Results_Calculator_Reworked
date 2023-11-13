@@ -27,14 +27,14 @@ int main(int argc, char* argv[])
   workingDirectory.cdUp();
 
   const QString sqlScriptPath{getSqlScriptPath()};
-  qDebug() << sqlScriptPath;
+  // qDebug() << sqlScriptPath;
   Database database{};
   database.runSqlScript(sqlScriptPath);
 
   MainWindow w{&database};
 
   // Set the application icon
-  w.setWindowIcon(QIcon("abacus.ico"));
+  w.setWindowIcon(QIcon("swords_clashing.ico"));
 
   w.show();
   return application.exec();
