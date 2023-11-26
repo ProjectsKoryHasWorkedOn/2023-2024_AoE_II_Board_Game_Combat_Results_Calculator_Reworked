@@ -83,20 +83,22 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Battering_Ram line
   if (
-    (applyRockPaperScissorsModifiers.entityName == "Battering_Ram") && // Battering Ram
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (applyRockPaperScissorsModifiers.entityName == "Battering_Ram")
+    &&                                       // Battering Ram
+    (comparisonEntity.armorClass[1] == true) // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 60;
   }
   if (
-    (applyRockPaperScissorsModifiers.entityName == "Capped_Ram") && // Capped ram
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (applyRockPaperScissorsModifiers.entityName == "Capped_Ram")
+    &&                                       // Capped ram
+    (comparisonEntity.armorClass[1] == true) // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 110;
   }
   if (
     (applyRockPaperScissorsModifiers.entityName == "Siege_Ram") && // Siege ram
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (comparisonEntity.armorClass[1] == true)                       // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 220;
   }
@@ -461,7 +463,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   // Mangonel line
   if (
     (applyRockPaperScissorsModifiers.entityName == "Mangonel") && // Mangonel
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (comparisonEntity.armorClass[1] == true)                      // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 80;
   }
@@ -472,8 +474,9 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     applyRockPaperScissorsModifiers.standardDamage = 120;
   }
   if (
-    (applyRockPaperScissorsModifiers.entityName == "Siege_Onager") && // Siege Onager
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (applyRockPaperScissorsModifiers.entityName == "Siege_Onager")
+    &&                                       // Siege Onager
+    (comparisonEntity.armorClass[1] == true) // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 180;
   }
@@ -509,7 +512,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   // Pikeman line
   if (
     (applyRockPaperScissorsModifiers.entityName == "Pikeman") && // Pikeman
-    (comparisonEntity.armorClass[4] == true)                    // Cavalry
+    (comparisonEntity.armorClass[4] == true)                     // Cavalry
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 40;
   }
@@ -545,7 +548,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   // Trebuchet line
   if (
     (applyRockPaperScissorsModifiers.entityName == "Trebuchet") && // Trebuchet
-    (comparisonEntity.armorClass[1] == true)                    // Building
+    (comparisonEntity.armorClass[1] == true)                       // Building
   ) {
     applyRockPaperScissorsModifiers.standardDamage = 450;
   }

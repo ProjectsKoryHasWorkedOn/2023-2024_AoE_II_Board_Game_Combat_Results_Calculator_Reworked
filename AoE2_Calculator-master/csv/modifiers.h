@@ -88,7 +88,6 @@ private:
       m_modifiers.begin(),
       m_modifiers.end(),
       [&name](const Modifier& modifier) {
-
         return modifier.text().contains(name, Qt::CaseInsensitive);
       })};
     assert(

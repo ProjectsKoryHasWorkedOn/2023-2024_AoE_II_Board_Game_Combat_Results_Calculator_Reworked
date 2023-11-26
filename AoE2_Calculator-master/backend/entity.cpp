@@ -93,13 +93,12 @@ Arbalest_Saracen::~Arbalest_Saracen()
 
 Archery_Range::Archery_Range()
 {
-  entityName     = "Archery_Range";
-  entityAge      = 2;
-  entityHealth   = 120;
-  garrisonValue  = 10;
-  pointValue     = 11;   // 6 wood, 5 villagers
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Archery_Range";
+  entityAge     = 2;
+  entityHealth  = 120;
+  garrisonValue = 10;
+  pointValue    = 11;   // 6 wood, 5 villagers
+  armorClass[1] = true; // Building armor class
 }
 
 Archery_Range::~Archery_Range()
@@ -108,13 +107,12 @@ Archery_Range::~Archery_Range()
 
 Barracks::Barracks()
 {
-  entityName     = "Barracks";
-  entityAge      = 1;
-  entityHealth   = 120;
-  garrisonValue  = 10;
-  pointValue     = 11;   // 6 wood, 5 villagers
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Barracks";
+  entityAge     = 1;
+  entityHealth  = 120;
+  garrisonValue = 10;
+  pointValue    = 11;   // 6 wood, 5 villagers
+  armorClass[1] = true; // Building armor class
 }
 
 Barracks::~Barracks()
@@ -163,12 +161,11 @@ Battering_Ram_Celt::~Battering_Ram_Celt()
 
 Blacksmith::Blacksmith()
 {
-  entityName     = "Blacksmith";
-  entityAge      = 2;
-  entityHealth   = 180;
-  pointValue     = 10;   // 6 wood, 4 gold
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Blacksmith";
+  entityAge     = 2;
+  entityHealth  = 180;
+  pointValue    = 10;   // 6 wood, 4 gold
+  armorClass[1] = true; // Building armor class
 }
 
 Blacksmith::~Blacksmith()
@@ -192,9 +189,9 @@ Camel::~Camel()
 
 Capped_Ram::Capped_Ram()
 {
-  entityName     = "Capped_Ram";
-  entityAge      = 4;
-  entityHealth   = 46;
+  entityName   = "Capped_Ram";
+  entityAge    = 4;
+  entityHealth = 46;
 }
 
 Capped_Ram::~Capped_Ram()
@@ -222,7 +219,6 @@ Castle::Castle()
   pointValue     = 30;   // 15 stone, 15 bodies
   armorClass[1]  = true; // Building armor class
   armorClass[3]  = true; // Castle armor class
-
 }
 
 Castle::~Castle()
@@ -415,13 +411,12 @@ Demolition_Ship_Viking::~Demolition_Ship_Viking()
 
 Dock::Dock()
 {
-  entityName     = "Dock";
-  entityAge      = 1;
-  entityHealth   = 150;
-  garrisonValue  = 5;
-  pointValue     = 8;    // 5 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Dock";
+  entityAge     = 1;
+  entityHealth  = 150;
+  garrisonValue = 5;
+  pointValue    = 8;    // 5 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Dock::~Dock()
@@ -600,12 +595,11 @@ Elite_Woad_Raider_Celt::~Elite_Woad_Raider_Celt()
 
 Farm::Farm()
 {
-  entityName     = "Farm";
-  entityAge      = 1;
-  entityHealth   = 40;
-  pointValue     = 4;    // 2 wood, 2 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Farm";
+  entityAge     = 1;
+  entityHealth  = 40;
+  pointValue    = 4;    // 2 wood, 2 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Farm::~Farm()
@@ -823,12 +817,11 @@ Trade_Cog::~Trade_Cog()
 
 Gold_Mine::Gold_Mine()
 {
-  entityName     = "Gold_Mine";
-  entityAge      = 1;
-  entityHealth   = 80;
-  pointValue     = 6;    // 3 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Gold_Mine";
+  entityAge     = 1;
+  entityHealth  = 80;
+  pointValue    = 6;    // 3 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Gold_Mine::~Gold_Mine()
@@ -955,12 +948,11 @@ Heavy_Scorpion_Celt::~Heavy_Scorpion_Celt()
 
 House::House()
 {
-  entityName     = "House";
-  entityAge      = 1;
-  entityHealth   = 80;
-  pointValue     = 2;    // 1 wood, 1 body
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "House";
+  entityAge     = 1;
+  entityHealth  = 80;
+  pointValue    = 2;    // 1 wood, 1 body
+  armorClass[1] = true; // Building armor class
 }
 
 House::~House()
@@ -1129,12 +1121,11 @@ Long_Swordsman_Viking::~Long_Swordsman_Viking()
 
 Lumber_Camp::Lumber_Camp()
 {
-  entityName     = "Lumber_Camp";
-  entityAge      = 1;
-  entityHealth   = 80;
-  pointValue     = 6;    // 3 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Lumber_Camp";
+  entityAge     = 1;
+  entityHealth  = 80;
+  pointValue    = 6;    // 3 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Lumber_Camp::~Lumber_Camp()
@@ -1268,12 +1259,11 @@ Mangudai_Mongol::~Mangudai_Mongol()
 
 Market::Market()
 {
-  entityName     = "Market";
-  entityAge      = 2;
-  entityHealth   = 180;
-  pointValue     = 12;   // 6 wood, 6 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Market";
+  entityAge     = 2;
+  entityHealth  = 180;
+  pointValue    = 12;   // 6 wood, 6 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Market::~Market()
@@ -1324,12 +1314,11 @@ Militia_Goth::~Militia_Goth()
 
 Mill::Mill()
 {
-  entityName     = "Mill";
-  entityAge      = 1;
-  entityHealth   = 80;
-  pointValue     = 6;    // 3 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Mill";
+  entityAge     = 1;
+  entityHealth  = 80;
+  pointValue    = 6;    // 3 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Mill::~Mill()
@@ -1348,13 +1337,12 @@ Mill_Japanese::~Mill_Japanese()
 
 Monastery::Monastery()
 {
-  entityName     = "Monastery";
-  entityAge      = 1;
-  entityHealth   = 180;
-  garrisonValue  = 10;
-  pointValue     = 10;   // 7 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Monastery";
+  entityAge     = 1;
+  entityHealth  = 180;
+  garrisonValue = 10;
+  pointValue    = 10;   // 7 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Monastery::~Monastery()
@@ -1399,12 +1387,11 @@ Onager_Celt::~Onager_Celt()
 
 Outpost::Outpost()
 {
-  entityName     = "Outpost";
-  entityAge      = 1;
-  entityHealth   = 40;
-  pointValue     = 3;    // 1 wood, 1 stone, 1 body
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Outpost";
+  entityAge     = 1;
+  entityHealth  = 40;
+  pointValue    = 3;    // 1 wood, 1 stone, 1 body
+  armorClass[1] = true; // Building armor class
 }
 
 Outpost::~Outpost()
@@ -1446,11 +1433,11 @@ Paladin_Frank::~Paladin_Frank()
 
 Palisade_Wall::Palisade_Wall()
 {
-  entityName     = "Palisade_Wall";
-  entityAge      = 1;
-  entityHealth   = 20;
-  pointValue     = 2;    // 1 wood, 1 body
-  armorClass[1]  = true; // Building armor class
+  entityName    = "Palisade_Wall";
+  entityAge     = 1;
+  entityHealth  = 20;
+  pointValue    = 2;    // 1 wood, 1 body
+  armorClass[1] = true; // Building armor class
 
   armorClass[18] = true; // Wall & Gate armor class
 }
@@ -1594,9 +1581,9 @@ Siege_Onager_Celt::~Siege_Onager_Celt()
 
 Siege_Ram::Siege_Ram()
 {
-  entityName     = "Siege_Ram";
-  entityAge      = 4;
-  entityHealth   = 60;
+  entityName   = "Siege_Ram";
+  entityAge    = 4;
+  entityHealth = 60;
 }
 
 Siege_Ram::~Siege_Ram()
@@ -1615,13 +1602,12 @@ Siege_Ram_Celt::~Siege_Ram_Celt()
 
 Siege_Workshop::Siege_Workshop()
 {
-  entityName     = "Siege_Workshop";
-  entityAge      = 3;
-  entityHealth   = 180;
-  garrisonValue  = 3;
-  pointValue     = 11;   // 7 wood, 4 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Siege_Workshop";
+  entityAge     = 3;
+  entityHealth  = 180;
+  garrisonValue = 3;
+  pointValue    = 11;   // 7 wood, 4 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Siege_Workshop::~Siege_Workshop()
@@ -1701,13 +1687,12 @@ Spearman_Viking::~Spearman_Viking()
 
 Stable::Stable()
 {
-  entityName     = "Stable";
-  entityAge      = 2;
-  entityHealth   = 120;
-  garrisonValue  = 10;
-  pointValue     = 11;   // 6 wood, 5 body
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Stable";
+  entityAge     = 2;
+  entityHealth  = 120;
+  garrisonValue = 10;
+  pointValue    = 11;   // 6 wood, 5 body
+  armorClass[1] = true; // Building armor class
 }
 
 Stable::~Stable()
@@ -1716,12 +1701,11 @@ Stable::~Stable()
 
 Stone_Mine::Stone_Mine()
 {
-  entityName     = "Stone_Mine";
-  entityAge      = 1;
-  entityHealth   = 80;
-  pointValue     = 6;    // 3 wood, 3 bodies
-  armorClass[1]  = true; // Building armor class
-
+  entityName    = "Stone_Mine";
+  entityAge     = 1;
+  entityHealth  = 80;
+  pointValue    = 6;    // 3 wood, 3 bodies
+  armorClass[1] = true; // Building armor class
 }
 
 Stone_Mine::~Stone_Mine()
@@ -1740,11 +1724,11 @@ Stone_Mine_Japanese::~Stone_Mine_Japanese()
 
 Stone_Wall::Stone_Wall()
 {
-  entityName     = "Stone_Wall";
-  entityAge      = 2;
-  entityHealth   = 150;
-  pointValue     = 2;    // 1 stone, 1 body
-  armorClass[1]  = true; // Building armor class
+  entityName    = "Stone_Wall";
+  entityAge     = 2;
+  entityHealth  = 150;
+  pointValue    = 2;    // 1 stone, 1 body
+  armorClass[1] = true; // Building armor class
 
   armorClass[15] = true; // Stone defence armor class
   armorClass[18] = true; // Wall & Gate armor class
@@ -1756,11 +1740,11 @@ Stone_Wall::~Stone_Wall()
 
 Town_Center::Town_Center()
 {
-  entityName     = "Town_Center";
-  entityAge      = 3;
-  entityHealth   = 220;
-  pointValue     = 17;   // 9 wood, 8 bodies
-  armorClass[1]  = true; // Building armor class
+  entityName    = "Town_Center";
+  entityAge     = 3;
+  entityHealth  = 220;
+  pointValue    = 17;   // 9 wood, 8 bodies
+  armorClass[1] = true; // Building armor class
 
   armorClass[25] = true; // Town Center armor class
 }

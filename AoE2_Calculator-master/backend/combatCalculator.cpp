@@ -231,7 +231,6 @@ void combatCalculator::checkIfRetreating(std::string roundType)
     // Set value to 0 if 2 buildings are fighting one another
     isRetreating = "0";
   }
-
 }
 
 // Function: Output the entity information with a message
@@ -2081,16 +2080,20 @@ void standardRounds::roundOutcome(
               getHowMuchAttackTheGroupDoesWithTwoLazyUnits
                 = (p2BattleParticipant.entityQuantity - 2)
                   * getHowMuchAttackIndividualUnitsDo;
-              p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+              p2BattleParticipant.standardDamage
+                = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
             }
             else {
               getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
-              p2BattleParticipant.standardDamage = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
+              p2BattleParticipant.standardDamage
+                = getHowMuchAttackTheGroupDoesWithTwoLazyUnits;
             }
           }
           // If it's round 2
           else if (i == 1) {
-            p2BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo * p2BattleParticipant.entityQuantity;
+            p2BattleParticipant.standardDamage
+              = getHowMuchAttackIndividualUnitsDo
+                * p2BattleParticipant.entityQuantity;
           }
         }
       }
@@ -2124,7 +2127,9 @@ void standardRounds::roundOutcome(
           }
           // If it's round 2
           else if (i == 1) {
-            p1BattleParticipant.standardDamage = getHowMuchAttackIndividualUnitsDo2 * p1BattleParticipant.entityQuantity;
+            p1BattleParticipant.standardDamage
+              = getHowMuchAttackIndividualUnitsDo2
+                * p1BattleParticipant.entityQuantity;
           }
         }
       }
