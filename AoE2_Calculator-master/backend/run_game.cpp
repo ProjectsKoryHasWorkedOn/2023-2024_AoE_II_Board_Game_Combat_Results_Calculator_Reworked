@@ -22,7 +22,7 @@ void outputRemainingDamage(
 }
 
 /** The main function **/
-int runGame()
+int runGame(Database* database)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -78,7 +78,7 @@ int runGame()
   Entity p2AssistingMonkBattleParticipant;
 
   // Object: The file importing object
-  fileImporter importFile;
+  fileImporter importFile{database};
 
   // Object: The modifiers calculator object
   modifiersCalculator theModifiersCalculator;

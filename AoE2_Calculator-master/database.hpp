@@ -1,7 +1,11 @@
 #ifndef DATABASE_HPP
 #define DATABASE_HPP
+#include <unordered_map>
+
 #include <QSqlDatabase>
 #include <QStringList>
+
+#include "backend/entity.h"
 
 class Database {
 public:
@@ -16,6 +20,8 @@ public:
   QStringList getTechnologyNames();
 
   QStringList getEventNames();
+
+  std::unordered_map<std::string, Entity> getUnitEntities();
 
 private:
   QSqlDatabase m_database;

@@ -17,7 +17,7 @@ struct Entity {
   int         garrisonValue;
   int         pointValue;
   static int constexpr numberOfArmorClasses = 28;
-  bool armorClass[28]; // numberOfArmorClasses = 8
+  bool armorClass[numberOfArmorClasses]; // numberOfArmorClasses = 8
   /*
   armorClass[0] -> archer
   armorClass[1] -> building

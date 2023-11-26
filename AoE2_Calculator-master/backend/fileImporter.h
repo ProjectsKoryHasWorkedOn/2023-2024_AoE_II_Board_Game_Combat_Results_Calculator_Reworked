@@ -7,13 +7,16 @@
 /** The file importer class **/
 #ifndef FILE_IMPORTER_H
 #define FILE_IMPORTER_H
+
+class Database;
+
 class fileImporter {
 public:
   // Object: A single common file object to store the input file
   std::ifstream inputFile;
 
   // Functions: The constructor and deconstructor
-  fileImporter();
+  explicit fileImporter(Database* database);
   ~fileImporter();
 
   // Function: Check if a string is an integer
@@ -39,6 +42,9 @@ public:
   std::string* playerNames(
     std::string inputPlayerNamesFilename,
     int         inputNumberOfRows);
+
+private:
+  Database* m_database;
 };
 
 #endif // FILE_IMPORTER_H

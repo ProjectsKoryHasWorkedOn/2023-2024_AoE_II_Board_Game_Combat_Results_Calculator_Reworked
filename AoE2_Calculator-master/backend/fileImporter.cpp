@@ -1,17 +1,19 @@
 /** The libaries **/
 #include "fileImporter.h" // Using: entitiesFile functions
-#include "entity.h"       // Using: entity class
-#include <algorithm>      // Using: transform, toupper, .begin(), .end()
-#include <cstdlib>        // Using: exit(EXIT_FAILURE)
-#include <fstream>        // Using: ifstream, is_open(), good, close()
-#include <iostream>       // Using: cin and cout
-#include <sstream>        // Using: stringstream
-#include <stdlib.h>       // Using: atoi
-#include <string>         // Using: string
-#include <unordered_map>  // Using: std::unordered_map
+#include "database.hpp"
+#include "entity.h" // Using: entity class
+#include <QDebug>
+#include <algorithm>     // Using: transform, toupper, .begin(), .end()
+#include <cstdlib>       // Using: exit(EXIT_FAILURE)
+#include <fstream>       // Using: ifstream, is_open(), good, close()
+#include <iostream>      // Using: cin and cout
+#include <sstream>       // Using: stringstream
+#include <stdlib.h>      // Using: atoi
+#include <string>        // Using: string
+#include <unordered_map> // Using: std::unordered_map
 
 // Functions: The constructor and deconstructor
-fileImporter::fileImporter()
+fileImporter::fileImporter(Database* database) : m_database{database}
 {
 }
 fileImporter::~fileImporter()
@@ -25,6 +27,13 @@ Entity fileImporter::conductASearch(
 {
   // Struct: Declare a blank entity to store the return information
   Entity returnEntity;
+
+  std::unordered_map<std::string, Entity> newMap
+    = m_database->getUnitEntities();
+  qInfo() << "Unit entities from database:";
+  for (const auto& [name, entity] : newMap) {
+    qInfo() << name;
+  }
 
   std::unordered_map<std::string, Entity> map = {
     {"ARCHER", Archer{}},
@@ -219,7 +228,7 @@ Entity fileImporter::conductASearch(
   }
 
   // Behaviour: Make sure that an Age within the range of 1-4 was entered
-  if( (returnEntity.entityAge < 1) || (returnEntity.entityAge > 5) ) {
+  if ((returnEntity.entityAge < 1) || (returnEntity.entityAge > 5)) {
     // Error: Age not recognized
     std::cout << "Error: " << returnEntity.entityName
               << " contains an Age other than 1-4"

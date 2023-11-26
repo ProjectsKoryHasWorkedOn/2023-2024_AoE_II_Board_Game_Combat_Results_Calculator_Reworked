@@ -26,6 +26,10 @@ public:
 
   const QString& lastLine() const;
 
+  static QString convertSpacesToUnderscores(QString text);
+
+  static QString convertUnderscoresToSpaces(QString text);
+
   // Delete redundant references to functions or it'll re-create them in
   // moc_mainwindow.cpp under slots and throw up an error Add new references to
   // functions if it hasn't added them automatically or it'll throw up an error
@@ -119,10 +123,6 @@ private:
   QStringList filterEntityNames(QString input) const;
 
   QString tooltipReturner(QString name);
-
-  QString convertSpacesToUnderscores(QString text) const;
-
-  QString convertUnderscoresToSpaces(QString text) const;
 
   QListWidgetItem* findByEntityName(QListWidget* haystack, QString needle)
     const;

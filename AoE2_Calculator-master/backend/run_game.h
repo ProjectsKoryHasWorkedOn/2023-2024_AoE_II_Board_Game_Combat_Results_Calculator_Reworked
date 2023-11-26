@@ -1,6 +1,8 @@
 #ifndef RUN_GAME_H
 #define RUN_GAME_H
 
-int runGame();
+class Database;
+
+int runGame(Database* database);
 
 #endif // RUN_GAME_H
