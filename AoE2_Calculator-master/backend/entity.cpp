@@ -1992,25 +1992,6 @@ void Wonder::updateWonderHP()
   }
 }
 
-// Function: Update Trebuchet Armor Class
-void Trebuchet::updateTrebuchetArmorClass()
-{
-  // Behaviour: Ram armor class if unpacked (deployed)
-  // So it takes bonus damage from units that deal bonus damage vs rams
-  std::cout << "Enter 1 if the Trebuchet is packed. Enter 0 if unpacked"
-            << "<br>";
-  bool isPacked{};
-  DIN >> isPacked;
-  packed = isPacked;
-
-  if (packed == 0) {
-    armorClass[10] = true; // Ram armor class
-  }
-  else {
-    armorClass[10] = false;
-  }
-}
-
 // Function: Calculate the number of armor classes unique to an entity
 int Entity::returnNumberOfArmorClasses()
 {

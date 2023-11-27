@@ -201,13 +201,6 @@ Entity fileImporter::conductASearch(
 
   returnEntity = map[inputEntityName];
 
-  // @ PHillip could perhaps do this more eleganty with map function?
-  // Behaviour: if it's a trebuchet, get further information about the Trebuchet
-  if (inputEntityName == "Trebuchet") {
-    Trebuchet returnTrebuchet;
-    returnTrebuchet.updateTrebuchetArmorClass();
-    returnEntity = returnTrebuchet;
-  }
 
   // Behaviour: if it's a wonder, get further information about the Wonder
   if (returnEntity.entityName == "Wonder") {

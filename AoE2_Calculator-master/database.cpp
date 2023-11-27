@@ -216,12 +216,17 @@ INNER JOIN
       qFatal() << "Could not convert armor Id to integer.";
     }
 
-    // TODO: Load special trebuchet and wonder the old way and load buildings
+    /* TODO: Load special trebuchet and wonder the old way and load buildings
     // separately.
 
     if (unitName == "TREBUCHET") {
       continue;
     }
+*/
+
+    // Will not find entity if it's missing any of it's values (e.g. an armor class)
+
+
 
     const std::unordered_map<std::string, Entity>::iterator it{
       map.find(unitName)};

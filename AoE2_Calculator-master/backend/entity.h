@@ -17,7 +17,7 @@ struct Entity {
   int         garrisonValue;
   int         pointValue;
   static int constexpr numberOfArmorClasses = 28;
-  bool armorClass[numberOfArmorClasses]; // numberOfArmorClasses = 8
+  bool armorClass[numberOfArmorClasses];
   /*
   armorClass[0] -> archer
   armorClass[1] -> building
@@ -485,10 +485,6 @@ struct Trebuchet : Entity {
   // Functions: The constructor and deconstructor
   Trebuchet();
   ~Trebuchet();
-
-  // Function: Update the armor class of the Trebuchet based on if the Trebuchet
-  // is packed/unpacked
-  void updateTrebuchetArmorClass();
 };
 #endif // TREBUCHET_H
 
