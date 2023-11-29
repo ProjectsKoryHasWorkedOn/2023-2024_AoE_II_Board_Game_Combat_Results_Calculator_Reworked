@@ -252,3 +252,14 @@ INNER JOIN
 
   return map;
 }
+
+
+
+/*
+
+
+SELECT b.ageID, b.buildingName AS "b.name", b.buildingStandardDamage AS "b.SD", b.buildingGarrisonValue AS "b.GV", b.buildingPointValue AS "b.PV", bhbocs.constructionPercentageOutOf100 AS "b.const%", bhbocs.buildingHealth AS "b.HP", ac.armorID 
+FROM Buildings b INNER JOIN BuildingArmorClasses bac ON b.buildingID = bac.buildingID INNER JOIN ArmorClasses ac ON bac.armorID = ac.armorID INNER JOIN BuildingHealthBasedOnConstructionStatus bhbocs ON bhbocs.buildingID = b.buildingID;
+
+
+*/
