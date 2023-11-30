@@ -22,7 +22,7 @@ void outputRemainingDamage(
 }
 
 /** The main function **/
-int runGame(Database* database)
+int runGame(Database* database, std::function<void(Player)> onPlayerEntityDeath)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -83,14 +83,16 @@ int runGame(Database* database)
   // Object: The modifiers calculator object
   modifiersCalculator theModifiersCalculator;
 
-  // TODO: HERE: Strange things are here
   // Object: The combat calculator superclass and the combat rounds subclasses
-  CombatCalculatorState combatCalculatorState{};
-  combatCalculator*     theCombatCalculator;
-  monkRounds            monkRounds{&combatCalculatorState};
-  archerRounds          rangedRounds{&combatCalculatorState};
-  bombardmentRounds     bombardmentRounds{&combatCalculatorState};
-  standardRounds        standardRounds{&combatCalculatorState};
+  CombatCalculatorState     combatCalculatorState{};
+  CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
+  combatCalculator*         theCombatCalculator;
+  monkRounds   monkRounds{&combatCalculatorState, &combatCalculatorCallbacks};
+  archerRounds rangedRounds{&combatCalculatorState, &combatCalculatorCallbacks};
+  bombardmentRounds bombardmentRounds{
+    &combatCalculatorState, &combatCalculatorCallbacks};
+  standardRounds standardRounds{
+    &combatCalculatorState, &combatCalculatorCallbacks};
 
   /** Part 1: Getting basic information about the input entities **/
   // Behaviour: Load "entities.csv" and get information about the input entities

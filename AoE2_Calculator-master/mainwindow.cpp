@@ -634,7 +634,7 @@ void MainWindow::on_calculateResultsButton_clicked()
     ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
   // Calculate the results of a battle
-  runGame(m_database);
+  runGame(m_database, [this](Player player) { onPlayerEntityDeath(player); });
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -2297,4 +2297,15 @@ void MainWindow::filterBasedOnAge(QString player)
       hideOrShowBasedOnAge(player, age4BuildingName, false);
     }
   }
+}
+
+void MainWindow::onPlayerEntityDeath(Player player)
+{
+  QListWidget* listWidget
+    = player == Player::Player1 ? ui.player1EntityNames : ui.player2EntityNames;
+
+  getEntityAnimationForSelectedEntity(
+    listWidget->currentItem()->text(),
+    player == Player::Player1 ? "1" : "2",
+    "_death");
 }

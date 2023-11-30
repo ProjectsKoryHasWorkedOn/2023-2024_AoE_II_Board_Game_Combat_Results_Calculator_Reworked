@@ -10,6 +10,18 @@
 #include <stdlib.h> // Using: atoi
 #include <string>   // Using: string
 
+CombatCalculatorCallbacks::CombatCalculatorCallbacks(
+  std::function<void(Player)> onPlayerEntityDeath)
+  : m_onPlayerEntityDeath{std::move(onPlayerEntityDeath)}
+{
+}
+
+const std::function<void(Player)>&
+CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
+{
+  return m_onPlayerEntityDeath;
+}
+
 CombatCalculatorState::CombatCalculatorState()
 {
   // Behaviour: Declare the initial values
@@ -27,8 +39,11 @@ CombatCalculatorState::CombatCalculatorState()
 }
 
 // Function: The constructor/deconstructor
-combatCalculator::combatCalculator(CombatCalculatorState* state)
+combatCalculator::combatCalculator(
+  CombatCalculatorState*     state,
+  CombatCalculatorCallbacks* callbacks)
   : m_state{state}
+  , m_callbacks{callbacks}
   , healingEffectP1{m_state->healingEffectP1}
   , healingEffectP2{m_state->healingEffectP2}
   , startingQuantityP1{m_state->startingQuantityP1}
@@ -176,6 +191,7 @@ void combatCalculator::checkIfDead()
 {
   if (p1BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
+    m_callbacks->getOnPlayerEntityDeath()(Player::Player1);
 
     if (p1BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
@@ -183,6 +199,7 @@ void combatCalculator::checkIfDead()
   }
   else if (p2BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
+    m_callbacks->getOnPlayerEntityDeath()(Player::Player2);
 
     if (p2BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");

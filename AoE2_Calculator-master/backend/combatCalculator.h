@@ -1,7 +1,20 @@
 #pragma once
 /** The libaries **/
 #include "entity.h" // Using: Entity class
+#include "player.h"
+#include <functional>
 #include <iostream> // Using: cin, cout
+
+class CombatCalculatorCallbacks {
+public:
+  explicit CombatCalculatorCallbacks(
+    std::function<void(Player)> onPlayerEntityDeath);
+
+  const std::function<void(Player)>& getOnPlayerEntityDeath() const;
+
+private:
+  std::function<void(Player)> m_onPlayerEntityDeath;
+};
 
 class CombatCalculatorState {
 public:
@@ -52,7 +65,8 @@ class combatCalculator {
   // Reference: I do not need to access this data outside of this superclass and
   // the subclasses
 protected:
-  CombatCalculatorState* m_state;
+  CombatCalculatorState*     m_state;
+  CombatCalculatorCallbacks* m_callbacks;
 
   bool &healingEffectP1, &healingEffectP2;
   int & startingQuantityP1, &startingQuantityP2;
@@ -79,7 +93,9 @@ protected:
 
 public:
   // Functions: The constructor and deconstructor
-  explicit combatCalculator(CombatCalculatorState* state);
+  explicit combatCalculator(
+    CombatCalculatorState*     state,
+    CombatCalculatorCallbacks* callbacks);
   ~combatCalculator();
 
   /** Set the values functions **/
