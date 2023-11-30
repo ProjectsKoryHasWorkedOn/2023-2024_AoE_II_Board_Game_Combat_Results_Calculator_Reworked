@@ -152,10 +152,11 @@ QStringList Database::getUnitNames(int ageID)
   return unitNames;
 }
 
-static void adjustUnitName(QString& unitName)
+static QString adjustEntityName(QString entityName)
 {
-  unitName = unitName.toUpper();
-  unitName = MainWindow::convertSpacesToUnderscores(unitName);
+  entityName = entityName.toUpper();
+  entityName = MainWindow::convertSpacesToUnderscores(entityName);
+  return entityName;
 }
 
 // This will not find entity if it's missing any of it's values (e.g. an armor
@@ -195,9 +196,12 @@ INNER JOIN
     if (!ok) {
       qFatal() << "Could not convert age Id to integer.";
     }
-    QString unitNameQStr{query.value(unitNameIndex).toString()};
-    adjustUnitName(unitNameQStr);
-    const std::string unitName{unitNameQStr.toStdString()};
+    const QString unitNameFromDatabase{query.value(unitNameIndex).toString()};
+    const QString unitNameWithUnderscores
+      = MainWindow::convertSpacesToUnderscores(unitNameFromDatabase);
+    const QString unitNameAllCapitalLetters
+      = adjustEntityName(unitNameFromDatabase);
+    const std::string unitNameMapKey{unitNameAllCapitalLetters.toStdString()};
     const QString     unitHealth{query.value(unitHealthIndex).toString()};
     const QString     unitStandardDamage{
       query.value(unitStandardDamageIndex).toString()};
@@ -210,13 +214,13 @@ INNER JOIN
     }
 
     const std::unordered_map<std::string, Entity>::iterator it{
-      map.find(unitName)};
+      map.find(unitNameMapKey)};
 
     if (it == map.end()) {
       // It wasn't found.
       Entity entity{};
       entity.entityAge    = ageId;
-      entity.entityName   = unitName;
+      entity.entityName   = unitNameWithUnderscores.toStdString();
       entity.entityHealth = unitHealth.toInt(&ok);
 
       if (!ok) {
@@ -242,7 +246,7 @@ INNER JOIN
       }
 
       entity.armorClass[armorId] = true;
-      map.emplace(unitName, entity);
+      map.emplace(unitNameMapKey, entity);
     }
     else {
       // Found it.
@@ -291,9 +295,14 @@ INNER JOIN
     if (!ok) {
       qFatal() << "Could not convert age Id to integer.";
     }
-    QString buildingNameQStr{query.value(buildingNameIndex).toString()};
-    adjustUnitName(buildingNameQStr);
-    const std::string buildingName{buildingNameQStr.toStdString()};
+    const QString buildingNameFromDatabase{
+      query.value(buildingNameIndex).toString()};
+    const QString buildingNameWithUnderscores
+      = MainWindow::convertSpacesToUnderscores(buildingNameFromDatabase);
+    const QString buildingNameAllCapitalLetters
+      = adjustEntityName(buildingNameFromDatabase);
+    const std::string buildingNameMapKey{
+      buildingNameAllCapitalLetters.toStdString()};
     const QString buildingHealth{query.value(buildingHealthIndex).toString()};
     const QString buildingStandardDamage{
       query.value(buildingStandardDamageIndex).toString()};
@@ -304,28 +313,28 @@ INNER JOIN
       qFatal() << "Could not convert armor Id to integer.";
     }
 
-    /* TODO: Might need to load wonders a special way */
-
+    // Skip wonders, they're loaded in a special way.
     if (
-      (buildingName == "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)")
-      || (buildingName == "ROCK_OF_CASHEL_(CELT)")
-      || (buildingName == "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)")
-      || (buildingName == "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)")
-      || (buildingName == "TOMB_OF_THEODORIC_(GOTH)")
-      || (buildingName == "NOTRE-DAME_CATHEDRAL_(FRANK)")
-      || (buildingName == "STAVE_CHURCH_AT_URNES_(VIKING)")
-      || (buildingName == "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)")) {
+      (buildingNameAllCapitalLetters
+       == "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)")
+      || (buildingNameAllCapitalLetters == "ROCK_OF_CASHEL_(CELT)")
+      || (buildingNameAllCapitalLetters == "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)")
+      || (buildingNameAllCapitalLetters == "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)")
+      || (buildingNameAllCapitalLetters == "TOMB_OF_THEODORIC_(GOTH)")
+      || (buildingNameAllCapitalLetters == "NOTRE-DAME_CATHEDRAL_(FRANK)")
+      || (buildingNameAllCapitalLetters == "STAVE_CHURCH_AT_URNES_(VIKING)")
+      || (buildingNameAllCapitalLetters == "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)")) {
       continue;
     }
 
     const std::unordered_map<std::string, Entity>::iterator it{
-      map.find(buildingName)};
+      map.find(buildingNameMapKey)};
 
     if (it == map.end()) {
       // It wasn't found.
       Entity entity{};
       entity.entityAge    = ageId;
-      entity.entityName   = buildingName;
+      entity.entityName   = buildingNameWithUnderscores.toStdString();
       entity.entityHealth = buildingHealth.toInt(&ok);
 
       if (!ok) {
@@ -345,7 +354,7 @@ INNER JOIN
       }
 
       entity.armorClass[armorId] = true;
-      map.emplace(buildingName, entity);
+      map.emplace(buildingNameMapKey, entity);
     }
     else {
       // Found it.
