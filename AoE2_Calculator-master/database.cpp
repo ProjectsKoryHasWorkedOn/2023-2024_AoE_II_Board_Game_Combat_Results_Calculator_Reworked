@@ -158,18 +158,11 @@ static void adjustUnitName(QString& unitName)
   unitName = MainWindow::convertSpacesToUnderscores(unitName);
 }
 
+
+// This will not find entity if it's missing any of it's values (e.g. an armor class)
 std::unordered_map<std::string, Entity> Database::getUnitEntities()
 {
   std::unordered_map<std::string, Entity> map{};
-
-  /*
-   * SELECT u.unitName, u.unitHealth, u.unitStandardDamage, u.unitRangedDamage,
-u.unitPointValue, a.armorName FROM Units u INNER JOIN unitArmorClasses ua on
-u.unitID = ua.unitID INNER JOIN ArmorClasses a on ua.armorID = a.armorID;
-   *
-   */
-
-  // TODO: First character might have to be lowercase
   QSqlQuery query{QString{R"(
 SELECT
     Units.unitID,
@@ -216,18 +209,6 @@ INNER JOIN
       qFatal() << "Could not convert armor Id to integer.";
     }
 
-    /* TODO: Load special trebuchet and wonder the old way and load buildings
-    // separately.
-
-    if (unitName == "TREBUCHET") {
-      continue;
-    }
-*/
-
-    // Will not find entity if it's missing any of it's values (e.g. an armor class)
-
-
-
     const std::unordered_map<std::string, Entity>::iterator it{
       map.find(unitName)};
 
@@ -255,11 +236,90 @@ INNER JOIN
 
 
 
-/*
+std::unordered_map<std::string, Entity> Database::getBuildingEntities()
+{
+  std::unordered_map<std::string, Entity> map{};
+  QSqlQuery query{QString{R"(
+SELECT
+    b.ageID,
+    b.buildingName,
+    b.buildingStandardDamage,
+    b.buildingGarrisonValue,
+    b.buildingPointValue,
+    bhbocs.constructionPercentageOutOf100,
+    bhbocs.buildingHealth,
+    ac.armorID
+FROM
+    Buildings b
+INNER JOIN
+    BuildingArmorClasses bac ON b.buildingID = bac.buildingID
+INNER JOIN
+    ArmorClasses ac ON bac.armorID = ac.armorID
+INNER JOIN
+    BuildingHealthBasedOnConstructionStatus bhbocs ON bhbocs.buildingID = b.buildingID;
+)"}};
+  const int ageIdIndex{query.record().indexOf("ageID")};
+  const int buildingNameIndex{query.record().indexOf("buildingName")};
+  const int buildingHealthIndex{query.record().indexOf("buildingHealth")};
+  const int buildingStandardDamageIndex{query.record().indexOf("buildingStandardDamage")};
+  const int buildingPointValueIndex{query.record().indexOf("buildingPointValue")};
+  const int armorIdIndex{query.record().indexOf("armorID")};
+
+  while (query.next()) {
+    bool      ok{};
+    const int ageId{query.value(ageIdIndex).toInt(&ok)};
+    if (!ok) {
+      qFatal() << "Could not convert age Id to integer.";
+    }
+    QString buildingNameQStr{query.value(buildingNameIndex).toString()};
+    adjustUnitName(buildingNameQStr);
+    const std::string buildingName{buildingNameQStr.toStdString()};
+    const QString     buildingHealth{query.value(buildingHealthIndex).toString()};
+    const QString     buildingStandardDamage{query.value(buildingStandardDamageIndex).toString()};
+    const QString buildingPointValue{query.value(buildingPointValueIndex).toString()};
+    const int     armorId{query.value(armorIdIndex).toInt(&ok)};
+    if (!ok) {
+      qFatal() << "Could not convert armor Id to integer.";
+    }
+
+    /* TODO: Might need to load wonders a special way */
+
+    if(
+      (buildingName == "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)") ||
+      (buildingName == "ROCK_OF_CASHEL_(CELT)") ||
+      (buildingName == "THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)") ||
+      (buildingName == "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)") ||
+      (buildingName == "TOMB_OF_THEODORIC_(GOTH)") ||
+      (buildingName == "NOTRE-DAME_CATHEDRAL_(FRANK)") ||
+      (buildingName == "STAVE_CHURCH_AT_URNES_(VIKING)") ||
+      (buildingName == "THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)")
+    )
+    {
+       continue;
+     }
+
+    const std::unordered_map<std::string, Entity>::iterator it{map.find(buildingName)};
+
+    if (it == map.end()) {
+      // It wasn't found.
+      Entity entity{};
+      entity.entityAge           = ageId;
+      entity.entityName          = buildingName;
+      entity.entityHealth        = buildingHealth.toInt(&ok);
+      entity.standardDamage      = buildingStandardDamage.toInt(&ok);
+      entity.pointValue          = buildingPointValue.toInt(&ok);
+      entity.armorClass[armorId] = true;
+      map.emplace(buildingName, entity);
+    }
+    else {
+      // Found it.
+      Entity& entity             = it->second;
+      entity.armorClass[armorId] = true;
+    }
+  }
+
+  return map;
+}
 
 
-SELECT b.ageID, b.buildingName AS "b.name", b.buildingStandardDamage AS "b.SD", b.buildingGarrisonValue AS "b.GV", b.buildingPointValue AS "b.PV", bhbocs.constructionPercentageOutOf100 AS "b.const%", bhbocs.buildingHealth AS "b.HP", ac.armorID 
-FROM Buildings b INNER JOIN BuildingArmorClasses bac ON b.buildingID = bac.buildingID INNER JOIN ArmorClasses ac ON bac.armorID = ac.armorID INNER JOIN BuildingHealthBasedOnConstructionStatus bhbocs ON bhbocs.buildingID = b.buildingID;
 
-
-*/

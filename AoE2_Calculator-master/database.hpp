@@ -23,6 +23,8 @@ public:
 
   std::unordered_map<std::string, Entity> getUnitEntities();
 
+  std::unordered_map<std::string, Entity> getBuildingEntities();
+
 private:
   QSqlDatabase m_database;
 };
