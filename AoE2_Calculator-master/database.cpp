@@ -365,3 +365,67 @@ INNER JOIN
 
   return map;
 }
+
+
+
+
+// Todo: Work out how modifiers might work
+// No buildings deal bonus damage (there are no building modifiers)
+// Just unit modifiers
+Entity Database::getUnitModifiers(Entity entityToApplyModifiersTo, Entity entityToCheckArmorClassesOf){
+  QString entityToApplyModifiersToName = QString::fromStdString(entityToApplyModifiersTo.entityName);
+
+  // Todo: Implement in SQL database
+  bool doesTheValueStack;
+
+  bool entityToCheckArmorClassesOfArmorClasses[entityToCheckArmorClassesOf.numberOfArmorClasses];
+
+  for(int i = 0; i < entityToCheckArmorClassesOf.numberOfArmorClasses; i++){
+    if(entityToCheckArmorClassesOf.armorClass[i] == true){
+      entityToCheckArmorClassesOfArmorClasses[i] = true;
+    }
+  }
+
+
+  QSqlQuery                               query{QString{R"(
+SELECT
+    um.unitStandardDamageModifier,
+    um.unitRangedDamageModifier,
+    um.doesTheModifierStack
+FROM
+    Units u, UnitModifiers um
+WHERE u.unitID = um.unitID AND u.unitName == %1 AND um.armorID == %2;)"}.arg(entityToApplyModifiersToName, QString::number(entityToCheckArmorClassesOfArmorClasses[3]))};
+
+  const int unitStandardDamageModifierIndex{query.record().indexOf("unitStandardDamageModifier")};
+  const int unitRangedDamageModifierIndex{query.record().indexOf("unitRangedDamageModifier")};
+
+  while (query.next()) {
+
+    // If it's found and > 0, return the entityToApplyModifiersTo with the values returned
+    // If it's not found or < 0, do not replace the values of entityToApplyModifiersTo with that
+
+    const int unitStandardDamage{query.value(unitStandardDamageModifierIndex).toInt()};
+    const int unitRangedDamage{query.value(unitRangedDamageModifierIndex).toInt()};
+
+
+     if(doesTheValueStack == true){
+
+    entityToApplyModifiersTo.standardDamage += unitStandardDamage;
+    entityToApplyModifiersTo.rangedDamage   += unitRangedDamage;
+
+    }
+    else{
+
+    entityToApplyModifiersTo.standardDamage = unitStandardDamage;
+    entityToApplyModifiersTo.rangedDamage   = unitRangedDamage;
+
+    }
+
+  }
+
+  return entityToApplyModifiersTo;
+}
+
+
+// Todo: Work out how modifiers might work for technologies
+// Should be similar to what we did for the units
