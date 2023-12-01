@@ -22,7 +22,7 @@ void outputRemainingDamage(
 }
 
 /** The main function **/
-int runGame(Database* database, std::function<void(Player)> onPlayerEntityDeath)
+int runGame(Database* database, std::function<void(Player, bool)> onPlayerEntityDeath)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -244,9 +244,9 @@ int runGame(Database* database, std::function<void(Player)> onPlayerEntityDeath)
   // there is a Galley or Fire Ship
   if ((p1_events_array[4] == 1) || (p2_events_array[4] == 1)) {
     if (
-      ((p1BattleParticipant.armorClass[22] == true)
-       || (p2BattleParticipant.armorClass[22] == true))
-      || ((p1BattleParticipant.armorClass[23] == true) || (p2BattleParticipant.armorClass[23] == true))) {
+      ((p1BattleParticipant.armorClass[21] == true)
+       || (p2BattleParticipant.armorClass[21] == true))
+      || ((p1BattleParticipant.armorClass[22] == true) || (p2BattleParticipant.armorClass[22] == true))) {
       // Behaviour: Set event 4 to active
       isEvent4Active = true;
     }

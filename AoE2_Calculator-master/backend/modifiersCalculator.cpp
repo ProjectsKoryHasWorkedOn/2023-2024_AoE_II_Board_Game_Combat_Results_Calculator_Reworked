@@ -51,6 +51,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   Entity applyRockPaperScissorsModifiers;
   Entity comparisonEntity;
 
+
   // Behaviour: Set the entity and the comparison entity (to make things clear)
   if (playerNumber == 1) {
     applyRockPaperScissorsModifiers = p1BattleParticipant;
@@ -246,8 +247,8 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "Longboat_(Viking)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[21] == true) || // Demolition Ship
-    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.armorClass[20] == true) || // Demolition Ship
+    (comparisonEntity.armorClass[21] == true) || // Galley
     (comparisonEntity.entityName == "Longboat_(Viking)") ||
     (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
   )){
@@ -256,8 +257,8 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "Elite_Longboat_(Viking)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[21] == true) || // Demolition Ship
-    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.armorClass[20] == true) || // Demolition Ship
+    (comparisonEntity.armorClass[21] == true) || // Galley
     (comparisonEntity.entityName == "Longboat_(Viking)") ||
     (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
   )){
@@ -296,24 +297,24 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "Samurai_(Japanese)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[17] == true) // Unique Unit
+    (comparisonEntity.armorClass[16] == true) // Unique Unit
   )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 10;
     }
-    else if (comparisonEntity.armorClass[17] == true) {
+    else if (comparisonEntity.armorClass[16] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 12;
     }
   }
   if(
   (applyRockPaperScissorsModifiers.entityName == "Elite_Samurai_(Japanese)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[17] == true) // Unique Unit
+    (comparisonEntity.armorClass[16] == true) // Unique Unit
   )){
     if (comparisonEntity.armorClass[1] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 15;
     }
-    else if (comparisonEntity.armorClass[17] == true) {
+    else if (comparisonEntity.armorClass[16] == true) {
       applyRockPaperScissorsModifiers.standardDamage = 18;
     }
   }
@@ -377,11 +378,11 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Fire_Ship line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[23] == true)
+    (applyRockPaperScissorsModifiers.armorClass[22] == true)
     && (                                           // Fire Ship
       (comparisonEntity.armorClass[1] == true) ||  // Building
-      (comparisonEntity.armorClass[23] == true) || // Fire Ship
-      (comparisonEntity.armorClass[22] == true) || // Galley
+      (comparisonEntity.armorClass[22] == true) || // Fire Ship
+      (comparisonEntity.armorClass[21] == true) || // Galley
       (comparisonEntity.entityName == "Longboat_(Viking)")
       || (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
       )) {
@@ -391,8 +392,8 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     (applyRockPaperScissorsModifiers.entityName == "Fast_Fire_Ship")
     && (                                           // Fast Fire Ship
       (comparisonEntity.armorClass[1] == true) ||  // Building
-      (comparisonEntity.armorClass[23] == true) || // Fire Ship
-      (comparisonEntity.armorClass[22] == true) || // Galley
+      (comparisonEntity.armorClass[22] == true) || // Fire Ship
+      (comparisonEntity.armorClass[21] == true) || // Galley
       (comparisonEntity.entityName == "Longboat_(Viking)")
       || (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
       )) {
@@ -401,10 +402,10 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
 
   // Galley line
   if (
-    (applyRockPaperScissorsModifiers.armorClass[22] == true)
+    (applyRockPaperScissorsModifiers.armorClass[21] == true)
     && (                                           // Galley
       (comparisonEntity.armorClass[1] == true) ||  // Building
-      (comparisonEntity.armorClass[22] == true) || // Galley
+      (comparisonEntity.armorClass[21] == true) || // Galley
       (comparisonEntity.entityName == "Longboat_(Viking)")
       || (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
       )) {
@@ -414,7 +415,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     (applyRockPaperScissorsModifiers.entityName == "War_Galley")
     && (                                           // War Galley
       (comparisonEntity.armorClass[1] == true) ||  // Building
-      (comparisonEntity.armorClass[22] == true) || // Galley
+      (comparisonEntity.armorClass[21] == true) || // Galley
       (comparisonEntity.entityName == "Longboat_(Viking)")
       || (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
       )) {
@@ -424,7 +425,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
     (applyRockPaperScissorsModifiers.entityName == "Galleon")
     && (                                           // Galleon
       (comparisonEntity.armorClass[1] == true) ||  // Building
-      (comparisonEntity.armorClass[22] == true) || // Galley
+      (comparisonEntity.armorClass[21] == true) || // Galley
       (comparisonEntity.entityName == "Longboat_(Viking)")
       || (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
       )) {
@@ -435,7 +436,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "Galley_(Saracen)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.armorClass[21] == true) || // Galley
     (comparisonEntity.entityName == "Longboat_(Viking)") ||
     (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
   )){
@@ -444,7 +445,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "War_Galley_(Saracen)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.armorClass[21] == true) || // Galley
     (comparisonEntity.entityName == "Longboat_(Viking)") ||
     (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
   )){
@@ -453,7 +454,7 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   if(
   (applyRockPaperScissorsModifiers.entityName == "Galleon_(Saracen)") && (
     (comparisonEntity.armorClass[1] == true) || // Building
-    (comparisonEntity.armorClass[22] == true) || // Galley
+    (comparisonEntity.armorClass[21] == true) || // Galley
     (comparisonEntity.entityName == "Longboat_(Viking)") ||
     (comparisonEntity.armorClass[11] != true) // Non-Ship (Land unit)
   )){
@@ -591,10 +592,10 @@ void modifiersCalculator::applyTechnologyEffects()
     if (
       (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
       (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[24] == true) || // Watch Tower
+      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
       (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[25] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[22] == true) || // Galley
+      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
+      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
       (applyTechnologyModifiers.entityName
        == "Longboat_(Viking)") // Longboat example
     ) {
@@ -610,10 +611,10 @@ void modifiersCalculator::applyTechnologyEffects()
     if (
       (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
       (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[24] == true) || // Watch Tower
+      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
       (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[25] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[22] == true) || // Galley
+      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
+      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
       (applyTechnologyModifiers.entityName
        == "Longboat_(Viking)") // Longboat example
     ) {
@@ -641,10 +642,10 @@ void modifiersCalculator::applyTechnologyEffects()
     if (
       (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
       (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[24] == true) || // Watch Tower
+      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
       (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[25] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[22] == true) || // Galley
+      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
+      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
       (applyTechnologyModifiers.entityName
        == "Longboat_(Viking)") // Longboat example
     ) {

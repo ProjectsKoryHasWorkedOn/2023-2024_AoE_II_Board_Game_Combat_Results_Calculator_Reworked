@@ -10,13 +10,15 @@
 #include <stdlib.h> // Using: atoi
 #include <string>   // Using: string
 
+
+
 CombatCalculatorCallbacks::CombatCalculatorCallbacks(
-  std::function<void(Player)> onPlayerEntityDeath)
+  std::function<void(Player, bool)> onPlayerEntityDeath)
   : m_onPlayerEntityDeath{std::move(onPlayerEntityDeath)}
 {
 }
 
-const std::function<void(Player)>&
+const std::function<void(Player, bool)>&
 CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
 {
   return m_onPlayerEntityDeath;
@@ -191,7 +193,15 @@ void combatCalculator::checkIfDead()
 {
   if (p1BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
-    m_callbacks->getOnPlayerEntityDeath()(Player::Player1);
+
+
+    if(p1BattleParticipant.entityName == "Monk"){
+      m_callbacks->getOnPlayerEntityDeath()(Player::Player1, true);
+    }
+    else{
+      m_callbacks->getOnPlayerEntityDeath()(Player::Player1, false);
+    }
+
 
     if (p1BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
@@ -199,7 +209,14 @@ void combatCalculator::checkIfDead()
   }
   else if (p2BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
-    m_callbacks->getOnPlayerEntityDeath()(Player::Player2);
+
+    if(p2BattleParticipant.entityName == "Monk"){
+      m_callbacks->getOnPlayerEntityDeath()(Player::Player2, true);
+    }
+    else{
+      m_callbacks->getOnPlayerEntityDeath()(Player::Player2, false);
+    }
+
 
     if (p2BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
@@ -1632,8 +1649,8 @@ void bombardmentRounds::roundOutcome(
       else {
         // Behaviour: The damage only applies if p1 has a Galley or Fire Ship
         if (
-          (p1BattleParticipant.armorClass[22] == true)
-          || (p1BattleParticipant.armorClass[22] == true)) {
+          (p1BattleParticipant.armorClass[21] == true)
+          || (p1BattleParticipant.armorClass[21] == true)) {
           p2EntityDeaths = std::floor(
             ((p1BattleParticipant.standardDamage) + roundAttackModifiersP1)
             / (p2BattleParticipant.entityHealth));
@@ -1671,8 +1688,8 @@ void bombardmentRounds::roundOutcome(
       else {
         // Behaviour: The damage only applies if p2 has a Galley or Fire Ship
         if (
-          (p2BattleParticipant.armorClass[22] == true)
-          || (p2BattleParticipant.armorClass[22] == true)) {
+          (p2BattleParticipant.armorClass[21] == true)
+          || (p2BattleParticipant.armorClass[21] == true)) {
           p1EntityDeaths = std::floor(
             ((p2BattleParticipant.standardDamage) + roundAttackModifiersP2)
             / (p1BattleParticipant.entityHealth));
@@ -2050,8 +2067,8 @@ void standardRounds::roundOutcome(
   }
 
   if (
-    (p1BattleParticipant.armorClass[23] == true)
-    || (p1BattleParticipant.armorClass[23] == true)) { // Fire Ship or Fast Fire
+    (p1BattleParticipant.armorClass[22] == true)
+    || (p1BattleParticipant.armorClass[22] == true)) { // Fire Ship or Fast Fire
                                                        // Ship
     p1BattleParticipant.standardDamage *= d6DieRoll;
   }
@@ -2066,8 +2083,8 @@ void standardRounds::roundOutcome(
   }
 
   if (
-    (p2BattleParticipant.armorClass[23] == true)
-    || (p2BattleParticipant.armorClass[23] == true)) { // Fire Ship or Fast Fire
+    (p2BattleParticipant.armorClass[22] == true)
+    || (p2BattleParticipant.armorClass[22] == true)) { // Fire Ship or Fast Fire
                                                        // Ship
     p2BattleParticipant.standardDamage *= d6DieRoll;
   }

@@ -5,15 +5,18 @@
 #include <functional>
 #include <iostream> // Using: cin, cout
 
+
+
+
 class CombatCalculatorCallbacks {
 public:
   explicit CombatCalculatorCallbacks(
-    std::function<void(Player)> onPlayerEntityDeath);
+    std::function<void(Player, bool)> onPlayerEntityDeath);
 
-  const std::function<void(Player)>& getOnPlayerEntityDeath() const;
+  const std::function<void(Player, bool)>& getOnPlayerEntityDeath() const;
 
 private:
-  std::function<void(Player)> m_onPlayerEntityDeath;
+  std::function<void(Player, bool)> m_onPlayerEntityDeath;
 };
 
 class CombatCalculatorState {

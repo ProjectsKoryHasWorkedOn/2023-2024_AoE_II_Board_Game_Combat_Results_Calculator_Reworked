@@ -245,13 +245,13 @@ INNER JOIN
         qFatal() << "Could not convert unitPointValue to integer.";
       }
 
-      entity.armorClass[armorId] = true;
+      entity.armorClass[armorId - 1] = true;
       map.emplace(unitNameMapKey, entity);
     }
     else {
       // Found it.
       Entity& entity             = it->second;
-      entity.armorClass[armorId] = true;
+      entity.armorClass[armorId - 1] = true;
     }
   }
 
@@ -353,13 +353,13 @@ INNER JOIN
         qFatal() << "Could not convert buildingPointValue to integer.";
       }
 
-      entity.armorClass[armorId] = true;
+      entity.armorClass[armorId - 1] = true;
       map.emplace(buildingNameMapKey, entity);
     }
     else {
       // Found it.
       Entity& entity             = it->second;
-      entity.armorClass[armorId] = true;
+      entity.armorClass[armorId - 1] = true;
     }
   }
 

@@ -7,6 +7,6 @@ class Database;
 
 int runGame(
   Database*                   database,
-  std::function<void(Player)> onPlayerEntityDeath);
+  std::function<void(Player, bool)> onPlayerEntityDeath);
 
 #endif // RUN_GAME_H

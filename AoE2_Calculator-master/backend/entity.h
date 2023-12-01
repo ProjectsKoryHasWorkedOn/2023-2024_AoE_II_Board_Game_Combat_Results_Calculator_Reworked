@@ -31,20 +31,19 @@ struct Entity {
   armorClass[11] -> ship
   armorClass[12] -> siege_weapon
   armorClass[13] -> spearman
-  armorClass[14] XXXXXXXXXXXXXXXXXXXX cut
-  armorClass[15] -> stone_defence
-  armorClass[16] -> turtle_ship
-  armorClass[17] -> unique_unit
-  armorClass[18] -> wall_&_gate
-  armorClass[19] -> elephant
-  armorClass[20] -> hero
-  armorClass[21] -> demolition_ship
-  armorClass[22] -> galley
-  armorClass[23] -> fire_ship
-  armorClass[24] -> watch_tower
-  armorClass[25] -> town_center
-  armorClass[26] -> land_unit
-  armorClass[27] -> longboat
+  armorClass[14] -> stone_defence
+  armorClass[15] -> turtle_ship
+  armorClass[16] -> unique_unit
+  armorClass[17] -> wall_&_gate
+  armorClass[18] -> elephant
+  armorClass[19] -> hero
+  armorClass[20] -> demolition_ship
+  armorClass[21] -> galley
+  armorClass[22] -> fire_ship
+  armorClass[23] -> watch_tower
+  armorClass[24] -> town_center
+  armorClass[25] -> land_unit
+  armorClass[26] -> longboat
   */
   bool onlyAttacksInTheSecondRoundOfStandardCombat;
   bool onlyAttacksOnce;

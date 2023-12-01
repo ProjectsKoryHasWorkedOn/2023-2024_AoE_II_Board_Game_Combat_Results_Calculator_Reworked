@@ -169,7 +169,7 @@ private:
   void
   hideOrShowBasedOnAge(QString player, QString itemToCheckFor, bool hideOrShow);
 
-  void onPlayerEntityDeath(Player player);
+  void onPlayerEntityDeath(Player player, bool didAnAssistantDie);
 
   Database*          m_database;
   Ui::MainWindow     ui;

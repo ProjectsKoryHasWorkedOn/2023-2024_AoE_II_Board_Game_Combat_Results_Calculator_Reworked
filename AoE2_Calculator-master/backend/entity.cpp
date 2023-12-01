@@ -434,59 +434,54 @@ void Entity::outputEntity(std::string playerName)
         displayedArmorClass[13] = true;
       }
       else if ((armorClass[14] == true) && (displayedArmorClass[14] == false)) {
-        displayColorfulText(
-          "bold", "white", "blue", "Standard_Building", false);
-        displayed
+        displayColorfulText("bold", "white", "blue", "Stone_Defence", false);
+        displayedArmorClass[14] = true;
       }
       else if ((armorClass[15] == true) && (displayedArmorClass[15] == false)) {
-        displayColorfulText("bold", "white", "blue", "Stone_Defence", false);
+        displayColorfulText("bold", "white", "blue", "Turtle_Ship", false);
         displayedArmorClass[15] = true;
       }
       else if ((armorClass[16] == true) && (displayedArmorClass[16] == false)) {
-        displayColorfulText("bold", "white", "blue", "Turtle_Ship", false);
+        displayColorfulText("bold", "white", "blue", "Unique_Unit", false);
         displayedArmorClass[16] = true;
       }
       else if ((armorClass[17] == true) && (displayedArmorClass[17] == false)) {
-        displayColorfulText("bold", "white", "blue", "Unique_Unit", false);
+        displayColorfulText("bold", "white", "blue", "Wall_&_Gate", false);
         displayedArmorClass[17] = true;
       }
       else if ((armorClass[18] == true) && (displayedArmorClass[18] == false)) {
-        displayColorfulText("bold", "white", "blue", "Wall_&_Gate", false);
+        displayColorfulText("bold", "white", "blue", "Elephant", false);
         displayedArmorClass[18] = true;
       }
       else if ((armorClass[19] == true) && (displayedArmorClass[19] == false)) {
-        displayColorfulText("bold", "white", "blue", "Elephant", false);
+        displayColorfulText("bold", "white", "blue", "Hero", false);
         displayedArmorClass[19] = true;
       }
       else if ((armorClass[20] == true) && (displayedArmorClass[20] == false)) {
-        displayColorfulText("bold", "white", "blue", "Hero", false);
+        displayColorfulText("bold", "white", "blue", "Demolition_Ship", false);
         displayedArmorClass[20] = true;
       }
       else if ((armorClass[21] == true) && (displayedArmorClass[21] == false)) {
-        displayColorfulText("bold", "white", "blue", "Demolition_Ship", false);
+        displayColorfulText("bold", "white", "blue", "Galley", false);
         displayedArmorClass[21] = true;
       }
-      else if ((armorClass[22] == true) && (displayedArmorClass[22] == false)) {
-        displayColorfulText("bold", "white", "blue", "Galley", false);
-        displayedArmorClass[22] = true;
-      }
-      else if ((armorClass[23] == true) && (displayedArmorClass[23] == false)) {
+      else if ((armorClass[22] == true) && (displayedarmorClass[22] == false)) {
         displayColorfulText("bold", "white", "blue", "Fire_Ship", false);
-        displayedArmorClass[23] = true;
+        displayedarmorClass[22] = true;
       }
-      else if ((armorClass[24] == true) && (displayedArmorClass[24] == false)) {
+      else if ((armorClass[23] == true) && (displayedarmorClass[23] == false)) {
         displayColorfulText("bold", "white", "blue", "Watch_Tower", false);
-        displayedArmorClass[24] = true;
+        displayedarmorClass[23] = true;
       }
-      else if ((armorClass[25] == true) && (displayedArmorClass[25] == false)) {
+      else if ((armorClass[24] == true) && (displayedarmorClass[24] == false)) {
         displayColorfulText("bold", "white", "blue", "Town_Center", false);
-        displayedArmorClass[25] = true;
+        displayedarmorClass[24] = true;
       }
-      else if ((armorClass[26] == true) && (displayedArmorClass[26] == false)) {
+      else if ((armorClass[25] == true) && (displayedarmorClass[25] == false)) {
         displayColorfulText("bold", "white", "blue", "Land_Unit", false);
-        displayedArmorClass[26] = true;
+        displayedarmorClass[25] = true;
       }
-      else if ((armorClass[26] == true) && (displayedArmorClass[27] == false)) {
+      else if ((armorClass[25] == true) && (displayedArmorClass[27] == false)) {
         displayColorfulText("bold", "white", "blue", "Longboat", false);
         displayedArmorClass[27] = true;
       }
