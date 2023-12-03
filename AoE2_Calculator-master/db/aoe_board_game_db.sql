@@ -69,7 +69,8 @@ VALUES
 ('Watch tower building'),
 ('Town center building'),
 ('Land unit'),
-('Longboat (Viking)');
+('Longboat (Viking)'),
+('Villager');
 
 /* Tables with 1 FK */
 DROP TABLE IF EXISTS Events;
@@ -124,8 +125,6 @@ VALUES
 ('3', 'You Will Die! (Saracen)', 'This battle goes for four rounds of normal combat, instead of 2 rounds. No retreat is allowed without event card effect. Play anytime.'),
 ('3', 'Zealous Monks', 'Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. Limit 2 per deck.');
 
-
-
 DROP TABLE IF EXISTS Technologies;
 CREATE TABLE IF NOT EXISTS Technologies(
   /* PK */ technologyID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -158,11 +157,6 @@ VALUES
 ('2', 'Scale Barding Armor', '2', '0', '0'),
 ('2', 'Scale Mail Armor', '2', '0', '0'),
 ('3', 'Sanctity {2E}', '1', '0', '0');
-
-
-
-
-
 
 DROP TABLE IF EXISTS Units;
 CREATE TABLE IF NOT EXISTS Units(
@@ -421,8 +415,79 @@ VALUES
 ('38','75','330'),
 ('38','100','440');
 
-
 /* Tables with 2+ FKs */
+DROP TABLE IF EXISTS WhatTechnologiesAppliesToWhatArmorClasses;
+CREATE TABLE IF NOT EXISTS WhatTechnologiesAppliesToWhatArmorClasses(
+  /* PK */ technologyArmorClassesID INTEGER PRIMARY KEY AUTOINCREMENT,
+  /* FK */ technologyID INTEGER NOT NULL,
+  /* FK */ armorID INTEGER NOT NULL,
+  /* FK references */ FOREIGN KEY(armorID) references ArmorClasses(armorID)
+);
+
+INSERT INTO WhatTechnologiesAppliesToWhatArmorClasses
+(technologyID, armorID)
+VALUES
+/* Blast Furnace (1) */
+('1','5'),
+('1','9'),
+/* Bodkin Arrow (2) */
+('2','1'),
+('2','6'),
+('2','24'),
+('2','4'),
+('2','25'),
+('2','22'),
+('2','27'),
+/* Bracer (3) */
+('3','1'),
+('3','6'),
+('3','24'),
+('3','4'),
+('3','25'),
+('3','22'),
+('3','27'),
+/* Chain Barding Armor (4) */
+('4','5'),
+/* Chain Mail Armor (5) */
+('5','9'),
+/* Fletching (6) */
+('6','1'),
+('6','6'),
+('6','24'),
+('6','4'),
+('6','25'),
+('6','22'),
+('6','27'),
+/* Forging (7) */
+('7','5'),
+('7','9'),
+/* Hoardings (8) */
+('8','4'),
+/* Iron Casting (9) */
+('9','5'),
+('9','9'),
+/* Leather Archer Armor (10) */
+('10','1'),
+('10','6'),
+/* Loom (11) */
+('11','28'),
+/* Padded Archer Armor (12) */
+('12','1'),
+('12','6'),
+/* Plate Barding Armor (13) */
+('13','5'),
+/* Plate Mail Armor (14) */
+('13','9'),
+/* Ring Archer Armor (15) */
+('15','1'),
+('15','6'),
+/* Scale Barding Armor (16) */
+('16','5'),
+/* Scale Mail Armor (17) */
+('17','9'),
+/* Sanctity {2E} (18) */
+('18','10');
+
 DROP TABLE IF EXISTS CivSpecificEvents;
 CREATE TABLE IF NOT EXISTS CivSpecificEvents(
   /* PK */ civSpecificEventID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -881,7 +946,9 @@ VALUES
 ('111','26'),
 /* Longboat (Viking) (27) */
 ('21','27'),
-('59','27');
+('59','27'),
+/* Villager (28) */
+('108','28');
 
 DROP TABLE IF EXISTS BuildingArmorClasses;
 CREATE TABLE IF NOT EXISTS BuildingArmorClasses(

@@ -33,7 +33,7 @@ public:
     Entity entityToApplyModifiersTo,
     Entity entityToCheckArmorClassesOf);
 
-  Entity applyTechnologyEffects(Entity entity);
+  Entity applyTechnologyEffects(Entity entity, int * playerTechnologies);
 
 private:
   QSqlDatabase m_database;

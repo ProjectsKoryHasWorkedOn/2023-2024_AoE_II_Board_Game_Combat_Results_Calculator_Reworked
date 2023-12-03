@@ -44,6 +44,7 @@ struct Entity {
   armorClass[24] -> town_center
   armorClass[25] -> land_unit
   armorClass[26] -> longboat
+  armorClass[27] -> villager
   */
   bool onlyAttacksInTheSecondRoundOfStandardCombat;
   bool onlyAttacksOnce;
