@@ -17,6 +17,22 @@
    <item row="0" column="0">
     <widget class="QTableView" name="tableView"/>
    </item>
+   <item row="1" column="0">
+    <widget class="QListWidget" name="tablesListWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1677215</width>
+       <height>200</height>
+      </size>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

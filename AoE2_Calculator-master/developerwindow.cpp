@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include <QSqlDatabase>
 #include <QSqlDriver>
 #include <QSqlError>
@@ -10,7 +12,16 @@ DeveloperWindow::DeveloperWindow(const QSqlDatabase& database, QWidget* parent)
 {
   ui.setupUi(this);
   setTitle();
-  showTable("Units");
+
+  connect(
+    ui.tablesListWidget,
+    &QListWidget::itemClicked,
+    this,
+    &DeveloperWindow::onListItemClicked);
+
+  loadTableNamesIntoListWidget();
+
+  selectItem("Units");
 }
 
 void DeveloperWindow::showTable(const QString& table)
@@ -31,7 +42,32 @@ void DeveloperWindow::showTable(const QString& table)
     QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed);
 }
 
+void DeveloperWindow::onListItemClicked(QListWidgetItem* item)
+{
+  if (item == nullptr) {
+    return;
+  }
+
+  showTable(item->text());
+}
+
 void DeveloperWindow::setTitle()
 {
   setWindowTitle("Developer window");
+}
+
+void DeveloperWindow::loadTableNamesIntoListWidget()
+{
+  const QStringList tableNames{m_database.driver()->tables(QSql::Tables)};
+  // There is also QSql::Views
+  ui.tablesListWidget->addItems(tableNames);
+}
+
+void DeveloperWindow::selectItem(const QString& tableName)
+{
+  const QList<QListWidgetItem*> items{
+    ui.tablesListWidget->findItems(tableName, Qt::MatchExactly)};
+  assert(items.size() == 1 && "Unexpected item count");
+  ui.tablesListWidget->setCurrentItem(items.front());
+  ui.tablesListWidget->itemClicked(items.front());
 }

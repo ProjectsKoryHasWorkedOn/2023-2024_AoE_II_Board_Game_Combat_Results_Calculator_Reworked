@@ -16,8 +16,15 @@ public:
 public slots:
   void showTable(const QString& table);
 
+private slots:
+  void onListItemClicked(QListWidgetItem* item);
+
 private:
   void setTitle();
+
+  void loadTableNamesIntoListWidget();
+
+  void selectItem(const QString& tableName);
 
   Ui::DeveloperWindow ui;
   const QSqlDatabase& m_database;
