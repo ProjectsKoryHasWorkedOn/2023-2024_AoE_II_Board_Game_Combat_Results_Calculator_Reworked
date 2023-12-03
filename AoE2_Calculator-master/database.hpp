@@ -25,7 +25,9 @@ public:
 
   std::unordered_map<std::string, Entity> getBuildingEntities();
 
-  Entity getUnitModifiers(Entity entityToApplyModifiersTo, Entity entityToCheckArmorClassesOf);
+  Entity getUnitModifiers(
+    Entity entityToApplyModifiersTo,
+    Entity entityToCheckArmorClassesOf);
 
 private:
   QSqlDatabase m_database;

@@ -5,9 +5,6 @@
 #include <functional>
 #include <iostream> // Using: cin, cout
 
-
-
-
 class CombatCalculatorCallbacks {
 public:
   explicit CombatCalculatorCallbacks(

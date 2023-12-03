@@ -51,7 +51,6 @@ void modifiersCalculator::applyRockPaperScissorsEffects()
   Entity applyRockPaperScissorsModifiers;
   Entity comparisonEntity;
 
-
   // Behaviour: Set the entity and the comparison entity (to make things clear)
   if (playerNumber == 1) {
     applyRockPaperScissorsModifiers = p1BattleParticipant;

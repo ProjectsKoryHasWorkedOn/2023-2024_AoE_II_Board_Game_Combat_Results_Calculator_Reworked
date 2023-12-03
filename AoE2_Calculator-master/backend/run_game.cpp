@@ -22,7 +22,9 @@ void outputRemainingDamage(
 }
 
 /** The main function **/
-int runGame(Database* database, std::function<void(Player, bool)> onPlayerEntityDeath)
+int runGame(
+  Database*                         database,
+  std::function<void(Player, bool)> onPlayerEntityDeath)
 {
   /** Simple declarations **/
   // Integer: The player numbers

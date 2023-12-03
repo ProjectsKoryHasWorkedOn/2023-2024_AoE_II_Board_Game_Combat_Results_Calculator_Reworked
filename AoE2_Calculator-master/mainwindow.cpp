@@ -634,7 +634,9 @@ void MainWindow::on_calculateResultsButton_clicked()
     ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
   // Calculate the results of a battle
-  runGame(m_database, [this](Player player, bool didAnAsssitantDie) { onPlayerEntityDeath(player, didAnAsssitantDie); });
+  runGame(m_database, [this](Player player, bool didAnAsssitantDie) {
+    onPlayerEntityDeath(player, didAnAsssitantDie);
+  });
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -2301,18 +2303,20 @@ void MainWindow::filterBasedOnAge(QString player)
 
 void MainWindow::onPlayerEntityDeath(Player player, bool didAnAssistantDie)
 {
-  if(didAnAssistantDie == false){
-    QListWidget* battleParticipantsListWidget
-      = player == Player::Player1 ? ui.player1EntityNames : ui.player2EntityNames;
+  if (didAnAssistantDie == false) {
+    QListWidget* battleParticipantsListWidget = player == Player::Player1
+                                                  ? ui.player1EntityNames
+                                                  : ui.player2EntityNames;
 
     getEntityAnimationForSelectedEntity(
       battleParticipantsListWidget->currentItem()->text(),
       player == Player::Player1 ? "1" : "2",
       "_death");
   }
-  else if(didAnAssistantDie == true){
+  else if (didAnAssistantDie == true) {
     QListWidget* assistantBattleParticipantsListWidget
-      = player == Player::Player1 ? ui.player1EntityNames : ui.player2EntityNames;
+      = player == Player::Player1 ? ui.player1EntityNames
+                                  : ui.player2EntityNames;
 
     getAssistantEntityAnimationForSelectedAssistant(
       assistantBattleParticipantsListWidget->currentItem()->text(),

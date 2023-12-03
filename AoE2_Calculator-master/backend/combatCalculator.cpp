@@ -10,8 +10,6 @@
 #include <stdlib.h> // Using: atoi
 #include <string>   // Using: string
 
-
-
 CombatCalculatorCallbacks::CombatCalculatorCallbacks(
   std::function<void(Player, bool)> onPlayerEntityDeath)
   : m_onPlayerEntityDeath{std::move(onPlayerEntityDeath)}
@@ -194,14 +192,12 @@ void combatCalculator::checkIfDead()
   if (p1BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
 
-
-    if(p1BattleParticipant.entityName == "Monk"){
+    if (p1BattleParticipant.entityName == "Monk") {
       m_callbacks->getOnPlayerEntityDeath()(Player::Player1, true);
     }
-    else{
+    else {
       m_callbacks->getOnPlayerEntityDeath()(Player::Player1, false);
     }
-
 
     if (p1BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
@@ -210,13 +206,12 @@ void combatCalculator::checkIfDead()
   else if (p2BattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
 
-    if(p2BattleParticipant.entityName == "Monk"){
+    if (p2BattleParticipant.entityName == "Monk") {
       m_callbacks->getOnPlayerEntityDeath()(Player::Player2, true);
     }
-    else{
+    else {
       m_callbacks->getOnPlayerEntityDeath()(Player::Player2, false);
     }
-
 
     if (p2BattleParticipant.entityName == "Wonder") {
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
