@@ -390,7 +390,6 @@ static QString fetchArmorClasses(const Entity& entity)
   return armorClasses;
 }
 
-// Todo: Work out how modifiers might work
 // No buildings deal bonus damage (there are no building modifiers)
 // Just unit modifiers
 Entity Database::getUnitModifiers(
@@ -455,6 +454,27 @@ WHERE u.unitID = um.unitID AND u.unitName = '%1' AND um.armorID IN %2;)"}
   }
 
   return entityToApplyModifiersTo;
+}
+
+Entity Database::applyTechnologyEffects(Entity entity)
+{
+  const QString entityName = MainWindow::convertUnderscoresToSpaces(
+    QString::fromStdString(entity.entityName));
+  /*
+    const QString queryText{QString{R"(
+  SELECT
+    u.unitName,
+    um.unitStandardDamageModifier,
+    um.unitRangedDamageModifier,
+    um.doesTheUnitStandardDamageModifierStack AS "s.stacks",
+    um.doesTheUnitRangedDamageModifierStack AS "r.stacks"
+  FROM
+      Units u, UnitModifiers um
+  WHERE u.unitID = um.unitID AND u.unitName = '%1' AND um.armorID IN %2;)"}
+                              .arg(entityToApplyModifiersToName, armorClasses)};
+  QSqlQuery query{queryText};
+*/
+  return entity;
 }
 
 // Todo: Work out how modifiers might work for technologies

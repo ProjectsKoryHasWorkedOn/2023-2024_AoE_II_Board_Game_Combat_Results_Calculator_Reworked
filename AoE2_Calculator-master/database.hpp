@@ -29,6 +29,8 @@ public:
     Entity entityToApplyModifiersTo,
     Entity entityToCheckArmorClassesOf);
 
+  Entity applyTechnologyEffects(Entity entity);
+
 private:
   QSqlDatabase m_database;
 };
