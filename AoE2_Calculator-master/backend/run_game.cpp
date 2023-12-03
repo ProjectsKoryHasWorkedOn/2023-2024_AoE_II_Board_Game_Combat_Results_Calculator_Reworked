@@ -83,7 +83,7 @@ int runGame(
   fileImporter importFile{database};
 
   // Object: The modifiers calculator object
-  modifiersCalculator theModifiersCalculator;
+  modifiersCalculator theModifiersCalculator{database};
 
   // Object: The combat calculator superclass and the combat rounds subclasses
   CombatCalculatorState     combatCalculatorState{};

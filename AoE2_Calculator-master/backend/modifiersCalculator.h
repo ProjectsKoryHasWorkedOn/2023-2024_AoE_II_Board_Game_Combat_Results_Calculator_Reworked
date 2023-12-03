@@ -4,10 +4,12 @@
 #include <iostream> // Using: cin, cout
 
 /** The modifiers calculator class **/
-#ifndef MODIFIERS_CALCULATOR_H
-#define MODIFIERS_CALCULATOR_H
+class Database;
+
 class modifiersCalculator {
 protected:
+  Database* m_database;
+
   // Behaviour: Store information about the entities
   Entity p1BattleParticipant;
   Entity p2BattleParticipant;
@@ -26,7 +28,7 @@ protected:
 
 public:
   // Functions: The constructor and deconstructor
-  modifiersCalculator();
+  explicit modifiersCalculator(Database* database);
   ~modifiersCalculator();
 
   // Function: Set the battle participants
@@ -56,4 +58,3 @@ public:
   // relevant event cards, and 4) quantity for player 1's battle participant
   Entity applyAllModifiers(int inputReturnMode);
 };
-#endif // MODIFIERS_CALCULATOR_H

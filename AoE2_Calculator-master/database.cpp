@@ -366,6 +366,30 @@ INNER JOIN
   return map;
 }
 
+static QString fetchArmorClasses(const Entity& entity)
+{
+  QString     armorClasses{};
+  QTextStream stream{&armorClasses};
+  stream << '(';
+  bool hasOutputBefore{false};
+
+  for (int i{0}; i < Entity::numberOfArmorClasses; ++i) {
+    if (entity.armorClass[i]) {
+      if (hasOutputBefore) {
+        stream << ", '" << (i + 1) << '\'';
+      }
+      else {
+        stream << '\'' << (i + 1) << '\'';
+      }
+
+      hasOutputBefore = true;
+    }
+  }
+
+  stream << ')';
+  return armorClasses;
+}
+
 // Todo: Work out how modifiers might work
 // No buildings deal bonus damage (there are no building modifiers)
 // Just unit modifiers
@@ -375,36 +399,31 @@ Entity Database::getUnitModifiers(
 {
   QString entityToApplyModifiersToName
     = QString::fromStdString(entityToApplyModifiersTo.entityName);
+  entityToApplyModifiersToName
+    = MainWindow::convertUnderscoresToSpaces(entityToApplyModifiersToName);
+  const QString armorClasses{fetchArmorClasses(entityToCheckArmorClassesOf)};
+  qDebug() << "armorClasses:" << armorClasses;
 
-  // Todo: Implement in SQL database
-  bool doesTheValueStack;
-
-  bool entityToCheckArmorClassesOfArmorClasses[entityToCheckArmorClassesOf
-                                                 .numberOfArmorClasses];
-
-  for (int i = 0; i < entityToCheckArmorClassesOf.numberOfArmorClasses; i++) {
-    if (entityToCheckArmorClassesOf.armorClass[i] == true) {
-      entityToCheckArmorClassesOfArmorClasses[i] = true;
-    }
-  }
-
-  QSqlQuery query{
-    QString{R"(
+  const QString queryText{QString{R"(
 SELECT
-    um.unitStandardDamageModifier,
-    um.unitRangedDamageModifier,
-    um.doesTheModifierStack
+  u.unitName,
+  um.unitStandardDamageModifier,
+  um.unitRangedDamageModifier,
+  um.doesTheUnitStandardDamageModifierStack AS "s.stacks",
+  um.doesTheUnitRangedDamageModifierStack AS "r.stacks"
 FROM
     Units u, UnitModifiers um
-WHERE u.unitID = um.unitID AND u.unitName == %1 AND um.armorID == %2;)"}
-      .arg(
-        entityToApplyModifiersToName,
-        QString::number(entityToCheckArmorClassesOfArmorClasses[3]))};
+WHERE u.unitID = um.unitID AND u.unitName = '%1' AND um.armorID IN %2;)"}
+                            .arg(entityToApplyModifiersToName, armorClasses)};
+  QSqlQuery     query{queryText};
+  qDebug().noquote() << "query:" << queryText;
 
   const int unitStandardDamageModifierIndex{
     query.record().indexOf("unitStandardDamageModifier")};
   const int unitRangedDamageModifierIndex{
     query.record().indexOf("unitRangedDamageModifier")};
+  const int doesStandardStackIndex{query.record().indexOf("s.stacks")};
+  const int doesRangedStackIndex{query.record().indexOf("r.stacks")};
 
   while (query.next()) {
     // If it's found and > 0, return the entityToApplyModifiersTo with the
@@ -415,14 +434,23 @@ WHERE u.unitID = um.unitID AND u.unitName == %1 AND um.armorID == %2;)"}
       query.value(unitStandardDamageModifierIndex).toInt()};
     const int unitRangedDamage{
       query.value(unitRangedDamageModifierIndex).toInt()};
+    const bool doesStandardStack{
+      query.value(doesStandardStackIndex).toString() == "Y"};
+    const bool doesRangedStack{
+      query.value(doesRangedStackIndex).toString() == "Y"};
 
-    if (doesTheValueStack == true) {
+    if (doesStandardStack) {
       entityToApplyModifiersTo.standardDamage += unitStandardDamage;
+    }
+    else if (unitStandardDamage != 0) {
+      entityToApplyModifiersTo.standardDamage = unitStandardDamage;
+    }
+
+    if (doesRangedStack) {
       entityToApplyModifiersTo.rangedDamage += unitRangedDamage;
     }
-    else {
-      entityToApplyModifiersTo.standardDamage = unitStandardDamage;
-      entityToApplyModifiersTo.rangedDamage   = unitRangedDamage;
+    else if (unitRangedDamage != 0) {
+      entityToApplyModifiersTo.rangedDamage = unitRangedDamage;
     }
   }
 
