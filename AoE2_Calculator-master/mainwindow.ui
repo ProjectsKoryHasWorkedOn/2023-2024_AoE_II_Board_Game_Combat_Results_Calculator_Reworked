@@ -557,6 +557,7 @@
     <addaction name="closeProgram"/>
     <addaction name="separator"/>
     <addaction name="menuOptions"/>
+    <addaction name="actionShow_developer_window"/>
    </widget>
    <widget class="QMenu" name="menuPlayer_details">
     <property name="title">
@@ -684,6 +685,11 @@
   <action name="actionSet_civilization_of_player_2">
    <property name="text">
     <string>Set player 2's civilization</string>
+   </property>
+  </action>
+  <action name="actionShow_developer_window">
+   <property name="text">
+    <string>Show developer window</string>
    </property>
   </action>
  </widget>

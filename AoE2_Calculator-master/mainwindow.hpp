@@ -117,6 +117,8 @@ private slots:
 
   void on_actionSet_civilization_of_player_2_triggered();
 
+  void onShowDeveloperWindowTriggered();
+
 private:
   void initializeEntityAliases();
 

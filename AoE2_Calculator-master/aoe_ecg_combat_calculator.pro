@@ -31,6 +31,7 @@ SOURCES += \
     csv/player_medieval_ages.cpp \
     csv/player_names.cpp \
     database.cpp \
+    developerwindow.cpp \
     dialog_input.cpp \
     file_paths.cpp \
     main.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     csv/player_names.h \
     csv/technologies.h \
     database.hpp \
+    developerwindow.hpp \
     dialog_input.h \
     file_paths.h \
     mainwindow.h \
@@ -74,6 +76,7 @@ HEADERS += \
 
 FORMS += \
     aboutwindow.ui \
+    developerwindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.

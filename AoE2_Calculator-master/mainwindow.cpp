@@ -3,6 +3,7 @@
 #include "aboutwindow.h"      // A window this window can open
 #include "backend/run_game.h" // Age of Empires combat results calculator v1.2
 #include "database.hpp"
+#include "developerwindow.hpp"
 #include "dialog_input.h"
 #include "file_paths.h"
 #include "soundEffects.h" // Sound playing class
@@ -145,6 +146,12 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   ui.setupUi(this);
   DialogInput::initialize(
     this, retreatingPromptAnswer, convertingHealingPromptAnswer);
+
+  connect(
+    ui.actionShow_developer_window,
+    &QAction::triggered,
+    this,
+    &MainWindow::onShowDeveloperWindowTriggered);
 
   QIntValidator myName;
   myName.setRange(100, 999);
@@ -1444,6 +1451,12 @@ void MainWindow::on_actionSet_set_color_of_player_2_triggered()
   player2Color = color.name();
 
   updatePlayerNames();
+}
+
+void MainWindow::onShowDeveloperWindowTriggered()
+{
+  DeveloperWindow developerWindow{m_database->getDatabase()};
+  developerWindow.exec();
 }
 
 void MainWindow::initializeEntityAliases()

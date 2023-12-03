@@ -11,6 +11,10 @@ class Database {
 public:
   Database();
 
+  QSqlDatabase& getDatabase();
+
+  const QSqlDatabase& getDatabase() const;
+
   int runSqlScript(const QString& fileName);
 
   QStringList getUnitNames(int ageID);

@@ -17,6 +17,16 @@ Database::Database() : m_database{QSqlDatabase::addDatabase("QSQLITE")}
   }
 }
 
+QSqlDatabase& Database::getDatabase()
+{
+  return m_database;
+}
+
+const QSqlDatabase& Database::getDatabase() const
+{
+  return m_database;
+}
+
 // This was written by a numbat
 // See:
 // https://www.qtcentre.org/threads/27167-How-can-i-execute-a-database-script-within-Qt
