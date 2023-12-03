@@ -124,6 +124,8 @@ VALUES
 ('3', 'You Will Die! (Saracen)', 'This battle goes for four rounds of normal combat, instead of 2 rounds. No retreat is allowed without event card effect. Play anytime.'),
 ('3', 'Zealous Monks', 'Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. Limit 2 per deck.');
 
+
+
 DROP TABLE IF EXISTS Technologies;
 CREATE TABLE IF NOT EXISTS Technologies(
   /* PK */ technologyID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -156,6 +158,10 @@ VALUES
 ('2', 'Scale Barding Armor', '2', '0', '0'),
 ('2', 'Scale Mail Armor', '2', '0', '0'),
 ('3', 'Sanctity {2E}', '1', '0', '0');
+
+
+
+
 
 
 DROP TABLE IF EXISTS Units;
