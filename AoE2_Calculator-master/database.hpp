@@ -1,5 +1,6 @@
 #ifndef DATABASE_HPP
 #define DATABASE_HPP
+#include <span>
 #include <unordered_map>
 
 #include <QSqlDatabase>
@@ -33,7 +34,10 @@ public:
     Entity entityToApplyModifiersTo,
     Entity entityToCheckArmorClassesOf);
 
-  Entity applyTechnologyEffects(Entity entity, int * playerTechnologies);
+  // size: 18
+  Entity applyTechnologyEffects(
+    Entity         entity,
+    std::span<int> playerTechnologies);
 
 private:
   QSqlDatabase m_database;

@@ -9,7 +9,8 @@
 #include "modifiersCalculator.h" // Using: modifiers calculator class
 #include <cstdlib>               // Using: exit(EXIT_FAILURE)
 #include <iostream>              // Using: cin, cout
-#include <string>                // Using: string
+#include <memory>
+#include <string> // Using: string
 
 /** Output the remaning damage **/
 void outputRemainingDamage(
@@ -20,6 +21,9 @@ void outputRemainingDamage(
   std::cout << "remaning damage value p1: " << inputRemainingDamageP1 << "<br>";
   std::cout << "remaning damage value p2: " << inputRemainingDamageP2 << "<br>";
 }
+
+// * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
+extern const int technologiesRows = 18, eventsRows = 41, playerAgeRows = 2;
 
 /** The main function **/
 int runGame(
@@ -38,9 +42,6 @@ int runGame(
 
   // Constant integer: The number of rows inside of the technology, event, and
   // player details files
-
-  // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
-  const int technologiesRows = 18, eventsRows = 41, playerAgeRows = 2;
 
   // Integer: The rounds of combat
   int monkCombatRounds        = 1;
@@ -114,26 +115,32 @@ int runGame(
   // active technologies Player 1
   p1_technologies_array = importFile.aSplitColumnFile(
     "import/technologies_p1.csv", technologiesRows);
+  std::unique_ptr<int[]> p1TechUp(p1_technologies_array);
 
   // Player 2
   p2_technologies_array = importFile.aSplitColumnFile(
     "import/technologies_p2.csv", technologiesRows);
+  std::unique_ptr<int[]> p2TechUp(p2_technologies_array);
 
   // Behaviour: Load "events_[p1/p2].csv" and get information about the active
   // events Player 1
   p1_events_array
     = importFile.aSplitColumnFile("import/events_p1.csv", eventsRows);
+  std::unique_ptr<int[]> p1EventsUp(p1_events_array);
 
   // Player 2
   p2_events_array
     = importFile.aSplitColumnFile("import/events_p2.csv", eventsRows);
+  std::unique_ptr<int[]> p2EventsUp(p2_events_array);
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
   player_age_array
     = importFile.aSplitColumnFile("import/playerAge.csv", playerAgeRows);
+  std::unique_ptr<int[]> playerAgeUp(player_age_array);
 
   playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
+  std::unique_ptr<std::string[]> playerNamesUp(playerNamesArray);
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants

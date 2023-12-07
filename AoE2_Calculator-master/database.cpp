@@ -461,16 +461,15 @@ WHERE u.unitID = um.unitID AND u.unitName = '%1' AND um.armorID IN %2;)"}
   return entityToApplyModifiersTo;
 }
 
-
-
-static QString fetchTechnologyIDs(int * inputTechnologies)
+static QString fetchTechnologyIDs(std::span<int> inputTechnologies)
 {
   QString     technologies{};
   QTextStream stream{&technologies};
   stream << '(';
   bool hasOutputBefore{false};
 
-  for (int i{0}; i < 18 /* num. of technology rows */; ++i) {
+  for (int i{0}; i < inputTechnologies.size() /* num. of technology rows */;
+       ++i) {
     if (inputTechnologies[i]) {
       if (hasOutputBefore) {
         stream << ", '" << (i + 1) << '\'';
@@ -487,16 +486,17 @@ static QString fetchTechnologyIDs(int * inputTechnologies)
   return technologies;
 }
 
-
 // Todo: Work out how modifiers might work for technologies
 // Should be similar to what we did for the units
-Entity Database::applyTechnologyEffects(Entity entityToApplyModifiersTo, int * playerTechnologies)
+Entity Database::applyTechnologyEffects(
+  Entity         entityToApplyModifiersTo,
+  std::span<int> playerTechnologies)
 {
   const QString technologyIDs{fetchTechnologyIDs(playerTechnologies)};
 
   const QString armorClasses{fetchArmorClasses(entityToApplyModifiersTo)};
 
-    const QString queryText{QString{R"(
+  const QString queryText{QString{R"(
   SELECT
     t.technologyStandardDamageModifier,
     t.technologyRangedDamageModifier,
@@ -504,31 +504,29 @@ Entity Database::applyTechnologyEffects(Entity entityToApplyModifiersTo, int * p
   FROM
       Technologies t, WhatTechnologiesAppliesToWhatArmorClasses wtatwac
   WHERE t.technologyID = wtatwac.technologyID AND t.technologyID IN %1 AND wtatwac.armorID IN %2;)"}
-                              .arg(technologyIDs, armorClasses)};
-
+                            .arg(technologyIDs, armorClasses)};
 
   QSqlQuery query{queryText};
 
-    const int technologyStandardDamageModifierIndex{
-                                              query.record().indexOf("technologyStandardDamageModifier")};
-    const int technologyRangedDamageModifierIndex{
-                                            query.record().indexOf("technologyRangedDamageModifier")};
-    const int technologyHealthModifierIndex{query.record().indexOf("technologyHealthModifier")};
+  const int technologyStandardDamageModifierIndex{
+    query.record().indexOf("technologyStandardDamageModifier")};
+  const int technologyRangedDamageModifierIndex{
+    query.record().indexOf("technologyRangedDamageModifier")};
+  const int technologyHealthModifierIndex{
+    query.record().indexOf("technologyHealthModifier")};
 
-    while (query.next()) {
+  while (query.next()) {
     const int technologyStandardDamageModifier{
-                                 query.value(technologyStandardDamageModifierIndex).toInt()};
+      query.value(technologyStandardDamageModifierIndex).toInt()};
     const int technologyRangedDamageModifier{
-                               query.value(technologyRangedDamageModifierIndex).toInt()};
+      query.value(technologyRangedDamageModifierIndex).toInt()};
     const int technologyHealthModifier{
-                                 query.value(technologyHealthModifierIndex).toInt()};
+      query.value(technologyHealthModifierIndex).toInt()};
 
     entityToApplyModifiersTo.standardDamage += technologyStandardDamageModifier;
     entityToApplyModifiersTo.rangedDamage += technologyRangedDamageModifier;
     entityToApplyModifiersTo.rangedDamage += technologyHealthModifier;
-
-    }
+  }
 
   return entityToApplyModifiersTo;
 }
-

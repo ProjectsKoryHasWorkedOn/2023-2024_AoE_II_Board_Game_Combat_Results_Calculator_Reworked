@@ -3,6 +3,7 @@
 #include "database.hpp"
 #include "dialog_input.h"
 #include "entity.h" // Using: entity class
+#include "run_game.h"
 #include <cstdlib>  // Using: exit(EXIT_FAILURE)
 #include <iostream> // Using: cin, cout
 #include <string>   // Using: string
@@ -88,168 +89,9 @@ void modifiersCalculator::applyTechnologyEffects()
     applyTechnologyModifiers = p2BattleParticipant;
   }
 
-  if (playerTechnologies[0] == 1) {
-    // Blast_Furnace - +6 standardDamage to all Cavalry and Infantry
-    if (
-      (applyTechnologyModifiers.armorClass[4] == true) || // Cavalry
-      (applyTechnologyModifiers.armorClass[8] == true)) { // Infantry
-      applyTechnologyModifiers.standardDamage += 6;
-    }
-  }
-  if (playerTechnologies[1] == 1) {
-    // Bodkin_Arrow - +4 standardDamage and +2 rangedDamage to:
-    // Archer, Cavalry Archer, Tower, Castle, Town Center, Galley, Longboat
-    // I have yet to include civilization specific versions of the string
-    // searched for entities
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
-      (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
-      (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
-      (applyTechnologyModifiers.entityName
-       == "Longboat_(Viking)") // Longboat example
-    ) {
-      applyTechnologyModifiers.standardDamage += 4;
-      applyTechnologyModifiers.rangedDamage += 2;
-    }
-  }
-  if (playerTechnologies[2] == 1) {
-    // Bracer - +6 standardDamage and +3 rangedDamage to:
-    // Archer, Cavalry Archer, Tower, Castle, Town Center, Galley, Longboat
-    // I have yet to include civilization specific versions of the string
-    // searched for entities
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
-      (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
-      (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
-      (applyTechnologyModifiers.entityName
-       == "Longboat_(Viking)") // Longboat example
-    ) {
-      applyTechnologyModifiers.standardDamage += 6;
-      applyTechnologyModifiers.rangedDamage += 3;
-    }
-  }
-  if (playerTechnologies[3] == 1) {
-    // Chain_Barding_Armor - +4 HP to all Cavalry
-    if (applyTechnologyModifiers.armorClass[4] == true) { // Cavalry
-      applyTechnologyModifiers.entityHealth += 4;
-    }
-  }
-  if (playerTechnologies[4] == 1) {
-    // Chain_Mail_Armor- +4 HP to all Infantry
-    if (applyTechnologyModifiers.armorClass[8] == true) { // Infantry
-      applyTechnologyModifiers.entityHealth += 4;
-    }
-  }
-  if (playerTechnologies[5] == 1) {
-    // Fletching - +2 standardDamage and +1 rangedDamage to:
-    // Archer, Cavalry Archer, Tower, Castle, Town Center, Galley, Longboat
-    // I have yet to include civilization specific versions of the string
-    // searched for entities
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) ||  // Archer
-      (applyTechnologyModifiers.armorClass[5] == true) ||  // Cavalry Archer
-      (applyTechnologyModifiers.armorClass[23] == true) || // Watch Tower
-      (applyTechnologyModifiers.armorClass[3] == true) ||  // Castle
-      (applyTechnologyModifiers.armorClass[24] == true) || // Town Center
-      (applyTechnologyModifiers.armorClass[21] == true) || // Galley
-      (applyTechnologyModifiers.entityName
-       == "Longboat_(Viking)") // Longboat example
-    ) {
-      applyTechnologyModifiers.standardDamage += 2;
-      applyTechnologyModifiers.rangedDamage += 1;
-    }
-  }
-  if (playerTechnologies[6] == 1) {
-    // Forging - +2 standardDamage to all Cavalry and Infantry
-    if (
-      (applyTechnologyModifiers.armorClass[4] == true) || // Cavalry
-      (applyTechnologyModifiers.armorClass[8] == true)) { // Infantry
-      applyTechnologyModifiers.standardDamage += 2;
-    }
-  }
-  if (playerTechnologies[7] == 1) {
-    // Hoardings - Increase the HP of Castes by +80
-    if (applyTechnologyModifiers.armorClass[3] == true) { // Castle
-      applyTechnologyModifiers.entityHealth += 80;
-    }
-  }
-  if (playerTechnologies[8] == 1) {
-    // Iron_Casting - +4 standardDamage to all Cavalry and Infantry
-    if (
-      (applyTechnologyModifiers.armorClass[4] == true) || // Cavalry
-      (applyTechnologyModifiers.armorClass[8] == true)) { // Infantry
-      applyTechnologyModifiers.standardDamage += 4;
-    }
-  }
-  if (playerTechnologies[9] == 1) {
-    // Leather_Archer_Armor - Increase the HP of Archers, Cavalry Archers by 4
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) || // Archer
-      (applyTechnologyModifiers.armorClass[5] == true)    // Cavalry Archer
-    ) {
-      applyTechnologyModifiers.entityHealth += 4;
-    }
-  }
-  if (playerTechnologies[10] == 1) {
-    // Loom - +2 HP for Villagers
-    if (applyTechnologyModifiers.entityName == "Villager") { // Villager
-      applyTechnologyModifiers.entityHealth += 2;
-    }
-  }
-  if (playerTechnologies[11] == 1) {
-    // Padded_Archer_Armor - +2 HP to all Archers, Cavalry Archers
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) || // Archer
-      (applyTechnologyModifiers.armorClass[5] == true)    // Cavalry Archer
-    ) {
-      applyTechnologyModifiers.entityHealth += 2;
-    }
-  }
-  if (playerTechnologies[12] == 1) {
-    // Plate_Barding_Armor - +6 HP to all Cavalry
-    if (applyTechnologyModifiers.armorClass[4] == true) { // Cavalry
-      applyTechnologyModifiers.entityHealth += 6;
-    }
-  }
-  if (playerTechnologies[13] == 1) {
-    // Plate_Mail_Armor - +6 HP to all Infantry
-    if (applyTechnologyModifiers.armorClass[8] == true) { // Infantry
-      applyTechnologyModifiers.entityHealth += 6;
-    }
-  }
-  if (playerTechnologies[14] == 1) {
-    // Ring_Archer_Armor - +6 HP to all Archers, Cavalry Archers
-    if (
-      (applyTechnologyModifiers.armorClass[0] == true) || // Archer
-      (applyTechnologyModifiers.armorClass[5] == true)    // Cavalry Archer
-    ) {
-      applyTechnologyModifiers.entityHealth += 6;
-    }
-  }
-  if (playerTechnologies[15] == 1) {
-    // Scale_Barding_Armor - +2 HP to all Cavalry
-    if (applyTechnologyModifiers.armorClass[4] == true) { // Cavalry
-      applyTechnologyModifiers.entityHealth += 2;
-    }
-  }
-  if (playerTechnologies[16] == 1) {
-    // Scale_Mail_Armor - +2 HP to all Infantry
-    if (applyTechnologyModifiers.armorClass[8] == true) { // Infantry
-      applyTechnologyModifiers.entityHealth += 2;
-    }
-  }
-  if (playerTechnologies[17] == 1) {
-    // Sanctity_Test - +1 HP to all Monks
-    if (applyTechnologyModifiers.armorClass[9] == true) { // Monk
-      applyTechnologyModifiers.entityHealth += 1;
-    }
-  }
+  applyTechnologyModifiers = m_database->applyTechnologyEffects(
+    applyTechnologyModifiers,
+    std::span<int>(playerTechnologies, technologiesRows));
 
   // Behaviour: Update the Entity values
   if (playerNumber == 1) {
