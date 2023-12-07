@@ -6,7 +6,7 @@ QT       += core gui sql
 RC_ICONS = swords_clashing.ico
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia sql
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia sql pdfwidgets
 
 CONFIG += c++20
 
@@ -37,6 +37,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     output_redirector.cpp \
+    pdfwindow.cpp \
     soundEffects.cpp \
     stream_buffer.cpp \
     uicoloring.cpp
@@ -69,6 +70,7 @@ HEADERS += \
     mainwindow.h \
     mainwindow.hpp \
     output_redirector.h \
+    pdfwindow.hpp \
     player.h \
     soundEffects.h \
     stream_buffer.h \
@@ -77,7 +79,8 @@ HEADERS += \
 FORMS += \
     aboutwindow.ui \
     developerwindow.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    pdfwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

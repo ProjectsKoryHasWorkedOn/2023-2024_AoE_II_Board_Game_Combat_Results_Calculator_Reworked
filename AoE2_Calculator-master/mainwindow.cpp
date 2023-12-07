@@ -6,6 +6,7 @@
 #include "developerwindow.hpp"
 #include "dialog_input.h"
 #include "file_paths.h"
+#include "pdfwindow.hpp"
 #include "soundEffects.h" // Sound playing class
 #include <QLabel>
 
@@ -619,8 +620,13 @@ void MainWindow::on_actionUser_guide_triggered()
   QString fileName = "/documentation/user_guide.docx";
   QString filePath = workingDirectory.absolutePath() + fileName;
 
+  // TODO: HERE: Instead we want to open our PDF window.
+  PdfWindow pdfWindow{
+    workingDirectory.absolutePath() + "/documentation/user_guide.pdf"};
+  pdfWindow.exec();
+
   // Open that path
-  QDesktopServices::openUrl(filePath);
+  // QDesktopServices::openUrl(filePath);
 }
 
 // Run on click of the calculate results button
