@@ -1,11 +1,10 @@
 #include <cassert>
 
+#include "developerwindow.hpp"
 #include <QSqlDatabase>
 #include <QSqlDriver>
 #include <QSqlError>
 #include <QSqlTableModel>
-#include "developerwindow.hpp"
-
 
 DeveloperWindow::DeveloperWindow(const QSqlDatabase& database, QWidget* parent)
   : QDialog{parent}, m_database{database}
@@ -61,11 +60,11 @@ void DeveloperWindow::loadTableNamesIntoListWidget()
   QStringList tableNames{m_database.driver()->tables(QSql::Tables)};
 
   // Put in ascending order
-  std::sort(tableNames.begin(), tableNames.end()); // Has to be non-const var to sort it
+  std::sort(
+    tableNames.begin(), tableNames.end()); // Has to be non-const var to sort it
 
   // Remove bizarre "sqlite_sequence" table
   tableNames.removeAll("sqlite_sequence");
-
 
   ui.tablesListWidget->addItems(tableNames);
 }
