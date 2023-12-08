@@ -565,12 +565,10 @@
     </property>
     <addaction name="actionSet_player_1_Age"/>
     <addaction name="actionSet_name_of_player_1"/>
-    <addaction name="actionSet_set_color_of_player_1"/>
     <addaction name="actionSet_civilization_of_player_1"/>
     <addaction name="separator"/>
     <addaction name="actionSet_player_2_Age"/>
     <addaction name="actionSet_name_of_player_2"/>
-    <addaction name="actionSet_set_color_of_player_2"/>
     <addaction name="actionSet_civilization_of_player_2"/>
    </widget>
    <addaction name="menuFile"/>

@@ -58,11 +58,7 @@ private slots:
 
   void on_actionSet_name_of_player_1_triggered();
 
-  void on_actionSet_set_color_of_player_1_triggered();
-
   void updatePlayerNames();
-
-  void on_actionSet_set_color_of_player_2_triggered();
 
   void on_player2EntityNamesFilter_textChanged(
     const QString& textInsideOfElement);

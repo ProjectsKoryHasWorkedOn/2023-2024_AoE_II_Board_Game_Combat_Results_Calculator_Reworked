@@ -1,6 +1,6 @@
-QT       += core gui sql
+QT       += core gui sql pdf
 # Updated QT to a newer version (6.5.2)
-
+# If it throws an error, delete build folder and rebuild it
 
 # Set icon
 RC_ICONS = swords_clashing.ico

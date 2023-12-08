@@ -43,7 +43,6 @@
 #include <vector>
 
 // Libraries for acquiring user input
-#include <QColorDialog>
 #include <QInputDialog>
 
 // Librraries used for hotkeys
@@ -1419,42 +1418,6 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
   if (player2Name.isEmpty()) {
     player2Name = "Player 2";
   }
-
-  updatePlayerNames();
-}
-
-// Run on change of "Options" > "Set player 1's color"
-void MainWindow::on_actionSet_set_color_of_player_1_triggered()
-{
-  SFXToPlay("/sfx/ui/button_pressed.wav");
-
-  QColorDialog colorDialog;
-  colorDialog.setWindowTitle(
-    "Enter " + convertUnderscoresToSpaces(player1Name) + "'s player color");
-  colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
-  colorDialog.exec();
-
-  QColor color = colorDialog.currentColor();
-
-  player1Color = color.name();
-
-  updatePlayerNames();
-}
-
-// Run on change of "Options" > "Set player 2's color"
-void MainWindow::on_actionSet_set_color_of_player_2_triggered()
-{
-  SFXToPlay("/sfx/ui/button_pressed.wav");
-
-  QColorDialog colorDialog;
-  colorDialog.setWindowTitle(
-    "Enter " + convertUnderscoresToSpaces(player2Name) + "'s player color");
-  colorDialog.setStyleSheet(palettes.getColorDialogBoxStyling());
-  colorDialog.exec();
-
-  QColor color = colorDialog.currentColor();
-
-  player2Color = color.name();
 
   updatePlayerNames();
 }
