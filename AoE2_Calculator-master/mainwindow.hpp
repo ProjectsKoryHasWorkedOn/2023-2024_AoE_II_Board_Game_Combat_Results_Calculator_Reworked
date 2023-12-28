@@ -143,8 +143,6 @@ private:
     QStringList   listCombinations,
     Technologies* playerTechnologies);
 
-  void removeFromList(QString player);
-
   void setUnitBuildingStyleBasedOnCivilizationSelected(
     QString* playerCivilization,
     QString* playerArchitecturalStyle,
@@ -162,12 +160,12 @@ private:
 
   void initializeAnimations();
 
-  void filterBasedOnAge(QString player);
-
   void
   hideOrShowBasedOnAge(QString player, QString itemToCheckFor, bool hideOrShow);
 
   void onPlayerEntityDeath(Player player, bool didAnAssistantDie);
+
+  void filterBasedOnAgeAndCivilization(QString player);
 
   Database*          m_database;
   Ui::MainWindow     ui;

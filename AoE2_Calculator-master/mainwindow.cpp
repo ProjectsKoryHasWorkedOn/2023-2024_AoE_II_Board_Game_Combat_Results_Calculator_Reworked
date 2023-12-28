@@ -9,6 +9,7 @@
 #include "pdfwindow.hpp"
 #include "soundEffects.h" // Sound playing class
 #include <QLabel>
+#include <ranges>
 
 #include "cross-window_palette.h" // Coloring of the UI
 
@@ -398,8 +399,8 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   setColorTheUIElements();
 
   // Filter list based on age player is in for both player 1 and 2
-  filterBasedOnAge("1");
-  filterBasedOnAge("2");
+  filterBasedOnAgeAndCivilization("1");
+  filterBasedOnAgeAndCivilization("2");
 }
 
 MainWindow::~MainWindow()
@@ -548,7 +549,7 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
     ui.player1EntityNames->addItem(listWidgetItem);
   }
 
-  removeFromList("1");
+  filterBasedOnAgeAndCivilization("1");
 }
 
 // Run this when the text inside of the player 2 entities search field changes
@@ -581,7 +582,7 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
     ui.player2EntityNames->addItem(listWidgetItem);
   }
 
-  removeFromList("2");
+  filterBasedOnAgeAndCivilization("2");
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -1521,8 +1522,8 @@ void MainWindow::on_actionSet_player_1_Age_triggered()
   // update file
   m_player_medieval_age.changePlayer1MedievalAge(representationOfPlayer1Age);
 
-  // filter list based on age
-  filterBasedOnAge("1");
+  // filter list based on age and civilization
+  filterBasedOnAgeAndCivilization("1");
 }
 
 void MainWindow::on_actionSet_player_2_Age_triggered()
@@ -1555,8 +1556,8 @@ void MainWindow::on_actionSet_player_2_Age_triggered()
   // update file
   m_player_medieval_age.changePlayer2MedievalAge(representationOfPlayer2Age);
 
-  // filter list based on age
-  filterBasedOnAge("2");
+  // filter list based on age and civilization
+  filterBasedOnAgeAndCivilization("2");
 }
 
 void MainWindow::setInitialNames()
@@ -1770,56 +1771,6 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
     = defaultAnswerToConversionHealingPromptDialog.textValue();
 }
 
-void MainWindow::removeFromList(QString player)
-{
-  QString     theCivilizationOfTheCurrentPlayer;
-  QStringList listOfAllOtherCivilizations = civilizations;
-
-  QListWidget* theListOfTheCurrentPlayer;
-
-  if (player == "1") {
-    theCivilizationOfTheCurrentPlayer = player1Civilization;
-    theListOfTheCurrentPlayer         = ui.player1EntityNames;
-  }
-  else if (player == "2") {
-    theCivilizationOfTheCurrentPlayer = player2Civilization;
-    theListOfTheCurrentPlayer         = ui.player2EntityNames;
-  }
-
-  for (int i = 0; i < listOfAllOtherCivilizations.length(); i++) {
-    // Remove civilization player has selected from the list of all other
-    // civilizations
-    if (listOfAllOtherCivilizations[i].contains(
-          theCivilizationOfTheCurrentPlayer)) {
-      listOfAllOtherCivilizations[i].remove(
-        QRegularExpression(theCivilizationOfTheCurrentPlayer));
-      if (listOfAllOtherCivilizations[i].isEmpty() == true) {
-        listOfAllOtherCivilizations.removeOne("");
-      }
-    }
-    // Remove "s" character from end of civilization mame if it is present
-    if (listOfAllOtherCivilizations[i].endsWith("s", Qt::CaseSensitive)) {
-      listOfAllOtherCivilizations[i] = listOfAllOtherCivilizations[i].mid(
-        0, listOfAllOtherCivilizations[i].length() - 1);
-    }
-  }
-
-  // Now remove all other civilizations from the list on the GUI
-  for (int i = 0; i < theListOfTheCurrentPlayer->count(); i++) {
-    // Set the current item to be visible
-    theListOfTheCurrentPlayer->item(i)->setHidden(false);
-
-    // Set all current items to be invisible for each item that belongs to
-    // another civilization
-    for (int y = 0; y < listOfAllOtherCivilizations.count(); y++) {
-      if (theListOfTheCurrentPlayer->item(i)->text().contains(
-            listOfAllOtherCivilizations[y])) {
-        theListOfTheCurrentPlayer->item(i)->setHidden(true);
-      }
-    }
-  }
-}
-
 void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(
   QString* playerCivilization,
   QString* playerArchitecturalStyle,
@@ -1919,7 +1870,7 @@ void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 
   player1Civilization = player1CivilizationSelection.textValue();
 
-  removeFromList("1");
+  filterBasedOnAgeAndCivilization("1");
 
   setUnitBuildingStyleBasedOnCivilizationSelected(
     &player1Civilization, &p1BuildingArchitecturalStyle, &p1UnitStyle);
@@ -1940,7 +1891,7 @@ void MainWindow::on_actionSet_civilization_of_player_2_triggered()
 
   player2Civilization = player2CivilizationSelection.textValue();
 
-  removeFromList("2");
+  filterBasedOnAgeAndCivilization("2");
 
   setUnitBuildingStyleBasedOnCivilizationSelected(
     &player2Civilization, &p2BuildingArchitecturalStyle, &p2UnitStyle);
@@ -2186,103 +2137,6 @@ void MainWindow::hideOrShowBasedOnAge(
   }
 }
 
-void MainWindow::filterBasedOnAge(QString player)
-{
-  QString playerAge = player1Age;
-
-  if (player == "1") {
-    playerAge = player1Age;
-  }
-  else if (player == "2") {
-    playerAge = player2Age;
-  }
-
-  bool removeAge2ListElements = false;
-  bool removeAge3ListElements = false;
-  bool removeAge4ListElements = false;
-
-  if (playerAge == "Dark Age") {
-    removeAge2ListElements = true;
-    removeAge3ListElements = true;
-    removeAge4ListElements = true;
-  }
-  else if (playerAge == "Feudal Age") {
-    removeAge2ListElements = false;
-    removeAge3ListElements = true;
-    removeAge4ListElements = true;
-  }
-  else if (playerAge == "Castle Age") {
-    removeAge2ListElements = false;
-    removeAge3ListElements = false;
-    removeAge4ListElements = true;
-  }
-  else if (playerAge == "Imperial Age") {
-    removeAge2ListElements = false;
-    removeAge3ListElements = false;
-    removeAge4ListElements = false;
-  }
-
-  for (int i = 0; i < age2UnitNames.count(); i++) {
-    QString age2UnitName = age2UnitNames[i];
-    if (removeAge2ListElements == true) {
-      hideOrShowBasedOnAge(player, age2UnitName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age2UnitName, false);
-    }
-  }
-
-  for (int i = 0; i < age2BuildingNames.count(); i++) {
-    QString age2BuildingName = age2BuildingNames[i];
-    if (removeAge2ListElements == true) {
-      hideOrShowBasedOnAge(player, age2BuildingName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age2BuildingName, false);
-    }
-  }
-
-  for (int i = 0; i < age3UnitNames.count(); i++) {
-    QString age3UnitName = age3UnitNames[i];
-    if (removeAge3ListElements == true) {
-      hideOrShowBasedOnAge(player, age3UnitName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age3UnitName, false);
-    }
-  }
-
-  for (int i = 0; i < age3BuildingNames.count(); i++) {
-    QString age3BuildingName = age3BuildingNames[i];
-    if (removeAge3ListElements == true) {
-      hideOrShowBasedOnAge(player, age3BuildingName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age3BuildingName, false);
-    }
-  }
-
-  for (int i = 0; i < age4UnitNames.count(); i++) {
-    QString age4UnitName = age4UnitNames[i];
-    if (removeAge4ListElements == true) {
-      hideOrShowBasedOnAge(player, age4UnitName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age4UnitName, false);
-    }
-  }
-
-  for (int i = 0; i < age4BuildingNames.count(); i++) {
-    QString age4BuildingName = age4BuildingNames[i];
-    if (removeAge4ListElements == true) {
-      hideOrShowBasedOnAge(player, age4BuildingName, true);
-    }
-    else {
-      hideOrShowBasedOnAge(player, age4BuildingName, false);
-    }
-  }
-}
-
 void MainWindow::onPlayerEntityDeath(Player player, bool didAnAssistantDie)
 {
   if (didAnAssistantDie == false) {
@@ -2304,5 +2158,128 @@ void MainWindow::onPlayerEntityDeath(Player player, bool didAnAssistantDie)
       assistantBattleParticipantsListWidget->currentItem()->text(),
       player == Player::Player1 ? "1" : "2",
       "_death");
+  }
+}
+
+void MainWindow::filterBasedOnAgeAndCivilization(QString player)
+{
+  const QString age = (player == "1") ? player1Age : player2Age;
+  QString civ = (player == "1") ? player1Civilization : player2Civilization;
+  QListWidget const* entities
+    = (player == "1") ? ui.player1EntityNames : ui.player2EntityNames;
+  QStringList otherCivs = civilizations;
+  otherCivs.removeOne(civ);
+
+  for (int i = 0; i < otherCivs.length(); ++i) {
+    // Remove "s" character from end of civilization mame if it is present
+    if (otherCivs[i].endsWith("s", Qt::CaseSensitive)) {
+      otherCivs[i] = otherCivs[i].mid(0, otherCivs[i].length() - 1);
+    }
+  }
+
+  if (civ.endsWith("s", Qt::CaseSensitive)) {
+    civ = civ.mid(0, civ.length() - 1);
+  }
+
+  bool removeAge2ListElements = false;
+  bool removeAge3ListElements = false;
+  bool removeAge4ListElements = false;
+
+  if (age == "Dark Age") {
+    removeAge2ListElements = true;
+    removeAge3ListElements = true;
+    removeAge4ListElements = true;
+  }
+  else if (age == "Feudal Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = true;
+    removeAge4ListElements = true;
+  }
+  else if (age == "Castle Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = false;
+    removeAge4ListElements = true;
+  }
+  else if (age == "Imperial Age") {
+    removeAge2ListElements = false;
+    removeAge3ListElements = false;
+    removeAge4ListElements = false;
+  }
+
+  for (int i = 0; i < entities->count(); ++i) {
+    const QString& itemText = entities->item(i)->text();
+    entities->item(i)->setHidden(false);
+
+    // Hide it if it belongs exclusively to another civilization.
+    if (std::ranges::any_of(otherCivs, [&itemText](const QString& otherCiv) {
+          return itemText.contains(otherCiv);
+        })) {
+      entities->item(i)->setHidden(true);
+    }
+  }
+
+  // Hide those that have an incorrect age.
+  for (int i = 0; i < age2UnitNames.count(); i++) {
+    QString age2UnitName = age2UnitNames[i];
+    if (removeAge2ListElements) {
+      hideOrShowBasedOnAge(player, age2UnitName, true);
+    }
+  }
+
+  for (int i = 0; i < age2BuildingNames.count(); i++) {
+    QString age2BuildingName = age2BuildingNames[i];
+    if (removeAge2ListElements) {
+      hideOrShowBasedOnAge(player, age2BuildingName, true);
+    }
+  }
+
+  for (int i = 0; i < age3UnitNames.count(); i++) {
+    QString age3UnitName = age3UnitNames[i];
+    if (removeAge3ListElements) {
+      hideOrShowBasedOnAge(player, age3UnitName, true);
+    }
+  }
+
+  for (int i = 0; i < age3BuildingNames.count(); i++) {
+    QString age3BuildingName = age3BuildingNames[i];
+    if (removeAge3ListElements) {
+      hideOrShowBasedOnAge(player, age3BuildingName, true);
+    }
+  }
+
+  for (int i = 0; i < age4UnitNames.count(); i++) {
+    QString age4UnitName = age4UnitNames[i];
+    if (removeAge4ListElements) {
+      hideOrShowBasedOnAge(player, age4UnitName, true);
+    }
+  }
+
+  for (int i = 0; i < age4BuildingNames.count(); i++) {
+    QString age4BuildingName = age4BuildingNames[i];
+    if (removeAge4ListElements) {
+      hideOrShowBasedOnAge(player, age4BuildingName, true);
+    }
+  }
+
+  // Find those that have our civilization in parentheses and
+  // remove the plain entities that are the same without parentheses.
+  std::vector<QString> toHide;
+  for (int i = 0; i < entities->count(); ++i) {
+    const QString&  itemText = entities->item(i)->text();
+    const QString   ending   = QString(" (%1)").arg(civ);
+    const qsizetype index    = itemText.indexOf(ending);
+
+    if (index != -1) {
+      const QString entityToErase = itemText.mid(0, index);
+      toHide.push_back(entityToErase);
+    }
+  }
+
+  for (int i = 0; i < entities->count(); ++i) {
+    if (std::ranges::any_of(toHide, [entities, i](const QString& hideMe) {
+          return hideMe == entities->item(i)->text();
+        })) {
+      entities->item(i)->setHidden(true);
+    }
   }
 }
