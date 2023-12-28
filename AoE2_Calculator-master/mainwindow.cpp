@@ -2188,35 +2188,35 @@ void MainWindow::hideOrShowBasedOnAge(
 
 void MainWindow::filterBasedOnAge(QString player)
 {
-  QString* playerAge = &player1Age;
+  QString playerAge = player1Age;
 
   if (player == "1") {
-    *playerAge = player1Age;
+    playerAge = player1Age;
   }
   else if (player == "2") {
-    *playerAge = player2Age;
+    playerAge = player2Age;
   }
 
   bool removeAge2ListElements = false;
   bool removeAge3ListElements = false;
   bool removeAge4ListElements = false;
 
-  if (*playerAge == "Dark Age") {
+  if (playerAge == "Dark Age") {
     removeAge2ListElements = true;
     removeAge3ListElements = true;
     removeAge4ListElements = true;
   }
-  else if (*playerAge == "Feudal Age") {
+  else if (playerAge == "Feudal Age") {
     removeAge2ListElements = false;
     removeAge3ListElements = true;
     removeAge4ListElements = true;
   }
-  else if (*playerAge == "Castle Age") {
+  else if (playerAge == "Castle Age") {
     removeAge2ListElements = false;
     removeAge3ListElements = false;
     removeAge4ListElements = true;
   }
-  else if (*playerAge == "Imperial Age") {
+  else if (playerAge == "Imperial Age") {
     removeAge2ListElements = false;
     removeAge3ListElements = false;
     removeAge4ListElements = false;
