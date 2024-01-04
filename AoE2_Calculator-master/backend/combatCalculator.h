@@ -164,7 +164,9 @@ public:
   virtual void roundOutcome(
     int  inputRunTimes,
     int* inputP1Events,
-    int* inputP2Events)
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies)
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
 
@@ -185,7 +187,12 @@ public:
   using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a monk battle
-  void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
+  void roundOutcome(
+    int  inputRunTimes,
+    int* inputP1Events,
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies);
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
 
@@ -196,7 +203,12 @@ public:
   using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a ranged battle
-  void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
+  void roundOutcome(
+    int  inputRunTimes,
+    int* inputP1Events,
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies);
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 
@@ -207,7 +219,12 @@ public:
   using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a bombardment battle
-  void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
+  void roundOutcome(
+    int  inputRunTimes,
+    int* inputP1Events,
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies);
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 
@@ -218,6 +235,11 @@ public:
   using combatCalculator::combatCalculator;
 
   // Function: Calculate the outcome of a standard battle
-  void roundOutcome(int inputRunTimes, int* inputP1Events, int* inputP2Events);
+  void roundOutcome(
+    int  inputRunTimes,
+    int* inputP1Events,
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies);
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H

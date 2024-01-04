@@ -474,7 +474,9 @@ void combatCalculator::checkRemainingDamage(
 void monkRounds::roundOutcome(
   int  inputRunTimes,
   int* inputP1Events,
-  int* inputP2Events)
+  int* inputP2Events,
+  int* inputP1Technologies,
+  int* inputP2Technologies)
 {
   /* How the monk calculation process works:
     conversionRatehealingRate = Number of Monks (up to 5)
@@ -823,7 +825,15 @@ void monkRounds::roundOutcome(
             // 'assisting monk' for player 2 is > 1
             std::string p1AssistingMonkTarget = "0";
 
-            if (assistingMonksP1 == true) {
+            // TODO: This index is not quite correct.
+            auto doesPlayer1HaveRedemption
+              = [inputP1Technologies] {
+                  return inputP1Technologies[17] == 1;
+                };
+
+            if (
+              assistingMonksP1 && assistingMonksP2
+              && doesPlayer1HaveRedemption()) {
               std::cout << "Is " << player1Name
                         << "'s 'assistant monk' targeting " << player2Name
                         << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
@@ -1119,7 +1129,15 @@ void monkRounds::roundOutcome(
             // 'assisting monk' for player 1 is > 1 quantity
             std::string p2AssistingMonkTarget = "0";
 
-            if (assistingMonksP2 == true) {
+            // TODO: The index for redemption may not be quite correct.
+            auto doesPlayer2HaveRedemption
+              = [inputP2Technologies] {
+                  return inputP2Technologies[17] == 1;
+                };
+
+            if (
+              assistingMonksP2 && assistingMonksP1
+              && doesPlayer2HaveRedemption()) {
               std::cout << "Is " << player2Name
                         << "'s 'assistant monk' targeting " << player1Name
                         << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
@@ -1216,7 +1234,9 @@ void monkRounds::roundOutcome(
 void archerRounds::roundOutcome(
   int  inputRunTimes,
   int* inputP1Events,
-  int* inputP2Events)
+  int* inputP2Events,
+  int* inputP1Technologies,
+  int* inputP2Technologies)
 {
   // Bool: Track if a ranged unit from either players did something
   bool p1ArcherPresent = false, p2ArcherPresent = false;
@@ -1584,7 +1604,9 @@ void archerRounds::roundOutcome(
 void bombardmentRounds::roundOutcome(
   int  inputRunTimes,
   int* inputP1Events,
-  int* inputP2Events)
+  int* inputP2Events,
+  int* inputP1Technologies,
+  int* inputP2Technologies)
 {
   // Bool: Track if the bombardment attack round got activated
   bool bombardmentRoundActivated = false;
@@ -1899,7 +1921,9 @@ void bombardmentRounds::roundOutcome(
 void standardRounds::roundOutcome(
   int  inputRunTimes,
   int* inputP1Events,
-  int* inputP2Events)
+  int* inputP2Events,
+  int* inputP1Technologies,
+  int* inputP2Technologies)
 {
   // Bool: Track if the standard attack round got activated
   bool standardRoundActivated = false;

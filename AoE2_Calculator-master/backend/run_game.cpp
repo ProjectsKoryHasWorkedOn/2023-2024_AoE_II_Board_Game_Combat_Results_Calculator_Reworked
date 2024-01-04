@@ -307,7 +307,12 @@ int runGame(
 
   // Behaviour: Calculate the damage dealt for monkCombatRounds rounds of monk
   // combat
-  monkRounds.roundOutcome(monkCombatRounds, p1_events_array, p2_events_array);
+  monkRounds.roundOutcome(
+    monkCombatRounds,
+    p1_events_array,
+    p2_events_array,
+    p1_technologies_array,
+    p2_technologies_array);
 
   // Behaviour: Get the results after monkCombatRounds rounds of monk combat
   // Player 1
@@ -350,7 +355,11 @@ int runGame(
     // Behaviour: Calculate the damage dealt for archerCombatRounds rounds of
     // archer combat
     rangedRounds.roundOutcome(
-      archerCombatRounds, p1_events_array, p2_events_array);
+      archerCombatRounds,
+      p1_events_array,
+      p2_events_array,
+      p1_technologies_array,
+      p2_technologies_array);
 
     // Behaviour: Get the results after archerCombatRounds rounds of ranged
     // combat Player 1
@@ -394,7 +403,11 @@ int runGame(
       // Behaviour: Calculate the damage dealt for bombardmentCombatRounds
       // rounds of bombardment combat and display the results
       bombardmentRounds.roundOutcome(
-        bombardmentCombatRounds, p1_events_array, p2_events_array);
+        bombardmentCombatRounds,
+        p1_events_array,
+        p2_events_array,
+        p1_technologies_array,
+        p2_technologies_array);
 
       // Behaviour: Get the results after bombardmentCombatRounds rounds of
       // standard combat Player 1
@@ -432,7 +445,11 @@ int runGame(
   // Behaviour: Calculate the damage dealt for normalCombatRounds rounds of
   // standard combat and display the results
   standardRounds.roundOutcome(
-    normalCombatRounds, p1_events_array, p2_events_array);
+    normalCombatRounds,
+    p1_events_array,
+    p2_events_array,
+    p1_technologies_array,
+    p2_technologies_array);
 
   // Behaviour: Get the results after normalCombatRounds rounds of standard
   // combat Player 1
