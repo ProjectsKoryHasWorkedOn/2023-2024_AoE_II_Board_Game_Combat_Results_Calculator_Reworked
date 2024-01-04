@@ -536,7 +536,8 @@ void monkRounds::roundOutcome(
           assistingMonksP1            = false;
           justMonksP1                 = true;
         }
-        else if (p1AssistingMonkParticipant.entityQuantity > 0) {
+
+        if (p1AssistingMonkParticipant.entityQuantity > 0) {
           conversionRatehealingRateP1
             = p1AssistingMonkParticipant.entityQuantity;
           assistingMonksP1 = true;
@@ -560,6 +561,7 @@ void monkRounds::roundOutcome(
           assistingMonksP2            = false;
           justMonksP2                 = true;
         }
+
         if (p2AssistingMonkParticipant.entityQuantity > 0) {
           conversionRatehealingRateP2
             = p2AssistingMonkParticipant.entityQuantity;
@@ -806,7 +808,7 @@ void monkRounds::roundOutcome(
         }
         // Behaviour: Cover the case where there are 'assisting monks'
         else if (assistingMonksP1 == true) {
-          if (conversionRatehealingRateP1 <= d6DieRoll) {
+          if (d6DieRoll <= conversionRatehealingRateP1) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP1 = true;
           }
@@ -827,9 +829,7 @@ void monkRounds::roundOutcome(
 
             // TODO: This index is not quite correct.
             auto doesPlayer1HaveRedemption
-              = [inputP1Technologies] {
-                  return inputP1Technologies[17] == 1;
-                };
+              = [inputP1Technologies] { return inputP1Technologies[17] == 1; };
 
             if (
               assistingMonksP1 && assistingMonksP2
@@ -1110,7 +1110,7 @@ void monkRounds::roundOutcome(
         }
         // Behaviour: Cover the case where there are 'assisting monks'
         else if (assistingMonksP2 == true) {
-          if (conversionRatehealingRateP2 <= d6DieRoll) {
+          if (d6DieRoll <= conversionRatehealingRateP2) {
             // Behaviour: Return the fact that the attempt was successful
             monkPowersActivatedP2 = true;
           }
@@ -1131,9 +1131,7 @@ void monkRounds::roundOutcome(
 
             // TODO: The index for redemption may not be quite correct.
             auto doesPlayer2HaveRedemption
-              = [inputP2Technologies] {
-                  return inputP2Technologies[17] == 1;
-                };
+              = [inputP2Technologies] { return inputP2Technologies[17] == 1; };
 
             if (
               assistingMonksP2 && assistingMonksP1
