@@ -783,53 +783,49 @@ QListWidgetItem* MainWindow::findByEntityName(
   return foundItems.front();
 }
 
+static bool isBuilding(const QString& entity)
+{
+  return (entity.contains("ARCHERY_RANGE")) || (entity.contains("BARRACKS"))
+         || (entity.contains("BLACKSMITH")) || (entity.contains("CASTLE"))
+         || (entity.contains(
+           "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
+         || (entity.contains("ROCK_OF_CASHEL_(CELT)"))
+         || (entity.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
+         || (entity.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
+         || (entity.contains("TOMB_OF_THEODORIC_(GOTH)"))
+         || (entity.contains("NOTRE-DAME_CATHEDRAL_(FRANK)"))
+         || (entity.contains("STAVE_CHURCH_AT_URNES_(VIKING)"))
+         || (entity.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)"))
+         || (entity.contains("DOCK")) || (entity.contains("WALL"))
+         || // May implement this as an assisting unit
+         (entity.contains("GATE")) || (entity.contains("GOLD_MINE"))
+         || (entity.contains("HOUSE")) || (entity.contains("LUMBER_CAMP"))
+         || (entity.contains("MARKET")) || (entity.contains("MILL"))
+         || (entity.contains("MONASTERY")) || (entity.contains("OUTPOST"))
+         || (entity.contains("SIEGE_WORKSHOP")) || (entity.contains("STABLE"))
+         || (entity.contains("STONE_MINE")) || (entity.contains("TOWN_CENTER"))
+         || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
+}
+
 void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 {
   nameOfSelection = nameOfSelection.toUpper();
   nameOfSelection = convertSpacesToUnderscores(nameOfSelection);
 
   if (
-    (nameOfSelection.contains("ARCHERY_RANGE"))
-    || (nameOfSelection.contains("BARRACKS"))
-    || (nameOfSelection.contains("BLACKSMITH"))
-    || (nameOfSelection.contains("RAM")) || (nameOfSelection.contains("CASTLE"))
-    || (nameOfSelection.contains(
-      "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
-    || (nameOfSelection.contains("ROCK_OF_CASHEL_(CELT)"))
-    || (nameOfSelection.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
-    || (nameOfSelection.contains(
-      "THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
-    || (nameOfSelection.contains("TOMB_OF_THEODORIC_(GOTH)"))
-    || (nameOfSelection.contains("NOTRE-DAME_CATHEDRAL_(FRANK)"))
-    || (nameOfSelection.contains("STAVE_CHURCH_AT_URNES_(VIKING)"))
-    || (nameOfSelection.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)"))
+    isBuilding(nameOfSelection) || (nameOfSelection.contains("RAM"))
     || (nameOfSelection.contains("DEMOLITION_SHIP"))
-    || (nameOfSelection.contains("DOCK"))
     || (nameOfSelection.contains("FIRE_SHIP"))
     || (nameOfSelection.contains("FISHING_SHIP"))
-    || (nameOfSelection.contains("WALL"))
     || (nameOfSelection.contains("GALLEY"))
     || (nameOfSelection.contains("HERO"))
-    || // May implement this as an assisting unit
-    (nameOfSelection.contains("GATE")) || (nameOfSelection.contains("GALLEON"))
-    || (nameOfSelection.contains("GOLD_MINE"))
-    || (nameOfSelection.contains("HOUSE"))
+    || (nameOfSelection.contains("GALLEON"))
     || (nameOfSelection.contains("LONGBOAT_(VIKING)"))
-    || (nameOfSelection.contains("LUMBER_CAMP"))
     || (nameOfSelection.contains("MANGONEL"))
-    || (nameOfSelection.contains("MARKET"))
-    || (nameOfSelection.contains("MILL"))
-    || (nameOfSelection.contains("MONASTERY"))
     || (nameOfSelection.contains("ONAGER"))
-    || (nameOfSelection.contains("OUTPOST"))
     || (nameOfSelection.contains("SCORPION"))
-    || (nameOfSelection.contains("SIEGE_WORKSHOP"))
-    || (nameOfSelection.contains("STABLE"))
-    || (nameOfSelection.contains("STONE_MINE"))
-    || (nameOfSelection.contains("TOWN_CENTER"))
     || (nameOfSelection.contains("TREBUCHET"))
-    || (nameOfSelection.contains("WAR_ELEPHANT_(PERSIAN)"))
-    || (nameOfSelection.contains("WATCH_TOWER"))) {
+    || (nameOfSelection.contains("WAR_ELEPHANT_(PERSIAN)"))) {
     if (playerNumber == 1) {
       expectingSingleEntityForPlayer1 = true;
     }
@@ -844,6 +840,15 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
     if (playerNumber == 2) {
       expectingSingleEntityForPlayer2 = false;
     }
+  }
+
+  const bool isEntityBuilding = isBuilding(nameOfSelection);
+
+  if (playerNumber == 1) {
+    ui.player1EntityAssistantQuantity->setRange(0, isEntityBuilding ? 0 : 5);
+  }
+  else if (playerNumber == 2) {
+    ui.player2EntityAssistantQuantity->setRange(0, isEntityBuilding ? 0 : 5);
   }
 
   if (expectingSingleEntityForPlayer1 == true) {
