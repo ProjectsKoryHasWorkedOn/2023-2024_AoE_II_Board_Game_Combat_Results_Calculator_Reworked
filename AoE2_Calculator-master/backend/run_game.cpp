@@ -23,7 +23,7 @@ void outputRemainingDamage(
 }
 
 // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
-extern const int technologiesRows = 18, eventsRows = 41, playerAgeRows = 2;
+extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
 /** The main function **/
 int runGame(

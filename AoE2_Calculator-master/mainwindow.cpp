@@ -787,8 +787,7 @@ static bool isBuilding(const QString& entity)
 {
   return (entity.contains("ARCHERY_RANGE")) || (entity.contains("BARRACKS"))
          || (entity.contains("BLACKSMITH")) || (entity.contains("CASTLE"))
-         || (entity.contains(
-           "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
+         || (entity.contains("CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
          || (entity.contains("ROCK_OF_CASHEL_(CELT)"))
          || (entity.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
          || (entity.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
@@ -797,8 +796,7 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("STAVE_CHURCH_AT_URNES_(VIKING)"))
          || (entity.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)"))
          || (entity.contains("DOCK")) || (entity.contains("WALL"))
-         || // May implement this as an assisting unit
-         (entity.contains("GATE")) || (entity.contains("GOLD_MINE"))
+         || (entity.contains("GATE")) || (entity.contains("GOLD_MINE"))
          || (entity.contains("HOUSE")) || (entity.contains("LUMBER_CAMP"))
          || (entity.contains("MARKET")) || (entity.contains("MILL"))
          || (entity.contains("MONASTERY")) || (entity.contains("OUTPOST"))
@@ -807,25 +805,30 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
+
+static bool isUnitWithOneToken(const QString& entity){
+  return(entity.contains("RAM"))
+    || (entity.contains("DEMOLITION_SHIP"))
+    || (entity.contains("FIRE_SHIP"))
+    || (entity.contains("FISHING_SHIP"))
+    || (entity.contains("GALLEY"))
+    || (entity.contains("HERO"))
+    || (entity.contains("GALLEON"))
+    || (entity.contains("LONGBOAT_(VIKING)"))
+    || (entity.contains("MANGONEL"))
+    || (entity.contains("ONAGER"))
+    || (entity.contains("SCORPION"))
+    || (entity.contains("TREBUCHET"))
+         || (entity.contains("WAR_ELEPHANT_(PERSIAN)"));
+}
+
 void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 {
   nameOfSelection = nameOfSelection.toUpper();
   nameOfSelection = convertSpacesToUnderscores(nameOfSelection);
 
-  if (
-    isBuilding(nameOfSelection) || (nameOfSelection.contains("RAM"))
-    || (nameOfSelection.contains("DEMOLITION_SHIP"))
-    || (nameOfSelection.contains("FIRE_SHIP"))
-    || (nameOfSelection.contains("FISHING_SHIP"))
-    || (nameOfSelection.contains("GALLEY"))
-    || (nameOfSelection.contains("HERO"))
-    || (nameOfSelection.contains("GALLEON"))
-    || (nameOfSelection.contains("LONGBOAT_(VIKING)"))
-    || (nameOfSelection.contains("MANGONEL"))
-    || (nameOfSelection.contains("ONAGER"))
-    || (nameOfSelection.contains("SCORPION"))
-    || (nameOfSelection.contains("TREBUCHET"))
-    || (nameOfSelection.contains("WAR_ELEPHANT_(PERSIAN)"))) {
+  if (isBuilding(nameOfSelection) || isUnitWithOneToken(nameOfSelection)) {
+
     if (playerNumber == 1) {
       expectingSingleEntityForPlayer1 = true;
     }
@@ -842,27 +845,22 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
     }
   }
 
-  const bool isEntityBuilding = isBuilding(nameOfSelection);
-
-  if (playerNumber == 1) {
-    ui.player1EntityAssistantQuantity->setRange(0, isEntityBuilding ? 0 : 5);
-  }
-  else if (playerNumber == 2) {
-    ui.player2EntityAssistantQuantity->setRange(0, isEntityBuilding ? 0 : 5);
-  }
-
   if (expectingSingleEntityForPlayer1 == true) {
     ui.player1EntityQuantity->setRange(1, 1);
+    ui.player1EntityAssistantQuantity->setRange(0, 0);
   }
   else {
     ui.player1EntityQuantity->setRange(1, 5);
+    ui.player1EntityAssistantQuantity->setRange(0, 5);
   }
 
   if (expectingSingleEntityForPlayer2 == true) {
     ui.player2EntityQuantity->setRange(1, 1);
+    ui.player2EntityAssistantQuantity->setRange(0, 0);
   }
   else {
     ui.player2EntityQuantity->setRange(1, 5);
+    ui.player2EntityAssistantQuantity->setRange(0, 5);
   }
 }
 

@@ -829,7 +829,7 @@ void monkRounds::roundOutcome(
 
             // TODO: This index is not quite correct.
             auto doesPlayer1HaveRedemption
-              = [inputP1Technologies] { return inputP1Technologies[17] == 1; };
+              = [inputP1Technologies] { return inputP1Technologies[18] == 1; };
 
             if (
               assistingMonksP1 && assistingMonksP2
@@ -1131,7 +1131,7 @@ void monkRounds::roundOutcome(
 
             // TODO: The index for redemption may not be quite correct.
             auto doesPlayer2HaveRedemption
-              = [inputP2Technologies] { return inputP2Technologies[17] == 1; };
+              = [inputP2Technologies] { return inputP2Technologies[18] == 1; };
 
             if (
               assistingMonksP2 && assistingMonksP1
