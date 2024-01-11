@@ -787,7 +787,8 @@ static bool isBuilding(const QString& entity)
 {
   return (entity.contains("ARCHERY_RANGE")) || (entity.contains("BARRACKS"))
          || (entity.contains("BLACKSMITH")) || (entity.contains("CASTLE"))
-         || (entity.contains("CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
+         || (entity.contains(
+           "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
          || (entity.contains("ROCK_OF_CASHEL_(CELT)"))
          || (entity.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
          || (entity.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
@@ -805,20 +806,15 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
-
-static bool isUnitWithOneToken(const QString& entity){
-  return(entity.contains("RAM"))
-    || (entity.contains("DEMOLITION_SHIP"))
-    || (entity.contains("FIRE_SHIP"))
-    || (entity.contains("FISHING_SHIP"))
-    || (entity.contains("GALLEY"))
-    || (entity.contains("HERO"))
-    || (entity.contains("GALLEON"))
-    || (entity.contains("LONGBOAT_(VIKING)"))
-    || (entity.contains("MANGONEL"))
-    || (entity.contains("ONAGER"))
-    || (entity.contains("SCORPION"))
-    || (entity.contains("TREBUCHET"))
+static bool isUnitWithOneToken(const QString& entity)
+{
+  return (entity.contains("RAM")) || (entity.contains("DEMOLITION_SHIP"))
+         || (entity.contains("FIRE_SHIP")) || (entity.contains("FISHING_SHIP"))
+         || (entity.contains("GALLEY")) || (entity.contains("HERO"))
+         || (entity.contains("GALLEON"))
+         || (entity.contains("LONGBOAT_(VIKING)"))
+         || (entity.contains("MANGONEL")) || (entity.contains("ONAGER"))
+         || (entity.contains("SCORPION")) || (entity.contains("TREBUCHET"))
          || (entity.contains("WAR_ELEPHANT_(PERSIAN)"));
 }
 
@@ -828,7 +824,6 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
   nameOfSelection = convertSpacesToUnderscores(nameOfSelection);
 
   if (isBuilding(nameOfSelection) || isUnitWithOneToken(nameOfSelection)) {
-
     if (playerNumber == 1) {
       expectingSingleEntityForPlayer1 = true;
     }

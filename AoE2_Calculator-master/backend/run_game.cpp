@@ -25,6 +25,26 @@ void outputRemainingDamage(
 // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
 extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
+static bool queryIfMonksShouldBeFought(FightMonksRounds::Kind kind)
+{
+  std::cout << "Do you want to fight the monks";
+
+  switch (kind) {
+  case FightMonksRounds::Kind::Ranged:
+    std::cout << " with ranged attacks?<br>";
+    break;
+  case FightMonksRounds::Kind::Melee:
+    std::cout << " with melee attacks?<br>";
+    break;
+  default:
+    Q_UNREACHABLE();
+  }
+
+  bool shouldFightMonks{false};
+  DIN >> shouldFightMonks;
+  return shouldFightMonks;
+}
+
 /** The main function **/
 int runGame(
   Database*                         database,
@@ -96,6 +116,14 @@ int runGame(
     &combatCalculatorState, &combatCalculatorCallbacks};
   standardRounds standardRounds{
     &combatCalculatorState, &combatCalculatorCallbacks};
+  FightMonksRounds fightMonksRangedRounds{
+    &combatCalculatorState,
+    &combatCalculatorCallbacks,
+    FightMonksRounds::Kind::Ranged};
+  FightMonksRounds fightMonksMeleeRounds{
+    &combatCalculatorState,
+    &combatCalculatorCallbacks,
+    FightMonksRounds::Kind::Melee};
 
   /** Part 1: Getting basic information about the input entities **/
   // Behaviour: Load "entities.csv" and get information about the input entities
@@ -332,8 +360,14 @@ int runGame(
   if (
     (p1BattleParticipant.armorClass[1] != true)
     && (p2BattleParticipant.armorClass[1] != true)) {
+    const bool shouldFightMonks{
+      queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
+
     // Behaviour: Set the combat calculator to the archer rounds
-    theCombatCalculator = &rangedRounds;
+    theCombatCalculator
+      = shouldFightMonks
+          ? static_cast<combatCalculator*>(&fightMonksRangedRounds)
+          : static_cast<combatCalculator*>(&rangedRounds);
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
@@ -352,9 +386,7 @@ int runGame(
     theCombatCalculator->setAdditionalValues(
       p1RemainingDamage, p2RemainingDamage);
 
-    // Behaviour: Calculate the damage dealt for archerCombatRounds rounds of
-    // archer combat
-    rangedRounds.roundOutcome(
+    theCombatCalculator->roundOutcome(
       archerCombatRounds,
       p1_events_array,
       p2_events_array,
@@ -422,9 +454,14 @@ int runGame(
     }
   }
 
+  const bool shouldFightMonks{
+    queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};
+
   /** Part 4.4: Round 3 & 4 **/
   // Behaviour: Set the combat calculator to the standard rounds
-  theCombatCalculator = &standardRounds;
+  theCombatCalculator
+    = shouldFightMonks ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
+                       : static_cast<combatCalculator*>(&standardRounds);
 
   // Set the player names
   theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
@@ -444,7 +481,7 @@ int runGame(
 
   // Behaviour: Calculate the damage dealt for normalCombatRounds rounds of
   // standard combat and display the results
-  standardRounds.roundOutcome(
+  theCombatCalculator->roundOutcome(
     normalCombatRounds,
     p1_events_array,
     p2_events_array,
