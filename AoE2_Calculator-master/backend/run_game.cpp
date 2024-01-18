@@ -27,7 +27,6 @@ extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
 static bool queryIfMonksShouldBeFought(FightMonksRounds::Kind kind)
 {
-
   std::cout << "Do you want to fight the monks";
 
   switch (kind) {
@@ -171,12 +170,15 @@ int runGame(
   playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
   std::unique_ptr<std::string[]> playerNamesUp(playerNamesArray);
 
-
   // Behavior: Work out what the initial quantity values are
-  p1BattleParticipant.initialEntityQuantity = p1BattleParticipant.entityQuantity;
-  p2BattleParticipant.initialEntityQuantity = p2BattleParticipant.entityQuantity;
-  p1AssistingMonkBattleParticipant.initialEntityQuantity = p1AssistingMonkBattleParticipant.entityQuantity;
-  p2AssistingMonkBattleParticipant.initialEntityQuantity = p2AssistingMonkBattleParticipant.entityQuantity;
+  p1BattleParticipant.initialEntityQuantity
+    = p1BattleParticipant.entityQuantity;
+  p2BattleParticipant.initialEntityQuantity
+    = p2BattleParticipant.entityQuantity;
+  p1AssistingMonkBattleParticipant.initialEntityQuantity
+    = p1AssistingMonkBattleParticipant.entityQuantity;
+  p2AssistingMonkBattleParticipant.initialEntityQuantity
+    = p2AssistingMonkBattleParticipant.entityQuantity;
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants
@@ -368,14 +370,12 @@ int runGame(
   if (
     (p1BattleParticipant.armorClass[1] != true)
     && (p2BattleParticipant.armorClass[1] != true)) {
-
-
-    if(
-      (p1AssistingMonkBattleParticipant.entityQuantity > 0) ||
-      (p2AssistingMonkBattleParticipant.entityQuantity > 0)
-      ){
-    const bool shouldFightMonks{
-      queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
+    if (
+      (p1AssistingMonkBattleParticipant.entityQuantity > 0)
+      && (p2AssistingMonkBattleParticipant.entityQuantity > 0)
+      && (p1BattleParticipant.rangedDamage > 0 && p2BattleParticipant.rangedDamage > 0)) {
+      const bool shouldFightMonks{
+        queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
 
       // Behaviour: Set the combat calculator to the archer rounds
       theCombatCalculator
@@ -383,11 +383,9 @@ int runGame(
             ? static_cast<combatCalculator*>(&fightMonksRangedRounds)
             : static_cast<combatCalculator*>(&rangedRounds);
     }
-
-
-
-
-
+    else {
+      theCombatCalculator = &rangedRounds;
+    }
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
@@ -424,81 +422,77 @@ int runGame(
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
-
     // Behaviour: Output the remaining damage
     // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
- }
+  }
 
+  /** Part 4.3: Bonus round **/
+  // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
+  // round Reference: I otherwise deal with a single bombardment round within
+  // the standardCombat subclass
+  if (isEvent4Active == true) {
+    // Behaviour: Set the combat calculator to the bombardment rounds
+    theCombatCalculator = &bombardmentRounds;
 
-    /** Part 4.3: Bonus round **/
-    // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
-    // round Reference: I otherwise deal with a single bombardment round within
-    // the standardCombat subclass
-    if (isEvent4Active == true) {
-      // Behaviour: Set the combat calculator to the bombardment rounds
-      theCombatCalculator = &bombardmentRounds;
+    // Set the player names
+    theCombatCalculator->setPlayerNames(
+      playerNamesArray[0], playerNamesArray[1]);
 
-      // Set the player names
-      theCombatCalculator->setPlayerNames(
-        playerNamesArray[0], playerNamesArray[1]);
+    // Behaviour: Set the protected values
+    theCombatCalculator->setCombatParticipants(
+      p1BattleParticipant,
+      p2BattleParticipant,
+      p1AssistingMonkBattleParticipant,
+      p2AssistingMonkBattleParticipant,
+      modifyRoundAttackP1,
+      modifyRoundAttackP2);
 
-      // Behaviour: Set the protected values
-      theCombatCalculator->setCombatParticipants(
-        p1BattleParticipant,
-        p2BattleParticipant,
-        p1AssistingMonkBattleParticipant,
-        p2AssistingMonkBattleParticipant,
-        modifyRoundAttackP1,
-        modifyRoundAttackP2);
+    // Behaviour: Set the remaining damage values for the combat calculator
+    theCombatCalculator->setAdditionalValues(
+      p1RemainingDamage, p2RemainingDamage);
 
-      // Behaviour: Set the remaining damage values for the combat calculator
-      theCombatCalculator->setAdditionalValues(
-        p1RemainingDamage, p2RemainingDamage);
+    // Behaviour: Calculate the damage dealt for bombardmentCombatRounds
+    // rounds of bombardment combat and display the results
+    bombardmentRounds.roundOutcome(
+      bombardmentCombatRounds,
+      p1_events_array,
+      p2_events_array,
+      p1_technologies_array,
+      p2_technologies_array);
 
-      // Behaviour: Calculate the damage dealt for bombardmentCombatRounds
-      // rounds of bombardment combat and display the results
-      bombardmentRounds.roundOutcome(
-        bombardmentCombatRounds,
-        p1_events_array,
-        p2_events_array,
-        p1_technologies_array,
-        p2_technologies_array);
+    // Behaviour: Get the results after bombardmentCombatRounds rounds of
+    // standard combat Player 1
+    p1BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player1);
+    p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
 
-      // Behaviour: Get the results after bombardmentCombatRounds rounds of
-      // standard combat Player 1
-      p1BattleParticipant
-        = theCombatCalculator->returnModifiedBattleParticipants(player1);
-      p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+    // Player 2
+    p2BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player2);
+    p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+  }
 
-      // Player 2
-      p2BattleParticipant
-        = theCombatCalculator->returnModifiedBattleParticipants(player2);
-      p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-    }
+  /** Part 4.4: Round 3 & 4 **/
 
+  // @ Phillip: Ask about how we can not ask question on if we're attacking
+  // monks or not when there are no monks This seems to stop it from proceeding
+  // static_cast ...
 
+  if (
+    (p1AssistingMonkBattleParticipant.entityQuantity > 0)
+    && (p2AssistingMonkBattleParticipant.entityQuantity > 0)) {
+    const bool shouldFightMonks{
+      queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};
 
-
-    /** Part 4.4: Round 3 & 4 **/
-
-    // @ Phillip: Ask about how we can not ask question on if we're attacking monks or not when there are no monks
-    // This seems to stop it from proceeding
-    // static_cast ...
-
-    if(
-      (p1AssistingMonkBattleParticipant.entityQuantity > 0) ||
-      (p2AssistingMonkBattleParticipant.entityQuantity > 0)
-      ){
-  const bool shouldFightMonks{
-    queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};
-
-      // Behaviour: Set the combat calculator to the standard rounds
-      theCombatCalculator
-        = shouldFightMonks ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
-                           : static_cast<combatCalculator*>(&standardRounds);
-    }
-
-
+    // Behaviour: Set the combat calculator to the standard rounds
+    theCombatCalculator
+      = shouldFightMonks
+          ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
+          : static_cast<combatCalculator*>(&standardRounds);
+  }
+  else {
+    theCombatCalculator = &standardRounds;
+  }
 
   // Set the player names
   theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);

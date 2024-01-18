@@ -54,7 +54,6 @@ struct Entity {
 
   int healsAvailable;
 
-
   int initialEntityQuantity;
 
   // Functions: The constructor and deconstructor

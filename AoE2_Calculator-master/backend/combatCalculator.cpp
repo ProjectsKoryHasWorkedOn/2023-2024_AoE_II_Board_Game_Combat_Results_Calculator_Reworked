@@ -192,54 +192,49 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
 void combatCalculator::checkIfDead()
 {
   if (p1BattleParticipant.entityQuantity <= 0) {
-    if(p1BattleParticipant.healsAvailable > 0){
+    if (p1BattleParticipant.healsAvailable > 0) {
       // DECIDED TO ACTIVATE THE HEALING POWERS HERE!!
       std::cout << player1Name << " has used one of their heals<br>";
       p1BattleParticipant.entityQuantity++;
-        p1BattleParticipant.healsAvailable--;
-    }
-    else{
-
-
-    aDeathHasOccured = true;
-
-    if (p1BattleParticipant.entityName == "Monk") {
-      m_callbacks->getOnPlayerEntityDeath()(Player::Player1, true);
+      p1BattleParticipant.healsAvailable--;
     }
     else {
-      m_callbacks->getOnPlayerEntityDeath()(Player::Player1, false);
-    }
+      aDeathHasOccured = true;
 
-    if (p1BattleParticipant.entityName == "Wonder") {
-      SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+      if (p1BattleParticipant.entityName == "Monk") {
+        m_callbacks->getOnPlayerEntityDeath()(Player::Player1, true);
+      }
+      else {
+        m_callbacks->getOnPlayerEntityDeath()(Player::Player1, false);
+      }
+
+      if (p1BattleParticipant.entityName == "Wonder") {
+        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+      }
     }
   }
-    }
   else if (p2BattleParticipant.entityQuantity <= 0) {
-  if(p2BattleParticipant.healsAvailable > 0){
-    // DECIDED TO ACTIVATE THE HEALING POWERS HERE!!
+    if (p2BattleParticipant.healsAvailable > 0) {
+      // DECIDED TO ACTIVATE THE HEALING POWERS HERE!!
       std::cout << player2Name << " has used one of their heals<br>";
-    p2BattleParticipant.entityQuantity++;
+      p2BattleParticipant.entityQuantity++;
       p2BattleParticipant.healsAvailable--;
     }
-  else{
-
-
-
-    aDeathHasOccured = true;
-
-    if (p2BattleParticipant.entityName == "Monk") {
-      m_callbacks->getOnPlayerEntityDeath()(Player::Player2, true);
-    }
     else {
-      m_callbacks->getOnPlayerEntityDeath()(Player::Player2, false);
-    }
+      aDeathHasOccured = true;
 
-    if (p2BattleParticipant.entityName == "Wonder") {
-      SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+      if (p2BattleParticipant.entityName == "Monk") {
+        m_callbacks->getOnPlayerEntityDeath()(Player::Player2, true);
+      }
+      else {
+        m_callbacks->getOnPlayerEntityDeath()(Player::Player2, false);
+      }
+
+      if (p2BattleParticipant.entityName == "Wonder") {
+        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+      }
     }
   }
-}
 }
 
 // Function: Check if the attacking ranged archer is retreating
@@ -285,11 +280,6 @@ void combatCalculator::checkIfRetreating(std::string roundType)
   }
 }
 
-
-
-
-
-
 // Function: Output the entity information with a message
 void combatCalculator::outputEntityInformation(std::string inputMessage)
 {
@@ -300,19 +290,20 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
     std::cout << inputMessage << "<br>";
   }
 
-
   p1BattleParticipant.outputEntity(player1Name);
   // Do not show monks as being dead if started with 0
-  if ( (p1AssistingMonkParticipant.entityQuantity >= 0) &&
-      (p1AssistingMonkParticipant.initialEntityQuantity != 0) ) {
+  if (
+    (p1AssistingMonkParticipant.entityQuantity >= 0)
+    && (p1AssistingMonkParticipant.initialEntityQuantity != 0)) {
     std::cout << "(Assisting) ";
     p1AssistingMonkParticipant.outputEntity(player1Name);
   }
   p2BattleParticipant.outputEntity(player2Name);
 
-    // Do not show monks as being dead if started with 0
-  if ( (p2AssistingMonkParticipant.entityQuantity >= 0) &&
-      (p2AssistingMonkParticipant.initialEntityQuantity != 0) )
+  // Do not show monks as being dead if started with 0
+  if (
+    (p2AssistingMonkParticipant.entityQuantity >= 0)
+    && (p2AssistingMonkParticipant.initialEntityQuantity != 0))
 
   {
     std::cout << "(Assisting) ";
@@ -429,19 +420,22 @@ void combatCalculator::finalChecks()
 {
   // Behaviour: Check if the extra unit from the monk healing power ought to die
   // Which is basically always the case if heal powers activate
-  // I'll bring the unit back from death with the heals available variable instead
+  // I'll bring the unit back from death with the heals available variable
+  // instead
   if (p1BattleParticipant.entityQuantity >= startingQuantityP1) {
     if (healingEffectP1 == true) {
       p1BattleParticipant.entityQuantity -= 1;
       p1BattleParticipant.healsAvailable++;
-      std::cout << player1Name << " has " << p1BattleParticipant.healsAvailable << " unit heals available";
+      std::cout << player1Name << " has " << p1BattleParticipant.healsAvailable
+                << " unit heals available";
     }
   }
   if (p2BattleParticipant.entityQuantity >= startingQuantityP2) {
     if (healingEffectP2 == true) {
       p2BattleParticipant.entityQuantity -= 1;
       p2BattleParticipant.healsAvailable++;
-      std::cout << player2Name << " has " << p2BattleParticipant.healsAvailable << " unit heals available";
+      std::cout << player2Name << " has " << p2BattleParticipant.healsAvailable
+                << " unit heals available";
     }
   }
 }
@@ -1237,8 +1231,6 @@ void monkRounds::roundOutcome(
       // Should not be adding a monk beyond what monks we started with
       finalChecks();
 
-
-
       // Behaviour: Display the outcome of the monk combat round only if changes
       // occured
       if ((monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)) {
@@ -1273,12 +1265,6 @@ void monkRounds::roundOutcome(
       checkIfDead();
     } // End if conditional checking for no deaths
   }   // End for loop
-
-
-
-
-
-
 
 } // End monk function
 
@@ -1575,9 +1561,6 @@ void archerRounds::roundOutcome(
         }
       }
     }
-
-
-
 
     // Behaviour: Display the outcome of the archer combat round only if changes
     // occured
@@ -1909,7 +1892,6 @@ void bombardmentRounds::roundOutcome(
         }
       }
     }
-
 
     // Behaviour: Display the outcome of the bombardment combat round only if
     // changes occured
@@ -2582,7 +2564,6 @@ void standardRounds::roundOutcome(
         }
       }
 
-
       // Behaviour: Display the outcome of the archer combat round only if
       // changes occured
       if (standardRoundActivated == true) {
@@ -2703,9 +2684,7 @@ void FightMonksRounds::roundOutcome(
   const std::array<Entity*, playerCount> monks{
     &p1AssistingMonkParticipant, &p2AssistingMonkParticipant};
 
-
   float p1PointsLost = 0, p2PointsLost = 0;
-
 
   for (int round{0}; round < inputRunTimes; ++round) {
     for (std::size_t player{0}; player < playerCount; ++player) {
@@ -2730,31 +2709,32 @@ void FightMonksRounds::roundOutcome(
     }
   }
 
-
   checkIfDead();
   outputEntityInformation("");
 
+  if (
+    p2AssistingMonkParticipant.entityQuantity
+    < p2AssistingMonkParticipant.initialEntityQuantity) {
+    int numberOfMonksP2Lost = p2AssistingMonkParticipant.initialEntityQuantity
+                              - p2AssistingMonkParticipant.entityQuantity;
+    p2PointsLost = (p2AssistingMonkParticipant.pointValue
+                    / p2AssistingMonkParticipant.initialEntityQuantity)
+                   * numberOfMonksP2Lost;
 
-
-
-
-  if(p2AssistingMonkParticipant.entityQuantity < p2AssistingMonkParticipant.initialEntityQuantity){
-    int numberOfMonksP2Lost = p2AssistingMonkParticipant.initialEntityQuantity - p2AssistingMonkParticipant.entityQuantity;
-    p2PointsLost = (p2AssistingMonkParticipant.pointValue / p2AssistingMonkParticipant.initialEntityQuantity) * numberOfMonksP2Lost;
-
-    std::cout << ">> " << player1Name << " gets " << p2PointsLost
-              << " points"
+    std::cout << ">> " << player1Name << " gets " << p2PointsLost << " points"
               << "<br>";
   }
 
+  if (
+    p1AssistingMonkParticipant.entityQuantity
+    < p1AssistingMonkParticipant.initialEntityQuantity) {
+    int numberOfMonksP1Lost = p1AssistingMonkParticipant.initialEntityQuantity
+                              - p1AssistingMonkParticipant.entityQuantity;
+    p1PointsLost = (p1AssistingMonkParticipant.pointValue
+                    / p1AssistingMonkParticipant.initialEntityQuantity)
+                   * numberOfMonksP1Lost;
 
-
-  if(p1AssistingMonkParticipant.entityQuantity < p1AssistingMonkParticipant.initialEntityQuantity){
-    int numberOfMonksP1Lost = p1AssistingMonkParticipant.initialEntityQuantity - p1AssistingMonkParticipant.entityQuantity;
-    p1PointsLost = (p1AssistingMonkParticipant.pointValue / p1AssistingMonkParticipant.initialEntityQuantity) * numberOfMonksP1Lost;
-
-    std::cout << ">> " << player2Name << " gets " << p1PointsLost
-              << " points"
+    std::cout << ">> " << player2Name << " gets " << p1PointsLost << " points"
               << "<br>";
   }
 }
