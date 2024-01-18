@@ -170,6 +170,13 @@ int runGame(
   playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
   std::unique_ptr<std::string[]> playerNamesUp(playerNamesArray);
 
+
+  // Behavior: Work out what the initial quantity values are
+  p1BattleParticipant.initialEntityQuantity = p1BattleParticipant.entityQuantity;
+  p2BattleParticipant.initialEntityQuantity = p2BattleParticipant.entityQuantity;
+  p1AssistingMonkBattleParticipant.initialEntityQuantity = p1AssistingMonkBattleParticipant.entityQuantity;
+  p2AssistingMonkBattleParticipant.initialEntityQuantity = p2AssistingMonkBattleParticipant.entityQuantity;
+
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants
   theModifiersCalculator.setEntities(

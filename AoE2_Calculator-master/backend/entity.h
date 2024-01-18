@@ -52,6 +52,9 @@ struct Entity {
   bool isKamikaze;
   int  entitiesArmorClasses;
 
+
+  int initialEntityQuantity;
+
   // Functions: The constructor and deconstructor
   Entity();
   ~Entity();

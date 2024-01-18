@@ -264,6 +264,11 @@ void combatCalculator::checkIfRetreating(std::string roundType)
   }
 }
 
+
+
+
+
+
 // Function: Output the entity information with a message
 void combatCalculator::outputEntityInformation(std::string inputMessage)
 {
@@ -279,12 +284,16 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
   // If we never had any we don't want to say they're 'dead'.
   // Changed > to >= as a hack.
   p1BattleParticipant.outputEntity(player1Name);
-  if (p1AssistingMonkParticipant.entityQuantity >= 0) {
+  if ( (p1AssistingMonkParticipant.entityQuantity >= 0) &&
+      (p1AssistingMonkParticipant.initialEntityQuantity != 0) ) {
     std::cout << "(Assisting) ";
     p1AssistingMonkParticipant.outputEntity(player1Name);
   }
   p2BattleParticipant.outputEntity(player2Name);
-  if (p2AssistingMonkParticipant.entityQuantity >= 0) {
+  if ( (p2AssistingMonkParticipant.entityQuantity >= 0) &&
+      (p2AssistingMonkParticipant.initialEntityQuantity != 0) )
+
+  {
     std::cout << "(Assisting) ";
     p2AssistingMonkParticipant.outputEntity(player2Name);
   }
