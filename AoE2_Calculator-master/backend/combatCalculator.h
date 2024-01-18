@@ -243,3 +243,27 @@ public:
     int* inputP2Technologies);
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
+
+class FightMonksRounds : public combatCalculator {
+public:
+  enum class Kind { Ranged, Melee };
+
+  FightMonksRounds(
+    CombatCalculatorState*     state,
+    CombatCalculatorCallbacks* callbacks,
+    Kind                       kind);
+
+  void roundOutcome(
+    int  inputRunTimes,
+    int* inputP1Events,
+    int* inputP2Events,
+    int* inputP1Technologies,
+    int* inputP2Technologies);
+
+  Kind getKind() const;
+
+private:
+  int getDamageForKind(const Entity* entity) const;
+
+  Kind m_kind;
+};

@@ -3,6 +3,8 @@
 #include "dialog_input.h"
 #include "entity.h" // Using: entity class
 #include "soundEffects.h"
+#include <algorithm>
+#include <array>
 #include <cmath>    // Using: floor
 #include <cstdlib>  // Using: exit(EXIT_FAILURE), srand(), rand()
 #include <iostream> // Using: cin, cout
@@ -272,14 +274,17 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
     std::cout << inputMessage << "<br>";
   }
 
-  // Behaviour: Run a function to output the entity information
+  // Ideally, we would somehow remember if we ever had monks to begin with.
+  // If we had monks then we would want to output if they're dead here.
+  // If we never had any we don't want to say they're 'dead'.
+  // Changed > to >= as a hack.
   p1BattleParticipant.outputEntity(player1Name);
-  if (p1AssistingMonkParticipant.entityQuantity > 0) {
+  if (p1AssistingMonkParticipant.entityQuantity >= 0) {
     std::cout << "(Assisting) ";
     p1AssistingMonkParticipant.outputEntity(player1Name);
   }
   p2BattleParticipant.outputEntity(player2Name);
-  if (p2AssistingMonkParticipant.entityQuantity > 0) {
+  if (p2AssistingMonkParticipant.entityQuantity >= 0) {
     std::cout << "(Assisting) ";
     p2AssistingMonkParticipant.outputEntity(player2Name);
   }
@@ -2619,4 +2624,77 @@ void standardRounds::roundOutcome(
 
   // Behaviour: Make some final checks in regards to the healing modifiers
   finalChecks();
+}
+
+FightMonksRounds::FightMonksRounds(
+  CombatCalculatorState*     state,
+  CombatCalculatorCallbacks* callbacks,
+  Kind                       kind)
+  : combatCalculator{state, callbacks}, m_kind{kind}
+{
+}
+
+static std::size_t getOtherPlayerIndex(std::size_t playerIndex)
+{
+  return playerIndex == 0 ? 1 : 0;
+}
+
+void FightMonksRounds::roundOutcome(
+  int  inputRunTimes,
+  int* inputP1Events,
+  int* inputP2Events,
+  int* inputP1Technologies,
+  int* inputP2Technologies)
+{
+  constexpr std::size_t                  playerCount{2};
+  const std::array<Entity*, playerCount> battleParticipants{
+    &p1BattleParticipant, &p2BattleParticipant};
+  const std::array<Entity*, playerCount> monks{
+    &p1AssistingMonkParticipant, &p2AssistingMonkParticipant};
+
+  for (int round{0}; round < inputRunTimes; ++round) {
+    for (std::size_t player{0}; player < playerCount; ++player) {
+      const std::size_t otherPlayerIdx{getOtherPlayerIndex(player)};
+      Entity* const     playerBattleParticipant{battleParticipants[player]};
+      Entity* const     otherPlayerMonk{monks[otherPlayerIdx]};
+
+      // aka 'die value'.
+      const int battleParticipantCount{playerBattleParticipant->entityQuantity};
+
+      // aka 'RA' or 'AP' value.
+      const int battleParticipantDamage{
+        getDamageForKind(playerBattleParticipant)};
+
+      const int deadMonks{static_cast<int>(std::floor(
+        static_cast<double>((battleParticipantCount * battleParticipantDamage))
+        / otherPlayerMonk->entityHealth))};
+      otherPlayerMonk->entityQuantity = std::clamp(
+        otherPlayerMonk->entityQuantity - deadMonks,
+        0,
+        otherPlayerMonk->entityQuantity);
+
+      checkIfDead();
+    }
+  }
+
+  outputEntityInformation("");
+}
+
+FightMonksRounds::Kind FightMonksRounds::getKind() const
+{
+  return m_kind;
+}
+
+int FightMonksRounds::getDamageForKind(const Entity* entity) const
+{
+  switch (m_kind) {
+  case Kind::Ranged:
+    return entity->rangedDamage;
+  case Kind::Melee:
+    return entity->standardDamage;
+  default:
+    break;
+  }
+
+  Q_UNREACHABLE();
 }
