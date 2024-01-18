@@ -27,12 +27,12 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   const std::string& playerName)
 {
   if (m_convertingHealingPromptAnswer == "Always converting") {
-    std::cout << "Converting<br>";
+    std::cout << "Converting selected<br>";
     return MonkAction::Convert;
   }
 
   if (m_convertingHealingPromptAnswer == "Always healing") {
-    std::cout << "Healing<br>";
+    std::cout << "Healing selected<br>";
     return MonkAction::Heal;
   }
 
@@ -50,11 +50,11 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   QAbstractButton* clickedButton{messageBox.clickedButton()};
 
   if (clickedButton == convertButton) {
-    std::cout << "Converting<br>";
+    std::cout << "Converting selected<br>";
     return DialogInput::MonkAction::Convert;
   }
   else if (clickedButton == healButton) {
-    std::cout << "Healing<br>";
+    std::cout << "Healing selected<br>";
     return DialogInput::MonkAction::Heal;
   }
 

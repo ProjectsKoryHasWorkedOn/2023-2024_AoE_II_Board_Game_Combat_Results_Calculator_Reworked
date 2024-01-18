@@ -192,6 +192,15 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
 void combatCalculator::checkIfDead()
 {
   if (p1BattleParticipant.entityQuantity <= 0) {
+    if(p1BattleParticipant.healsAvailable > 0){
+      // DECIDED TO ACTIVATE THE HEALING POWERS HERE!!
+      std::cout << player1Name << " has used one of their heals<br>";
+      p1BattleParticipant.entityQuantity++;
+        p1BattleParticipant.healsAvailable--;
+    }
+    else{
+
+
     aDeathHasOccured = true;
 
     if (p1BattleParticipant.entityName == "Monk") {
@@ -205,7 +214,18 @@ void combatCalculator::checkIfDead()
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
     }
   }
+    }
   else if (p2BattleParticipant.entityQuantity <= 0) {
+  if(p2BattleParticipant.healsAvailable > 0){
+    // DECIDED TO ACTIVATE THE HEALING POWERS HERE!!
+      std::cout << player2Name << " has used one of their heals<br>";
+    p2BattleParticipant.entityQuantity++;
+      p2BattleParticipant.healsAvailable--;
+    }
+  else{
+
+
+
     aDeathHasOccured = true;
 
     if (p2BattleParticipant.entityName == "Monk") {
@@ -219,6 +239,7 @@ void combatCalculator::checkIfDead()
       SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
     }
   }
+}
 }
 
 // Function: Check if the attacking ranged archer is retreating
@@ -407,14 +428,20 @@ void combatCalculator::getTotalValues()
 void combatCalculator::finalChecks()
 {
   // Behaviour: Check if the extra unit from the monk healing power ought to die
-  if (p1BattleParticipant.entityQuantity == startingQuantityP1) {
+  // Which is basically always the case if heal powers activate
+  // I'll bring the unit back from death with the heals available variable instead
+  if (p1BattleParticipant.entityQuantity >= startingQuantityP1) {
     if (healingEffectP1 == true) {
       p1BattleParticipant.entityQuantity -= 1;
+      p1BattleParticipant.healsAvailable++;
+      std::cout << player1Name << " has " << p1BattleParticipant.healsAvailable << " unit heals available";
     }
   }
-  if (p2BattleParticipant.entityQuantity == startingQuantityP2) {
+  if (p2BattleParticipant.entityQuantity >= startingQuantityP2) {
     if (healingEffectP2 == true) {
       p2BattleParticipant.entityQuantity -= 1;
+      p2BattleParticipant.healsAvailable++;
+      std::cout << player2Name << " has " << p2BattleParticipant.healsAvailable << " unit heals available";
     }
   }
 }
@@ -1206,6 +1233,12 @@ void monkRounds::roundOutcome(
         }
       }
 
+      // Behaviour: Make some final checks in regards to the healing modifiers
+      // Should not be adding a monk beyond what monks we started with
+      finalChecks();
+
+
+
       // Behaviour: Display the outcome of the monk combat round only if changes
       // occured
       if ((monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)) {
@@ -1240,6 +1273,13 @@ void monkRounds::roundOutcome(
       checkIfDead();
     } // End if conditional checking for no deaths
   }   // End for loop
+
+
+
+
+
+
+
 } // End monk function
 
 // Function: Calculate the outcome of a ranged battle
@@ -1535,6 +1575,9 @@ void archerRounds::roundOutcome(
         }
       }
     }
+
+
+
 
     // Behaviour: Display the outcome of the archer combat round only if changes
     // occured
@@ -1866,6 +1909,7 @@ void bombardmentRounds::roundOutcome(
         }
       }
     }
+
 
     // Behaviour: Display the outcome of the bombardment combat round only if
     // changes occured
@@ -2538,6 +2582,7 @@ void standardRounds::roundOutcome(
         }
       }
 
+
       // Behaviour: Display the outcome of the archer combat round only if
       // changes occured
       if (standardRoundActivated == true) {
@@ -2630,9 +2675,6 @@ void standardRounds::roundOutcome(
       }
     }
   }
-
-  // Behaviour: Make some final checks in regards to the healing modifiers
-  finalChecks();
 }
 
 FightMonksRounds::FightMonksRounds(
@@ -2688,8 +2730,6 @@ void FightMonksRounds::roundOutcome(
       checkIfDead();
     }
   }
-
-
 
 
   outputEntityInformation("");

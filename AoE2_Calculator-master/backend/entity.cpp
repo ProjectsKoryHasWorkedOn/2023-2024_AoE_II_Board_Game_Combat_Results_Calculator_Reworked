@@ -25,6 +25,8 @@ Entity::Entity()
   dealsAreaEffectDamage                       = false;
   onlyAttacksOnce                             = false;
   isKamikaze                                  = false;
+  initialEntityQuantity = 0;
+  healsAvailable = 0;
 }
 
 Entity::~Entity()

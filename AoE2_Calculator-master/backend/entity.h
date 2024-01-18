@@ -52,6 +52,8 @@ struct Entity {
   bool isKamikaze;
   int  entitiesArmorClasses;
 
+  int healsAvailable;
+
 
   int initialEntityQuantity;
 
