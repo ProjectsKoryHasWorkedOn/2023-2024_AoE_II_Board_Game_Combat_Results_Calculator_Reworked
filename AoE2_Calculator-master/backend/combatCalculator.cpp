@@ -279,17 +279,17 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
     std::cout << inputMessage << "<br>";
   }
 
-  // Ideally, we would somehow remember if we ever had monks to begin with.
-  // If we had monks then we would want to output if they're dead here.
-  // If we never had any we don't want to say they're 'dead'.
-  // Changed > to >= as a hack.
+
   p1BattleParticipant.outputEntity(player1Name);
+  // Do not show monks as being dead if started with 0
   if ( (p1AssistingMonkParticipant.entityQuantity >= 0) &&
       (p1AssistingMonkParticipant.initialEntityQuantity != 0) ) {
     std::cout << "(Assisting) ";
     p1AssistingMonkParticipant.outputEntity(player1Name);
   }
   p2BattleParticipant.outputEntity(player2Name);
+
+    // Do not show monks as being dead if started with 0
   if ( (p2AssistingMonkParticipant.entityQuantity >= 0) &&
       (p2AssistingMonkParticipant.initialEntityQuantity != 0) )
 
@@ -2661,6 +2661,10 @@ void FightMonksRounds::roundOutcome(
   const std::array<Entity*, playerCount> monks{
     &p1AssistingMonkParticipant, &p2AssistingMonkParticipant};
 
+
+  float p1PointsLost = 0, p2PointsLost = 0;
+
+
   for (int round{0}; round < inputRunTimes; ++round) {
     for (std::size_t player{0}; player < playerCount; ++player) {
       const std::size_t otherPlayerIdx{getOtherPlayerIndex(player)};
@@ -2681,12 +2685,38 @@ void FightMonksRounds::roundOutcome(
         otherPlayerMonk->entityQuantity - deadMonks,
         0,
         otherPlayerMonk->entityQuantity);
-
       checkIfDead();
     }
   }
 
+
+
+
   outputEntityInformation("");
+
+
+
+
+
+  if(p2AssistingMonkParticipant.entityQuantity < p2AssistingMonkParticipant.initialEntityQuantity){
+    int numberOfMonksP2Lost = p2AssistingMonkParticipant.initialEntityQuantity - p2AssistingMonkParticipant.entityQuantity;
+    p2PointsLost = (p2AssistingMonkParticipant.pointValue / p2AssistingMonkParticipant.initialEntityQuantity) * numberOfMonksP2Lost;
+
+    std::cout << ">> " << player1Name << " gets " << p2PointsLost
+              << " points"
+              << "<br>";
+  }
+
+
+
+  if(p1AssistingMonkParticipant.entityQuantity < p1AssistingMonkParticipant.initialEntityQuantity){
+    int numberOfMonksP1Lost = p1AssistingMonkParticipant.initialEntityQuantity - p1AssistingMonkParticipant.entityQuantity;
+    p1PointsLost = (p1AssistingMonkParticipant.pointValue / p1AssistingMonkParticipant.initialEntityQuantity) * numberOfMonksP1Lost;
+
+    std::cout << ">> " << player2Name << " gets " << p1PointsLost
+              << " points"
+              << "<br>";
+  }
 }
 
 FightMonksRounds::Kind FightMonksRounds::getKind() const
