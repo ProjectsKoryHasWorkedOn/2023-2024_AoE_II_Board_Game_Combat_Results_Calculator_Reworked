@@ -367,6 +367,9 @@ int runGame(
   if (
     (p1BattleParticipant.armorClass[1] != true)
     && (p2BattleParticipant.armorClass[1] != true)) {
+
+
+
     const bool shouldFightMonks{
       queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
 
@@ -411,8 +414,11 @@ int runGame(
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
+
     // Behaviour: Output the remaining damage
     // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
+ }
+
 
     /** Part 4.3: Bonus round **/
     // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
@@ -459,7 +465,7 @@ int runGame(
         = theCombatCalculator->returnModifiedBattleParticipants(player2);
       p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
     }
-  }
+
 
   const bool shouldFightMonks{
     queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};

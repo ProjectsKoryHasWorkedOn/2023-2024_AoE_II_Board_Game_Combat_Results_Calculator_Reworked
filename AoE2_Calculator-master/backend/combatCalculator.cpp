@@ -2727,11 +2727,11 @@ void FightMonksRounds::roundOutcome(
         otherPlayerMonk->entityQuantity - deadMonks,
         0,
         otherPlayerMonk->entityQuantity);
-      checkIfDead();
     }
   }
 
 
+  checkIfDead();
   outputEntityInformation("");
 
 
