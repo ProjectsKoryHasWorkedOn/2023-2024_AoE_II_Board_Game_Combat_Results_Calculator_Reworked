@@ -118,8 +118,6 @@ QString player1Color;
 QString player2Color;
 QString player1BattleAssistantName;
 QString player2BattleAssistantName;
-bool    expectingSingleEntityForPlayer1;
-bool    expectingSingleEntityForPlayer2;
 
 int representationOfPlayer1Age;
 int representationOfPlayer2Age;
@@ -184,10 +182,6 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   // What the initial name of the players are
   player1Name = "Player 1";
   player2Name = "Player 2";
-
-  // What the initial expectation is for number of entities allowed
-  expectingSingleEntityForPlayer1 = false;
-  expectingSingleEntityForPlayer2 = false;
 
   // What the initial player color of the players are
   player1Color = "black";
@@ -823,39 +817,22 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
   nameOfSelection = nameOfSelection.toUpper();
   nameOfSelection = convertSpacesToUnderscores(nameOfSelection);
 
-  if (isBuilding(nameOfSelection) || isUnitWithOneToken(nameOfSelection)) {
-    if (playerNumber == 1) {
-      expectingSingleEntityForPlayer1 = true;
-    }
-    if (playerNumber == 2) {
-      expectingSingleEntityForPlayer2 = true;
-    }
-  }
-  else {
-    if (playerNumber == 1) {
-      expectingSingleEntityForPlayer1 = false;
-    }
-    if (playerNumber == 2) {
-      expectingSingleEntityForPlayer2 = false;
-    }
-  }
+  QSpinBox* const entityQuantitySpinBox
+    = playerNumber == 1 ? ui.player1EntityQuantity : ui.player2EntityQuantity;
+  QSpinBox* const assistantQuantitySpinBox
+    = playerNumber == 1 ? ui.player1EntityAssistantQuantity
+                        : ui.player2EntityAssistantQuantity;
 
-  if (expectingSingleEntityForPlayer1 == true) {
-    ui.player1EntityQuantity->setRange(1, 1);
-    ui.player1EntityAssistantQuantity->setRange(0, 0);
-  }
-  else {
-    ui.player1EntityQuantity->setRange(1, 5);
-    ui.player1EntityAssistantQuantity->setRange(0, 5);
-  }
+  const bool isSingleEntity
+    = isBuilding(nameOfSelection) || isUnitWithOneToken(nameOfSelection);
 
-  if (expectingSingleEntityForPlayer2 == true) {
-    ui.player2EntityQuantity->setRange(1, 1);
-    ui.player2EntityAssistantQuantity->setRange(0, 0);
+  if (isSingleEntity) {
+    entityQuantitySpinBox->setRange(1, 1);
+    assistantQuantitySpinBox->setRange(0, 0);
   }
   else {
-    ui.player2EntityQuantity->setRange(1, 5);
-    ui.player2EntityAssistantQuantity->setRange(0, 5);
+    entityQuantitySpinBox->setRange(1, 5);
+    assistantQuantitySpinBox->setRange(0, 5);
   }
 }
 
@@ -1599,6 +1576,7 @@ void MainWindow::selectInitialEntities()
   if (player2SelectedEntity != nullptr) {
     ui.player2EntityNames->setCurrentItem(player2SelectedEntity);
     ui.player2EntityNames->scrollToItem(player2SelectedEntity);
+
     ui.player2EntityQuantity->setValue(
       m_entities.player2Entity().entityQuantity());
 
