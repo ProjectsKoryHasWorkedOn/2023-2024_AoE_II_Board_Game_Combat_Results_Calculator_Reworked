@@ -27,6 +27,7 @@ extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
 static bool queryIfMonksShouldBeFought(FightMonksRounds::Kind kind)
 {
+
   std::cout << "Do you want to fight the monks";
 
   switch (kind) {
@@ -369,15 +370,24 @@ int runGame(
     && (p2BattleParticipant.armorClass[1] != true)) {
 
 
-
+    if(
+      (p1AssistingMonkBattleParticipant.entityQuantity > 0) ||
+      (p2AssistingMonkBattleParticipant.entityQuantity > 0)
+      ){
     const bool shouldFightMonks{
       queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
 
-    // Behaviour: Set the combat calculator to the archer rounds
-    theCombatCalculator
-      = shouldFightMonks
-          ? static_cast<combatCalculator*>(&fightMonksRangedRounds)
-          : static_cast<combatCalculator*>(&rangedRounds);
+      // Behaviour: Set the combat calculator to the archer rounds
+      theCombatCalculator
+        = shouldFightMonks
+            ? static_cast<combatCalculator*>(&fightMonksRangedRounds)
+            : static_cast<combatCalculator*>(&rangedRounds);
+    }
+
+
+
+
+
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
@@ -467,14 +477,28 @@ int runGame(
     }
 
 
+
+
+    /** Part 4.4: Round 3 & 4 **/
+
+    // @ Phillip: Ask about how we can not ask question on if we're attacking monks or not when there are no monks
+    // This seems to stop it from proceeding
+    // static_cast ...
+
+    if(
+      (p1AssistingMonkBattleParticipant.entityQuantity > 0) ||
+      (p2AssistingMonkBattleParticipant.entityQuantity > 0)
+      ){
   const bool shouldFightMonks{
     queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};
 
-  /** Part 4.4: Round 3 & 4 **/
-  // Behaviour: Set the combat calculator to the standard rounds
-  theCombatCalculator
-    = shouldFightMonks ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
-                       : static_cast<combatCalculator*>(&standardRounds);
+      // Behaviour: Set the combat calculator to the standard rounds
+      theCombatCalculator
+        = shouldFightMonks ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
+                           : static_cast<combatCalculator*>(&standardRounds);
+    }
+
+
 
   // Set the player names
   theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
