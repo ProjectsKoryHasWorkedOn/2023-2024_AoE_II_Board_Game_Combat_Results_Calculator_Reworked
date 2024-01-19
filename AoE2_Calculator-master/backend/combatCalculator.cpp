@@ -427,54 +427,6 @@ void combatCalculator::checkRemainingDamage(
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Function: Calculate the outcome of a monk battle
 void monkRounds::roundOutcome(
   int  inputRunTimes,
@@ -665,6 +617,10 @@ void monkRounds::roundOutcome(
           }
           // Act on the success
           else if(monkPowersActivatedP1 == true){
+            std::cout << player1Name << "'s monk powers activated"
+                      << "<br>";
+
+
             if(player1IsHealingOrConverting == "Converting"){
 
 
@@ -739,8 +695,9 @@ void monkRounds::roundOutcome(
               p1BattleParticipant.healsAvailable ++;
             }
 
-            std::cout << player1Name << " has " << p1BattleParticipant.healsAvailable
-                      << " on their " << p1BattleParticipant.entityName << "<br>";
+            std::cout << player1Name << " has ";
+            (p1BattleParticipant.healsAvailable == 1) ? std::cout << " a heal" : std::cout << p1BattleParticipant.healsAvailable << " heals";
+            std::cout << " available on their " << p1BattleParticipant.entityName << "<br>";
 
 
             // Play a SFX for a successful healing attempt
@@ -928,6 +885,10 @@ void monkRounds::roundOutcome(
       }
       // Act on the success
       else if(monkPowersActivatedP2 == true){
+            std::cout << player2Name << "'s monk powers activated"
+                      << "<br>";
+
+
             if(player2IsHealingOrConverting == "Converting"){
 
 
@@ -1002,8 +963,11 @@ void monkRounds::roundOutcome(
               p2BattleParticipant.healsAvailable ++;
             }
 
-            std::cout << player2Name << " has " << p2BattleParticipant.healsAvailable
-                      << " on their " << p2BattleParticipant.entityName << "<br>";
+
+            std::cout << player2Name << " has ";
+            (p2BattleParticipant.healsAvailable == 1) ? std::cout << " a heal" : std::cout << p2BattleParticipant.healsAvailable << " heals";
+            std::cout << " available on their " << p2BattleParticipant.entityName << "<br>";
+
 
 
                    // Play a SFX for a successful healing attempt

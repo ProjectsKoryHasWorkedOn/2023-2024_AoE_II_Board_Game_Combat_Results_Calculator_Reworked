@@ -27,13 +27,11 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   const std::string& playerName)
 {
   if (m_convertingHealingPromptAnswer == "Always converting") {
-    std::cout << "Converting selected<br>";
-    return MonkAction::Convert;
+    return MonkAction::Convert; // Converting selected
   }
 
   if (m_convertingHealingPromptAnswer == "Always healing") {
-    std::cout << "Healing selected<br>";
-    return MonkAction::Heal;
+    return MonkAction::Heal; // Healing selected
   }
 
   QMessageBox messageBox{
@@ -50,12 +48,10 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   QAbstractButton* clickedButton{messageBox.clickedButton()};
 
   if (clickedButton == convertButton) {
-    std::cout << "Converting selected<br>";
-    return DialogInput::MonkAction::Convert;
+    return DialogInput::MonkAction::Convert;     // Converting selected
   }
   else if (clickedButton == healButton) {
-    std::cout << "Healing selected<br>";
-    return DialogInput::MonkAction::Heal;
+    return DialogInput::MonkAction::Heal;     // Healing selected
   }
 
   assert(false && "It went wrong.");
@@ -65,13 +61,11 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
 bool DialogInput::queryForIsRetreating()
 {
   if (m_retreatingPromptAnswer == "Always retreating") {
-    std::cout << "Yes<br>";
-    return true;
+    return true; // Yes to retreating
   }
 
   if (m_retreatingPromptAnswer == "Never retreating") {
-    std::cout << "No<br>";
-    return false;
+    return false; // No to reteating
   }
 
   bool result{};
