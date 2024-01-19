@@ -22,12 +22,13 @@ public:
 
 public:
   /** Values attained sometime during the running of the combat rounds **/
-  // Boolean: Declare whether or not the quantity of the current entities ought
-  // to stay increased by 1 due to monk combat Reference: The quantity ought to
-  // go down by 1 if the quantity does not change for the entire battle and
-  // healing effect is true for each player
-  bool healingEffectP1, healingEffectP2;
-  int  startingQuantityP1, startingQuantityP2;
+
+
+
+
+  int startingBattleParticipantQuantityP1, startingBattleParticipantQuantityP2;
+
+  int startingAssistantQuantityP1, startingAssistantQuantityP2;
 
   // Int: Store the die roll input
   int d6DieRoll;
@@ -68,8 +69,9 @@ protected:
   CombatCalculatorState*     m_state;
   CombatCalculatorCallbacks* m_callbacks;
 
-  bool &healingEffectP1, &healingEffectP2;
-  int & startingQuantityP1, &startingQuantityP2;
+  int & startingBattleParticipantQuantityP1, &startingBattleParticipantQuantityP2;
+
+  int & startingAssistantQuantityP1, &startingAssistantQuantityP2;
 
   int& d6DieRoll;
 
@@ -152,13 +154,6 @@ public:
   // Function: Check if the attacking ranged archer is retreating
   void checkIfRetreating(std::string roundType);
 
-  /** Update entity values based on the quantity functions **/
-  // Function: Divide the values by the quantity (to get the individual values)
-  void getIndividualValues();
-
-  // Function: Times the values by the quantity (to get the total values)
-  void getTotalValues();
-
   /** Combat rounds functions **/
   // Function: Calculate the outcome of a battle
   virtual void roundOutcome(
@@ -166,12 +161,13 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies)
+    int* inputP2Technologies,
+    std::string inputRunConditions)
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
 
   // Function: Make some final checks (after the end of the rounds of combat)
-  void finalChecks();
+  void checkIfItCanBeHealed();
 
   /** Return information functions **/
   // Function: Return the modified battle participants based on the input player
@@ -192,7 +188,8 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies);
+    int* inputP2Technologies,
+    std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
 
@@ -208,7 +205,8 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies);
+    int* inputP2Technologies,
+    std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 
@@ -224,7 +222,8 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies);
+    int* inputP2Technologies,
+    std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 
@@ -240,7 +239,8 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies);
+    int* inputP2Technologies,
+    std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
 
@@ -258,7 +258,8 @@ public:
     int* inputP1Events,
     int* inputP2Events,
     int* inputP1Technologies,
-    int* inputP2Technologies);
+    int* inputP2Technologies,
+    std::string inputRunConditions);
 
   Kind getKind() const;
 

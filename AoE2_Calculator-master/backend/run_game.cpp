@@ -350,7 +350,8 @@ int runGame(
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
-    p2_technologies_array);
+    p2_technologies_array,
+    "p1_and_p2_calculations");
 
   // Behaviour: Get the results after monkCombatRounds rounds of monk combat
   // Player 1
@@ -409,7 +410,8 @@ int runGame(
       p1_events_array,
       p2_events_array,
       p1_technologies_array,
-      p2_technologies_array);
+      p2_technologies_array,
+      "Just P1");
 
     // Behaviour: Get the results after archerCombatRounds rounds of ranged
     // combat Player 1
@@ -458,7 +460,8 @@ int runGame(
       p1_events_array,
       p2_events_array,
       p1_technologies_array,
-      p2_technologies_array);
+      p2_technologies_array,
+      "Just P1");
 
     // Behaviour: Get the results after bombardmentCombatRounds rounds of
     // standard combat Player 1
@@ -517,7 +520,8 @@ int runGame(
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
-    p2_technologies_array);
+    p2_technologies_array,
+    "Just P1");
 
   // Behaviour: Get the results after normalCombatRounds rounds of standard
   // combat Player 1

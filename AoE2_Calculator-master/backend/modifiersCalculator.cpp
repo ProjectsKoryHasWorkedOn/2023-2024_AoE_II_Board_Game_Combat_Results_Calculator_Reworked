@@ -369,14 +369,6 @@ Entity modifiersCalculator::applyAllModifiers(int inputReturnMode)
     modifiedBattleParticipant = p2AssistingMonkParticipant;
   }
 
-  // Behaviour: Apply the quantity effects
-  modifiedBattleParticipant.standardDamage
-    *= modifiedBattleParticipant.entityQuantity;
-  modifiedBattleParticipant.rangedDamage
-    *= modifiedBattleParticipant.entityQuantity;
-  modifiedBattleParticipant.pointValue
-    *= modifiedBattleParticipant.entityQuantity;
-
   // Behaviour: Return the modified entity
   return modifiedBattleParticipant;
 }
