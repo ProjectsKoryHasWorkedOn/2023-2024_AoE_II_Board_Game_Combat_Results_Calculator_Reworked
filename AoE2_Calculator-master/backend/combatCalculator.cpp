@@ -516,10 +516,10 @@ void monkRounds::roundOutcome(
         && (p1AssistingMonkParticipant.entityQuantity > 0)){
       assistingMonksP1 = true;
       conversionRateANDhealingRateP1 = p1AssistingMonkParticipant.entityQuantity;
+
     }
     else{
       assistingMonksP1 = false;
-      conversionRateANDhealingRateP1 = 0;
     }
     if((p1BattleParticipant.armorClass[9] == true) && (p1BattleParticipant.entityQuantity > 0) ){
       standaloneMonksP1 = true;
@@ -527,6 +527,9 @@ void monkRounds::roundOutcome(
     }
     else{
       standaloneMonksP1 = false;
+    }
+
+    if(assistingMonksP1 == false && standaloneMonksP1 == false){
       conversionRateANDhealingRateP1 = 0;
     }
 
@@ -581,6 +584,7 @@ void monkRounds::roundOutcome(
           }
 
           d6DieRoll = generateD6DieInput(); // Generate, validate, and return d6 dice input before proceeding
+
           /* Check if the event "Zealous Monks" is active for P1 */
           if ( (inputP1Events[39] == 1) && (player1IsHealingOrConverting == "Converting") ) {
             // [39] Zealous Monks - Target Monk unit gets 1 conversion roll at a 3
@@ -625,7 +629,7 @@ void monkRounds::roundOutcome(
             while(numberOfIterationsThroughTheWhileLoop != (numberOfTimesTheDieHasBeenRolledSoFarForP1 + numberOfExtraConversionAttemptsForP1) ){
 
               // Check if the conversion attempt is going to fail
-              if(conversionRateANDhealingRateP1 <= d6DieRoll){
+              if(conversionRateANDhealingRateP1 >= d6DieRoll){
                 std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                              "and enter 1 to try again. Otherwise enter 0"
                           << "<br>";
@@ -653,7 +657,8 @@ void monkRounds::roundOutcome(
           }
 
           // Determine if the monk powers have activated for P1
-          monkPowersActivatedP1 = (conversionRateANDhealingRateP1 <= d6DieRoll) ? true : false;
+          monkPowersActivatedP1 = (conversionRateANDhealingRateP1 >= d6DieRoll) ? true : false;
+
           if(monkPowersActivatedP1 == false){
             std::cout << player1Name << "'s monk powers failed to activate"
                     << "<br>";
@@ -692,7 +697,7 @@ void monkRounds::roundOutcome(
                   }
               }
 
-              if (getPlayer1MonkConversionTarget == "0") {
+             if ( (getPlayer1MonkConversionTarget == "0") || (doesPlayer1HaveRedemption() == false) ) {
                      // Behaviour: Make sure that the conversion attempt is not being applied to siege units
               if (p2BattleParticipant.armorClass[12] == true) {
                   std::cout << "Error: " << player1Name
@@ -780,7 +785,6 @@ void monkRounds::roundOutcome(
     }
     else{
       assistingMonksP2 = false;
-      conversionRateANDhealingRateP2 = 0;
     }
     if((p2BattleParticipant.armorClass[9] == true) && (p2BattleParticipant.entityQuantity > 0) ){
       standaloneMonksP2 = true;
@@ -788,6 +792,9 @@ void monkRounds::roundOutcome(
     }
     else{
       standaloneMonksP2 = false;
+    }
+
+    if(assistingMonksP2 == false && standaloneMonksP2 == false){
       conversionRateANDhealingRateP2 = 0;
     }
 
@@ -886,7 +893,7 @@ void monkRounds::roundOutcome(
             while(numOfIterationsThroughTheWhileLoop != (numberOfTimesTheDieHasBeenRolledSoFarForP2 + numberOfExtraConversionAttemptsForP2) ){
 
                    // Check if the conversion attempt is going to fail
-            if(conversionRateANDhealingRateP2 <= d6DieRoll){
+            if(conversionRateANDhealingRateP2 >= d6DieRoll){
               std::cout << "The conversion attempt for p1 failed. Pay 2 gold "
                            "and enter 1 to try again. Otherwise enter 0"
                         << "<br>";
@@ -914,7 +921,7 @@ void monkRounds::roundOutcome(
       }
 
              // Determine if the monk powers have activated for P2
-      monkPowersActivatedP2 = (conversionRateANDhealingRateP2 <= d6DieRoll) ? true : false;
+      monkPowersActivatedP2 = (conversionRateANDhealingRateP2 >= d6DieRoll) ? true : false;
       if(monkPowersActivatedP2 == false){
             std::cout << player2Name << "'s monk powers failed to activate"
                       << "<br>";
@@ -953,7 +960,7 @@ void monkRounds::roundOutcome(
               }
             }
 
-            if (getPlayer2MonkConversionTarget == "0") {
+            if ( (getPlayer2MonkConversionTarget == "0") || (doesPlayer2HaveRedemption() == false) ) {
               // Behaviour: Make sure that the conversion attempt is not being applied to siege units
               if (p1BattleParticipant.armorClass[12] == true) {
                   std::cout << "Error: " << player2Name
@@ -984,7 +991,7 @@ void monkRounds::roundOutcome(
 
 
 
-                   // Play a SFX for a successful conversion attempt
+            // Play a SFX for a successful conversion attempt
             SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
 
             }
