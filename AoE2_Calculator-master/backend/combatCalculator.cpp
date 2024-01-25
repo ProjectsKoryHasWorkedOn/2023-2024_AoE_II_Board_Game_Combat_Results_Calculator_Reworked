@@ -16,6 +16,40 @@
 // each player, perhaps I should have a function that takes the player variables
 // and does calculations for that given player
 
+std::ostream& operator<<(std::ostream& os, ActivePlayer player)
+{
+  switch (player) {
+  case ActivePlayer::Player1:
+    return os << "Player1";
+  case ActivePlayer::Player2:
+    return os << "Player2";
+  case ActivePlayer::Both:
+    return os << "Both players";
+  case ActivePlayer::None:
+    return os << "No players";
+  default:
+    break;
+  }
+  Q_UNREACHABLE();
+}
+
+QDebug operator<<(QDebug d, ActivePlayer player)
+{
+  switch (player) {
+  case ActivePlayer::Player1:
+    return d << "Player1";
+  case ActivePlayer::Player2:
+    return d << "Player2";
+  case ActivePlayer::Both:
+    return d << "Both players";
+  case ActivePlayer::None:
+    return d << "No players";
+  default:
+    break;
+  }
+  Q_UNREACHABLE();
+}
+
 CombatCalculatorCallbacks::CombatCalculatorCallbacks(
   std::function<void(Player, bool)> onPlayerEntityDeath)
   : m_onPlayerEntityDeath{std::move(onPlayerEntityDeath)}

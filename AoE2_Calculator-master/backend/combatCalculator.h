@@ -2,6 +2,7 @@
 /** The libaries **/
 #include "entity.h" // Using: Entity class
 #include "player.h"
+#include <QDebug>
 #include <functional>
 #include <iostream> // Using: cin, cout
 
@@ -11,6 +12,10 @@ enum class ActivePlayer : int {
   Player2 = 0B10,
   Both    = 0B11
 };
+
+std::ostream& operator<<(std::ostream& os, ActivePlayer player);
+
+QDebug operator<<(QDebug d, ActivePlayer player);
 
 constexpr ActivePlayer operator|(ActivePlayer lhs, ActivePlayer rhs)
 {

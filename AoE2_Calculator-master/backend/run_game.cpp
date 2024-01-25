@@ -20,27 +20,36 @@ void outputRemainingDamage(
 }
 
 // Ranged
-//  + If it is Player1's turn and they have ranged units and Player2 has at least one monk
+//  + If it is Player1's turn and they have ranged units and Player2 has at
+//  least one monk
 //    Player1 can choose to attack the monks instead of doing the ranged round.
-//  + If it is Player2's turn and they have ranged units and Player1 has at least one monk
+//  + If it is Player2's turn and they have ranged units and Player1 has at
+//  least one monk
 //    Player2 can choose to attack the monks instead of doing the ranged round.
-//  + If both choose do attack the others monks -> ActivePlayer::Both for FightMonksRound(Ranged)
+//  + If both choose do attack the others monks -> ActivePlayer::Both for
+//  FightMonksRound(Ranged)
 //    and ActivePlayer::None for Ranged.
 //  + If only one chooses to attack the other player's monks use that player for
-//    FightMonksRound(Ranged) and the other player will do the regular ranged round.
-//  + If a player can't attack monks because they have no ranged units or their opponent has
+//    FightMonksRound(Ranged) and the other player will do the regular ranged
+//    round.
+//  + If a player can't attack monks because they have no ranged units or their
+//  opponent has
 //    no monks, they automatically choose the regular ranged round.
 
 // Melee
-//  + Works like Ranged, except you can always attack the monks if they have some and you have
+//  + Works like Ranged, except you can always attack the monks if they have
+//  some and you have
 //    a real unit (not a building).
 
 // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
 extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
-static bool queryIfMonksShouldBeFought(FightMonksRounds::Kind kind)
+static bool queryIfMonksShouldBeFought(
+  FightMonksRounds::Kind kind,
+  const std::string&     playerName)
 {
-  std::cout << "Do you want to fight the monks";
+  std::cout << "Hey " << playerName << ", ";
+  std::cout << "do you want to fight the monks";
 
   switch (kind) {
   case FightMonksRounds::Kind::Ranged:
@@ -56,6 +65,44 @@ static bool queryIfMonksShouldBeFought(FightMonksRounds::Kind kind)
   bool shouldFightMonks{false};
   DIN >> shouldFightMonks;
   return shouldFightMonks;
+}
+
+static ActivePlayer getActivePlayerForFightMonksRanged(
+  bool doesPlayer1WantToAttackMonks,
+  bool doesPlayer2WantToAttackMonks)
+{
+  if (doesPlayer1WantToAttackMonks && doesPlayer2WantToAttackMonks) {
+    return ActivePlayer::Both;
+  }
+
+  if (!doesPlayer1WantToAttackMonks && !doesPlayer2WantToAttackMonks) {
+    return ActivePlayer::None;
+  }
+
+  if (doesPlayer1WantToAttackMonks) {
+    return ActivePlayer::Player1;
+  }
+
+  return ActivePlayer::Player2;
+}
+
+static ActivePlayer getActivePlayerForRangedRound(
+  bool doesPlayer1WantToAttackMonks,
+  bool doesPlayer2WantToAttackMonks)
+{
+  if (doesPlayer1WantToAttackMonks && doesPlayer2WantToAttackMonks) {
+    return ActivePlayer::None;
+  }
+
+  if (!doesPlayer1WantToAttackMonks && !doesPlayer2WantToAttackMonks) {
+    return ActivePlayer::Both;
+  }
+
+  if (doesPlayer1WantToAttackMonks) {
+    return ActivePlayer::Player2;
+  }
+
+  return ActivePlayer::Player1;
 }
 
 /** The main function **/
@@ -381,65 +428,119 @@ int runGame(
   // Proceed with archer round of combat so long as archers are not fighting
   // buildings Ranged damage applies only to units and villagers, not to
   // buildings
+
+  // Check if player1 is able to attack player2's monks with ranged attacks.
+  bool player1UsesRangedAttacksAgainstMonks{false};
   if (
-    (p1BattleParticipant.armorClass[1] != true)
-    && (p2BattleParticipant.armorClass[1] != true)) {
-    if (
-      (p1AssistingMonkBattleParticipant.entityQuantity > 0)
-      && (p2AssistingMonkBattleParticipant.entityQuantity > 0)
-      && (p1BattleParticipant.rangedDamage > 0 && p2BattleParticipant.rangedDamage > 0)) {
-      const bool shouldFightMonks{
-        queryIfMonksShouldBeFought(FightMonksRounds::Kind::Ranged)};
-
-      // Behaviour: Set the combat calculator to the archer rounds
-      theCombatCalculator
-        = shouldFightMonks
-            ? static_cast<combatCalculator*>(&fightMonksRangedRounds)
-            : static_cast<combatCalculator*>(&rangedRounds);
-    }
-    else {
-      theCombatCalculator = &rangedRounds;
-    }
-
-    // Set the player names
-    theCombatCalculator->setPlayerNames(
-      playerNamesArray[0], playerNamesArray[1]);
-
-    // Behaviour: Set the battle participants
-    theCombatCalculator->setCombatParticipants(
-      p1BattleParticipant,
-      p2BattleParticipant,
-      p1AssistingMonkBattleParticipant,
-      p2AssistingMonkBattleParticipant,
-      modifyRoundAttackP1,
-      modifyRoundAttackP2);
-
-    // Behaviour: Set the remaining damage values for the combat calculator
-    theCombatCalculator->setAdditionalValues(
-      p1RemainingDamage, p2RemainingDamage);
-
-    theCombatCalculator->roundOutcome(
-      archerCombatRounds,
-      p1_events_array,
-      p2_events_array,
-      p1_technologies_array,
-      p2_technologies_array,
-      ActivePlayer::Player1);
-
-    // Behaviour: Get the results after archerCombatRounds rounds of ranged
-    // combat Player 1
-    p1BattleParticipant
-      = theCombatCalculator->returnModifiedBattleParticipants(player1);
-    p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
-
-    // Player 2
-    p2BattleParticipant
-      = theCombatCalculator->returnModifiedBattleParticipants(player2);
-    p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-
-    // Behaviour: Output the remaining damage
-    // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
+    (p1BattleParticipant.rangedDamage > 0)
+    && (p2AssistingMonkBattleParticipant.entityQuantity > 0)) {
+    const bool shouldFightMonks{queryIfMonksShouldBeFought(
+      FightMonksRounds::Kind::Ranged, playerNamesArray[0])};
+    player1UsesRangedAttacksAgainstMonks = shouldFightMonks;
   }
+
+  bool player2UsesRangedAttacksAgainstMonks{false};
+  if (
+    (p2BattleParticipant.rangedDamage > 0)
+    && (p1AssistingMonkBattleParticipant.entityQuantity > 0)) {
+    const bool shouldFightMonks{queryIfMonksShouldBeFought(
+      FightMonksRounds::Kind::Ranged, playerNamesArray[1])};
+    player2UsesRangedAttacksAgainstMonks = shouldFightMonks;
+  }
+
+  theCombatCalculator = &fightMonksRangedRounds;
+  // Set the player names
+  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+
+  // Behaviour: Set the battle participants
+  theCombatCalculator->setCombatParticipants(
+    p1BattleParticipant,
+    p2BattleParticipant,
+    p1AssistingMonkBattleParticipant,
+    p2AssistingMonkBattleParticipant,
+    modifyRoundAttackP1,
+    modifyRoundAttackP2);
+
+  // Behaviour: Set the remaining damage values for the combat calculator
+  theCombatCalculator->setAdditionalValues(
+    p1RemainingDamage, p2RemainingDamage);
+
+  const ActivePlayer fightMonksRangedRoundsActivePlayer{
+    getActivePlayerForFightMonksRanged(
+      player1UsesRangedAttacksAgainstMonks,
+      player2UsesRangedAttacksAgainstMonks)};
+  qDebug() << ">>>>>>>> active player for fight monks ranged:"
+           << fightMonksRangedRoundsActivePlayer;
+  theCombatCalculator->roundOutcome(
+    archerCombatRounds,
+    p1_events_array,
+    p2_events_array,
+    p1_technologies_array,
+    p2_technologies_array,
+    fightMonksRangedRoundsActivePlayer);
+
+  // Behaviour: Get the results after archerCombatRounds rounds of ranged
+  // combat Player 1
+  p1BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player1);
+  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
+  // Player 2
+  p2BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player2);
+  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+
+  // +-+-+-+-+-+-+-+-+
+  // +-+-+-+-+-+-+-+-+
+  // +-+-+-+-+-+-+-+-+
+  // +-+-+-+-+-+-+-+-+
+  // +-+-+-+-+-+-+-+-+
+  // Ranged round
+  theCombatCalculator = &rangedRounds;
+
+  // Who knows if we need this?
+  // Set the player names
+  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+
+  // Behaviour: Set the battle participants
+  theCombatCalculator->setCombatParticipants(
+    p1BattleParticipant,
+    p2BattleParticipant,
+    p1AssistingMonkBattleParticipant,
+    p2AssistingMonkBattleParticipant,
+    modifyRoundAttackP1,
+    modifyRoundAttackP2);
+
+  // Behaviour: Set the remaining damage values for the combat calculator
+  theCombatCalculator->setAdditionalValues(
+    p1RemainingDamage, p2RemainingDamage);
+
+  const ActivePlayer rangedRoundActivePlayer{getActivePlayerForRangedRound(
+    player1UsesRangedAttacksAgainstMonks,
+    player2UsesRangedAttacksAgainstMonks)};
+  qDebug() << ">>>>>>>> Active player for ranged rounds:"
+           << rangedRoundActivePlayer;
+  theCombatCalculator->roundOutcome(
+    archerCombatRounds,
+    p1_events_array,
+    p2_events_array,
+    p1_technologies_array,
+    p2_technologies_array,
+    rangedRoundActivePlayer);
+
+  // Behaviour: Get the results after archerCombatRounds rounds of ranged
+  // combat Player 1
+  p1BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player1);
+  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
+  // Player 2
+  p2BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player2);
+  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+
+  // Behaviour: Output the remaining damage
+  // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
 
   /** Part 4.3: Bonus round **/
   // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
@@ -497,8 +598,9 @@ int runGame(
   if (
     (p1AssistingMonkBattleParticipant.entityQuantity > 0)
     && (p2AssistingMonkBattleParticipant.entityQuantity > 0)) {
-    const bool shouldFightMonks{
-      queryIfMonksShouldBeFought(FightMonksRounds::Kind::Melee)};
+    // TODO: HERE
+    const bool shouldFightMonks{queryIfMonksShouldBeFought(
+      FightMonksRounds::Kind::Melee, "Unknown player yet")};
 
     // Behaviour: Set the combat calculator to the standard rounds
     theCombatCalculator
