@@ -322,19 +322,17 @@ void Entity::outputEntity(std::string playerName)
 
     displayColorfulText("bold", "white", "dark_gray", medievalAge, false);
 
-
     std::cout << " ";
 
-    if(entityQuantity > 1){
-    displayColorfulText("bold", "white", "dark_cyan", entityName + "s", false);
-    std::cout << " each have ";
+    if (entityQuantity > 1) {
+      displayColorfulText(
+        "bold", "white", "dark_cyan", entityName + "s", false);
+      std::cout << " each have ";
     }
-    else{
+    else {
       displayColorfulText("bold", "white", "dark_cyan", entityName, false);
       std::cout << " has ";
     }
-
-
 
     displayColorfulText(
       "bold", "red", "default", std::to_string(entityHealth), false);
@@ -370,13 +368,12 @@ void Entity::outputEntity(std::string playerName)
       displayColorfulText(
         "bold", "cyan", "default", std::to_string(pointValue), false);
       std::cout << " ";
-      if(pointValue > 1){
+      if (pointValue > 1) {
         std::cout << "points";
       }
-      else{
+      else {
         std::cout << "point";
       }
-
     }
 
     // Behaviour: Return further information about the entities armor classes if

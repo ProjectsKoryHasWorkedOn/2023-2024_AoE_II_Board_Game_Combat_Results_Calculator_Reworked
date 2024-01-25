@@ -48,10 +48,10 @@ DialogInput::MonkAction DialogInput::queryForMonkAction(
   QAbstractButton* clickedButton{messageBox.clickedButton()};
 
   if (clickedButton == convertButton) {
-    return DialogInput::MonkAction::Convert;     // Converting selected
+    return DialogInput::MonkAction::Convert; // Converting selected
   }
   else if (clickedButton == healButton) {
-    return DialogInput::MonkAction::Heal;     // Healing selected
+    return DialogInput::MonkAction::Heal; // Healing selected
   }
 
   assert(false && "It went wrong.");

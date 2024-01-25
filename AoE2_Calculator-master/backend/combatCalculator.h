@@ -23,9 +23,6 @@ public:
 public:
   /** Values attained sometime during the running of the combat rounds **/
 
-
-
-
   int startingBattleParticipantQuantityP1, startingBattleParticipantQuantityP2;
 
   int startingAssistantQuantityP1, startingAssistantQuantityP2;
@@ -69,9 +66,10 @@ protected:
   CombatCalculatorState*     m_state;
   CombatCalculatorCallbacks* m_callbacks;
 
-  int & startingBattleParticipantQuantityP1, &startingBattleParticipantQuantityP2;
+  int &startingBattleParticipantQuantityP1,
+    &startingBattleParticipantQuantityP2;
 
-  int & startingAssistantQuantityP1, &startingAssistantQuantityP2;
+  int &startingAssistantQuantityP1, &startingAssistantQuantityP2;
 
   int& d6DieRoll;
 
@@ -157,11 +155,11 @@ public:
   /** Combat rounds functions **/
   // Function: Calculate the outcome of a battle
   virtual void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions)
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
@@ -184,11 +182,11 @@ public:
 
   // Function: Calculate the outcome of a monk battle
   void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
@@ -201,11 +199,11 @@ public:
 
   // Function: Calculate the outcome of a ranged battle
   void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
@@ -218,11 +216,11 @@ public:
 
   // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
@@ -235,11 +233,11 @@ public:
 
   // Function: Calculate the outcome of a standard battle
   void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions);
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
@@ -254,11 +252,11 @@ public:
     Kind                       kind);
 
   void roundOutcome(
-    int  inputRunTimes,
-    int* inputP1Events,
-    int* inputP2Events,
-    int* inputP1Technologies,
-    int* inputP2Technologies,
+    int         inputRunTimes,
+    int*        inputP1Events,
+    int*        inputP2Events,
+    int*        inputP1Technologies,
+    int*        inputP2Technologies,
     std::string inputRunConditions);
 
   Kind getKind() const;
