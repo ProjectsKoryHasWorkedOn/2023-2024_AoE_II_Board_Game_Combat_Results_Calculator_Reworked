@@ -1,4 +1,4 @@
-/** The libaries **/
+/** The headers **/
 #include "entity.h" // Using: entity class
 #include "dialog_input.h"
 #include <cstdlib>  // Using: exit(EXIT_FAILURE)
@@ -317,11 +317,24 @@ void Entity::outputEntity(std::string playerName)
     // Behaviour: Return standard information about the entity to the console
     displayColorfulText(
       "bold", "white", "magenta", std::to_string(entityQuantity), false);
+
     std::cout << " ";
+
     displayColorfulText("bold", "white", "dark_gray", medievalAge, false);
+
+
     std::cout << " ";
-    displayColorfulText("bold", "white", "dark_cyan", entityName, false);
-    std::cout << " has a total of: ";
+
+    if(entityQuantity > 1){
+    displayColorfulText("bold", "white", "dark_cyan", entityName + "s", false);
+    std::cout << " each have ";
+    }
+    else{
+      displayColorfulText("bold", "white", "dark_cyan", entityName, false);
+      std::cout << " has ";
+    }
+
+
 
     displayColorfulText(
       "bold", "red", "default", std::to_string(entityHealth), false);
@@ -331,33 +344,39 @@ void Entity::outputEntity(std::string playerName)
     // Behaviour: Return further information about the entities values if the
     // value is present
     if (standardDamage != 0) {
-      std::cout << "; ";
+      std::cout << ", ";
       displayColorfulText(
         "bold", "yellow", "default", std::to_string(standardDamage), false);
       std::cout << " "
-                << "base attack";
+                << "melee attack";
     }
     if (rangedDamage != 0) {
-      std::cout << "; ";
+      std::cout << ", ";
       displayColorfulText(
         "bold", "magenta", "default", std::to_string(rangedDamage), false);
       std::cout << " "
-                << "pierce attack";
+                << "ranged attack";
     }
     /* Show garrrison value
     if (garrisonValue != 0) {
-      std::cout << "; ";
+      std::cout << ", ";
       displayColorfulText(
         "bold", "green", "default", std::to_string(garrisonValue), false);
       std::cout << "garrison value";
     }
     */
     if (pointValue != 0) {
-      std::cout << ". It's worth ";
+      std::cout << ", and are worth ";
       displayColorfulText(
         "bold", "cyan", "default", std::to_string(pointValue), false);
-      std::cout << " "
-                << "points";
+      std::cout << " ";
+      if(pointValue > 1){
+        std::cout << "points";
+      }
+      else{
+        std::cout << "point";
+      }
+
     }
 
     // Behaviour: Return further information about the entities armor classes if

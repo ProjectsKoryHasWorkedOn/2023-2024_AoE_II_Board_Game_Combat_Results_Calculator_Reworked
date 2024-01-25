@@ -1,4 +1,4 @@
-/** The libaries **/
+/** The headers **/
 #include "modifiersCalculator.h" // Using: calculator class
 #include "database.hpp"
 #include "dialog_input.h"

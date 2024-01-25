@@ -1,8 +1,7 @@
-/** The libaries **/
+/** The headers **/
 #include "fileImporter.h" // Using: entitiesFile functions
 #include "database.hpp"
 #include "entity.h" // Using: entity class
-#include <QDebug>
 #include <algorithm>     // Using: transform, toupper, .begin(), .end()
 #include <cstdlib>       // Using: exit(EXIT_FAILURE)
 #include <fstream>       // Using: ifstream, is_open(), good, close()

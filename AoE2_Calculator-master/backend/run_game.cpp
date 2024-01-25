@@ -1,7 +1,4 @@
-/** Age of Empires II: The Board Game **/
-/** Combat Results Calculator **/ /** Coded by: BGG user Karate_Dog **/
-
-/** The libaries **/
+/** The headers  **/
 #include "combatCalculator.h" // Using: combat calculator class
 #include "dialog_input.h"
 #include "entity.h"              // Using: entity class
@@ -411,7 +408,7 @@ int runGame(
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
-      "Just P1");
+      "p1_calculations");
 
     // Behaviour: Get the results after archerCombatRounds rounds of ranged
     // combat Player 1
@@ -461,7 +458,7 @@ int runGame(
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
-      "Just P1");
+      "p1_calculations");
 
     // Behaviour: Get the results after bombardmentCombatRounds rounds of
     // standard combat Player 1
@@ -521,7 +518,7 @@ int runGame(
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
-    "Just P1");
+    "p1_calculations");
 
   // Behaviour: Get the results after normalCombatRounds rounds of standard
   // combat Player 1
