@@ -1039,13 +1039,13 @@ void archerRounds::roundOutcome(
   float p1PointsGained = 0; //  Declare the amount of points awarded
   int p2StartingQuantity = 0; //  Track if changes occured to the quantity
   int p2EndingQuantity = 0; //  Track if changes occured to the quantity
-  bool p2RangedUnitCanAttackP2Building = false; // Store if archers can attack buildings
+  bool p2RangedUnitCanAttackP1Building = false; // Store if archers can attack buildings
   // @Kory todo: Add a new event that allows archers to be able to fight buildings
-  bool rangedUnitAttacksCavalryP2 = false; //  Negate the non-cavalry requirement
+  bool p2RangedUnitCanAttackP1Cavalry = false; //  Negate the non-cavalry requirement
   if (inputP2Events[33] == 1) {
     // [33] Steady Hand - Target Archer unit may do ranged damage to a Cavalry
     // unit this turn
-    rangedUnitAttacksCavalryP2 = true;
+    p2RangedUnitCanAttackP1Cavalry = true;
   }
   bool protectP2FromTakingDamageDueToShotsInTheBack = false;
 
@@ -1173,7 +1173,7 @@ void archerRounds::roundOutcome(
             // Behaviour: Award points if deaths occured
             if(p2EntityDeaths >= 0){
 
-            //Debugging: Point value for p2 battle participant is 1
+
             p1PointsGained = p2BattleParticipant.pointValue * p2QuantityDifference;
             }
             else{
@@ -1198,6 +1198,124 @@ void archerRounds::roundOutcome(
   if((inputRunConditions == "p2_calculations") || (inputRunConditions == "p1_and_p2_calculations")){
 
 
+         // Perform archer vs building combat if an archer is fighting a building
+  if (isP2FightingBuilding == true) {
+    // Perform calculations if the archer is able to fight the building
+    if(p2RangedUnitCanAttackP1Building == true){
+
+            p1BuildingDamage = (p2BattleParticipant.rangedDamage * p2BattleParticipant.entityQuantity);
+            p1BuildingDamage += roundAttackModifiersP2;
+            p1BuildingDamage -= (p1BattleParticipant.entityHealth % roundDownMultiple);
+
+            p1DamageDie = p1BuildingDamage / 10;
+            remainingDamageP2 += calculateRemainingDamage(
+              p1DamageDie,
+              p2BattleParticipant.rangedDamage,
+              roundAttackModifiersP1,
+              p1BattleParticipant.entityHealth,
+              1);
+
+
+
+            p2ArcherActivated = true;
+    }
+  }
+  // Perform archer vs unit combat if an archer is fighting a unit
+  else if(isP2FightingBuilding == false){
+    // Do not perform archer vs cav combat unless an event card overrides this rule
+    if (
+      (p2BattleParticipant.armorClass[0] == true) && // Archer armor class
+      (p1BattleParticipant.armorClass[4] == true) && // Cavalry armor class
+      (p2RangedUnitCanAttackP1Cavalry == false)
+      ){
+            // Do nothing
+
+
+    }
+    else{
+            p2RangedDamageDealt = p2BattleParticipant.rangedDamage * p2BattleParticipant.entityQuantity;
+            p2RangedDamageDealt += roundAttackModifiersP2;
+            p2RangedDamageDealt /= p1BattleParticipant.entityHealth;
+            p1EntityDeaths = std::floor(p2RangedDamageDealt);
+
+            remainingDamageP2 += calculateRemainingDamage(
+              p1EntityDeaths,
+              p2BattleParticipant.rangedDamage,
+              roundAttackModifiersP1,
+              p1BattleParticipant.entityHealth,
+              0);
+
+            p2ArcherActivated = true;
+
+
+    }
+  }
+
+
+         // Behavior: Make ranged combat attacks for P2 ineffective if this event or shots in the back event is active for P1
+  if  ( (inputP1Events[15] == 1) || (protectP1FromTakingDamageDueToShotsInTheBack == true) ) {
+    // [15] Heavy Tree Cover - Negate range combat round in target battle
+    // involving one of your units
+
+           // Deal no unit damage
+    p2RangedDamageDealt = 0;
+    p1EntityDeaths   = 0;
+
+           // Deal no building damage
+    p1BuildingDamage = 0;
+    p1DamageDie      = 0;
+  }
+
+
+
+
+
+         // Behaviour: Apply the results for p1 if ranged damage occured
+  if (p2ArcherActivated == true) {
+
+
+
+           // Behaviour: Apply the results to buildings or non-buildings
+    if ( (isP2FightingBuilding == true) && (p1BuildingDamage != 0) && (p2RangedUnitCanAttackP1Building == true) ) {
+            p1BattleParticipant.entityHealth -= p1BuildingDamage; // Behaviour: Decrease the building HP
+            if (p1BattleParticipant.entityHealth <= 0) {
+            p2PointsGained = p1BattleParticipant.pointValue; // Behaviour: Set the points lost value to the buildings point value
+            }
+            else if (p1BattleParticipant.entityHealth > 0) {
+            p2PointsGained = 0; // Behaviour: if the HP of the building is > 0 then do not keep the set the point value
+            }
+
+
+    }
+    else {
+            // Behavior: Store the starting quantity
+            p1StartingQuantity = p1BattleParticipant.entityQuantity;
+
+                   // Behaviour: Now decrease the quantity
+            p1BattleParticipant.entityQuantity -= p1EntityDeaths;
+
+                   // Behavior: Store the ending quantity and cap the ending quantity at 0
+            if (p1BattleParticipant.entityQuantity < 0){
+            p1EndingQuantity = 0;
+            }
+            else{
+            p1EndingQuantity = p1BattleParticipant.entityQuantity;
+            }
+            // Behaviour: Calculate the difference between the two quantities
+            int p1QuantityDifference = (p1StartingQuantity - p1EndingQuantity);
+
+                   // Behaviour: Award points if deaths occured
+            if(p1EntityDeaths >= 0){
+
+
+            p2PointsGained = p1BattleParticipant.pointValue * p1QuantityDifference;
+            }
+            else{
+            p2PointsGained = 0;
+            }
+
+    }
+  }
 
 
   } // End of p2 stuff conditional
@@ -1208,35 +1326,6 @@ void archerRounds::roundOutcome(
 
 
   // Behaviour: Display the outcome of the archer combat round only if changes occured
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         // Behaviour: Display the outcome of the archer combat round only if changes occured
   if ((p1ArcherActivated == true) || (p2ArcherActivated == true)) {
   std::string outputString
     = "Archer round " + std::to_string(i + 1) + " calculations...";
@@ -1312,11 +1401,6 @@ void archerRounds::roundOutcome(
     }
   }
   }
-
-
-
-
-
 
 
     } // Check if dead or retreating conditional end
@@ -1425,7 +1509,7 @@ void bombardmentRounds::roundOutcome(
       // Behaviour: Calculate the damage against buildings if player 1 is
       // fighting a building
       if (isP1FightingBuilding == true) {
-        p2BuildingDamage = ( ((p1BattleParticipant.standardDamage) + roundAttackModifiersP1) - ((p1BattleParticipant.standardDamage) % roundDownMultiple));
+        p2BuildingDamage = ( ((p1BattleParticipant.standardDamage * p1BattleParticipant.entityQuantity) + roundAttackModifiersP1) - ((p2BattleParticipant.entityHealth) % roundDownMultiple));
         p2DamageDie = p2BuildingDamage / 10;
         remainingDamageP1 += calculateRemainingDamage(
           p2DamageDie,
@@ -1442,7 +1526,7 @@ void bombardmentRounds::roundOutcome(
           (p1BattleParticipant.armorClass[21] == true)
           || (p1BattleParticipant.armorClass[21] == true)) {
           p2EntityDeaths = std::floor(
-            ((p1BattleParticipant.standardDamage) + roundAttackModifiersP1)
+            ((p1BattleParticipant.standardDamage * p1BattleParticipant.entityQuantity) + roundAttackModifiersP1)
             / (p2BattleParticipant.entityHealth));
           remainingDamageP1 += calculateRemainingDamage(
             p2EntityDeaths,
@@ -1464,7 +1548,7 @@ void bombardmentRounds::roundOutcome(
       // Behaviour: Calculate the damage against buildings if player 2 is
       // fighting a building
       if (isP2FightingBuilding == true) {
-        p1BuildingDamage = ( ((p2BattleParticipant.standardDamage) + roundAttackModifiersP2) - ((p2BattleParticipant.standardDamage) % roundDownMultiple));
+        p1BuildingDamage = ( ((p2BattleParticipant.standardDamage * p2BattleParticipant.entityQuantity) + roundAttackModifiersP2) - ((p1BattleParticipant.entityHealth) % roundDownMultiple));
         p1DamageDie = p1BuildingDamage / 10;
         remainingDamageP2 += calculateRemainingDamage(
           p1DamageDie,
@@ -1481,7 +1565,7 @@ void bombardmentRounds::roundOutcome(
           (p2BattleParticipant.armorClass[21] == true)
           || (p2BattleParticipant.armorClass[21] == true)) {
           p1EntityDeaths = std::floor(
-            ((p2BattleParticipant.standardDamage) + roundAttackModifiersP2)
+            ((p2BattleParticipant.standardDamage * p2BattleParticipant.entityQuantity) + roundAttackModifiersP2)
             / (p1BattleParticipant.entityHealth));
           remainingDamageP2 += calculateRemainingDamage(
             p1EntityDeaths,
@@ -1987,7 +2071,7 @@ void standardRounds::roundOutcome(
         // fighting a building
         if (isP1FightingBuilding == true) {
           p2BuildingDamage
-            = ((p1BattleParticipant.standardDamage) - ((p1BattleParticipant.standardDamage) % roundDownMultiple));
+            = ((p1BattleParticipant.standardDamage * p1BattleParticipant.entityQuantity) - ((p2BattleParticipant.entityHealth) % roundDownMultiple));
           p2DamageDie = p2BuildingDamage / 10;
           remainingDamageP1 += calculateRemainingDamage(
             p2DamageDie,
@@ -2017,7 +2101,7 @@ void standardRounds::roundOutcome(
           }
           else {
             p2EntityDeaths = std::floor(
-              ((p1BattleParticipant.standardDamage) + roundAttackModifiersP1)
+              ((p1BattleParticipant.standardDamage * p1BattleParticipant.entityQuantity) + roundAttackModifiersP1)
               / (p2BattleParticipant.entityHealth));
             remainingDamageP1 += calculateRemainingDamage(
               p2EntityDeaths,
@@ -2039,7 +2123,7 @@ void standardRounds::roundOutcome(
         // Behaviour: Calculate the damage against buildings if player 2 is
         // fighting a building
         if (isP2FightingBuilding == true) {
-          p1BuildingDamage = ( ((p2BattleParticipant.standardDamage) + roundAttackModifiersP2) - ((p1BattleParticipant.entityHealth) % roundDownMultiple));
+          p1BuildingDamage = ( ((p2BattleParticipant.standardDamage * p2BattleParticipant.entityQuantity) + roundAttackModifiersP2) - ((p1BattleParticipant.entityHealth) % roundDownMultiple));
           p1DamageDie = p1BuildingDamage / 10;
           remainingDamageP2 += calculateRemainingDamage(
             p1DamageDie,
@@ -2069,7 +2153,7 @@ void standardRounds::roundOutcome(
           }
           else {
             p1EntityDeaths = std::floor(
-              ((p2BattleParticipant.standardDamage) + roundAttackModifiersP2)
+              ((p2BattleParticipant.standardDamage * p2BattleParticipant.entityQuantity) + roundAttackModifiersP2)
               / (p1BattleParticipant.entityHealth));
             remainingDamageP2 += calculateRemainingDamage(
               p1EntityDeaths,
