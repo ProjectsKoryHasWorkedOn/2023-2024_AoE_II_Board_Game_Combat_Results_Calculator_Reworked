@@ -410,12 +410,12 @@ void combatCalculator::checkRemainingDamage( // @Kory todo: check if this is
 
 // Function: Calculate the outcome of a monk battle
 void monkRounds::roundOutcome(
-  int         inputRunTimes,
-  int*        inputP1Events,
-  int*        inputP2Events,
-  int*        inputP1Technologies,
-  int*        inputP2Technologies,
-  std::string inputRunConditions)
+  int          inputRunTimes,
+  int*         inputP1Events,
+  int*         inputP2Events,
+  int*         inputP1Technologies,
+  int*         inputP2Technologies,
+  ActivePlayer activePlayer)
 {
   /* Player 1 stuff */
   bool monkPresentP1 = false; // Store if player has a monk to begin with
@@ -540,9 +540,7 @@ void monkRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if (
-        (inputRunConditions == "p1_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
         if (monkPresentP1 == true) { // Make sure player 1's monk is present
                                      // before proceeding
           std::string player1IsHealingOrConverting
@@ -789,9 +787,7 @@ void monkRounds::roundOutcome(
         }
       }
 
-      if (
-        (inputRunConditions == "p2_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
         if (monkPresentP2 == true) { // Make sure player 2's monk is present
                                      // before proceeding
           std::string player2IsHealingOrConverting
@@ -1069,12 +1065,12 @@ void monkRounds::roundOutcome(
 
 // Function: Calculate the outcome of a ranged battle
 void archerRounds::roundOutcome(
-  int         inputRunTimes,
-  int*        inputP1Events,
-  int*        inputP2Events,
-  int*        inputP1Technologies,
-  int*        inputP2Technologies,
-  std::string inputRunConditions)
+  int          inputRunTimes,
+  int*         inputP1Events,
+  int*         inputP2Events,
+  int*         inputP1Technologies,
+  int*         inputP2Technologies,
+  ActivePlayer activePlayer)
 {
   /* Shared stuff */
   const int roundDownMultiple = 10;
@@ -1189,9 +1185,7 @@ void archerRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if (
-        (inputRunConditions == "p1_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::Player1) {
         // Perform archer vs building combat if an archer is fighting a building
         if (isP1FightingBuilding == true) {
           // Perform calculations if the archer is able to fight the building
@@ -1311,9 +1305,7 @@ void archerRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if (
-        (inputRunConditions == "p2_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
         // Perform archer vs building combat if an archer is fighting a building
         if (isP2FightingBuilding == true) {
           // Perform calculations if the archer is able to fight the building
@@ -1518,12 +1510,12 @@ void archerRounds::roundOutcome(
 // Function: Calculate the outcome of a bombardment round of battle (only for
 // the Crow's nest event card)
 void bombardmentRounds::roundOutcome(
-  int         inputRunTimes,
-  int*        inputP1Events,
-  int*        inputP2Events,
-  int*        inputP1Technologies,
-  int*        inputP2Technologies,
-  std::string inputRunConditions)
+  int          inputRunTimes,
+  int*         inputP1Events,
+  int*         inputP2Events,
+  int*         inputP1Technologies,
+  int*         inputP2Technologies,
+  ActivePlayer activePlayer)
 {
   //  Track if the bombardment attack round got activated
   bool bombardmentRoundActivated = false;
@@ -1840,12 +1832,12 @@ void bombardmentRounds::roundOutcome(
 
 // Function: Calculate the outcome of a standard round of battle
 void standardRounds::roundOutcome(
-  int         inputRunTimes,
-  int*        inputP1Events,
-  int*        inputP2Events,
-  int*        inputP1Technologies,
-  int*        inputP2Technologies,
-  std::string inputRunConditions)
+  int          inputRunTimes,
+  int*         inputP1Events,
+  int*         inputP2Events,
+  int*         inputP1Technologies,
+  int*         inputP2Technologies,
+  ActivePlayer activePlayer)
 {
   /* Shared stuff */
   const int roundDownMultiple = 10;
@@ -2148,9 +2140,7 @@ void standardRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if (
-        (inputRunConditions == "p1_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
         // Behaviour: Calculate the damage against buildings if player 1 is
         // fighting a building
         if (isP1FightingBuilding == true) {
@@ -2312,9 +2302,7 @@ void standardRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if (
-        (inputRunConditions == "p2_calculations")
-        || (inputRunConditions == "p1_and_p2_calculations")) {
+      if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
         // Behaviour: Calculate the damage against buildings if player 2 is
         // fighting a building
         if (isP2FightingBuilding == true) {
@@ -2575,12 +2563,12 @@ static std::size_t getOtherPlayerIndex(std::size_t playerIndex)
 }
 
 void FightMonksRounds::roundOutcome(
-  int         inputRunTimes,
-  int*        inputP1Events,
-  int*        inputP2Events,
-  int*        inputP1Technologies,
-  int*        inputP2Technologies,
-  std::string inputRunConditions)
+  int          inputRunTimes,
+  int*         inputP1Events,
+  int*         inputP2Events,
+  int*         inputP1Technologies,
+  int*         inputP2Technologies,
+  ActivePlayer activePlayer)
 {
   constexpr std::size_t                  playerCount{2};
   const std::array<Entity*, playerCount> battleParticipants{

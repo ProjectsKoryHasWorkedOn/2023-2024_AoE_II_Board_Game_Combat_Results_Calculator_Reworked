@@ -19,6 +19,22 @@ void outputRemainingDamage(
   std::cout << "remaning damage value p2: " << inputRemainingDamageP2 << "<br>";
 }
 
+// Ranged
+//  + If it is Player1's turn and they have ranged units and Player2 has at least one monk
+//    Player1 can choose to attack the monks instead of doing the ranged round.
+//  + If it is Player2's turn and they have ranged units and Player1 has at least one monk
+//    Player2 can choose to attack the monks instead of doing the ranged round.
+//  + If both choose do attack the others monks -> ActivePlayer::Both for FightMonksRound(Ranged)
+//    and ActivePlayer::None for Ranged.
+//  + If only one chooses to attack the other player's monks use that player for
+//    FightMonksRound(Ranged) and the other player will do the regular ranged round.
+//  + If a player can't attack monks because they have no ranged units or their opponent has
+//    no monks, they automatically choose the regular ranged round.
+
+// Melee
+//  + Works like Ranged, except you can always attack the monks if they have some and you have
+//    a real unit (not a building).
+
 // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
 extern const int technologiesRows = 19, eventsRows = 41, playerAgeRows = 2;
 
@@ -348,7 +364,7 @@ int runGame(
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
-    "p1_and_p2_calculations");
+    ActivePlayer::Both);
 
   // Behaviour: Get the results after monkCombatRounds rounds of monk combat
   // Player 1
@@ -408,7 +424,7 @@ int runGame(
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
-      "p1_calculations");
+      ActivePlayer::Player1);
 
     // Behaviour: Get the results after archerCombatRounds rounds of ranged
     // combat Player 1
@@ -458,7 +474,7 @@ int runGame(
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
-      "p1_calculations");
+      ActivePlayer::Player1);
 
     // Behaviour: Get the results after bombardmentCombatRounds rounds of
     // standard combat Player 1
@@ -518,7 +534,7 @@ int runGame(
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
-    "p1_calculations");
+    ActivePlayer::Player1);
 
   // Behaviour: Get the results after normalCombatRounds rounds of standard
   // combat Player 1

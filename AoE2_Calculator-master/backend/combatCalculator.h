@@ -5,6 +5,25 @@
 #include <functional>
 #include <iostream> // Using: cin, cout
 
+enum class ActivePlayer : int {
+  None    = 0B00,
+  Player1 = 0B01,
+  Player2 = 0B10,
+  Both    = 0B11
+};
+
+constexpr ActivePlayer operator|(ActivePlayer lhs, ActivePlayer rhs)
+{
+  return static_cast<ActivePlayer>(
+    static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
+constexpr ActivePlayer operator&(ActivePlayer lhs, ActivePlayer rhs)
+{
+  return static_cast<ActivePlayer>(
+    static_cast<int>(lhs) & static_cast<int>(rhs));
+}
+
 class CombatCalculatorCallbacks {
 public:
   explicit CombatCalculatorCallbacks(
@@ -155,12 +174,12 @@ public:
   /** Combat rounds functions **/
   // Function: Calculate the outcome of a battle
   virtual void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions)
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer)
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
 
@@ -182,12 +201,12 @@ public:
 
   // Function: Calculate the outcome of a monk battle
   void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions);
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer) override;
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
 
@@ -199,12 +218,12 @@ public:
 
   // Function: Calculate the outcome of a ranged battle
   void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions);
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer) override;
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 
@@ -216,12 +235,12 @@ public:
 
   // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions);
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer) override;
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 
@@ -233,12 +252,12 @@ public:
 
   // Function: Calculate the outcome of a standard battle
   void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions);
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer) override;
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
 
@@ -252,12 +271,12 @@ public:
     Kind                       kind);
 
   void roundOutcome(
-    int         inputRunTimes,
-    int*        inputP1Events,
-    int*        inputP2Events,
-    int*        inputP1Technologies,
-    int*        inputP2Technologies,
-    std::string inputRunConditions);
+    int          inputRunTimes,
+    int*         inputP1Events,
+    int*         inputP2Events,
+    int*         inputP1Technologies,
+    int*         inputP2Technologies,
+    ActivePlayer activePlayer) override;
 
   Kind getKind() const;
 
