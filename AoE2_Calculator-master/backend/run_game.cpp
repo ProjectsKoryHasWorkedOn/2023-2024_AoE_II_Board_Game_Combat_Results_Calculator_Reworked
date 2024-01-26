@@ -124,10 +124,10 @@ int runGame(
   // player details files
 
   // Integer: The rounds of combat
-  int monkCombatRounds        = 1;
-  int archerCombatRounds      = 1;
-  int bombardmentCombatRounds = 1;
-  int normalCombatRounds      = 2;
+  int numberOfMonkCombatRounds        = 1;
+  int numberOfArcherCombatRounds      = 1;
+  int numberOfBombardmentCombatRounds = 1;
+  int numberOfNormalCombatRounds      = 2;
 
   // Integer: Modifiers to the attack dealt in each round of combat for p1/p2
   int modifyRoundAttackP1 = 0, modifyRoundAttackP2 = 0;
@@ -369,13 +369,13 @@ int runGame(
   // normal combat, instead of 2 rounds. No retreat is allowed without event
   // card effect.
   if ((p1_events_array[38] == 1) || (p2_events_array[38] == 1)) {
-    normalCombatRounds = 4;
+    numberOfNormalCombatRounds = 4;
   }
 
   // Event [13] Gladitorial Games - You and a target player must move one unit
   // to No-Man's-Land. The units will fight until one is destroyed
   if ((p1_events_array[13] == 1) || (p2_events_array[13] == 1)) {
-    normalCombatRounds = 10;
+    numberOfNormalCombatRounds = 10;
   }
 
   /** Part 4: Return the outcome of each round of combat for the input entities
@@ -403,17 +403,17 @@ int runGame(
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
 
-  // Behaviour: Calculate the damage dealt for monkCombatRounds rounds of monk
+  // Behaviour: Calculate the damage dealt for numberOfMonkCombatRounds rounds of monk
   // combat
   monkRounds.roundOutcome(
-    monkCombatRounds,
+    numberOfMonkCombatRounds,
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
     ActivePlayer::Both);
 
-  // Behaviour: Get the results after monkCombatRounds rounds of monk combat
+  // Behaviour: Get the results after numberOfMonkCombatRounds rounds of monk combat
   // Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
@@ -472,14 +472,14 @@ int runGame(
   qDebug() << ">>>>>>>> active player for fight monks ranged:"
            << fightMonksRangedRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
-    archerCombatRounds,
+    numberOfArcherCombatRounds,
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
     fightMonksRangedRoundsActivePlayer);
 
-  // Behaviour: Get the results after archerCombatRounds rounds of ranged
+  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of ranged
   // combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
@@ -521,14 +521,14 @@ int runGame(
   qDebug() << ">>>>>>>> Active player for ranged rounds:"
            << rangedRoundActivePlayer;
   theCombatCalculator->roundOutcome(
-    archerCombatRounds,
+    numberOfArcherCombatRounds,
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
     rangedRoundActivePlayer);
 
-  // Behaviour: Get the results after archerCombatRounds rounds of ranged
+  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of ranged
   // combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
@@ -567,17 +567,17 @@ int runGame(
     theCombatCalculator->setAdditionalValues(
       p1RemainingDamage, p2RemainingDamage);
 
-    // Behaviour: Calculate the damage dealt for bombardmentCombatRounds
+    // Behaviour: Calculate the damage dealt for numberOfBombardmentCombatRounds
     // rounds of bombardment combat and display the results
     bombardmentRounds.roundOutcome(
-      bombardmentCombatRounds,
+      numberOfBombardmentCombatRounds,
       p1_events_array,
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
       ActivePlayer::Player1);
 
-    // Behaviour: Get the results after bombardmentCombatRounds rounds of
+    // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds of
     // standard combat Player 1
     p1BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player1);
@@ -628,17 +628,17 @@ int runGame(
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
 
-  // Behaviour: Calculate the damage dealt for normalCombatRounds rounds of
+  // Behaviour: Calculate the damage dealt for numberOfNormalCombatRounds rounds of
   // standard combat and display the results
   theCombatCalculator->roundOutcome(
-    normalCombatRounds,
+    numberOfNormalCombatRounds,
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
     ActivePlayer::Player1);
 
-  // Behaviour: Get the results after normalCombatRounds rounds of standard
+  // Behaviour: Get the results after numberOfNormalCombatRounds rounds of standard
   // combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);

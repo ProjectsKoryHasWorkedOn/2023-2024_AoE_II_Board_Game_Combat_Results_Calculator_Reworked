@@ -29,8 +29,8 @@ void modifiersCalculator::setEntities(
 {
   p1BattleParticipant        = inputBattleParticipantP1;
   p2BattleParticipant        = inputBattleParticipantP2;
-  p1AssistingMonkParticipant = inputAssistingMonkParticipantP1;
-  p2AssistingMonkParticipant = inputAssistingMonkParticipantP2;
+  p1BattleAssistant = inputAssistingMonkParticipantP1;
+  p2BattleAssistant = inputAssistingMonkParticipantP2;
 }
 
 // Function: Set the additional values
@@ -360,13 +360,13 @@ Entity modifiersCalculator::applyAllModifiers(int inputReturnMode)
     modifiedBattleParticipant = p1BattleParticipant;
   }
   else if ((returnMode == 1) && (playerNumber == 1)) {
-    modifiedBattleParticipant = p1AssistingMonkParticipant;
+    modifiedBattleParticipant = p1BattleAssistant;
   }
   else if ((returnMode == 0) && (playerNumber == 2)) {
     modifiedBattleParticipant = p2BattleParticipant;
   }
   else if ((returnMode == 1) && (playerNumber == 2)) {
-    modifiedBattleParticipant = p2AssistingMonkParticipant;
+    modifiedBattleParticipant = p2BattleAssistant;
   }
 
   // Behaviour: Return the modified entity

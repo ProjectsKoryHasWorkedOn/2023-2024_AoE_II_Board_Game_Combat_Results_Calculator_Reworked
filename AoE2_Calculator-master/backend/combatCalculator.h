@@ -67,8 +67,8 @@ public:
   // Struct: Declare the entities participating in the battle
   Entity p1BattleParticipant;
   Entity p2BattleParticipant;
-  Entity p1AssistingMonkParticipant;
-  Entity p2AssistingMonkParticipant;
+  Entity p1BattleAssistant;
+  Entity p2BattleAssistant;
 
   // Integer: Store modifiers to the attack dealt
   int roundAttackModifiersP1;
@@ -106,8 +106,8 @@ protected:
 
   Entity& p1BattleParticipant;
   Entity& p2BattleParticipant;
-  Entity& p1AssistingMonkParticipant;
-  Entity& p2AssistingMonkParticipant;
+  Entity& p1BattleAssistant;
+  Entity& p2BattleAssistant;
 
   int& roundAttackModifiersP1;
   int& roundAttackModifiersP2;
@@ -179,7 +179,7 @@ public:
   /** Combat rounds functions **/
   // Function: Calculate the outcome of a battle
   virtual void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,
@@ -190,6 +190,36 @@ public:
 
   // Function: Make some final checks (after the end of the rounds of combat)
   void checkIfItCanBeHealed();
+
+
+  void calculatingMonkRoundOutcomeForAnIndividualPlayer(
+                                                          // Both player names
+                                                          std::string & givenPlayerName,
+                                                          std::string & opposingPlayerName,
+                                                          // Both player battle participants
+                                                          Entity & givenPlayerBattleParticipant,
+                                                          Entity & givenPlayerBattleAssistant,
+                                                          Entity & opposingPlayerBattleParticipant,
+                                                          Entity & opposingPlayerBattleAssistant,
+                                                          // Both player events and technologies
+                                                          int *         givenPlayerEvents,
+                                                          int *         opposingPlayerEvents,
+                                                          int *         givenPlayerTechnologies,
+                                                          // Given player monk related information
+                                                          bool & givenPlayerHasAMonkPresent,
+                                                          bool & givenPlayerMonkPowersActivated,
+                                                          std::string & givenPlayerIsHealingOrConverting,
+                                                          int & givenPlayerConversionANDHealingRate,
+                                                          bool & givenPlayerAssistingMonks,
+    bool & givenPlayerStandaloneMonks,
+                                                          int & givenPlayerPointsGained,
+    int & givenPlayerEntitiesHealed);
+
+
+  void outputtingMonkRoundOutcomeForAnIndividualPlayer(
+
+           // The active player
+    ActivePlayer & activePlayer, std::string & givenPlayerName, int & givenPlayerPointsAwarded, bool & givenPlayerMonkPowersActivated, Entity & givenPlayerBattleParticipant, Entity & givenPlayerBattleAssistant);
 
   /** Return information functions **/
   // Function: Return the modified battle participants based on the input player
@@ -206,7 +236,7 @@ public:
 
   // Function: Calculate the outcome of a monk battle
   void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,
@@ -223,7 +253,7 @@ public:
 
   // Function: Calculate the outcome of a ranged battle
   void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,
@@ -240,7 +270,7 @@ public:
 
   // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,
@@ -257,7 +287,7 @@ public:
 
   // Function: Calculate the outcome of a standard battle
   void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,
@@ -276,7 +306,7 @@ public:
     Kind                       kind);
 
   void roundOutcome(
-    int          inputRunTimes,
+    int          roundRunTimes,
     int*         inputP1Events,
     int*         inputP2Events,
     int*         inputP1Technologies,

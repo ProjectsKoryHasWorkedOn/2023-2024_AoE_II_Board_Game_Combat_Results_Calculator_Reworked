@@ -13,8 +13,8 @@ protected:
   // Behaviour: Store information about the entities
   Entity p1BattleParticipant;
   Entity p2BattleParticipant;
-  Entity p1AssistingMonkParticipant;
-  Entity p2AssistingMonkParticipant;
+  Entity p1BattleAssistant;
+  Entity p2BattleAssistant;
 
   // Behaviour: Store information about the player
   int  playerNumber;
