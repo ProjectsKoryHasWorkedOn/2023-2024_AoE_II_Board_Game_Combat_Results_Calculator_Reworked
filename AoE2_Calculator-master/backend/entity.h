@@ -73,6 +73,8 @@ struct Entity {
 
   // Function: Return entity information
   void outputEntity(std::string playerName);
+
+  std::string getPluralName() const;
 };
 
 /** Inherited class from Entity: Wonder **/

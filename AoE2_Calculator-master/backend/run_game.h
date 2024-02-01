@@ -9,7 +9,7 @@ extern const int technologiesRows;
 extern const int eventsRows;
 extern const int playerAgeRows;
 
-int runGame(
+void runGame(
   Database*                         database,
   std::function<void(Player, bool)> onPlayerEntityDeath);
 

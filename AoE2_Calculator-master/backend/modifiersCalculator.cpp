@@ -27,10 +27,10 @@ void modifiersCalculator::setEntities(
   Entity& inputAssistingMonkParticipantP1,
   Entity& inputAssistingMonkParticipantP2)
 {
-  p1BattleParticipant        = inputBattleParticipantP1;
-  p2BattleParticipant        = inputBattleParticipantP2;
-  p1BattleAssistant = inputAssistingMonkParticipantP1;
-  p2BattleAssistant = inputAssistingMonkParticipantP2;
+  p1BattleParticipant = inputBattleParticipantP1;
+  p2BattleParticipant = inputBattleParticipantP2;
+  p1BattleAssistant   = inputAssistingMonkParticipantP1;
+  p2BattleAssistant   = inputAssistingMonkParticipantP2;
 }
 
 // Function: Set the additional values

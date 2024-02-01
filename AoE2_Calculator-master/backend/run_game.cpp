@@ -67,7 +67,7 @@ static bool queryIfMonksShouldBeFought(
   return shouldFightMonks;
 }
 
-static ActivePlayer getActivePlayerForFightMonksRanged(
+static ActivePlayer getActivePlayerForFightMonks(
   bool doesPlayer1WantToAttackMonks,
   bool doesPlayer2WantToAttackMonks)
 {
@@ -86,7 +86,7 @@ static ActivePlayer getActivePlayerForFightMonksRanged(
   return ActivePlayer::Player2;
 }
 
-static ActivePlayer getActivePlayerForRangedRound(
+static ActivePlayer getActivePlayerForNormalCombatRound(
   bool doesPlayer1WantToAttackMonks,
   bool doesPlayer2WantToAttackMonks)
 {
@@ -106,7 +106,7 @@ static ActivePlayer getActivePlayerForRangedRound(
 }
 
 /** The main function **/
-int runGame(
+void runGame(
   Database*                         database,
   std::function<void(Player, bool)> onPlayerEntityDeath)
 {
@@ -403,8 +403,8 @@ int runGame(
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
 
-  // Behaviour: Calculate the damage dealt for numberOfMonkCombatRounds rounds of monk
-  // combat
+  // Behaviour: Calculate the damage dealt for numberOfMonkCombatRounds rounds
+  // of monk combat
   monkRounds.roundOutcome(
     numberOfMonkCombatRounds,
     p1_events_array,
@@ -413,8 +413,8 @@ int runGame(
     p2_technologies_array,
     ActivePlayer::Both);
 
-  // Behaviour: Get the results after numberOfMonkCombatRounds rounds of monk combat
-  // Player 1
+  // Behaviour: Get the results after numberOfMonkCombatRounds rounds of monk
+  // combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
   p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -466,7 +466,7 @@ int runGame(
     p1RemainingDamage, p2RemainingDamage);
 
   const ActivePlayer fightMonksRangedRoundsActivePlayer{
-    getActivePlayerForFightMonksRanged(
+    getActivePlayerForFightMonks(
       player1UsesRangedAttacksAgainstMonks,
       player2UsesRangedAttacksAgainstMonks)};
   qDebug() << ">>>>>>>> active player for fight monks ranged:"
@@ -479,8 +479,8 @@ int runGame(
     p2_technologies_array,
     fightMonksRangedRoundsActivePlayer);
 
-  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of ranged
-  // combat Player 1
+  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
+  // ranged combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
   p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -515,9 +515,10 @@ int runGame(
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
 
-  const ActivePlayer rangedRoundActivePlayer{getActivePlayerForRangedRound(
-    player1UsesRangedAttacksAgainstMonks,
-    player2UsesRangedAttacksAgainstMonks)};
+  const ActivePlayer rangedRoundActivePlayer{
+    getActivePlayerForNormalCombatRound(
+      player1UsesRangedAttacksAgainstMonks,
+      player2UsesRangedAttacksAgainstMonks)};
   qDebug() << ">>>>>>>> Active player for ranged rounds:"
            << rangedRoundActivePlayer;
   theCombatCalculator->roundOutcome(
@@ -528,8 +529,8 @@ int runGame(
     p2_technologies_array,
     rangedRoundActivePlayer);
 
-  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of ranged
-  // combat Player 1
+  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
+  // ranged combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
   p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -577,8 +578,8 @@ int runGame(
       p2_technologies_array,
       ActivePlayer::Player1);
 
-    // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds of
-    // standard combat Player 1
+    // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds
+    // of standard combat Player 1
     p1BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player1);
     p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -595,27 +596,28 @@ int runGame(
   // monks or not when there are no monks This seems to stop it from proceeding
   // static_cast ...
 
-  if (
-    (p1AssistingMonkBattleParticipant.entityQuantity > 0)
-    && (p2AssistingMonkBattleParticipant.entityQuantity > 0)) {
-    // TODO: HERE
+  ///
+  // This is the fight monks melee round
+  ///
+  bool player1UsesMeleeAttacksAgainstMonks{false};
+  if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Melee, "Unknown player yet")};
-
-    // Behaviour: Set the combat calculator to the standard rounds
-    theCombatCalculator
-      = shouldFightMonks
-          ? static_cast<combatCalculator*>(&fightMonksMeleeRounds)
-          : static_cast<combatCalculator*>(&standardRounds);
-  }
-  else {
-    theCombatCalculator = &standardRounds;
+      FightMonksRounds::Kind::Melee, playerNamesArray[0])};
+    player1UsesMeleeAttacksAgainstMonks = shouldFightMonks;
   }
 
+  bool player2UsesMeleeAttacksAgainstMonks{false};
+  if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
+    const bool shouldFightMonks{queryIfMonksShouldBeFought(
+      FightMonksRounds::Kind::Melee, playerNamesArray[1])};
+    player2UsesMeleeAttacksAgainstMonks = shouldFightMonks;
+  }
+
+  theCombatCalculator = &fightMonksMeleeRounds;
   // Set the player names
   theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
 
-  // Behaviour: Set the protected values
+  // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
     p2BattleParticipant,
@@ -628,18 +630,22 @@ int runGame(
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
 
-  // Behaviour: Calculate the damage dealt for numberOfNormalCombatRounds rounds of
-  // standard combat and display the results
+  const ActivePlayer fightMonksMeleeRoundsActivePlayer{
+    getActivePlayerForFightMonks(
+      player1UsesMeleeAttacksAgainstMonks,
+      player2UsesMeleeAttacksAgainstMonks)};
+  qDebug() << ">>>>>>>> active player for fight monks melee:"
+           << fightMonksMeleeRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
     numberOfNormalCombatRounds,
     p1_events_array,
     p2_events_array,
     p1_technologies_array,
     p2_technologies_array,
-    ActivePlayer::Player1);
+    fightMonksMeleeRoundsActivePlayer);
 
-  // Behaviour: Get the results after numberOfNormalCombatRounds rounds of standard
-  // combat Player 1
+  // Behaviour: Get the results after numberOfNormalCombatRounds rounds of
+  // standard combat Player 1
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
   p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
@@ -649,9 +655,32 @@ int runGame(
     = theCombatCalculator->returnModifiedBattleParticipants(player2);
   p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
-  // Behaviour: Output the remaining damage
-  // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
+  ///
+  // This is the regular melee round
+  ///
+  theCombatCalculator = &standardRounds;
+  const ActivePlayer regularMeleeRoundActivePlayer{
+    getActivePlayerForNormalCombatRound(
+      player1UsesMeleeAttacksAgainstMonks,
+      player2UsesMeleeAttacksAgainstMonks)};
+  qDebug() << ">>>>>>>> active player for regular melee round:"
+           << regularMeleeRoundActivePlayer;
+  theCombatCalculator->roundOutcome(
+    numberOfNormalCombatRounds,
+    p1_events_array,
+    p2_events_array,
+    p1_technologies_array,
+    p2_technologies_array,
+    regularMeleeRoundActivePlayer);
 
-  // Behaviour: A required return statement for the system in C++
-  return 0;
+  // Behaviour: Get the results after numberOfNormalCombatRounds rounds of
+  // standard combat Player 1
+  p1BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player1);
+  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
+  // Player 2
+  p2BattleParticipant
+    = theCombatCalculator->returnModifiedBattleParticipants(player2);
+  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 }

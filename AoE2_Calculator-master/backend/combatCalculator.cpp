@@ -124,14 +124,14 @@ void combatCalculator::setCombatParticipants(
   int&    inputRoundAttackModifiersP2)
 {
   // Set the battle participants for P1
-  p1BattleParticipant        = inputP1BattleParticipant;
-  p1BattleAssistant = inputP1AssistingMonkBattleParticipant;
-  roundAttackModifiersP1     = inputRoundAttackModifiersP1;
+  p1BattleParticipant    = inputP1BattleParticipant;
+  p1BattleAssistant      = inputP1AssistingMonkBattleParticipant;
+  roundAttackModifiersP1 = inputRoundAttackModifiersP1;
 
   // Set the battle participants for P2
-  p2BattleParticipant        = inputP2BattleParticipant;
-  p2BattleAssistant = inputP2AssistingMonkBattleParticipant;
-  roundAttackModifiersP2     = inputRoundAttackModifiersP2;
+  p2BattleParticipant    = inputP2BattleParticipant;
+  p2BattleAssistant      = inputP2AssistingMonkBattleParticipant;
+  roundAttackModifiersP2 = inputRoundAttackModifiersP2;
 }
 
 void combatCalculator::setAdditionalValues(
@@ -183,7 +183,8 @@ void combatCalculator::checkD6DiceSimulator()
 
 Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
 {
-  // Return the modified battle battle participants based on the play number after the combat results have been applied
+  // Return the modified battle battle participants based on the play number
+  // after the combat results have been applied
   switch (inputPlayerNumber) {
   case 1:
     return p1BattleParticipant;
@@ -198,7 +199,8 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
 
 void combatCalculator::checkIfItCanBeHealed()
 {
-  // If p1BattleParticipant has less units than it started with and there are heals available to it, heal it
+  // If p1BattleParticipant has less units than it started with and there are
+  // heals available to it, heal it
   if (
     p1BattleParticipant.entityQuantity < startingBattleParticipantQuantityP1) {
     while (p1BattleParticipant.healsAvailable != 0) {
@@ -208,7 +210,8 @@ void combatCalculator::checkIfItCanBeHealed()
                 << p1BattleParticipant.entityName << "<br>";
     }
   }
-  // If p2BattleParticipant has less units than it started with and there are heals available to it, heal it
+  // If p2BattleParticipant has less units than it started with and there are
+  // heals available to it, heal it
   if (
     p2BattleParticipant.entityQuantity < startingBattleParticipantQuantityP2) {
     while (p2BattleParticipant.healsAvailable != 0) {
@@ -307,7 +310,8 @@ void combatCalculator::checkIfDead()
 // Function: Check if the attacking ranged archer is retreating
 void combatCalculator::checkIfRetreating(std::string messageToAsk)
 {
-  // Behaviour: Ask the attacker if they want to retreat with their archer if they are not versing cavalry or an archer
+  // Behaviour: Ask the attacker if they want to retreat with their archer if
+  // they are not versing cavalry or an archer
 
   // Todo: Hit and run not working how it should
 
@@ -396,7 +400,8 @@ float combatCalculator::calculateRemainingDamage(
     }
   }
 
-  // Behaviour: Get the difference between the current number and the rounded number
+  // Behaviour: Get the difference between the current number and the rounded
+  // number
   getTheDecimalValue = (getTheDecimalValue - roundedNumber);
 
   return getTheDecimalValue;
@@ -433,12 +438,17 @@ void combatCalculator::checkRemainingDamage( // @Kory todo: check if this is
   }
 }
 
-
-
-
 // Function: Calculate the outcome of a monk battle
-void combatCalculator::outputtingMonkRoundOutcomeForAnIndividualPlayer(ActivePlayer & activePlayer, std::string & givenPlayerName, int & givenPlayerPointsAwarded, bool & givenPlayerMonkPowersActivated, Entity & givenPlayerBattleParticipant, Entity & givenPlayerBattleAssistant){
-  // Shows whether or not the given player's monk powers activated if appropriate
+void combatCalculator::outputtingMonkRoundOutcomeForAnIndividualPlayer(
+  ActivePlayer activePlayer,
+  std::string&  givenPlayerName,
+  int&          givenPlayerPointsAwarded,
+  bool&         givenPlayerMonkPowersActivated,
+  Entity&       givenPlayerBattleParticipant,
+  Entity&       givenPlayerBattleAssistant)
+{
+  // Shows whether or not the given player's monk powers activated if
+  // appropriate
   if (activePlayer != ActivePlayer::None) {
     if (givenPlayerMonkPowersActivated == false) {
       std::cout << givenPlayerName << "'s monk powers failed to activate"
@@ -450,61 +460,63 @@ void combatCalculator::outputtingMonkRoundOutcomeForAnIndividualPlayer(ActivePla
     }
   }
 
-  // Show many heals the given player has earned on their battle participants if appropriate
-  if(givenPlayerBattleParticipant.healsAvailable > 0){
+  // Show many heals the given player has earned on their battle participants if
+  // appropriate
+  if (givenPlayerBattleParticipant.healsAvailable > 0) {
     std::cout << givenPlayerName << " has ";
     (givenPlayerBattleParticipant.healsAvailable == 1)
       ? std::cout << " a heal"
       : std::cout << givenPlayerBattleParticipant.healsAvailable << " heals";
-    std::cout << " available on their " << givenPlayerBattleParticipant.entityName << "<br>";
+    std::cout << " available on their "
+              << givenPlayerBattleParticipant.entityName << "<br>";
   }
 
-  // Show many heals the given player has earned on their battle assistants if appropriate
-  if(givenPlayerBattleAssistant.healsAvailable > 0){
+  // Show many heals the given player has earned on their battle assistants if
+  // appropriate
+  if (givenPlayerBattleAssistant.healsAvailable > 0) {
     std::cout << givenPlayerName << " has ";
     (givenPlayerBattleAssistant.healsAvailable == 1)
       ? std::cout << " a heal"
       : std::cout << givenPlayerBattleAssistant.healsAvailable << " heals";
-    std::cout << " available on their " << givenPlayerBattleAssistant.entityName << "<br>";
+    std::cout << " available on their " << givenPlayerBattleAssistant.entityName
+              << "<br>";
   }
 
   // Show how many points the given player earned if appropriate
   if (givenPlayerPointsAwarded != 0) {
-    std::cout << ">> " << givenPlayerName << " gets " << givenPlayerPointsAwarded
-              << " points"
+    std::cout << ">> " << givenPlayerName << " gets "
+              << givenPlayerPointsAwarded << " points"
               << "<br>";
   }
-
 }
 
 void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
   // Both player names
-  std::string & givenPlayerName,
-  std::string & opposingPlayerName,
+  std::string& givenPlayerName,
+  std::string& opposingPlayerName,
   // Both player battle participants
-  Entity & givenPlayerBattleParticipant,
-  Entity & givenPlayerBattleAssistant,
-  Entity & opposingPlayerBattleParticipant,
-  Entity & opposingPlayerBattleAssistant,
+  Entity& givenPlayerBattleParticipant,
+  Entity& givenPlayerBattleAssistant,
+  Entity& opposingPlayerBattleParticipant,
+  Entity& opposingPlayerBattleAssistant,
   // Both player events and technologies
-  int *         givenPlayerEvents,
-  int *         opposingPlayerEvents,
-  int *         givenPlayerTechnologies,
+  int* givenPlayerEvents,
+  int* opposingPlayerEvents,
+  int* givenPlayerTechnologies,
   // Given player monk related information
-  bool & givenPlayerHasAMonkPresent,
-  bool & givenPlayerMonkPowersActivated,
-  std::string & givenPlayerIsHealingOrConverting,
-  int & givenPlayerConversionANDHealingRate,
-  bool & givenPlayerAssistingMonks,
-  bool & givenPlayerStandaloneMonks,
-  int & givenPlayerPointsGained,
-  int & givenPlayerEntitiesHealed)
+  bool&        givenPlayerHasAMonkPresent,
+  bool&        givenPlayerMonkPowersActivated,
+  std::string& givenPlayerIsHealingOrConverting,
+  int&         givenPlayerConversionANDHealingRate,
+  bool&        givenPlayerAssistingMonks,
+  bool&        givenPlayerStandaloneMonks,
+  int&         givenPlayerPointsGained,
+  int&         givenPlayerEntitiesHealed)
 {
-
-
   /* Check if the event "It's A Miracle" is active for the given player */
   if (givenPlayerEvents[18] == 1) {
-    // [18] It's A Miracle - A successful Healing attempt saves us up three tokens, instead of one. Play this card before an attempt is made
+    // [18] It's A Miracle - A successful Healing attempt saves us up three
+    // tokens, instead of one. Play this card before an attempt is made
     givenPlayerEntitiesHealed = 3;
   }
 
@@ -512,9 +524,9 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
   if (
     (givenPlayerBattleAssistant.armorClass[9] == true)
     && (givenPlayerBattleAssistant.entityQuantity > 0)) {
-    givenPlayerAssistingMonks               = true;
-    givenPlayerConversionANDHealingRate = givenPlayerBattleAssistant.entityQuantity;
-
+    givenPlayerAssistingMonks = true;
+    givenPlayerConversionANDHealingRate
+      = givenPlayerBattleAssistant.entityQuantity;
   }
   else {
     givenPlayerAssistingMonks = false;
@@ -524,15 +536,18 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
   if (
     (givenPlayerBattleParticipant.armorClass[9] == true)
     && (givenPlayerBattleParticipant.entityQuantity > 0)) {
-    givenPlayerStandaloneMonks              = true;
-    givenPlayerConversionANDHealingRate = givenPlayerBattleParticipant.entityQuantity;
+    givenPlayerStandaloneMonks = true;
+    givenPlayerConversionANDHealingRate
+      = givenPlayerBattleParticipant.entityQuantity;
   }
   else {
     givenPlayerStandaloneMonks = false;
   }
 
-  /* Indicate that the odds of a monk healing or converting are 0 if neither player has monks */
-  if (givenPlayerAssistingMonks == false && givenPlayerStandaloneMonks == false) {
+  /* Indicate that the odds of a monk healing or converting are 0 if neither
+   * player has monks */
+  if (
+    givenPlayerAssistingMonks == false && givenPlayerStandaloneMonks == false) {
     givenPlayerConversionANDHealingRate = 0;
   }
 
@@ -542,20 +557,27 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
     std::terminate();
   }
 
-  /* Detect if the given player does in fact have monks, either as a battle participant or battle assistant */
-  givenPlayerHasAMonkPresent = ((givenPlayerAssistingMonks == true) || (givenPlayerStandaloneMonks == true))
+  /* Detect if the given player does in fact have monks, either as a battle
+   * participant or battle assistant */
+  givenPlayerHasAMonkPresent = ((givenPlayerAssistingMonks == true)
+                                || (givenPlayerStandaloneMonks == true))
                                  ? true
                                  : false;
 
-  /* Check if the event "Fat Friars Tavern O'Spirits" is active for the opposing player */
+  /* Check if the event "Fat Friars Tavern O'Spirits" is active for the opposing
+   * player */
   if (opposingPlayerEvents[7] == 1) {
-    // [7] Fat Friars Tavern O'Spirits - Monks on target unit may not have any Conversion or Healing attempts this turn
+    // [7] Fat Friars Tavern O'Spirits - Monks on target unit may not have any
+    // Conversion or Healing attempts this turn
     givenPlayerHasAMonkPresent = false;
   }
 
-  if (givenPlayerHasAMonkPresent == true) { // Make sure the given player's monk is present before proceeding
+  if (givenPlayerHasAMonkPresent == true) { // Make sure the given player's monk
+                                            // is present before proceeding
 
-    const DialogInput::MonkAction monkAction{DIN.queryForMonkAction(givenPlayerName)}; // Get the given player's decision on whether they would like to make a conversion or healing attempt
+    const DialogInput::MonkAction monkAction{DIN.queryForMonkAction(
+      givenPlayerName)}; // Get the given player's decision on whether they
+                         // would like to make a conversion or healing attempt
     switch (monkAction) {
     case DialogInput::MonkAction::Convert:
       givenPlayerIsHealingOrConverting = "Converting";
@@ -564,8 +586,7 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
       givenPlayerIsHealingOrConverting = "Healing";
       break;
     default:
-      std::cout << "Error: Unexpected input for "
-                << givenPlayerName
+      std::cout << "Error: Unexpected input for " << givenPlayerName
                 << "'s "
                    "conversion/healing attempt"
                 << "<br>";
@@ -573,33 +594,42 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
       std::terminate();
     }
 
-    /* Check if the event "Back From A Foreign Land" (Byzantine) is active for the given player */
+    /* Check if the event "Back From A Foreign Land" (Byzantine) is active for
+     * the given player */
     if (givenPlayerEvents[1] == 1) {
       if (givenPlayerIsHealingOrConverting == "Healing") {
         givenPlayerConversionANDHealingRate += 2;
       }
     }
 
-    /* Check if the event "Back From A Foreign Land" (Teuton) is active for the opposing player */
+    /* Check if the event "Back From A Foreign Land" (Teuton) is active for the
+     * opposing player */
     if (opposingPlayerEvents[40] == 1) {
       if (givenPlayerIsHealingOrConverting == "Converting") {
         givenPlayerConversionANDHealingRate -= 1;
       }
     }
 
-    d6DieRoll = generateD6DieInput(); // Generate, validate, and return d6 dice input before proceeding
+    d6DieRoll = generateD6DieInput(); // Generate, validate, and return d6 dice
+                                      // input before proceeding
 
     /* Check if the event "Zealous Monks" is active for the given player */
     if (
       (givenPlayerEvents[39] == 1)
       && (givenPlayerIsHealingOrConverting == "Converting")) {
-      // [39] Zealous Monks - Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. In other words, you reroll the dice if the number is <= 3 You repeat the roll for each monk attached
+      // [39] Zealous Monks - Target Monk unit gets 1 conversion roll at a 3 or
+      // less rate for each monk attached. In other words, you reroll the dice
+      // if the number is <= 3 You repeat the roll for each monk attached
 
       int maximumRerolls
         = (givenPlayerAssistingMonks == true)
             ? givenPlayerBattleAssistant.entityQuantity
             : givenPlayerBattleParticipant
-                .entityQuantity; // Check if there are just assisting monks or if there are just standalone monks and set the quantity of what monk type there is to be the maximum number of rolls the player gets
+                .entityQuantity; // Check if there are just assisting monks or
+                                 // if there are just standalone monks and set
+                                 // the quantity of what monk type there is to
+                                 // be the maximum number of rolls the player
+                                 // gets
       for (int dieReroll = 0; dieReroll != maximumRerolls; dieReroll++) {
         if (d6DieRoll <= 3) {
           d6DieRoll = generateD6DieInput();
@@ -611,15 +641,19 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
     if (
       (givenPlayerEvents[23] == 1)
       && (givenPlayerIsHealingOrConverting == "Converting")) {
-      // [23] Piety - If you have one monk attached to a unit, your conversion rate is 4. If the attempt fails, the monk dies
+      // [23] Piety - If you have one monk attached to a unit, your conversion
+      // rate is 4. If the attempt fails, the monk dies
       const int pietyConversionRate = 4;
 
-      if (pietyConversionRate <= d6DieRoll) { // Check if the conversion attempt failed and if so, reduce the quantity of monks by 1
+      if (pietyConversionRate <= d6DieRoll) { // Check if the conversion attempt
+                                              // failed and if so, reduce the
+                                              // quantity of monks by 1
         (givenPlayerAssistingMonks == true)
           ? givenPlayerBattleAssistant.entityQuantity -= 1
           : givenPlayerBattleParticipant.entityQuantity -= 1;
       }
-      else { // The conversion attempt succeeded, will have this affect the calculations later on
+      else { // The conversion attempt succeeded, will have this affect the
+             // calculations later on
         givenPlayerConversionANDHealingRate = pietyConversionRate;
       }
     }
@@ -628,9 +662,11 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
     if (
       (givenPlayerEvents[19] == 1)
       && (givenPlayerIsHealingOrConverting == "Converting")) {
-      // [19] Listen To A Story - Attempt 1-3 extra conversions this battle. Pay 2 gold per conversion
+      // [19] Listen To A Story - Attempt 1-3 extra conversions this battle. Pay
+      // 2 gold per conversion
       const int numberOfTimesTheDieHasBeenRolledSoFarForTheGivenPlayer
-        = 1; // So we've had one roll from earlier in our calculations so we're starting from 1
+        = 1; // So we've had one roll from earlier in our calculations so we're
+             // starting from 1
       const int numberOfExtraConversionAttemptsForTheGivenPlayer = 3;
 
       int numberOfTimesTheGivenPlayerHasPaidToAttemptAnotherConversion = 0;
@@ -641,13 +677,15 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
 
       while (
         numberOfIterationsThroughTheWhileLoop
-        != (numberOfTimesTheDieHasBeenRolledSoFarForTheGivenPlayer + numberOfExtraConversionAttemptsForTheGivenPlayer)){
+        != (numberOfTimesTheDieHasBeenRolledSoFarForTheGivenPlayer + numberOfExtraConversionAttemptsForTheGivenPlayer)) {
         // Check if the conversion attempt is going to fail
         if (givenPlayerConversionANDHealingRate >= d6DieRoll) {
-          std::cout << "The conversion attempt for " << givenPlayerName << " failed. Pay 2 gold "
+          std::cout << "The conversion attempt for " << givenPlayerName
+                    << " failed. Pay 2 gold "
                        "and enter 1 to try again. Otherwise enter 0"
                     << "<br>";
-          DIN >> getUserInputOnIfAnotherConversionAttemptWillBeAttemptedByTheGivenPlayer;
+          DIN
+            >> getUserInputOnIfAnotherConversionAttemptWillBeAttemptedByTheGivenPlayer;
         }
 
         if (
@@ -660,13 +698,16 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
           getUserInputOnIfAnotherConversionAttemptWillBeAttemptedByTheGivenPlayer
           == "0") {
           numberOfIterationsThroughTheWhileLoop
-            = numberOfExtraConversionAttemptsForTheGivenPlayer; // Jump to the end of the while loop
+            = numberOfExtraConversionAttemptsForTheGivenPlayer; // Jump to the
+                                                                // end of the
+                                                                // while loop
         }
 
         numberOfIterationsThroughTheWhileLoop++;
       }
 
-      // Display how much gold the given player needs to pay for the "Listen To A Story" event card
+      // Display how much gold the given player needs to pay for the "Listen To
+      // A Story" event card
       if (numberOfTimesTheGivenPlayerHasPaidToAttemptAnotherConversion > 0) {
         int listenToAStoryGoldCostForTheGivenPlayer
           = 2 * numberOfTimesTheGivenPlayerHasPaidToAttemptAnotherConversion;
@@ -681,15 +722,13 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
     givenPlayerMonkPowersActivated
       = (givenPlayerConversionANDHealingRate >= d6DieRoll) ? true : false;
 
-
     // Act on the success
     if (givenPlayerMonkPowersActivated == true) {
-
-
       if (givenPlayerIsHealingOrConverting == "Converting") {
         // Act on the conversion attempt being successful
 
-        // Work out whether the given player is targeting a assistant or non-assistant
+        // Work out whether the given player is targeting a assistant or
+        // non-assistant
         std::string getGivenPlayerMonkConversionTarget = "";
 
         auto doesGivenPlayerHaveRedemption = [givenPlayerTechnologies] {
@@ -700,11 +739,10 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
           givenPlayerBattleAssistant.entityQuantity > 0
           && opposingPlayerBattleAssistant.entityQuantity > 0
           && doesGivenPlayerHaveRedemption()) {
-          std::cout
-            << "Is " << givenPlayerName << "'s 'assistant monk' converting "
-            << opposingPlayerName
-            << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
-            << "<br>";
+          std::cout << "Is " << givenPlayerName
+                    << "'s 'assistant monk' converting " << opposingPlayerName
+                    << "'s assisting monk? Enter 1 for yes. Enter 0 for no"
+                    << "<br>";
           DIN >> getGivenPlayerMonkConversionTarget;
 
           // Behaviour: Validate the input before proceeding
@@ -720,7 +758,8 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
         if (
           (getGivenPlayerMonkConversionTarget == "0")
           || (doesGivenPlayerHaveRedemption() == false)) {
-          // Behaviour: Make sure that the conversion attempt is not being applied to siege units
+          // Behaviour: Make sure that the conversion attempt is not being
+          // applied to siege units
           if (opposingPlayerBattleParticipant.armorClass[12] == true) {
             std::cout << "Error: " << givenPlayerName
                       << "'s conversion attempt cannot be "
@@ -729,18 +768,20 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
             std::terminate();
           }
 
-         // Convert the combat participant
+          // Convert the combat participant
           givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
           if (opposingPlayerBattleParticipant.entityQuantity > 0) {
             opposingPlayerBattleParticipant.entityQuantity -= 1;
-            checkIfItCanBeHealed(); // Check for healing every time quantity goes down
+            checkIfItCanBeHealed(); // Check for healing every time quantity
+                                    // goes down
           }
         }
         else if (getGivenPlayerMonkConversionTarget == "1") {
           givenPlayerPointsGained = opposingPlayerBattleAssistant.pointValue;
           if (opposingPlayerBattleAssistant.entityQuantity > 0) {
             opposingPlayerBattleAssistant.entityQuantity -= 1;
-            checkIfItCanBeHealed(); // Check for healing every time quantity goes down
+            checkIfItCanBeHealed(); // Check for healing every time quantity
+                                    // goes down
           }
         }
 
@@ -748,15 +789,19 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
         SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
       }
       else if (givenPlayerIsHealingOrConverting == "Healing") {
-
-        // Work out whether the given player is targeting a assistant or non-assistant
+        // Work out whether the given player is targeting a assistant or
+        // non-assistant
         std::string getGivenPlayerMonkHealingTarget = "";
 
         if (givenPlayerBattleAssistant.entityQuantity > 0) {
           std::cout <<
 
-            "Enter 1 if " << givenPlayerName << "'s monk is healing " << givenPlayerName
-                    << "'s " << givenPlayerBattleParticipant.entityName << ". Enter 0 if " << givenPlayerName << "'s monk is healing " << givenPlayerName << "'s " << givenPlayerBattleAssistant.entityName << "<br>";
+            "Enter 1 if " << givenPlayerName << "'s monk is healing "
+                    << givenPlayerName << "'s "
+                    << givenPlayerBattleParticipant.entityName
+                    << ". Enter 0 if " << givenPlayerName
+                    << "'s monk is healing " << givenPlayerName << "'s "
+                    << givenPlayerBattleAssistant.entityName << "<br>";
           DIN >> getGivenPlayerMonkHealingTarget;
 
           // Behaviour: Validate the input before proceeding
@@ -768,19 +813,21 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
             std::terminate();
           }
         }
-        else{
+        else {
           getGivenPlayerMonkHealingTarget = "1";
         }
 
         // Apply the heal to either the assistant or battle participant
-        if(getGivenPlayerMonkHealingTarget == "0"){
-          for (int addHeals = 0; addHeals < givenPlayerEntitiesHealed; addHeals++) {
+        if (getGivenPlayerMonkHealingTarget == "0") {
+          for (int addHeals = 0; addHeals < givenPlayerEntitiesHealed;
+               addHeals++) {
             givenPlayerBattleAssistant.healsAvailable++;
             givenPlayerEntitiesHealed -= 1;
           }
         }
-        else if(getGivenPlayerMonkHealingTarget == "1"){
-          for (int addHeals = 0; addHeals < givenPlayerEntitiesHealed; addHeals++) {
+        else if (getGivenPlayerMonkHealingTarget == "1") {
+          for (int addHeals = 0; addHeals < givenPlayerEntitiesHealed;
+               addHeals++) {
             givenPlayerBattleParticipant.healsAvailable++;
             givenPlayerEntitiesHealed -= 1;
           }
@@ -793,7 +840,6 @@ void combatCalculator::calculatingMonkRoundOutcomeForAnIndividualPlayer(
   }
 }
 
-
 void monkRounds::roundOutcome(
   int          roundRunTimes,
   int*         inputP1Events,
@@ -802,26 +848,48 @@ void monkRounds::roundOutcome(
   int*         inputP2Technologies,
   ActivePlayer activePlayer)
 {
-  bool monkPresentP1 = false, monkPresentP2 = false; // Store if there are monks from P1 and P2
-  bool monkPowersActivatedP1 = false, monkPowersActivatedP2 = false; // Store if the monks from P1 and P2 did something
-  int p1PointsGained = 0, p2PointsGained = 0; // Store the amount of points awarded to P1 and P2 for kills
-  int p1EntitiesHealed = 1, p2EntitiesHealed = 1; // Store the amount of entities a heal from a monk, heals for P1 and P2
-  std::string player1IsHealingOrConverting = "", player2IsHealingOrConverting = ""; // Store if P1 and P2 is performing a conversion or healing attempt
-  int conversionRateANDhealingRateP1 = 0, conversionRateANDhealingRateP2 = 0; //  Stores the likelihood of an attempt to convert or heal a monk succeeding for P1 and P2
-  bool assistingMonksP1  = false, assistingMonksP2 = false; // Store whether monks are attached to a unit for P1 and P2
-  bool standaloneMonksP1 = false, standaloneMonksP2 = false; // Store whether monks are on their own for P1 and P2
+  bool monkPresentP1         = false,
+       monkPresentP2         = false; // Store if there are monks from P1 and P2
+  bool monkPowersActivatedP1 = false,
+       monkPowersActivatedP2
+       = false; // Store if the monks from P1 and P2 did something
+  int p1PointsGained = 0,
+      p2PointsGained
+      = 0; // Store the amount of points awarded to P1 and P2 for kills
+  int p1EntitiesHealed
+    = 1,
+    p2EntitiesHealed
+    = 1; // Store the amount of entities a heal from a monk, heals for P1 and P2
+  std::string player1IsHealingOrConverting
+    = "",
+    player2IsHealingOrConverting
+    = ""; // Store if P1 and P2 is performing a conversion or healing attempt
+  int conversionRateANDhealingRateP1 = 0,
+      conversionRateANDhealingRateP2
+      = 0; //  Stores the likelihood of an attempt to convert or heal a monk
+           //  succeeding for P1 and P2
+  bool assistingMonksP1 = false,
+       assistingMonksP2
+       = false; // Store whether monks are attached to a unit for P1 and P2
+  bool standaloneMonksP1 = false,
+       standaloneMonksP2
+       = false; // Store whether monks are on their own for P1 and P2
 
   /* Run the monk battle round for X times */
   for (int numberOfTimesToRunTheMonkBattleRound = 0;
        numberOfTimesToRunTheMonkBattleRound < roundRunTimes;
        numberOfTimesToRunTheMonkBattleRound++) {
-
     checkIfDead(); // Check that no deaths have occured
 
-    if (aDeathHasOccured == false) { // Make sure that no deaths have occured before proceeding since something that's dead cannot fight even though it can attack as it dies
+    if (aDeathHasOccured == false) { // Make sure that no deaths have occured
+                                     // before proceeding since something that's
+                                     // dead cannot fight even though it can
+                                     // attack as it dies
 
       // Determine if we'll be running the calculations for P1
-      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) { // If "Player 1" != "No players"
+      if (
+        (activePlayer & ActivePlayer::Player1)
+        != ActivePlayer::None) { // If "Player 1" != "No players"
 
         // Perform the calculations for P1
         calculatingMonkRoundOutcomeForAnIndividualPlayer(
@@ -867,11 +935,9 @@ void monkRounds::roundOutcome(
           p2EntitiesHealed);
       }
 
-      // Behaviour: Display the outcome of the monk combat round only if monks from P1 or P2 did something
-      if (
-        (monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)
-        ) {
-
+      // Behaviour: Display the outcome of the monk combat round only if monks
+      // from P1 or P2 did something
+      if ((monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)) {
         std::string outputString
           = "Monk round "
             + std::to_string(numberOfTimesToRunTheMonkBattleRound + 1)
@@ -882,9 +948,19 @@ void monkRounds::roundOutcome(
 
         // Show information related to the monk round calculations
         outputtingMonkRoundOutcomeForAnIndividualPlayer(
-          activePlayer, player1Name, p1PointsGained, monkPowersActivatedP1, p1BattleParticipant, p1BattleAssistant);
+          activePlayer,
+          player1Name,
+          p1PointsGained,
+          monkPowersActivatedP1,
+          p1BattleParticipant,
+          p1BattleAssistant);
         outputtingMonkRoundOutcomeForAnIndividualPlayer(
-          activePlayer, player2Name, p2PointsGained, monkPowersActivatedP2, p2BattleParticipant, p2BattleAssistant);
+          activePlayer,
+          player2Name,
+          p2PointsGained,
+          monkPowersActivatedP2,
+          p2BattleParticipant,
+          p2BattleAssistant);
 
         std::cout << "<br>";
       }
@@ -2402,6 +2478,10 @@ void FightMonksRounds::roundOutcome(
   int*         inputP2Technologies,
   ActivePlayer activePlayer)
 {
+  if (activePlayer == ActivePlayer::None) {
+    return;
+  }
+
   constexpr std::size_t                  playerCount{2};
   const std::array<Entity*, playerCount> battleParticipants{
     &p1BattleParticipant, &p2BattleParticipant};
@@ -2412,6 +2492,14 @@ void FightMonksRounds::roundOutcome(
 
   for (int round{0}; round < roundRunTimes; ++round) {
     for (std::size_t player{0}; player < playerCount; ++player) {
+      if (
+        ((player == 0)
+         && ((activePlayer & ActivePlayer::Player1) == ActivePlayer::None))
+        || ((player == 1) && ((activePlayer & ActivePlayer::Player2) == ActivePlayer::None))
+        ) {
+        continue;
+      }
+
       const std::size_t otherPlayerIdx{getOtherPlayerIndex(player)};
       Entity* const     playerBattleParticipant{battleParticipants[player]};
       Entity* const     otherPlayerMonk{monks[otherPlayerIdx]};
@@ -2441,9 +2529,9 @@ void FightMonksRounds::roundOutcome(
     < p2BattleAssistant.initialEntityQuantity) {
     int numberOfMonksP2Lost = p2BattleAssistant.initialEntityQuantity
                               - p2BattleAssistant.entityQuantity;
-    p1PointsGained = (p2BattleAssistant.pointValue
-                      / p2BattleAssistant.initialEntityQuantity)
-                     * numberOfMonksP2Lost;
+    p1PointsGained
+      = (p2BattleAssistant.pointValue / p2BattleAssistant.initialEntityQuantity)
+        * numberOfMonksP2Lost;
 
     std::cout << ">> " << player1Name << " gets " << p1PointsGained << " points"
               << "<br>";
@@ -2454,9 +2542,9 @@ void FightMonksRounds::roundOutcome(
     < p1BattleAssistant.initialEntityQuantity) {
     int numberOfMonksP1Lost = p1BattleAssistant.initialEntityQuantity
                               - p1BattleAssistant.entityQuantity;
-    p2PointsGained = (p1BattleAssistant.pointValue
-                      / p1BattleAssistant.initialEntityQuantity)
-                     * numberOfMonksP1Lost;
+    p2PointsGained
+      = (p1BattleAssistant.pointValue / p1BattleAssistant.initialEntityQuantity)
+        * numberOfMonksP1Lost;
 
     std::cout << ">> " << player2Name << " gets " << p2PointsGained << " points"
               << "<br>";

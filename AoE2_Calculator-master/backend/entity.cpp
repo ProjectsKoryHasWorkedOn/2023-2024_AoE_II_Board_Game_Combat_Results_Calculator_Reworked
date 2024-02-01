@@ -325,8 +325,9 @@ void Entity::outputEntity(std::string playerName)
     std::cout << " ";
 
     if (entityQuantity > 1) {
+      // TODO: HERE
       displayColorfulText(
-        "bold", "white", "dark_cyan", entityName + "s", false);
+        "bold", "white", "dark_cyan", getPluralName(), false);
       std::cout << " each have ";
     }
     else {
@@ -518,4 +519,13 @@ void Entity::outputEntity(std::string playerName)
   }
 
   std::cout << "<br>";
+}
+
+std::string Entity::getPluralName() const
+{
+  if (entityName == "Man-at-Arms") {
+    return "Men-at-Arms";
+  }
+
+  return entityName + "s";
 }

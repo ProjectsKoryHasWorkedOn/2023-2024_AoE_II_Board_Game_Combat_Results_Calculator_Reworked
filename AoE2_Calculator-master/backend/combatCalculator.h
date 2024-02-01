@@ -191,35 +191,38 @@ public:
   // Function: Make some final checks (after the end of the rounds of combat)
   void checkIfItCanBeHealed();
 
-
   void calculatingMonkRoundOutcomeForAnIndividualPlayer(
-                                                          // Both player names
-                                                          std::string & givenPlayerName,
-                                                          std::string & opposingPlayerName,
-                                                          // Both player battle participants
-                                                          Entity & givenPlayerBattleParticipant,
-                                                          Entity & givenPlayerBattleAssistant,
-                                                          Entity & opposingPlayerBattleParticipant,
-                                                          Entity & opposingPlayerBattleAssistant,
-                                                          // Both player events and technologies
-                                                          int *         givenPlayerEvents,
-                                                          int *         opposingPlayerEvents,
-                                                          int *         givenPlayerTechnologies,
-                                                          // Given player monk related information
-                                                          bool & givenPlayerHasAMonkPresent,
-                                                          bool & givenPlayerMonkPowersActivated,
-                                                          std::string & givenPlayerIsHealingOrConverting,
-                                                          int & givenPlayerConversionANDHealingRate,
-                                                          bool & givenPlayerAssistingMonks,
-    bool & givenPlayerStandaloneMonks,
-                                                          int & givenPlayerPointsGained,
-    int & givenPlayerEntitiesHealed);
-
+    // Both player names
+    std::string& givenPlayerName,
+    std::string& opposingPlayerName,
+    // Both player battle participants
+    Entity& givenPlayerBattleParticipant,
+    Entity& givenPlayerBattleAssistant,
+    Entity& opposingPlayerBattleParticipant,
+    Entity& opposingPlayerBattleAssistant,
+    // Both player events and technologies
+    int* givenPlayerEvents,
+    int* opposingPlayerEvents,
+    int* givenPlayerTechnologies,
+    // Given player monk related information
+    bool&        givenPlayerHasAMonkPresent,
+    bool&        givenPlayerMonkPowersActivated,
+    std::string& givenPlayerIsHealingOrConverting,
+    int&         givenPlayerConversionANDHealingRate,
+    bool&        givenPlayerAssistingMonks,
+    bool&        givenPlayerStandaloneMonks,
+    int&         givenPlayerPointsGained,
+    int&         givenPlayerEntitiesHealed);
 
   void outputtingMonkRoundOutcomeForAnIndividualPlayer(
 
-           // The active player
-    ActivePlayer & activePlayer, std::string & givenPlayerName, int & givenPlayerPointsAwarded, bool & givenPlayerMonkPowersActivated, Entity & givenPlayerBattleParticipant, Entity & givenPlayerBattleAssistant);
+    // The active player
+    ActivePlayer activePlayer,
+    std::string&  givenPlayerName,
+    int&          givenPlayerPointsAwarded,
+    bool&         givenPlayerMonkPowersActivated,
+    Entity&       givenPlayerBattleParticipant,
+    Entity&       givenPlayerBattleAssistant);
 
   /** Return information functions **/
   // Function: Return the modified battle participants based on the input player
