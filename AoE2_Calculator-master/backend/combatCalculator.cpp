@@ -441,11 +441,11 @@ void combatCalculator::checkRemainingDamage( // @Kory todo: check if this is
 // Function: Calculate the outcome of a monk battle
 void combatCalculator::outputtingMonkRoundOutcomeForAnIndividualPlayer(
   ActivePlayer activePlayer,
-  std::string&  givenPlayerName,
-  int&          givenPlayerPointsAwarded,
-  bool&         givenPlayerMonkPowersActivated,
-  Entity&       givenPlayerBattleParticipant,
-  Entity&       givenPlayerBattleAssistant)
+  std::string& givenPlayerName,
+  int&         givenPlayerPointsAwarded,
+  bool&        givenPlayerMonkPowersActivated,
+  Entity&      givenPlayerBattleParticipant,
+  Entity&      givenPlayerBattleAssistant)
 {
   // Shows whether or not the given player's monk powers activated if
   // appropriate
@@ -2495,8 +2495,7 @@ void FightMonksRounds::roundOutcome(
       if (
         ((player == 0)
          && ((activePlayer & ActivePlayer::Player1) == ActivePlayer::None))
-        || ((player == 1) && ((activePlayer & ActivePlayer::Player2) == ActivePlayer::None))
-        ) {
+        || ((player == 1) && ((activePlayer & ActivePlayer::Player2) == ActivePlayer::None))) {
         continue;
       }
 

@@ -547,7 +547,72 @@ void runGame(
   // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
   // round Reference: I otherwise deal with a single bombardment round within
   // the standardCombat subclass
+  ///
+  // Bombardment round
+  ///
   if (isEvent4Active == true) {
+    bool player1UsesBombardmentAgainstMonks{false};
+    if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
+      const bool shouldFightMonks{queryIfMonksShouldBeFought(
+        FightMonksRounds::Kind::Melee, playerNamesArray[0])};
+      player1UsesBombardmentAgainstMonks = shouldFightMonks;
+    }
+
+    bool player2UsesBombardmentAgainstMonks{false};
+    if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
+      const bool shouldFightMonks{queryIfMonksShouldBeFought(
+        FightMonksRounds::Kind::Melee, playerNamesArray[1])};
+      player2UsesBombardmentAgainstMonks = shouldFightMonks;
+    }
+
+    // Behaviour: Set the combat calculator to the bombardment rounds
+    theCombatCalculator = &fightMonksMeleeRounds;
+
+    // Set the player names
+    theCombatCalculator->setPlayerNames(
+      playerNamesArray[0], playerNamesArray[1]);
+
+    // Behaviour: Set the protected values
+    theCombatCalculator->setCombatParticipants(
+      p1BattleParticipant,
+      p2BattleParticipant,
+      p1AssistingMonkBattleParticipant,
+      p2AssistingMonkBattleParticipant,
+      modifyRoundAttackP1,
+      modifyRoundAttackP2);
+
+    // Behaviour: Set the remaining damage values for the combat calculator
+    theCombatCalculator->setAdditionalValues(
+      p1RemainingDamage, p2RemainingDamage);
+
+    const ActivePlayer bombardMonksActivePlayer{getActivePlayerForFightMonks(
+      player1UsesBombardmentAgainstMonks, player2UsesBombardmentAgainstMonks)};
+    qDebug() << ">>>>>>>>>> active player for bombard monks:"
+             << bombardMonksActivePlayer;
+    theCombatCalculator->roundOutcome(
+      numberOfBombardmentCombatRounds,
+      p1_events_array,
+      p2_events_array,
+      p1_technologies_array,
+      p2_technologies_array,
+      bombardMonksActivePlayer);
+
+    // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds
+    // of standard combat Player 1
+    p1BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player1);
+    p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
+    // Player 2
+    p2BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player2);
+    p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+
+    ///
+    // Normal bombardment round
+    ///
+    ///
+
     // Behaviour: Set the combat calculator to the bombardment rounds
     theCombatCalculator = &bombardmentRounds;
 
@@ -568,6 +633,13 @@ void runGame(
     theCombatCalculator->setAdditionalValues(
       p1RemainingDamage, p2RemainingDamage);
 
+    const ActivePlayer normalBombardmentActivePlayer{
+      getActivePlayerForNormalCombatRound(
+        player1UsesBombardmentAgainstMonks,
+        player2UsesBombardmentAgainstMonks)};
+    qDebug() << ">>>>>>>> active player for normal bombardment round:"
+             << normalBombardmentActivePlayer;
+
     // Behaviour: Calculate the damage dealt for numberOfBombardmentCombatRounds
     // rounds of bombardment combat and display the results
     bombardmentRounds.roundOutcome(
@@ -576,7 +648,7 @@ void runGame(
       p2_events_array,
       p1_technologies_array,
       p2_technologies_array,
-      ActivePlayer::Player1);
+      normalBombardmentActivePlayer);
 
     // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds
     // of standard combat Player 1

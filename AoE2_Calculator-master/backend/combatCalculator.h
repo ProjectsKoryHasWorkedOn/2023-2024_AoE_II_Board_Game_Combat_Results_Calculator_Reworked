@@ -218,11 +218,11 @@ public:
 
     // The active player
     ActivePlayer activePlayer,
-    std::string&  givenPlayerName,
-    int&          givenPlayerPointsAwarded,
-    bool&         givenPlayerMonkPowersActivated,
-    Entity&       givenPlayerBattleParticipant,
-    Entity&       givenPlayerBattleAssistant);
+    std::string& givenPlayerName,
+    int&         givenPlayerPointsAwarded,
+    bool&        givenPlayerMonkPowersActivated,
+    Entity&      givenPlayerBattleParticipant,
+    Entity&      givenPlayerBattleAssistant);
 
   /** Return information functions **/
   // Function: Return the modified battle participants based on the input player

@@ -326,8 +326,7 @@ void Entity::outputEntity(std::string playerName)
 
     if (entityQuantity > 1) {
       // TODO: HERE
-      displayColorfulText(
-        "bold", "white", "dark_cyan", getPluralName(), false);
+      displayColorfulText("bold", "white", "dark_cyan", getPluralName(), false);
       std::cout << " each have ";
     }
     else {
