@@ -16,6 +16,7 @@ struct Entity {
   int         pointValue;
   static int constexpr numberOfArmorClasses = 28;
   bool armorClass[numberOfArmorClasses];
+
   /*
   armorClass[0] -> archer
   armorClass[1] -> building
@@ -55,6 +56,11 @@ struct Entity {
   int healsAvailable;
 
   int initialEntityQuantity;
+
+
+  // Store toggle for outputting armor classes
+  bool showArmorClassesInOutput;
+
 
   // Functions: The constructor and deconstructor
   Entity();

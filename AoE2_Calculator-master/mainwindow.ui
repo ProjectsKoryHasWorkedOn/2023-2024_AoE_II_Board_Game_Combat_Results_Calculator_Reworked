@@ -542,6 +542,7 @@
      <addaction name="actionEnableDisableDarkMode"/>
      <addaction name="actionSetDefaultAnswerToRetreatingPrompt"/>
      <addaction name="actionSetDefaultAnswerToConvertingHealingPrompt"/>
+     <addaction name="actionShow_the_armor_classes_in_the_output"/>
     </widget>
     <widget class="QMenu" name="menuDocumentation">
      <property name="title">
@@ -688,6 +689,11 @@
   <action name="actionShow_developer_window">
    <property name="text">
     <string>Show developer window</string>
+   </property>
+  </action>
+  <action name="actionShow_the_armor_classes_in_the_output">
+   <property name="text">
+    <string>Show armor classes in the output</string>
    </property>
   </action>
  </widget>

@@ -214,6 +214,45 @@ public:
     int&         givenPlayerPointsGained,
     int&         givenPlayerEntitiesHealed);
 
+
+  void calculatingArcherRoundOutcomeForAnIndividualPlayer(
+    // Both player names
+  std::string& givenPlayerName,
+  std::string& opposingPlayerName,
+  // Both player battle participants
+  Entity& givenPlayerBattleParticipant,
+  Entity& givenPlayerBattleAssistant,
+  Entity& opposingPlayerBattleParticipant,
+  Entity& opposingPlayerBattleAssistant,
+  // Both player events and technologies
+  int* givenPlayerEvents,
+  int* opposingPlayerEvents,
+  int* givenPlayerTechnologies,
+  // Shared stuff
+  const int roundDownBasedOnMultiplesOfThisNumber,
+  // Round attack modifiers
+  int givenPlayerRoundAttackModifiers,
+  float& givenPlayerRemainingDamage,
+  // Given player archer related information
+  bool&        givenPlayerHasAArcherActivated,
+  bool&        givenPlayerIsFightingBuilding,
+    bool&        givenPlayerIsFightingUnit,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
+  bool&       opposingPlayerTakesNoDamageDueToShotsInTheBack,
+  float& givenPlayerPointsGained,
+  int&         givenPlayerRangedDamageDealt,
+  int&         opposingPlayerEntityDeaths,
+  int&         opposingPlayerBuildingDamage,
+  int& opposingPlayerDamageDie,
+  int& opposingPlayerStartingQuantity,
+  int& opposingPlayerEndingQuantity);
+
+
+
+
+
+
   void outputtingMonkRoundOutcomeForAnIndividualPlayer(
 
     // The active player

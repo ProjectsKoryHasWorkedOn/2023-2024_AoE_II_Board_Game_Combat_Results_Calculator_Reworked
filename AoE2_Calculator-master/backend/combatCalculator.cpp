@@ -971,6 +971,204 @@ void monkRounds::roundOutcome(
 
 } // End monk combat rounds function
 
+
+
+
+void combatCalculator::calculatingArcherRoundOutcomeForAnIndividualPlayer(
+  // Both player names
+  std::string& givenPlayerName,
+  std::string& opposingPlayerName,
+  // Both player battle participants
+  Entity& givenPlayerBattleParticipant,
+  Entity& givenPlayerBattleAssistant,
+  Entity& opposingPlayerBattleParticipant,
+  Entity& opposingPlayerBattleAssistant,
+  // Both player events and technologies
+  int* givenPlayerEvents,
+  int* opposingPlayerEvents,
+  int* givenPlayerTechnologies,
+  // Shared stuff
+  const int roundDownBasedOnMultiplesOfThisNumber,
+  // Round attack modifiers
+  int givenPlayerRoundAttackModifiers,
+  float& givenPlayerRemainingDamage,
+  // Given player archer related information
+  bool&        givenPlayerHasAArcherActivated,
+  bool&        givenPlayerIsFightingBuilding,
+    bool&        givenPlayerIsFightingUnit,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
+  bool&        opposingPlayerTakesNoDamageDueToShotsInTheBack,
+  float& givenPlayerPointsGained,
+  int&         givenPlayerRangedDamageDealt,
+  int&         opposingPlayerEntityDeaths,
+  int&         opposingPlayerBuildingDamage,
+  int& opposingPlayerDamageDie,
+  int& opposingPlayerStartingQuantity,
+  int& opposingPlayerEndingQuantity)
+{
+
+  if (
+    (opposingPlayerBattleParticipant.armorClass[1] == true)
+    && (givenPlayerBattleParticipant.armorClass[0] == true)) { //  Get whether the archer
+                                                      //  entity is fighting a
+                                                      //  building
+    givenPlayerIsFightingBuilding = true;
+  }
+  else {
+    givenPlayerIsFightingBuilding = false;
+  }
+
+  if (
+    (givenPlayerIsFightingBuilding == false)
+    && (givenPlayerBattleParticipant.armorClass[0] == true)) {
+    givenPlayerIsFightingUnit = true;
+  }
+  else {
+    givenPlayerIsFightingUnit = false;
+  }
+
+
+  // Apply the effects of event 33
+  if (givenPlayerEvents[33] == 1) {
+    // [33] Steady Hand - Target Archer unit may do ranged damage to a Cavalry
+    // unit this turn
+    givenPlayerRangedUnitCanAttackOpposingPlayerCavalry = true;
+  }
+
+
+
+
+
+
+         // Perform archer vs building combat if an archer is fighting a building
+  if (givenPlayerIsFightingBuilding == true) {
+    // Perform calculations if the archer is able to fight the building
+    if (givenPlayerIsFightingBuilding == true) {
+      opposingPlayerBuildingDamage
+        = (givenPlayerBattleParticipant.rangedDamage * givenPlayerBattleParticipant.entityQuantity);
+      opposingPlayerBuildingDamage += givenPlayerRoundAttackModifiers;
+      opposingPlayerBuildingDamage -= (opposingPlayerBattleParticipant.entityHealth % roundDownBasedOnMultiplesOfThisNumber);
+
+      opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
+      givenPlayerRemainingDamage += calculateRemainingDamage(
+        opposingPlayerDamageDie,
+        givenPlayerBattleParticipant.rangedDamage,
+        givenPlayerRoundAttackModifiers,
+        opposingPlayerBattleParticipant.entityHealth,
+        1);
+
+      givenPlayerHasAArcherActivated = true;
+    }
+  }
+  // Perform archer vs unit combat if an archer is fighting a unit
+  else if (givenPlayerIsFightingUnit == true) {
+    // Do not perform archer vs cav combat unless an event card overrides
+    // this rule
+    if (
+      (givenPlayerBattleParticipant.armorClass[0] == true) && // Archer armor class
+      (opposingPlayerBattleParticipant.armorClass[4] == true)
+      && // Cavalry armor class
+      (givenPlayerRangedUnitCanAttackOpposingPlayerCavalry == false)) {
+      // Do nothing
+    }
+    else {
+      givenPlayerRangedDamageDealt = givenPlayerBattleParticipant.rangedDamage
+                                     * givenPlayerBattleParticipant.entityQuantity;
+      givenPlayerRangedDamageDealt += givenPlayerRoundAttackModifiers;
+      givenPlayerRangedDamageDealt /= opposingPlayerBattleParticipant.entityHealth;
+      opposingPlayerEntityDeaths = std::floor(givenPlayerRangedDamageDealt);
+
+      givenPlayerRemainingDamage += calculateRemainingDamage(
+        opposingPlayerEntityDeaths,
+        givenPlayerBattleParticipant.rangedDamage,
+        givenPlayerRoundAttackModifiers,
+        opposingPlayerBattleParticipant.entityHealth,
+        0);
+
+      givenPlayerHasAArcherActivated = true;
+    }
+  }
+
+         // Behavior: Make ranged combat attacks for P1 ineffective if this event
+         // or shots in the back event is active for P2
+  if (
+    (opposingPlayerEvents[15] == 1)
+    || (opposingPlayerTakesNoDamageDueToShotsInTheBack == true)) {
+    // [15] Heavy Tree Cover - Negate range combat round in target battle
+    // involving one of your units
+
+           // Deal no unit damage
+    givenPlayerRangedDamageDealt = 0;
+    opposingPlayerEntityDeaths      = 0;
+
+           // Deal no building damage
+    opposingPlayerBuildingDamage = 0;
+    opposingPlayerDamageDie      = 0;
+  }
+
+         // Behaviour: Apply the results for p1 if ranged damage occured
+  if (givenPlayerHasAArcherActivated == true) {
+    // Behaviour: Apply the results to buildings or non-buildings
+    if (
+      (givenPlayerIsFightingBuilding == true) && (opposingPlayerBuildingDamage != 0)
+      && (givenPlayerIsFightingBuilding == true)) {
+      opposingPlayerBattleParticipant.entityHealth
+        -= opposingPlayerBuildingDamage; // Behaviour: Decrease the building HP
+      if (opposingPlayerBattleParticipant.entityHealth <= 0) {
+        givenPlayerPointsGained
+          = opposingPlayerBattleParticipant
+              .pointValue; // Behaviour: Set the points lost value to the
+                           // buildings point value
+      }
+      else if (opposingPlayerBattleParticipant.entityHealth > 0) {
+        givenPlayerPointsGained = 0; // Behaviour: if the HP of the building is > 0
+                                     // then do not keep the set the point value
+      }
+    }
+    else {
+      // Behavior: Store the starting quantity
+      opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+
+             // Behaviour: Now decrease the quantity
+      opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
+
+             // Behavior: Store the ending quantity and cap the ending quantity
+             // at 0
+      if (opposingPlayerBattleParticipant.entityQuantity < 0) {
+        opposingPlayerEndingQuantity = 0;
+      }
+      else {
+        opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+      }
+      // Behaviour: Calculate the difference between the two quantities
+      int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+
+             // Behaviour: Award points if deaths occured
+      if (opposingPlayerEntityDeaths >= 0) {
+        givenPlayerPointsGained
+          = opposingPlayerBattleParticipant.pointValue * opposingPlayerQuantityDifference;
+      }
+      else {
+        givenPlayerPointsGained = 0;
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
 // Function: Calculate the outcome of a ranged battle
 void archerRounds::roundOutcome(
   int          roundRunTimes,
@@ -980,106 +1178,26 @@ void archerRounds::roundOutcome(
   int*         inputP2Technologies,
   ActivePlayer activePlayer)
 {
-  /* Shared stuff */
-  const int roundDownMultiple = 10;
-
-  /* P1 stuff */
-  bool p1ArcherActivated
-    = false; //  Store if a ranged unit from P1 did something
-  int p1RangedDamageDealt = 0;
-  int p1EntityDeaths = 0; //  Store the number of units killed in this round
-  int p1BuildingDamage
-    = 0; //  Store the amount of damage dealt to buildings in this round
-  bool isP1FightingBuilding
-    = false; //  Store whether the archer entity is fighting a building
-  if (
-    (p2BattleParticipant.armorClass[1] == true)
-    && (p1BattleParticipant.armorClass[0] == true)) { //  Get whether the archer
-                                                      //  entity is fighting a
-                                                      //  building
-    isP1FightingBuilding = true;
-  }
-  else {
-    isP1FightingBuilding = false;
-  }
-  bool isP1FightingUnit = false;
-  if (
-    (isP1FightingBuilding == false)
-    && (p1BattleParticipant.armorClass[0] == true)) {
-    isP1FightingUnit = true;
-  }
-  else {
-    isP1FightingUnit = false;
-  }
-
-  int p1DamageDie
-    = 0; //  Store the amount of damage die to place onto buildings
-  float p2PointsGained     = 0; //  Store the amount of points awarded
-  int   p1StartingQuantity = 0; //  Store if changes occured to the quantity
-  int   p1EndingQuantity   = 0; //  Store if changes occured to the quantity
-  bool  p1RangedUnitCanAttackP2Building
-    = false; // Store if archers can attack buildings
-  // @Kory todo: Add a new event that allows archers to be able to fight
-  // buildings
-  bool p1RangedUnitCanAttackP2Cavalry
-    = false; //  Store if archers can attack cavalry
-  // Apply the effects of event 33
-  if (inputP1Events[33] == 1) {
-    // [33] Steady Hand - Target Archer unit may do ranged damage to a Cavalry
-    // unit this turn
-    p1RangedUnitCanAttackP2Cavalry = true;
-  }
-  bool protectP1FromTakingDamageDueToShotsInTheBack = false;
-
-  /* P2 stuff */
-  bool p2ArcherActivated
-    = false; //  Track if a ranged unit from either players did something
-  int p2EntityDeaths = 0; //  Declare the number of units killed in this round
-  int p2RangedDamageDealt = 0;
-  int p2BuildingDamage
-    = 0; //  Declare the amount of damage dealt to buildings in this round
-  bool isP2FightingBuilding
-    = false; //  Get whether the archer entity is fighting a building
-  if (
-    (p1BattleParticipant.armorClass[1] == true)
-    && (p2BattleParticipant.armorClass[0] == true)) { //  Get whether the archer
-                                                      //  entity is fighting a
-                                                      //  building
-    isP2FightingBuilding = true;
-  }
-  else {
-    isP2FightingBuilding = false;
-  }
-  bool isP2FightingUnit = false;
-  if (
-    (isP2FightingBuilding == false)
-    && (p2BattleParticipant.armorClass[0] == true)) {
-    isP2FightingUnit = true;
-  }
-  else {
-    isP2FightingUnit = false;
-  }
-
-  int p2DamageDie
-    = 0; //  Declare the amount of damage die to place onto buildings
-  float p1PointsGained     = 0; //  Declare the amount of points awarded
-  int   p2StartingQuantity = 0; //  Track if changes occured to the quantity
-  int   p2EndingQuantity   = 0; //  Track if changes occured to the quantity
-  bool  p2RangedUnitCanAttackP1Building
-    = false; // Store if archers can attack buildings
-  // @Kory todo: Add a new event that allows archers to be able to fight
-  // buildings
-  bool p2RangedUnitCanAttackP1Cavalry
-    = false; //  Negate the non-cavalry requirement
-  if (inputP2Events[33] == 1) {
-    // [33] Steady Hand - Target Archer unit may do ranged damage to a Cavalry
-    // unit this turn
-    p2RangedUnitCanAttackP1Cavalry = true;
-  }
-  bool protectP2FromTakingDamageDueToShotsInTheBack = false;
+  const int roundDownMultiple = 10; // Store the multiple to round down by for P1 and P2
+  bool p1ArcherActivated, p2ArcherActivated = false; //  Store if a ranged unit from P1 or P2 did something
+  int p1RangedDamageDealt, p2RangedDamageDealt  = 0;
+  int p1EntityDeaths, p2EntityDeaths = 0; //  Declare the number of units P1 & P2 killed in this round
+  int p1BuildingDamage, p2BuildingDamage       = 0; //  Store the amount of damage dealt to buildings in this round
+  bool isP1FightingBuilding, isP2FightingBuilding         = false; //  Store whether the archer entity is fighting a building
+    bool isP1FightingUnit, isP2FightingUnit  = false;
+  int p1DamageDie, p2DamageDie     = 0; //  Store the amount of damage die to place onto buildings
+  float p1PointsGained, p2PointsGained          = 0; //  Store the amount of points awarded
+  int   p1StartingQuantity , p2StartingQuantity = 0; //  Store if changes occured to the quantity of units P1 & P2 started with
+  int   p1EndingQuantity   , p2EndingQuantity   = 0; //  Store if changes occured to the quantity of units P1 & P2 started with
+  bool  p1RangedUnitCanAttackP2Building, p2RangedUnitCanAttackP1Building        = false; // Store if archers can attack buildings
+  // @Kory todo: Add a new event that allows archers to be able to fight buildings
+  bool p1RangedUnitCanAttackP2Cavalry, p2RangedUnitCanAttackP1Cavalry        = false; //  Store if archers can attack cavalry
+  bool protectP1FromTakingDamageDueToShotsInTheBack, protectP2FromTakingDamageDueToShotsInTheBack  = false;
 
   // Behaviour: Run the ranged battle round for X times
   for (int i = 0; i < roundRunTimes; i++) {
+
+
     // Behaviour: Check if the remaining damage value triggers a death
     checkRemainingDamage(inputP1Events, inputP2Events);
 
@@ -1093,241 +1211,23 @@ void archerRounds::roundOutcome(
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
-      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::Player1) {
-        // Perform archer vs building combat if an archer is fighting a building
-        if (isP1FightingBuilding == true) {
-          // Perform calculations if the archer is able to fight the building
-          if (p1RangedUnitCanAttackP2Building == true) {
-            p2BuildingDamage
-              = (p1BattleParticipant.rangedDamage * p1BattleParticipant.entityQuantity);
-            p2BuildingDamage += roundAttackModifiersP1;
-            p2BuildingDamage
-              -= (p2BattleParticipant.entityHealth % roundDownMultiple);
+      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
 
-            p2DamageDie = p2BuildingDamage / 10;
-            remainingDamageP1 += calculateRemainingDamage(
-              p2DamageDie,
-              p1BattleParticipant.rangedDamage,
-              roundAttackModifiersP1,
-              p2BattleParticipant.entityHealth,
-              1);
 
-            p1ArcherActivated = true;
-          }
-        }
-        // Perform archer vs unit combat if an archer is fighting a unit
-        else if (isP1FightingUnit == true) {
-          // Do not perform archer vs cav combat unless an event card overrides
-          // this rule
-          if (
-            (p1BattleParticipant.armorClass[0] == true) && // Archer armor class
-            (p2BattleParticipant.armorClass[4] == true)
-            && // Cavalry armor class
-            (p1RangedUnitCanAttackP2Cavalry == false)) {
-            // Do nothing
-          }
-          else {
-            p1RangedDamageDealt = p1BattleParticipant.rangedDamage
-                                  * p1BattleParticipant.entityQuantity;
-            p1RangedDamageDealt += roundAttackModifiersP1;
-            p1RangedDamageDealt /= p2BattleParticipant.entityHealth;
-            p2EntityDeaths = std::floor(p1RangedDamageDealt);
+        calculatingArcherRoundOutcomeForAnIndividualPlayer(player1Name, player2Name, p1BattleParticipant, p1BattleAssistant, p2BattleParticipant, p2BattleAssistant, inputP1Events, inputP2Events, inputP1Technologies, roundDownMultiple, roundAttackModifiersP1, remainingDamageP1, p1ArcherActivated, isP1FightingBuilding, isP1FightingUnit, p1RangedUnitCanAttackP2Building, p1RangedUnitCanAttackP2Cavalry, protectP2FromTakingDamageDueToShotsInTheBack, p1PointsGained, p1RangedDamageDealt, p2EntityDeaths, p2BuildingDamage, p2DamageDie, p2StartingQuantity, p2EndingQuantity);
 
-            remainingDamageP1 += calculateRemainingDamage(
-              p2EntityDeaths,
-              p1BattleParticipant.rangedDamage,
-              roundAttackModifiersP1,
-              p2BattleParticipant.entityHealth,
-              0);
 
-            p1ArcherActivated = true;
-          }
-        }
 
-        // Behavior: Make ranged combat attacks for P1 ineffective if this event
-        // or shots in the back event is active for P2
-        if (
-          (inputP2Events[15] == 1)
-          || (protectP2FromTakingDamageDueToShotsInTheBack == true)) {
-          // [15] Heavy Tree Cover - Negate range combat round in target battle
-          // involving one of your units
 
-          // Deal no unit damage
-          p1RangedDamageDealt = 0;
-          p2EntityDeaths      = 0;
-
-          // Deal no building damage
-          p2BuildingDamage = 0;
-          p2DamageDie      = 0;
-        }
-
-        // Behaviour: Apply the results for p1 if ranged damage occured
-        if (p1ArcherActivated == true) {
-          // Behaviour: Apply the results to buildings or non-buildings
-          if (
-            (isP1FightingBuilding == true) && (p2BuildingDamage != 0)
-            && (p1RangedUnitCanAttackP2Building == true)) {
-            p2BattleParticipant.entityHealth
-              -= p2BuildingDamage; // Behaviour: Decrease the building HP
-            if (p2BattleParticipant.entityHealth <= 0) {
-              p1PointsGained
-                = p2BattleParticipant
-                    .pointValue; // Behaviour: Set the points lost value to the
-                                 // buildings point value
-            }
-            else if (p2BattleParticipant.entityHealth > 0) {
-              p1PointsGained = 0; // Behaviour: if the HP of the building is > 0
-                                  // then do not keep the set the point value
-            }
-          }
-          else {
-            // Behavior: Store the starting quantity
-            p2StartingQuantity = p2BattleParticipant.entityQuantity;
-
-            // Behaviour: Now decrease the quantity
-            p2BattleParticipant.entityQuantity -= p2EntityDeaths;
-
-            // Behavior: Store the ending quantity and cap the ending quantity
-            // at 0
-            if (p2BattleParticipant.entityQuantity < 0) {
-              p2EndingQuantity = 0;
-            }
-            else {
-              p2EndingQuantity = p2BattleParticipant.entityQuantity;
-            }
-            // Behaviour: Calculate the difference between the two quantities
-            int p2QuantityDifference = (p2StartingQuantity - p2EndingQuantity);
-
-            // Behaviour: Award points if deaths occured
-            if (p2EntityDeaths >= 0) {
-              p1PointsGained
-                = p2BattleParticipant.pointValue * p2QuantityDifference;
-            }
-            else {
-              p1PointsGained = 0;
-            }
-          }
-        }
 
       } // End of p1 stuff conditional
 
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
       if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
-        // Perform archer vs building combat if an archer is fighting a building
-        if (isP2FightingBuilding == true) {
-          // Perform calculations if the archer is able to fight the building
-          if (p2RangedUnitCanAttackP1Building == true) {
-            p1BuildingDamage
-              = (p2BattleParticipant.rangedDamage * p2BattleParticipant.entityQuantity);
-            p1BuildingDamage += roundAttackModifiersP2;
-            p1BuildingDamage
-              -= (p1BattleParticipant.entityHealth % roundDownMultiple);
 
-            p1DamageDie = p1BuildingDamage / 10;
-            remainingDamageP2 += calculateRemainingDamage(
-              p1DamageDie,
-              p2BattleParticipant.rangedDamage,
-              roundAttackModifiersP1,
-              p1BattleParticipant.entityHealth,
-              1);
+        calculatingArcherRoundOutcomeForAnIndividualPlayer(player2Name, player1Name, p2BattleParticipant, p2BattleAssistant, p1BattleParticipant, p1BattleAssistant, inputP2Events, inputP1Events, inputP2Technologies, roundDownMultiple, roundAttackModifiersP2, remainingDamageP2, p2ArcherActivated, isP2FightingBuilding, isP2FightingUnit, p2RangedUnitCanAttackP1Building, p2RangedUnitCanAttackP1Cavalry, protectP1FromTakingDamageDueToShotsInTheBack, p2PointsGained, p2RangedDamageDealt, p1EntityDeaths, p1BuildingDamage, p1DamageDie, p1StartingQuantity, p1EndingQuantity);
 
-            p2ArcherActivated = true;
-          }
-        }
-        // Perform archer vs unit combat if an archer is fighting a unit
-        else if (isP2FightingUnit == true) {
-          // Do not perform archer vs cav combat unless an event card overrides
-          // this rule
-          if (
-            (p2BattleParticipant.armorClass[0] == true) && // Archer armor class
-            (p1BattleParticipant.armorClass[4] == true)
-            && // Cavalry armor class
-            (p2RangedUnitCanAttackP1Cavalry == false)) {
-            // Do nothing
-          }
-          else {
-            p2RangedDamageDealt = p2BattleParticipant.rangedDamage
-                                  * p2BattleParticipant.entityQuantity;
-            p2RangedDamageDealt += roundAttackModifiersP2;
-            p2RangedDamageDealt /= p1BattleParticipant.entityHealth;
-            p1EntityDeaths = std::floor(p2RangedDamageDealt);
-
-            remainingDamageP2 += calculateRemainingDamage(
-              p1EntityDeaths,
-              p2BattleParticipant.rangedDamage,
-              roundAttackModifiersP1,
-              p1BattleParticipant.entityHealth,
-              0);
-
-            p2ArcherActivated = true;
-          }
-        }
-
-        // Behavior: Make ranged combat attacks for P2 ineffective if this event
-        // or shots in the back event is active for P1
-        if (
-          (inputP1Events[15] == 1)
-          || (protectP1FromTakingDamageDueToShotsInTheBack == true)) {
-          // [15] Heavy Tree Cover - Negate range combat round in target battle
-          // involving one of your units
-
-          // Deal no unit damage
-          p2RangedDamageDealt = 0;
-          p1EntityDeaths      = 0;
-
-          // Deal no building damage
-          p1BuildingDamage = 0;
-          p1DamageDie      = 0;
-        }
-
-        // Behaviour: Apply the results for p1 if ranged damage occured
-        if (p2ArcherActivated == true) {
-          // Behaviour: Apply the results to buildings or non-buildings
-          if (
-            (isP2FightingBuilding == true) && (p1BuildingDamage != 0)
-            && (p2RangedUnitCanAttackP1Building == true)) {
-            p1BattleParticipant.entityHealth
-              -= p1BuildingDamage; // Behaviour: Decrease the building HP
-            if (p1BattleParticipant.entityHealth <= 0) {
-              p2PointsGained
-                = p1BattleParticipant
-                    .pointValue; // Behaviour: Set the points lost value to the
-                                 // buildings point value
-            }
-            else if (p1BattleParticipant.entityHealth > 0) {
-              p2PointsGained = 0; // Behaviour: if the HP of the building is > 0
-                                  // then do not keep the set the point value
-            }
-          }
-          else {
-            // Behavior: Store the starting quantity
-            p1StartingQuantity = p1BattleParticipant.entityQuantity;
-
-            // Behaviour: Now decrease the quantity
-            p1BattleParticipant.entityQuantity -= p1EntityDeaths;
-
-            // Behavior: Store the ending quantity and cap the ending quantity
-            // at 0
-            if (p1BattleParticipant.entityQuantity < 0) {
-              p1EndingQuantity = 0;
-            }
-            else {
-              p1EndingQuantity = p1BattleParticipant.entityQuantity;
-            }
-            // Behaviour: Calculate the difference between the two quantities
-            int p1QuantityDifference = (p1StartingQuantity - p1EndingQuantity);
-
-            // Behaviour: Award points if deaths occured
-            if (p1EntityDeaths >= 0) {
-              p2PointsGained
-                = p1BattleParticipant.pointValue * p1QuantityDifference;
-            }
-            else {
-              p2PointsGained = 0;
-            }
-          }
-        }
 
       } // End of p2 stuff conditional
 
