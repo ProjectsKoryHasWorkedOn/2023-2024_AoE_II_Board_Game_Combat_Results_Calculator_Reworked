@@ -140,25 +140,25 @@ void runGame(
   bool isEvent4Active = false;
 
   // Integer array: The technologies
-  int* p1_technologies_array;
-  int* p2_technologies_array;
+  int* p1Technologies;
+  int* p2Technologies;
 
   // Integer array: The events
-  int* p1_events_array;
-  int* p2_events_array;
+  int* p1Events;
+  int* p2Events;
 
   // Integer array: The player details
-  int* player_age_array;
+  int* playerAges;
 
-  // String: The player names. Obtained from player_age_array
-  std::string* playerNamesArray;
+  // String: The player names
+  std::string* playerNames;
 
   /** Complex declarations **/
   // Structure: The entities
   Entity p1BattleParticipant;
-  Entity p1AssistingMonkBattleParticipant;
+  Entity p1BattleAssistant;
   Entity p2BattleParticipant;
-  Entity p2AssistingMonkBattleParticipant;
+  Entity p2BattleAssistant;
 
   // Object: The file importing object
   fileImporter importFile{database};
@@ -190,107 +190,107 @@ void runGame(
   // Player 1
   p1BattleParticipant
     = importFile.entitiesFile("import/entities.csv", entitiesWords, player1, 0);
-  p1AssistingMonkBattleParticipant
+  p1BattleAssistant
     = importFile.entitiesFile("import/entities.csv", entitiesWords, player1, 1);
 
   // Player 2
   p2BattleParticipant
     = importFile.entitiesFile("import/entities.csv", entitiesWords, player2, 0);
-  p2AssistingMonkBattleParticipant
+  p2BattleAssistant
     = importFile.entitiesFile("import/entities.csv", entitiesWords, player2, 1);
 
   // Behaviour: Load "technologies_[p1/p2].csv" and get information about the
   // active technologies Player 1
-  p1_technologies_array = importFile.aSplitColumnFile(
+  p1Technologies = importFile.aSplitColumnFile(
     "import/technologies_p1.csv", technologiesRows);
-  std::unique_ptr<int[]> p1TechUp(p1_technologies_array);
+  std::unique_ptr<int[]> p1TechUp(p1Technologies);
 
   // Player 2
-  p2_technologies_array = importFile.aSplitColumnFile(
+  p2Technologies = importFile.aSplitColumnFile(
     "import/technologies_p2.csv", technologiesRows);
-  std::unique_ptr<int[]> p2TechUp(p2_technologies_array);
+  std::unique_ptr<int[]> p2TechUp(p2Technologies);
 
   // Behaviour: Load "events_[p1/p2].csv" and get information about the active
   // events Player 1
-  p1_events_array
+  p1Events
     = importFile.aSplitColumnFile("import/events_p1.csv", eventsRows);
-  std::unique_ptr<int[]> p1EventsUp(p1_events_array);
+  std::unique_ptr<int[]> p1EventsUp(p1Events);
 
   // Player 2
-  p2_events_array
+  p2Events
     = importFile.aSplitColumnFile("import/events_p2.csv", eventsRows);
-  std::unique_ptr<int[]> p2EventsUp(p2_events_array);
+  std::unique_ptr<int[]> p2EventsUp(p2Events);
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
-  player_age_array
+  playerAges
     = importFile.aSplitColumnFile("import/playerAge.csv", playerAgeRows);
-  std::unique_ptr<int[]> playerAgeUp(player_age_array);
+  std::unique_ptr<int[]> playerAgeUp(playerAges);
 
-  playerNamesArray = importFile.playerNames("import/playerNames.csv", 2);
-  std::unique_ptr<std::string[]> playerNamesUp(playerNamesArray);
+  playerNames = importFile.playerNames("import/playerNames.csv", 2);
+  std::unique_ptr<std::string[]> playerNamesUp(playerNames);
 
   // Behavior: Work out what the initial quantity values are
   p1BattleParticipant.initialEntityQuantity
     = p1BattleParticipant.entityQuantity;
   p2BattleParticipant.initialEntityQuantity
     = p2BattleParticipant.entityQuantity;
-  p1AssistingMonkBattleParticipant.initialEntityQuantity
-    = p1AssistingMonkBattleParticipant.entityQuantity;
-  p2AssistingMonkBattleParticipant.initialEntityQuantity
-    = p2AssistingMonkBattleParticipant.entityQuantity;
+  p1BattleAssistant.initialEntityQuantity
+    = p1BattleAssistant.entityQuantity;
+  p2BattleAssistant.initialEntityQuantity
+    = p2BattleAssistant.entityQuantity;
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants
   theModifiersCalculator.setEntities(
     p1BattleParticipant,
     p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant);
+    p1BattleAssistant,
+    p2BattleAssistant);
 
   // Behaviour: Set the values for player 1
   theModifiersCalculator.setAdditionalValues(
-    player1, player_age_array[0], p1_technologies_array, p1_events_array);
+    player1, playerAges[0], p1Technologies, p1Events);
 
   // Behaviour: Run a function to apply all of the modifiers for player 1
   p1BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
-  p1AssistingMonkBattleParticipant
+  p1BattleAssistant
     = theModifiersCalculator.applyAllModifiers(1);
 
   // Set the values for player 2
   theModifiersCalculator.setAdditionalValues(
-    player2, player_age_array[1], p2_technologies_array, p2_events_array);
+    player2, playerAges[1], p2Technologies, p2Events);
 
   // Behaviour: Run a function to apply all of the modifiers for player 2
   p2BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
-  p2AssistingMonkBattleParticipant
+  p2BattleAssistant
     = theModifiersCalculator.applyAllModifiers(1);
 
   // Behaviour: Return information about the input entities once they have been
   // modified (before further calculations occur)
   std::cout << "You entered..."
             << "<br>";
-  p1BattleParticipant.outputEntity(playerNamesArray[0]);
-  if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
+  p1BattleParticipant.outputEntity(playerNames[0]);
+  if (p1BattleAssistant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p1AssistingMonkBattleParticipant.outputEntity(playerNamesArray[0]);
+    p1BattleAssistant.outputEntity(playerNames[0]);
   }
-  p2BattleParticipant.outputEntity(playerNamesArray[1]);
-  if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
+  p2BattleParticipant.outputEntity(playerNames[1]);
+  if (p2BattleAssistant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p2AssistingMonkBattleParticipant.outputEntity(playerNamesArray[1]);
+    p2BattleAssistant.outputEntity(playerNames[1]);
   }
 
   /** Part 3: Applying further modifiers **/
   // Event [14] Hard to Starboard - Reduce damage dealt to target ship by 10
   // points per round of combat this turn
-  if (p1_events_array[14] == 1) {
+  if (p1Events[14] == 1) {
     if (p1BattleParticipant.armorClass[11] == true) {
       modifyRoundAttackP2 -= 10;
     }
   }
 
-  if (p2_events_array[14] == 1) {
+  if (p2Events[14] == 1) {
     if (p2BattleParticipant.armorClass[11] == true) {
       modifyRoundAttackP1 -= 10;
     }
@@ -303,7 +303,7 @@ void runGame(
   //		 4: deal 10 extra damage per round
   //		 5: discard 2 cards
   //		 6: deal 15 extra damage per round.
-  if (p1_events_array[21] == 1) {
+  if (p1Events[21] == 1) {
     // Behaviour: Just ask the user what got rolled
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
@@ -325,7 +325,7 @@ void runGame(
     }
   }
 
-  if (p2_events_array[21] == 1) {
+  if (p2Events[21] == 1) {
     // Behaviour: Just ask the user what got rolled
     std::cout << "Enter 1 if a one got rolled. Enter 4 if a four got rolled. "
                  "Enter 6 if a six got rolled. Otherwise enter zero."
@@ -349,7 +349,7 @@ void runGame(
 
   // Event [4] Caught from the Crow's Nest - One extra bombardment round if
   // there is a Galley or Fire Ship
-  if ((p1_events_array[4] == 1) || (p2_events_array[4] == 1)) {
+  if ((p1Events[4] == 1) || (p2Events[4] == 1)) {
     if (
       ((p1BattleParticipant.armorClass[21] == true)
        || (p2BattleParticipant.armorClass[21] == true))
@@ -368,13 +368,13 @@ void runGame(
   // Event [38] You Will Die! (Saracen) - This battle goes for four rounds of
   // normal combat, instead of 2 rounds. No retreat is allowed without event
   // card effect.
-  if ((p1_events_array[38] == 1) || (p2_events_array[38] == 1)) {
+  if ((p1Events[38] == 1) || (p2Events[38] == 1)) {
     numberOfNormalCombatRounds = 4;
   }
 
   // Event [13] Gladitorial Games - You and a target player must move one unit
   // to No-Man's-Land. The units will fight until one is destroyed
-  if ((p1_events_array[13] == 1) || (p2_events_array[13] == 1)) {
+  if ((p1Events[13] == 1) || (p2Events[13] == 1)) {
     numberOfNormalCombatRounds = 10;
   }
 
@@ -388,14 +388,14 @@ void runGame(
   theCombatCalculator = &monkRounds;
 
   // Set the player names
-  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
     p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant,
+    p1BattleAssistant,
+    p2BattleAssistant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
 
@@ -407,10 +407,10 @@ void runGame(
   // of monk combat
   monkRounds.roundOutcome(
     numberOfMonkCombatRounds,
-    p1_events_array,
-    p2_events_array,
-    p1_technologies_array,
-    p2_technologies_array,
+    p1Events,
+    p2Events,
+    p1Technologies,
+    p2Technologies,
     ActivePlayer::Both);
 
   // Behaviour: Get the results after numberOfMonkCombatRounds rounds of monk
@@ -433,31 +433,31 @@ void runGame(
   bool player1UsesRangedAttacksAgainstMonks{false};
   if (
     (p1BattleParticipant.rangedDamage > 0)
-    && (p2AssistingMonkBattleParticipant.entityQuantity > 0)) {
+    && (p2BattleAssistant.entityQuantity > 0)) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Ranged, playerNamesArray[0])};
+      FightMonksRounds::Kind::Ranged, playerNames[0])};
     player1UsesRangedAttacksAgainstMonks = shouldFightMonks;
   }
 
   bool player2UsesRangedAttacksAgainstMonks{false};
   if (
     (p2BattleParticipant.rangedDamage > 0)
-    && (p1AssistingMonkBattleParticipant.entityQuantity > 0)) {
+    && (p1BattleAssistant.entityQuantity > 0)) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Ranged, playerNamesArray[1])};
+      FightMonksRounds::Kind::Ranged, playerNames[1])};
     player2UsesRangedAttacksAgainstMonks = shouldFightMonks;
   }
 
   theCombatCalculator = &fightMonksRangedRounds;
   // Set the player names
-  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
     p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant,
+    p1BattleAssistant,
+    p2BattleAssistant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
 
@@ -473,10 +473,10 @@ void runGame(
            << fightMonksRangedRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
     numberOfArcherCombatRounds,
-    p1_events_array,
-    p2_events_array,
-    p1_technologies_array,
-    p2_technologies_array,
+    p1Events,
+    p2Events,
+    p1Technologies,
+    p2Technologies,
     fightMonksRangedRoundsActivePlayer);
 
   // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
@@ -500,14 +500,14 @@ void runGame(
 
   // Who knows if we need this?
   // Set the player names
-  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
     p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant,
+    p1BattleAssistant,
+    p2BattleAssistant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
 
@@ -523,10 +523,10 @@ void runGame(
            << rangedRoundActivePlayer;
   theCombatCalculator->roundOutcome(
     numberOfArcherCombatRounds,
-    p1_events_array,
-    p2_events_array,
-    p1_technologies_array,
-    p2_technologies_array,
+    p1Events,
+    p2Events,
+    p1Technologies,
+    p2Technologies,
     rangedRoundActivePlayer);
 
   // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
@@ -552,16 +552,16 @@ void runGame(
   ///
   if (isEvent4Active == true) {
     bool player1UsesBombardmentAgainstMonks{false};
-    if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
+    if (p2BattleAssistant.entityQuantity > 0) {
       const bool shouldFightMonks{queryIfMonksShouldBeFought(
-        FightMonksRounds::Kind::Melee, playerNamesArray[0])};
+        FightMonksRounds::Kind::Melee, playerNames[0])};
       player1UsesBombardmentAgainstMonks = shouldFightMonks;
     }
 
     bool player2UsesBombardmentAgainstMonks{false};
-    if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
+    if (p1BattleAssistant.entityQuantity > 0) {
       const bool shouldFightMonks{queryIfMonksShouldBeFought(
-        FightMonksRounds::Kind::Melee, playerNamesArray[1])};
+        FightMonksRounds::Kind::Melee, playerNames[1])};
       player2UsesBombardmentAgainstMonks = shouldFightMonks;
     }
 
@@ -570,14 +570,14 @@ void runGame(
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
-      playerNamesArray[0], playerNamesArray[1]);
+      playerNames[0], playerNames[1]);
 
     // Behaviour: Set the protected values
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
       p2BattleParticipant,
-      p1AssistingMonkBattleParticipant,
-      p2AssistingMonkBattleParticipant,
+      p1BattleAssistant,
+      p2BattleAssistant,
       modifyRoundAttackP1,
       modifyRoundAttackP2);
 
@@ -591,10 +591,10 @@ void runGame(
              << bombardMonksActivePlayer;
     theCombatCalculator->roundOutcome(
       numberOfBombardmentCombatRounds,
-      p1_events_array,
-      p2_events_array,
-      p1_technologies_array,
-      p2_technologies_array,
+      p1Events,
+      p2Events,
+      p1Technologies,
+      p2Technologies,
       bombardMonksActivePlayer);
 
     // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds
@@ -618,14 +618,14 @@ void runGame(
 
     // Set the player names
     theCombatCalculator->setPlayerNames(
-      playerNamesArray[0], playerNamesArray[1]);
+      playerNames[0], playerNames[1]);
 
     // Behaviour: Set the protected values
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
       p2BattleParticipant,
-      p1AssistingMonkBattleParticipant,
-      p2AssistingMonkBattleParticipant,
+      p1BattleAssistant,
+      p2BattleAssistant,
       modifyRoundAttackP1,
       modifyRoundAttackP2);
 
@@ -644,10 +644,10 @@ void runGame(
     // rounds of bombardment combat and display the results
     bombardmentRounds.roundOutcome(
       numberOfBombardmentCombatRounds,
-      p1_events_array,
-      p2_events_array,
-      p1_technologies_array,
-      p2_technologies_array,
+      p1Events,
+      p2Events,
+      p1Technologies,
+      p2Technologies,
       normalBombardmentActivePlayer);
 
     // Behaviour: Get the results after numberOfBombardmentCombatRounds rounds
@@ -672,29 +672,29 @@ void runGame(
   // This is the fight monks melee round
   ///
   bool player1UsesMeleeAttacksAgainstMonks{false};
-  if (p2AssistingMonkBattleParticipant.entityQuantity > 0) {
+  if (p2BattleAssistant.entityQuantity > 0) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Melee, playerNamesArray[0])};
+      FightMonksRounds::Kind::Melee, playerNames[0])};
     player1UsesMeleeAttacksAgainstMonks = shouldFightMonks;
   }
 
   bool player2UsesMeleeAttacksAgainstMonks{false};
-  if (p1AssistingMonkBattleParticipant.entityQuantity > 0) {
+  if (p1BattleAssistant.entityQuantity > 0) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Melee, playerNamesArray[1])};
+      FightMonksRounds::Kind::Melee, playerNames[1])};
     player2UsesMeleeAttacksAgainstMonks = shouldFightMonks;
   }
 
   theCombatCalculator = &fightMonksMeleeRounds;
   // Set the player names
-  theCombatCalculator->setPlayerNames(playerNamesArray[0], playerNamesArray[1]);
+  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
   // Behaviour: Set the battle participants
   theCombatCalculator->setCombatParticipants(
     p1BattleParticipant,
     p2BattleParticipant,
-    p1AssistingMonkBattleParticipant,
-    p2AssistingMonkBattleParticipant,
+    p1BattleAssistant,
+    p2BattleAssistant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
 
@@ -710,10 +710,10 @@ void runGame(
            << fightMonksMeleeRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
     numberOfNormalCombatRounds,
-    p1_events_array,
-    p2_events_array,
-    p1_technologies_array,
-    p2_technologies_array,
+    p1Events,
+    p2Events,
+    p1Technologies,
+    p2Technologies,
     fightMonksMeleeRoundsActivePlayer);
 
   // Behaviour: Get the results after numberOfNormalCombatRounds rounds of
@@ -739,20 +739,9 @@ void runGame(
            << regularMeleeRoundActivePlayer;
   theCombatCalculator->roundOutcome(
     numberOfNormalCombatRounds,
-    p1_events_array,
-    p2_events_array,
-    p1_technologies_array,
-    p2_technologies_array,
+    p1Events,
+    p2Events,
+    p1Technologies,
+    p2Technologies,
     regularMeleeRoundActivePlayer);
-
-  // Behaviour: Get the results after numberOfNormalCombatRounds rounds of
-  // standard combat Player 1
-  p1BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player1);
-  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
-
-  // Player 2
-  p2BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player2);
-  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 }

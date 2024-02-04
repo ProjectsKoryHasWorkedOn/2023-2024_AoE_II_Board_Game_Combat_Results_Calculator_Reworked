@@ -71,13 +71,13 @@ public:
   Entity p2BattleAssistant;
 
   // Integer: Store modifiers to the attack dealt
-  int roundAttackModifiersP1;
-  int roundAttackModifiersP2;
+  int p1RoundAttackModifiers;
+  int p2RoundAttackModifiers;
 
   /** Values attained from the function setAdditionalValues() **/
   // Integer: Store the remaining damage
-  float remainingDamageP1;
-  float remainingDamageP2;
+  float p1RemainingDamage;
+  float p2RemainingDamage;
 };
 
 /** The combat calculator class **/
@@ -109,11 +109,11 @@ protected:
   Entity& p1BattleAssistant;
   Entity& p2BattleAssistant;
 
-  int& roundAttackModifiersP1;
-  int& roundAttackModifiersP2;
+  int& p1RoundAttackModifiers;
+  int& p2RoundAttackModifiers;
 
-  float& remainingDamageP1;
-  float& remainingDamageP2;
+  float& p1RemainingDamage;
+  float& p2RemainingDamage;
 
 public:
   // Functions: The constructor and deconstructor
@@ -128,12 +128,12 @@ public:
 
   // Function: Set the battle participants
   void setCombatParticipants(
-    Entity& inputP1BattleParticipant,
-    Entity& inputP2BattleParticipant,
-    Entity& inputP1AssistingMonkBattleParticipant,
-    Entity& inputP2AssistingMonkBattleParticipant,
-    int&    inputRoundAttackModifiersP1,
-    int&    inputRoundAttackModifiersP2);
+    Entity& p1BattleParticipant,
+    Entity& p2BattleParticipant,
+    Entity& p1BattleAssistant,
+    Entity& p2BattleAssistant,
+    int&    p1RoundAttackModifiers,
+    int&    p2RoundAttackModifiers);
 
   // Function: Pass the address of the remaining damage into the superclass
   // variable Reference: I tried storing the integer arrays but this is caused a
@@ -160,7 +160,7 @@ public:
 
   // Function: Check the remaining damage values for the effects of relentless
   // attack
-  void checkRemainingDamage(int* inputP1Events, int* inputP2Events);
+  void checkRemainingDamage(int* p1Events, int* p2Events);
 
   // Function: Return the remaining damage
   float returnRemaningDamage(int inputPlayerNumber);
@@ -180,10 +180,10 @@ public:
   // Function: Calculate the outcome of a battle
   virtual void roundOutcome(
     int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
     ActivePlayer activePlayer)
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
@@ -191,8 +191,39 @@ public:
   // Function: Make some final checks (after the end of the rounds of combat)
   void checkIfItCanBeHealed();
 
+
+
+
+
+
+
+
+
+  /** Return information functions **/
+  // Function: Return the modified battle participants based on the input player
+  // number
+  Entity returnModifiedBattleParticipants(int inputPlayerNumber);
+};
+#endif // COMBAT_CALCULATOR_H
+
+#ifndef COMBAT_CALCULATOR_MONK_ROUNDS_H
+#define COMBAT_CALCULATOR_MONK_ROUNDS_H
+class monkRounds : public combatCalculator {
+public:
+  using combatCalculator::combatCalculator;
+
+  // Function: Calculate the outcome of a monk battle
+  void roundOutcome(
+    int          roundRunTimes,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
+    ActivePlayer activePlayer) override;
+
+
   void calculatingMonkRoundOutcomeForAnIndividualPlayer(
-    // Both player names
+                                                         // Both player names
     std::string& givenPlayerName,
     std::string& opposingPlayerName,
     // Both player battle participants
@@ -215,47 +246,12 @@ public:
     int&         givenPlayerEntitiesHealed);
 
 
-  void calculatingArcherRoundOutcomeForAnIndividualPlayer(
-    // Both player names
-  std::string& givenPlayerName,
-  std::string& opposingPlayerName,
-  // Both player battle participants
-  Entity& givenPlayerBattleParticipant,
-  Entity& givenPlayerBattleAssistant,
-  Entity& opposingPlayerBattleParticipant,
-  Entity& opposingPlayerBattleAssistant,
-  // Both player events and technologies
-  int* givenPlayerEvents,
-  int* opposingPlayerEvents,
-  int* givenPlayerTechnologies,
-  // Shared stuff
-  const int roundDownBasedOnMultiplesOfThisNumber,
-  // Round attack modifiers
-  int givenPlayerRoundAttackModifiers,
-  float& givenPlayerRemainingDamage,
-  // Given player archer related information
-  bool&        givenPlayerHasAArcherActivated,
-  bool&        givenPlayerIsFightingBuilding,
-    bool&        givenPlayerIsFightingUnit,
-    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
-    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
-  bool&       opposingPlayerTakesNoDamageDueToShotsInTheBack,
-  float& givenPlayerPointsGained,
-  int&         givenPlayerRangedDamageDealt,
-  int&         opposingPlayerEntityDeaths,
-  int&         opposingPlayerBuildingDamage,
-  int& opposingPlayerDamageDie,
-  int& opposingPlayerStartingQuantity,
-  int& opposingPlayerEndingQuantity);
-
-
-
 
 
 
   void outputtingMonkRoundOutcomeForAnIndividualPlayer(
 
-    // The active player
+           // The active player
     ActivePlayer activePlayer,
     std::string& givenPlayerName,
     int&         givenPlayerPointsAwarded,
@@ -263,27 +259,10 @@ public:
     Entity&      givenPlayerBattleParticipant,
     Entity&      givenPlayerBattleAssistant);
 
-  /** Return information functions **/
-  // Function: Return the modified battle participants based on the input player
-  // number
-  Entity returnModifiedBattleParticipants(int inputPlayerNumber);
-};
-#endif // COMBAT_CALCULATOR_H
 
-#ifndef COMBAT_CALCULATOR_MONK_ROUNDS_H
-#define COMBAT_CALCULATOR_MONK_ROUNDS_H
-class monkRounds : public combatCalculator {
-public:
-  using combatCalculator::combatCalculator;
 
-  // Function: Calculate the outcome of a monk battle
-  void roundOutcome(
-    int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
-    ActivePlayer activePlayer) override;
+
+
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
 
@@ -293,14 +272,60 @@ class archerRounds : public combatCalculator {
 public:
   using combatCalculator::combatCalculator;
 
-  // Function: Calculate the outcome of a ranged battle
+  // Function: Determine the outcome of a ranged battle
   void roundOutcome(
     int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
     ActivePlayer activePlayer) override;
+
+  // Calculate the outcome of a ranged battle
+  void calculatingArcherRoundOutcomeForAnIndividualPlayer(
+    // Shared stuff
+    const int roundDownBasedOnMultiplesOfThisNumber,
+    // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    int* givenPlayerEvents,
+    int givenPlayerRoundAttackModifiers,
+    float& givenPlayerRemainingDamage,
+    bool&        givenPlayerHasAArcherActivated,
+    bool&        givenPlayerIsFightingBuilding,
+    bool&        givenPlayerIsFightingUnit,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
+    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
+    int&         givenPlayerRangedDamageDealt,
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int* opposingPlayerEvents,
+    bool&        opposingPlayerTakesNoDamageDueToShotsInTheBack,
+    int&         opposingPlayerEntityDeaths,
+    int&         opposingPlayerBuildingDamage,
+    int& opposingPlayerDamageDie);
+
+
+  // Apply the outcome of a ranged battle
+  void applyingArcherRoundOutcomeForAnIndividualPlayer(
+    // Given player
+    bool&        givenPlayerHasAArcherActivated,
+    bool&        givenPlayerIsFightingBuilding,
+    bool& givenPlayerCanAttackOpposingPlayerBuilding,
+    bool& givenPlayerIsFightingUnit,
+    float&        givenPlayerPointsGained,
+    // Opposing player
+    Entity& opposingPlayerBattleParticipant,
+    int&         opposingPlayerEntityDeaths,
+    int&         opposingPlayerBuildingDamage);
+
+  // Show the outcome of a ranged battle
+  void outputtingArcherRoundOutcomeForAnIndividualPlayer(
+    std::string& givenPlayerName,
+    float&         givenPlayerPointsGained,
+    bool&        isGivenPlayerFightingBuilding,
+    Entity&      opposingPlayerBattleParticipant,
+    int&         opposingPlayerDamageDie,
+    std::string&         opposingPlayerName);
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 
@@ -313,10 +338,10 @@ public:
   // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(
     int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
     ActivePlayer activePlayer) override;
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
@@ -330,11 +355,51 @@ public:
   // Function: Calculate the outcome of a standard battle
   void roundOutcome(
     int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
     ActivePlayer activePlayer) override;
+
+
+  void calculatingStandardRoundOutcomeForAnIndividualPlayer(
+    // Shared stuff
+    int& numberOfTimesToRunTheStandardRound,
+    const int roundDownBasedOnMultiplesOfThisNumber,
+    // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    int* givenPlayerEvents,
+    int givenPlayerRoundAttackModifiers,
+    float& givenPlayerRemainingDamage,
+    bool&        givenPlayerHasAEntityThatActivated,
+    bool&        givenPlayerIsFightingBuilding,
+    bool&        givenPlayerIsFightingAUnit,
+    float& givenPlayerPointsGained,
+    int & givenPlayerEntityDeaths,
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int* opposingPlayerEvents,
+    int&         opposingPlayerEntityDeaths,
+    int&         opposingPlayerBuildingDamage,
+    int& opposingPlayerDamageDie);
+
+
+
+  void applyingStandardRoundOutcomeForAnIndividualPlayer(
+    // Shared stuff
+    int& numberOfTimesToRunTheStandardRound,
+    // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    bool&        givenPlayerHasAEntityThatActivated,
+    bool&        givenPlayerIsFightingAUnit,
+    float& givenPlayerPointsGained,
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    float& opposingPlayerPointsGained,
+    int&         opposingPlayerEntityDeaths);
+
+
+
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
 
@@ -349,10 +414,10 @@ public:
 
   void roundOutcome(
     int          roundRunTimes,
-    int*         inputP1Events,
-    int*         inputP2Events,
-    int*         inputP1Technologies,
-    int*         inputP2Technologies,
+    int*         p1Events,
+    int*         p2Events,
+    int*         p1Technologies,
+    int*         p2Technologies,
     ActivePlayer activePlayer) override;
 
   Kind getKind() const;
