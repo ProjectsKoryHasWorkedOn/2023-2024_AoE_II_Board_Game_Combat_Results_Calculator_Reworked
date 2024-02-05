@@ -1049,6 +1049,15 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
   }
 
          // @todo: Kory Add an event that allows for archers to target buildings
+
+
+  if (givenPlayerEvents[41] == 1) {
+    givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true;
+  }
+  else{
+    givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = false;
+  }
+
          // givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true if event is active else false
 
 
@@ -1071,7 +1080,7 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
       opposingPlayerBuildingDamage
         = (givenPlayerBattleParticipant.rangedDamage * givenPlayerBattleParticipant.entityQuantity);
       opposingPlayerBuildingDamage += givenPlayerRoundAttackModifiers;
-      opposingPlayerBuildingDamage -= (opposingPlayerBattleParticipant.entityHealth % roundDownBasedOnMultiplesOfThisNumber);
+      opposingPlayerBuildingDamage -= opposingPlayerBuildingDamage % roundDownBasedOnMultiplesOfThisNumber;
 
       opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
       givenPlayerRemainingDamage += calculateRemainingDamage(
@@ -1848,8 +1857,8 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
 
 
   if (givenPlayerIsFightingBuilding == true) {
-    opposingPlayerBuildingDamage
-      = ((givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity) - ((opposingPlayerBattleParticipant.entityHealth) % roundDownBasedOnMultiplesOfThisNumber));
+    opposingPlayerBuildingDamage = (givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity);
+    opposingPlayerBuildingDamage -= (opposingPlayerBuildingDamage % roundDownBasedOnMultiplesOfThisNumber);
     opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
     givenPlayerRemainingDamage += calculateRemainingDamage(
       opposingPlayerDamageDie,

@@ -123,7 +123,8 @@ VALUES
 ('2', 'Vengeance Is Mine!', 'Target unit gets +3 HP +3 AP this turn, when defending in your village. Play anytime.'),
 ('4', 'While They''re Sleeping', 'Target attacking Infantry unit takes no damage for the first round of combat. The ranged round does count as the first round of combat. Play anytime.'),
 ('3', 'You Will Die! (Saracen)', 'This battle goes for four rounds of normal combat, instead of 2 rounds. No retreat is allowed without event card effect. Play anytime.'),
-('3', 'Zealous Monks', 'Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. Limit 2 per deck.');
+('3', 'Zealous Monks', 'Target Monk unit gets 1 conversion roll at a 3 or less rate for each monk attached. Limit 2 per deck.'),
+('3', 'Explosive arrows {2E}', 'Archers can do damage to buildings in the archer combat round for this turn');
 
 DROP TABLE IF EXISTS Technologies;
 CREATE TABLE IF NOT EXISTS Technologies(

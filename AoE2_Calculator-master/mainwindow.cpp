@@ -276,6 +276,18 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
         Qt::CheckStateRole,
         m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
                                                            : Qt::Unchecked);
+
+
+      if (eventPlayer1->text().contains("{2E}")) {
+        eventPlayer1->setForeground(QColor(255, 255, 255));
+        eventPlayer1->setBackground(QColor(90, 90, 90));
+      }
+
+      if (eventPlayer2->text().contains("{2E}")) {
+        eventPlayer2->setForeground(QColor(255, 255, 255));
+        eventPlayer2->setBackground(QColor(90, 90, 90));
+      }
+
     }
     else {
       if (
