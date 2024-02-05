@@ -58,6 +58,7 @@ CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
   return m_onPlayerEntityDeath;
 }
 
+
 CombatCalculatorState::CombatCalculatorState()
 {
   // Set all of the stored values to their initial values
@@ -134,6 +135,16 @@ void combatCalculator::setCombatParticipants(
   p2RoundAttackModifiers = inputtedP2RoundAttackModifiers;
 }
 
+
+
+void combatCalculator::setStartingQuantites(){
+  //@Phillip: How come this is blank
+  startingBattleParticipantQuantityP1 = p1BattleParticipant.initialEntityQuantity;
+  startingBattleParticipantQuantityP2 = p2BattleParticipant.initialEntityQuantity;
+  startingAssistantQuantityP1         = p1BattleAssistant.initialEntityQuantity;
+  startingAssistantQuantityP2         = p2BattleAssistant.initialEntityQuantity;
+}
+
 void combatCalculator::setAdditionalValues(
   float& inputtedRemainingDamageP1,
   float& inputtedRemainingDamageP2)
@@ -197,6 +208,65 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
   }
 }
 
+
+std::string combatCalculator::returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound){
+
+  if(inputtedEntity.armorClass[1] == true){
+    if(inputtedRound == "Bombardment round"){
+      if(inputtedEntity.standardDamage > 0){
+        return "Bombardment building fighting with SD";
+      }
+    }
+    else{
+      return "Building";
+    }
+
+  }
+
+  if(inputtedEntity.armorClass[0] == true){
+    if(inputtedRound == "Ranged round"){
+      if(inputtedEntity.rangedDamage > 0){
+        return "Ranged unit fighting with RD";
+      }
+    }
+    else{
+      return "Ranged unit";
+    }
+  }
+
+
+  if( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){
+    if(inputtedRound == "Bombardment round"){
+      if(inputtedEntity.standardDamage > 0){
+        return "Bombardment unit fighting with SD";
+      }
+      else{
+        return "Unit";
+      }
+
+    }
+    else if(inputtedRound == "Standard round"){
+      if(inputtedEntity.standardDamage > 0){
+        return "Unit fighting with SD";
+      }
+      else{
+        return "Unit";
+      }
+
+    }
+
+
+
+  }
+
+
+  std::cout << "Error: Unrecognized entity";
+  std::terminate();
+
+
+
+}
+
 void combatCalculator::checkIfItCanBeHealed()
 {
   // If p1BattleParticipant has less units than it started with and there are
@@ -212,6 +282,10 @@ void combatCalculator::checkIfItCanBeHealed()
   }
   // If p2BattleParticipant has less units than it started with and there are
   // heals available to it, heal it
+  qDebug() << "now: " << p2BattleParticipant.entityQuantity
+           << "started with: " << startingBattleParticipantQuantityP2;
+
+
   if (
     p2BattleParticipant.entityQuantity < startingBattleParticipantQuantityP2) {
     while (p2BattleParticipant.healsAvailable != 0) {
@@ -849,32 +923,14 @@ void monkRounds::roundOutcome(
   int*         p2Technologies,
   ActivePlayer activePlayer)
 {
-  bool monkPresentP1         = false,
-    monkPresentP2         = false; // Store if there are monks from P1 and P2
-  bool monkPowersActivatedP1 = false,
-    monkPowersActivatedP2
-    = false; // Store if the monks from P1 and P2 did something
-  int p1PointsGained = 0,
-    p2PointsGained
-    = 0; // Store the amount of points awarded to P1 and P2 for kills
-  int p1EntitiesHealed
-    = 1,
-    p2EntitiesHealed
-    = 1; // Store the amount of entities a heal from a monk, heals for P1 and P2
-  std::string player1IsHealingOrConverting
-    = "",
-    player2IsHealingOrConverting
-    = ""; // Store if P1 and P2 is performing a conversion or healing attempt
-  int conversionRateANDhealingRateP1 = 0,
-    conversionRateANDhealingRateP2
-    = 0; //  Stores the likelihood of an attempt to convert or heal a monk
-         //  succeeding for P1 and P2
-  bool assistingMonksP1 = false,
-    assistingMonksP2
-    = false; // Store whether monks are attached to a unit for P1 and P2
-  bool standaloneMonksP1 = false,
-    standaloneMonksP2
-    = false; // Store whether monks are on their own for P1 and P2
+  bool monkPresentP1         = false,    monkPresentP2         = false; // Store if there are monks from P1 and P2
+  bool monkPowersActivatedP1 = false,    monkPowersActivatedP2    = false; // Store if the monks from P1 and P2 did something
+  int p1PointsGained = 0,    p2PointsGained    = 0; // Store the amount of points awarded to P1 and P2 for kills
+  int p1EntitiesHealed    = 1,     p2EntitiesHealed    = 1; // Store the amount of entities a heal from a monk, heals for P1 and P2
+  std::string player1IsHealingOrConverting    = "",    player2IsHealingOrConverting    = ""; // Store if P1 and P2 is performing a conversion or healing attempt
+  int conversionRateANDhealingRateP1 = 0,    conversionRateANDhealingRateP2    = 0; //  Stores the likelihood of an attempt to convert or heal a monk succeeding for P1 and P2
+  bool assistingMonksP1 = false,     assistingMonksP2    = false; // Store whether monks are attached to a unit for P1 and P2
+  bool standaloneMonksP1 = false,    standaloneMonksP2    = false; // Store whether monks are on their own for P1 and P2
 
   /* Run the monk battle round for X times */
   for (int numberOfTimesToRunTheMonkBattleRound = 0;
@@ -940,7 +996,7 @@ void monkRounds::roundOutcome(
              // from P1 or P2 did something
       if ((monkPowersActivatedP1 == true) || (monkPowersActivatedP2 == true)) {
         std::string outputString
-          = "Monk powers activating round "
+          = "Monk powers activatation round "
             + std::to_string(numberOfTimesToRunTheMonkBattleRound + 1)
             + " calculations...";
 
@@ -1199,6 +1255,9 @@ void archerRounds::applyingArcherRoundOutcomeForAnIndividualPlayer(
 
              // Behaviour: Now decrease the quantity
       opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
+      checkIfItCanBeHealed(); // Check for healing every time quantity
+                              // goes down
+
 
              // Behavior: Store the ending quantity and cap the ending quantity
              // at 0
@@ -1233,20 +1292,20 @@ void archerRounds::roundOutcome(
   ActivePlayer activePlayer)
 {
   const int roundDownMultiple = 10; // Store the multiple to round down by for P1 and P2
-  bool p1ArcherActivated, p2ArcherActivated = false; //  Store if a ranged unit from P1 or P2 did something
-  int p1RangedDamageDealt, p2RangedDamageDealt  = 0;
-  int p1EntityDeaths, p2EntityDeaths = 0; //  Declare the number of units P1 & P2 killed in this round
-  int p1BuildingDamage, p2BuildingDamage       = 0; //  Store the amount of damage dealt to buildings in this round
-  bool p1IsFightingBuilding, p2IsFightingBuilding         = false; //  Store whether the archer entity is fighting a building
-  bool p1IsFightingUnit, p2IsFightingUnit  = false;
-  int p1DamageDie, p2DamageDie     = 0; //  Store the amount of damage die to place onto buildings
-  float p1PointsGained, p2PointsGained          = 0; //  Store the amount of points awarded
-  bool  p1RangedUnitCanAttackP2Building, p2RangedUnitCanAttackP1Building        = false; // Store if archers can attack buildings
-  bool p1RangedUnitCanAttackP2Cavalry, p2RangedUnitCanAttackP1Cavalry        = false; //  Store if archers can attack cavalry
-  bool p1TakeNoDamageDueToShotsInTheBack, p2TakeNoDamageDueToShotsInTheBack  = false;
+  bool p1ArcherActivated = false, p2ArcherActivated = false; //  Store if a ranged unit from P1 or P2 did something
+  int p1RangedDamageDealt = 0, p2RangedDamageDealt  = 0;
+  int p1EntityDeaths = 0, p2EntityDeaths = 0; //  Declare the number of units P1 & P2 killed in this round
+  int p1BuildingDamage = 0, p2BuildingDamage       = 0; //  Store the amount of damage dealt to buildings in this round
+  bool p1IsFightingBuilding = false, p2IsFightingBuilding         = false; //  Store whether the archer entity is fighting a building
+  bool p1IsFightingUnit = false, p2IsFightingUnit  = false;
+  int p1DamageDie = 0, p2DamageDie     = 0; //  Store the amount of damage die to place onto buildings
+  float p1PointsGained = 0, p2PointsGained          = 0; //  Store the amount of points awarded
+  bool  p1RangedUnitCanAttackP2Building = false, p2RangedUnitCanAttackP1Building        = false; // Store if archers can attack buildings
+  bool p1RangedUnitCanAttackP2Cavalry  = false, p2RangedUnitCanAttackP1Cavalry        = false; //  Store if archers can attack cavalry
+  bool p1TakeNoDamageDueToShotsInTheBack  = false, p2TakeNoDamageDueToShotsInTheBack  = false;
 
          // Behaviour: Run the ranged battle round for X times
-  for (int i = 0; i < roundRunTimes; i++) {
+  for (int numberOfTimesToRunTheRangedBattleRound = 0; numberOfTimesToRunTheRangedBattleRound < roundRunTimes; numberOfTimesToRunTheRangedBattleRound++) {
 
 
            // Behaviour: Check if the remaining damage value triggers a death
@@ -1286,11 +1345,29 @@ void archerRounds::roundOutcome(
         applyingArcherRoundOutcomeForAnIndividualPlayer(p2ArcherActivated, p2IsFightingBuilding, p2RangedUnitCanAttackP1Building, p2IsFightingUnit, p2PointsGained, p1BattleParticipant, p1EntityDeaths, p1BuildingDamage);
       }
 
+             // Behaviour: Check if the remaining damage value triggers a death
+      checkRemainingDamage(p1Events, p2Events);
+
+             // Behaviour: Check for deaths
+      checkIfDead();
+
+
+
              // Behaviour: Display the outcome of the archer combat round only if
              // changes occured
       if ((p1ArcherActivated == true) || (p2ArcherActivated == true)) {
+
+        std::string p1Has;
+        p1Has = returnWhatIAm(p1BattleParticipant, "Ranged round");
+
+        std::string p2Has;
+        p2Has = returnWhatIAm(p2BattleParticipant, "Ranged round");
+
+
+
+
         std::string outputString
-          = "Archers attacking round " + std::to_string(i + 1) + " calculations...";
+          = p1Has + " vs. " + p2Has + " combat round " + std::to_string(numberOfTimesToRunTheRangedBattleRound + 1) + " calculations...";
         outputEntityInformation(outputString);
 
         outputtingArcherRoundOutcomeForAnIndividualPlayer(player1Name, p1PointsGained, p1IsFightingBuilding, p2BattleParticipant, p2DamageDie, player2Name);
@@ -1345,6 +1422,167 @@ void archerRounds::roundOutcome(
   }   // For loop end
 } // Archer round function end
 
+
+void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
+  // Given player stuff
+  bool& givenPlayerBombardmentEntityActivated,
+  bool& givenPlayerIsFightingBuilding,
+  bool& givenPlayerIsFightingUnit,
+  float& givenPlayerPointsGained,
+  // Opposing player stuff
+  Entity& opposingPlayerBattleParticipant,
+  int& opposingPlayerBuildingDamage,
+  int& opposingPlayerEntityDeaths
+  ){
+  //  Track if changes occured to the quantity
+  int opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+  int opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+
+
+
+
+  // Behaviour: Apply the results for p1 if the activation conditions were
+  // met
+  if  (givenPlayerBombardmentEntityActivated == true ){
+    // Behaviour: Apply the results to buildings or non-buildings
+    if (givenPlayerIsFightingBuilding == true) {
+      // Behaviour: Decrease the building HP
+      if (opposingPlayerBuildingDamage != 0) {
+        // Behaviour: Set the point value to the buildings point
+        givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
+
+        opposingPlayerBattleParticipant.entityHealth -= opposingPlayerBuildingDamage;
+
+               // Behaviour: if the HP of the building is > 0 then do not keep the
+               // set the point value
+        if (opposingPlayerBattleParticipant.entityHealth > 0) {
+          givenPlayerPointsGained = 0;
+        }
+      }
+    }
+    if (givenPlayerIsFightingUnit == true) {
+      // Behavior: Store the starting quantity
+      opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+
+             // Behaviour: Store how many points the entity is individually worth
+      givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
+
+
+             // Behaviour: Now decrease the quantity
+      opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
+      checkIfItCanBeHealed(); // Check for healing every time quantity
+                              // goes down
+
+
+             // Behavior: Store the ending quantity and cap the ending quantity at
+             // 0
+      if (opposingPlayerBattleParticipant.entityQuantity < 0) {
+        opposingPlayerEndingQuantity = 0;
+      }
+      else {
+        opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+      }
+
+             // Behaviour: Calculate the difference between the two quantities
+      int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+
+             // Behaviour: Award points if deaths occured
+      if (opposingPlayerEntityDeaths >= 0) {
+        // Behavior: Calculate the difference between the two quantities
+        givenPlayerPointsGained *= opposingPlayerQuantityDifference;
+      }
+      else {
+        givenPlayerPointsGained = 0;
+      }
+    }
+  }
+}
+
+
+void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
+  // Shared stuff
+  const int roundDownBasedOnMultiplesOfThisNumber,
+
+  // Given player stuff
+  Entity& givenPlayerBattleParticipant,
+  bool& givenPlayerIsFightingBuilding,
+  bool& givenPlayerIsFightingUnit,
+  bool& givenPlayerBombardmentEntityActivated,
+  float& givenPlayerRemainingDamage,
+  int& givenPlayerRoundAttackModifiers,
+
+  // Opposing player stuff
+  Entity& opposingPlayerBattleParticipant,
+  int& opposingPlayerBuildingDamage,
+  int& opposingPlayerDamageDie,
+  int& opposingPlayerEntityDeaths
+){
+
+
+         // Behaviour: Check if player 1 is fighting a building
+  if (opposingPlayerBattleParticipant.armorClass[1] == true) { // Building p2
+    givenPlayerIsFightingBuilding = true;
+  }
+  else {
+    givenPlayerIsFightingBuilding = false;
+  }
+
+
+         // Behaviour: Check if given player is fighting a unit
+  if ( (opposingPlayerBattleParticipant.armorClass[25] == true) // Land unit p2
+      || (opposingPlayerBattleParticipant.armorClass[11] == true) ) // Ship p2
+
+  {
+    givenPlayerIsFightingUnit = true;
+  }
+  else {
+    givenPlayerIsFightingUnit = false;
+  }
+
+
+
+
+         // Behaviour: Calculate the damage against buildings if player 1 is
+         // fighting a building
+  givenPlayerBombardmentEntityActivated = false;
+
+  if (givenPlayerIsFightingBuilding == true) {
+    opposingPlayerBuildingDamage = ( ((givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity) + givenPlayerRoundAttackModifiers) - ((opposingPlayerBattleParticipant.entityHealth) % roundDownBasedOnMultiplesOfThisNumber));
+    opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
+    givenPlayerRemainingDamage += calculateRemainingDamage(
+      opposingPlayerDamageDie,
+      givenPlayerBattleParticipant.standardDamage,
+      givenPlayerRoundAttackModifiers,
+      opposingPlayerBattleParticipant.entityHealth,
+      1);
+
+    givenPlayerBombardmentEntityActivated = true;
+  }
+  // Behaviour: Calculate the damage against units if player 1 is fighting a
+  // unit
+  if(givenPlayerIsFightingUnit == true) {
+    // Behaviour: The damage only applies if p1 has a Galley or Fire Ship
+    if (
+      (givenPlayerBattleParticipant.armorClass[21] == true)
+      || (givenPlayerBattleParticipant.armorClass[21] == true)) {
+      opposingPlayerEntityDeaths = std::floor(
+        ((givenPlayerBattleParticipant.standardDamage
+          * givenPlayerBattleParticipant.entityQuantity)
+         + givenPlayerRoundAttackModifiers)
+        / (opposingPlayerBattleParticipant.entityHealth));
+      givenPlayerRemainingDamage += calculateRemainingDamage(
+        opposingPlayerEntityDeaths,
+        givenPlayerBattleParticipant.standardDamage,
+        givenPlayerRoundAttackModifiers,
+        opposingPlayerBattleParticipant.entityHealth,
+        0);
+
+      givenPlayerBombardmentEntityActivated = true;
+    }
+  }
+}
+
+
 // Function: Calculate the outcome of a bombardment round of battle (only for
 // the Crow's nest event card)
 void bombardmentRounds::roundOutcome(
@@ -1355,30 +1593,17 @@ void bombardmentRounds::roundOutcome(
   int*         p2Technologies,
   ActivePlayer activePlayer)
 {
-  //  Track if the bombardment attack round got activated
-  bool bombardmentRoundActivated = false;
-
-         //  Declare the number of units killed in this round
-  int p1EntityDeaths = 0, p2EntityDeaths = 0;
-
-         //  Declare the amount of damage dealt to buildings in this round
-  int p1BuildingDamage = 0, p2BuildingDamage = 0, roundDownMultiple = 10;
-
-         //  Get whether the bombardment entity is fighting a building
-  bool p1IsFightingBuilding = false, p2IsFightingBuilding = false;
-
-         //  Declare the amount of damage die to place onto buildings
-  int p1DamageDie = 0, p2DamageDie = 0;
-
-         //  Declare the amount of points awarded
-  float p2PointsGained = 0, p1PointsGained = 0;
-
-         //  Track if changes occured to the quantity
-  int p1StartingQuantity = 0, p1EndingQuantity = 0;
-  int p2StartingQuantity = 0, p2EndingQuantity = 0;
+  bool p1BombardmentEntityActivated = false, p2BombardmentEntityActivated = false; //  Track if the bombardment attack round got activated
+  int p1EntityDeaths = 0, p2EntityDeaths = 0; //  Declare the number of units killed in this round
+  int roundDownMultiple = 10;
+  int p1BuildingDamage = 0, p2BuildingDamage = 0; //  Declare the amount of damage dealt to buildings in this round
+  bool p1IsFightingBuilding = false, p2IsFightingBuilding = false; //  Get whether the bombardment entity is fighting a building
+  bool p1IsFightingUnit = false, p2IsFightingUnit = false;
+  int p1DamageDie = 0, p2DamageDie = 0; //  Declare the amount of damage die to place onto buildings
+  float p2PointsGained = 0, p1PointsGained = 0; //  Declare the amount of points awarded
 
          // Behaviour: Run the bombardment battle round for X times
-  for (int i = 0; i < roundRunTimes; i++) {
+  for (int numberOfTimesToRunTheBombardmentRound = 0; numberOfTimesToRunTheBombardmentRound < roundRunTimes; numberOfTimesToRunTheBombardmentRound++) {
     // Behaviour: Check that no deaths have occured
     checkIfDead();
 
@@ -1388,93 +1613,33 @@ void bombardmentRounds::roundOutcome(
            // Behaviour: Make sure that no deaths have occured and that the attacking
            // entity is not retreating before proceeding
     if ((aDeathHasOccured == false) && (isRetreating != "1")) {
-      // Behaviour: Check if player 1 is fighting a building
-      if (p2BattleParticipant.armorClass[1] == true) { // Building p2
-        p1IsFightingBuilding = true;
-      }
-      else {
-        p1IsFightingBuilding = false;
+
+
+             // Determine if we'll be running the calculations for P1 and P2 simultaneously
+      if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
+
+        calculatingBombardmentRoundOutcomeForAnIndividualPlayer(roundDownMultiple, p1BattleParticipant, p1IsFightingBuilding, p1IsFightingUnit,p1BombardmentEntityActivated, p1RemainingDamage, p1RoundAttackModifiers, p2BattleParticipant, p2BuildingDamage, p2DamageDie, p2EntityDeaths);
+
+      } // end p1 calc
+
+             // Determine if we'll be running the calculations for P1 and P2 simultaneously
+      if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
+
+        calculatingBombardmentRoundOutcomeForAnIndividualPlayer(roundDownMultiple, p2BattleParticipant, p2IsFightingBuilding, p2IsFightingUnit,p2BombardmentEntityActivated, p2RemainingDamage, p2RoundAttackModifiers, p1BattleParticipant, p1BuildingDamage, p1DamageDie, p2EntityDeaths);
+
+      } // end p2 calc
+
+
+
+      if (activePlayer != ActivePlayer::None) {
+
+        applyingBombardmentRoundOutcomeForAnIndividualPlayer(p1BombardmentEntityActivated, p1IsFightingBuilding, p1IsFightingUnit, p1PointsGained, p2BattleParticipant, p2BuildingDamage, p2EntityDeaths);
+        applyingBombardmentRoundOutcomeForAnIndividualPlayer(p2BombardmentEntityActivated, p2IsFightingBuilding, p2IsFightingUnit, p2PointsGained, p1BattleParticipant, p1BuildingDamage, p1EntityDeaths);
+
       }
 
-             // Behaviour: Calculate the damage against buildings if player 1 is
-             // fighting a building
-      if (p1IsFightingBuilding == true) {
-        p2BuildingDamage = ( ((p1BattleParticipant.standardDamage * p1BattleParticipant.entityQuantity) + p1RoundAttackModifiers) - ((p2BattleParticipant.entityHealth) % roundDownMultiple));
-        p2DamageDie = p2BuildingDamage / 10;
-        p1RemainingDamage += calculateRemainingDamage(
-          p2DamageDie,
-          p1BattleParticipant.standardDamage,
-          p1RoundAttackModifiers,
-          p2BattleParticipant.entityHealth,
-          1);
-      }
-      // Behaviour: Calculate the damage against units if player 1 is fighting a
-      // unit
-      else {
-        // Behaviour: The damage only applies if p1 has a Galley or Fire Ship
-        if (
-          (p1BattleParticipant.armorClass[21] == true)
-          || (p1BattleParticipant.armorClass[21] == true)) {
-          p2EntityDeaths = std::floor(
-            ((p1BattleParticipant.standardDamage
-              * p1BattleParticipant.entityQuantity)
-             + p1RoundAttackModifiers)
-            / (p2BattleParticipant.entityHealth));
-          p1RemainingDamage += calculateRemainingDamage(
-            p2EntityDeaths,
-            p1BattleParticipant.standardDamage,
-            p1RoundAttackModifiers,
-            p2BattleParticipant.entityHealth,
-            0);
-        }
-      }
 
-             // Behaviour: Check if player 1 is fighting a building
-      if (p1BattleParticipant.armorClass[1] == true) { // Building p1
-        p2IsFightingBuilding = true;
-      }
-      else {
-        p2IsFightingBuilding = false;
-      }
 
-             // Behaviour: Calculate the damage against buildings if player 2 is
-             // fighting a building
-      if (p2IsFightingBuilding == true) {
-        p1BuildingDamage = ( ((p2BattleParticipant.standardDamage * p2BattleParticipant.entityQuantity) + p2RoundAttackModifiers) - ((p1BattleParticipant.entityHealth) % roundDownMultiple));
-        p1DamageDie = p1BuildingDamage / 10;
-        p2RemainingDamage += calculateRemainingDamage(
-          p1DamageDie,
-          p2BattleParticipant.standardDamage,
-          p2RoundAttackModifiers,
-          p1BattleParticipant.entityHealth,
-          1);
-      }
-      // Behaviour: Calculate the damage against units if player 2 is fighting a
-      // unit
-      else {
-        // Behaviour: The damage only applies if p2 has a Galley or Fire Ship
-        if (
-          (p2BattleParticipant.armorClass[21] == true)
-          || (p2BattleParticipant.armorClass[21] == true)) {
-          p1EntityDeaths = std::floor(
-            ((p2BattleParticipant.standardDamage
-              * p2BattleParticipant.entityQuantity)
-             + p2RoundAttackModifiers)
-            / (p1BattleParticipant.entityHealth));
-          p2RemainingDamage += calculateRemainingDamage(
-            p1EntityDeaths,
-            p2BattleParticipant.standardDamage,
-            p2RoundAttackModifiers,
-            p1BattleParticipant.entityHealth,
-            0);
-        }
-      }
-
-      bombardmentRoundActivated = true;
-    }
-    else {
-      bombardmentRoundActivated = false;
-    }
 
            // Behaviour: Check if the remaining damage value triggers a death
     checkRemainingDamage(p1Events, p2Events);
@@ -1484,134 +1649,23 @@ void bombardmentRounds::roundOutcome(
 
            // Behaviour: Make sure that no deaths have occured
     if (aDeathHasOccured == false) {
-      // Behaviour: Apply the results for p1 if the activation conditions were
-      // met
-      if (bombardmentRoundActivated == true) {
-        // Behaviour: Apply the results to buildings or non-buildings
-        if (p1IsFightingBuilding == true) {
-          // Behaviour: Decrease the building HP
-          if (p2BuildingDamage != 0) {
-            // Behaviour: Set the point value to the buildings point
-            p1PointsGained = p2BattleParticipant.pointValue;
-
-            p2BattleParticipant.entityHealth -= p2BuildingDamage;
-
-                   // Behaviour: if the HP of the building is > 0 then do not keep the
-                   // set the point value
-            if (p2BattleParticipant.entityHealth > 0) {
-              p1PointsGained = 0;
-            }
-          }
-        }
-        else {
-          // Behavior: Store the starting quantity
-          p2StartingQuantity = p2BattleParticipant.entityQuantity;
-
-                 // Behaviour: Store how many points the entity is individually worth
-          p1PointsGained
-            = (p2BattleParticipant.pointValue / p2BattleParticipant.entityQuantity);
-
-                 // Behaviour: Divide the RD, standardDamage and pointValue by the
-                 // current quantity to get the values for a quantity of 1
-                 // getIndividualValues();
-
-                 // Behaviour: Now decrease the quantity
-          p2BattleParticipant.entityQuantity -= p2EntityDeaths;
-
-                 // Behaviour: Now multiply the RD, standardDamage and pointValue by
-                 // the new quantity
-                 // getTotalValues();
-
-                 // Behavior: Store the ending quantity and cap the ending quantity at
-                 // 0
-          if (p2BattleParticipant.entityQuantity < 0) {
-            p2EndingQuantity = 0;
-          }
-          else {
-            p2EndingQuantity = p2BattleParticipant.entityQuantity;
-          }
-
-                 // Behaviour: Calculate the difference between the two quantities
-          int p2QuantityDifference = (p2StartingQuantity - p2EndingQuantity);
-
-                 // Behaviour: Award points if deaths occured
-          if (p2EntityDeaths >= 0) {
-            // Behavior: Calculate the difference between the two quantities
-            p1PointsGained *= p2QuantityDifference;
-          }
-          else {
-            p1PointsGained = 0;
-          }
-        }
-      }
-
-             // Behaviour: Apply the results for p2 if bombardment damage occured
-      if (bombardmentRoundActivated == true) {
-        // Behaviour: Apply the results to buildings or non-buildings
-        if (p2IsFightingBuilding == true) {
-          // Behaviour: Decrease the building HP
-          if (p1BuildingDamage != 0) {
-            // Behaviour: Set the point value to the buildings point
-            p2PointsGained = p1BattleParticipant.pointValue;
-
-            p1BattleParticipant.entityHealth -= p1BuildingDamage;
-
-                   // Behaviour: if the HP of the building is > 0 then do not keep the
-                   // set the point value
-            if (p1BattleParticipant.entityHealth > 0) {
-              p2PointsGained = 0;
-            }
-          }
-        }
-        else {
-          // Behavior: Store the starting quantity
-          p1StartingQuantity = p1BattleParticipant.entityQuantity;
-
-                 // Behaviour: Store how many points the entity is individually worth
-          p2PointsGained
-            = (p1BattleParticipant.pointValue / p1BattleParticipant.entityQuantity);
-
-                 // Behaviour: Divide the RD, standardDamage and pointValue by the
-                 // current quantity to get the values for a quantity of 1
-                 // getIndividualValues();
-
-                 // Behaviour: Now decrease the quantity
-          p1BattleParticipant.entityQuantity -= p1EntityDeaths;
-
-                 // Behaviour: Now multiply the RD, standardDamage and pointValue by
-                 // the new quantity
-                 // getTotalValues();
-
-                 // Behavior: Store the ending quantity and cap the ending quantity at
-                 // 0
-          if (p1BattleParticipant.entityQuantity < 0) {
-            p1EndingQuantity = 0;
-          }
-          else {
-            p1EndingQuantity = p1BattleParticipant.entityQuantity;
-          }
-
-                 // Behaviour: Calculate the difference between the two quantities
-          int p1QuantityDifference = (p1StartingQuantity - p1EndingQuantity);
-
-                 // Behaviour: Award points if deaths occured
-          if (p1EntityDeaths >= 0) {
-            // Behavior: Calculate the difference between the two quantities
-            p2PointsGained *= p1QuantityDifference;
-          }
-          else {
-            p2PointsGained = 0;
-          }
-        }
-      }
-    }
 
            // Behaviour: Display the outcome of the bombardment combat round only if
            // changes occured
-    if (bombardmentRoundActivated == true) {
-      std::string outputString
-        = "Caught from the Crow's Nest Phase) Bombardment round "
-          + std::to_string(i + 1) + " calculations...";
+    if ( (p1BombardmentEntityActivated == true) || (p2BombardmentEntityActivated == true) ) {
+
+          std::string p1Has;
+          p1Has = returnWhatIAm(p1BattleParticipant, "Bombardment round");
+
+          std::string p2Has;
+          p2Has = returnWhatIAm(p2BattleParticipant, "Bombardment round");
+
+
+
+
+          std::string outputString
+            = p1Has + " vs. " + p2Has + " combat round " + std::to_string(numberOfTimesToRunTheBombardmentRound + 1) + " calculations...";
+
       outputEntityInformation(outputString);
 
              // Behaviour: Display how many damage die to place if appropriate
@@ -1650,7 +1704,7 @@ void bombardmentRounds::roundOutcome(
              // Behaviour: Check if the attacking entity is retreating if this is not
              // the last round
       if (aDeathHasOccured == false) {
-        if (i != roundRunTimes - 1) {
+        if (numberOfTimesToRunTheBombardmentRound != roundRunTimes - 1) {
           checkIfRetreating("Bombardment");
         }
       }
@@ -1661,7 +1715,7 @@ void bombardmentRounds::roundOutcome(
       if ((aDeathHasOccured == false) && (isRetreating != "1")) {
         std::cout
           << "Skipping Caught from the Crow's Nest Phase) Bombardment round "
-               + std::to_string(i + 1) + " calculations..."
+               + std::to_string(numberOfTimesToRunTheBombardmentRound + 1) + " calculations..."
           << "<br>";
       }
     }
@@ -1670,15 +1724,15 @@ void bombardmentRounds::roundOutcome(
 
 
 
-
-
+}
+}
 
 
 
 // Function: Calculate the outcome of a standard battle
 
 void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
-                                                                           // Shared stuff
+  // Shared stuff
   int& numberOfTimesToRunTheStandardRound,
   const int roundDownBasedOnMultiplesOfThisNumber,
   // Given player stuff
@@ -2035,7 +2089,8 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
 
            // Behaviour: Now decrease the quantity
     opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
-    // Debug: Why is the point value of opposingPlayerBattleParticipant 2
+    checkIfItCanBeHealed(); // Check for healing every time quantity
+                            // goes down
 
            // Behavior: Store the ending quantity and cap the ending quantity
            // at
@@ -2105,13 +2160,13 @@ void standardRounds::roundOutcome(
   ActivePlayer activePlayer)
 {
   const int roundDownMultiple = 10;
-  bool p1EntityActivated, p2EntityActivated = false;
-  bool p1IsFightingBuilding, p2IsFightingBuilding = false; //  Get whether the entity is fighting a building
-  bool p1IsFightingUnit, p2IsFightingUnit = false;
-  float p1PointsGained, p2PointsGained = 0; //  Declare the amount of points awarded
-  int  p1EntityDeaths, p2EntityDeaths = 0; //  Declare the number of units killed in this round
-  int  p1BuildingDamage, p2BuildingDamage = 0; //  Declare the amount of damage dealt to buildings in this round
-  int p1DamageDie, p2DamageDie = 0; //  Declare the amount of damage die to place onto buildings
+  bool p1EntityActivated = false, p2EntityActivated = false;
+  bool p1IsFightingBuilding = false, p2IsFightingBuilding = false; //  Get whether the entity is fighting a building
+  bool p1IsFightingUnit = false, p2IsFightingUnit = false;
+  float p1PointsGained = 0, p2PointsGained = 0; //  Declare the amount of points awarded
+  int  p1EntityDeaths = 0, p2EntityDeaths = 0; //  Declare the number of units killed in this round
+  int  p1BuildingDamage = 0, p2BuildingDamage = 0; //  Declare the amount of damage dealt to buildings in this round
+  int p1DamageDie = 0, p2DamageDie = 0; //  Declare the amount of damage die to place onto buildings
 
 
 
@@ -2161,16 +2216,32 @@ void standardRounds::roundOutcome(
       }
 
 
+             // Behaviour: Check if the remaining damage value triggers a death
+      checkRemainingDamage(p1Events, p2Events);
+
+             // Behaviour: Check for deaths
+      checkIfDead();
+
+
              // Behaviour: Display the outcome of the standard combat round only if
              // changes occured
 
              // Behaviour: Display the outcome of the standard combat round only if
              // changes occured
       if ((p1EntityActivated == true) || (p2EntityActivated == true)) {
+        std::string p1Has;
+        p1Has = returnWhatIAm(p1BattleParticipant, "Standard round");
+
+        std::string p2Has;
+        p2Has = returnWhatIAm(p2BattleParticipant, "Standard round");
+
+
+
+
         std::string outputString
-          = "Standard round "
-            + std::to_string(numberOfTimesToRunTheStandardRound + 1)
-            + " calculations...";
+          = p1Has + " vs. " + p2Has + " combat round " + std::to_string(numberOfTimesToRunTheStandardRound + 1) + " calculations...";
+
+
         outputEntityInformation(outputString);
 
         outputtingStandardRoundOutcomeForAnIndividualPlayer(player1Name, p1PointsGained, p1IsFightingBuilding, player2Name, p2BattleParticipant, p2DamageDie);

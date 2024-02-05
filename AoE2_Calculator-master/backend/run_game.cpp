@@ -160,30 +160,10 @@ void runGame(
   Entity p2BattleParticipant;
   Entity p2BattleAssistant;
 
+
          // Object: The file importing object
   fileImporter importFile{database};
 
-         // Object: The modifiers calculator object
-  modifiersCalculator theModifiersCalculator{database};
-
-         // Object: The combat calculator superclass and the combat rounds subclasses
-  CombatCalculatorState     combatCalculatorState{};
-  CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
-  combatCalculator*         theCombatCalculator;
-  monkRounds   monkRounds{&combatCalculatorState, &combatCalculatorCallbacks};
-  archerRounds rangedRounds{&combatCalculatorState, &combatCalculatorCallbacks};
-  bombardmentRounds bombardmentRounds{
-                                      &combatCalculatorState, &combatCalculatorCallbacks};
-  standardRounds standardRounds{
-                                &combatCalculatorState, &combatCalculatorCallbacks};
-  FightMonksRounds fightMonksRangedRounds{
-                                          &combatCalculatorState,
-                                          &combatCalculatorCallbacks,
-                                          FightMonksRounds::Kind::Ranged};
-  FightMonksRounds fightMonksMeleeRounds{
-                                         &combatCalculatorState,
-                                         &combatCalculatorCallbacks,
-                                         FightMonksRounds::Kind::Melee};
 
   /** Part 1: Getting basic information about the input entities **/
   // Behaviour: Load "entities.csv" and get information about the input entities
@@ -239,6 +219,36 @@ void runGame(
     = p1BattleAssistant.entityQuantity;
   p2BattleAssistant.initialEntityQuantity
     = p2BattleAssistant.entityQuantity;
+
+
+
+         // Object: The modifiers calculator object
+  modifiersCalculator theModifiersCalculator{database};
+
+         // Object: The combat calculator superclass and the combat rounds subclasses
+  CombatCalculatorState     combatCalculatorState{};
+
+  CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
+  combatCalculator*         theCombatCalculator;
+  monkRounds   monkRounds{&combatCalculatorState, &combatCalculatorCallbacks};
+  archerRounds rangedRounds{&combatCalculatorState, &combatCalculatorCallbacks};
+  bombardmentRounds bombardmentRounds{
+                                      &combatCalculatorState, &combatCalculatorCallbacks};
+  standardRounds standardRounds{
+                                &combatCalculatorState, &combatCalculatorCallbacks};
+  FightMonksRounds fightMonksRangedRounds{
+                                          &combatCalculatorState,
+                                          &combatCalculatorCallbacks,
+                                          FightMonksRounds::Kind::Ranged};
+  FightMonksRounds fightMonksMeleeRounds{
+                                         &combatCalculatorState,
+                                         &combatCalculatorCallbacks,
+                                         FightMonksRounds::Kind::Melee};
+
+
+
+
+
 
   /** Part 2: Applying modifiers to the input entities **/
   // Behaviour: Set the battle participants
@@ -387,6 +397,9 @@ void runGame(
   // Behaviour: Set the superclass to the monk rounds
   theCombatCalculator = &monkRounds;
 
+  theCombatCalculator->setStartingQuantites();
+
+
          // Set the player names
   theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
@@ -402,6 +415,7 @@ void runGame(
          // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
+
 
          // Behaviour: Calculate the damage dealt for numberOfMonkCombatRounds rounds
          // of monk combat
@@ -449,7 +463,11 @@ void runGame(
   }
 
   theCombatCalculator = &fightMonksRangedRounds;
-  // Set the player names
+
+  theCombatCalculator->setStartingQuantites();
+
+
+         // Set the player names
   theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
          // Behaviour: Set the battle participants
@@ -460,7 +478,6 @@ void runGame(
     p2BattleAssistant,
     modifyRoundAttackP1,
     modifyRoundAttackP2);
-
 
          // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(
@@ -499,7 +516,9 @@ void runGame(
          // Ranged round
   theCombatCalculator = &rangedRounds;
 
-         // Who knows if we need this?
+  theCombatCalculator->setStartingQuantites();
+
+
          // Set the player names
   theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
@@ -569,11 +588,13 @@ void runGame(
            // Behaviour: Set the combat calculator to the bombardment rounds
     theCombatCalculator = &fightMonksMeleeRounds;
 
-           // Set the player names
-    theCombatCalculator->setPlayerNames(
-      playerNames[0], playerNames[1]);
+    theCombatCalculator->setStartingQuantites();
 
-           // Behaviour: Set the protected values
+
+           // Set the player names
+    theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+
+           // Behaviour: Set the battle participants
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
       p2BattleParticipant,
@@ -617,11 +638,13 @@ void runGame(
            // Behaviour: Set the combat calculator to the bombardment rounds
     theCombatCalculator = &bombardmentRounds;
 
-           // Set the player names
-    theCombatCalculator->setPlayerNames(
-      playerNames[0], playerNames[1]);
+    theCombatCalculator->setStartingQuantites();
 
-           // Behaviour: Set the protected values
+
+           // Set the player names
+    theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+
+           // Behaviour: Set the battle participants
     theCombatCalculator->setCombatParticipants(
       p1BattleParticipant,
       p2BattleParticipant,
@@ -633,6 +656,7 @@ void runGame(
            // Behaviour: Set the remaining damage values for the combat calculator
     theCombatCalculator->setAdditionalValues(
       p1RemainingDamage, p2RemainingDamage);
+
 
     const ActivePlayer normalBombardmentActivePlayer{
                                                      getActivePlayerForNormalCombatRound(
@@ -690,7 +714,11 @@ void runGame(
 
 
   theCombatCalculator = &fightMonksMeleeRounds;
-  // Set the player names
+
+  theCombatCalculator->setStartingQuantites();
+
+
+         // Set the player names
   theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
          // Behaviour: Set the battle participants
@@ -739,6 +767,24 @@ void runGame(
          ///
   theCombatCalculator = &standardRounds;
 
+  theCombatCalculator->setStartingQuantites();
+
+
+         // Set the player names
+  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+
+         // Behaviour: Set the battle participants
+  theCombatCalculator->setCombatParticipants(
+    p1BattleParticipant,
+    p2BattleParticipant,
+    p1BattleAssistant,
+    p2BattleAssistant,
+    modifyRoundAttackP1,
+    modifyRoundAttackP2);
+
+         // Behaviour: Set the remaining damage values for the combat calculator
+  theCombatCalculator->setAdditionalValues(
+    p1RemainingDamage, p2RemainingDamage);
 
 
 

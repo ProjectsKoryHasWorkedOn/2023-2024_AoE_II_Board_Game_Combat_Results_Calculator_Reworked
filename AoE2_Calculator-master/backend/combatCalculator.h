@@ -78,6 +78,8 @@ public:
   // Integer: Store the remaining damage
   float p1RemainingDamage;
   float p2RemainingDamage;
+
+
 };
 
 /** The combat calculator class **/
@@ -134,6 +136,11 @@ public:
     Entity& inputtedP2BattleAssistant,
     int&    inputtedP1RoundAttackModifiers,
     int&    inputtedP2RoundAttackModifiers);
+
+
+
+  void setStartingQuantites();
+
 
          // Function: Pass the address of the remaining damage into the superclass
          // variable Reference: I tried storing the integer arrays but this is caused a
@@ -200,9 +207,20 @@ public:
 
 
   /** Return information functions **/
+  std::string returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound);
+
+
+
+
+
+
   // Function: Return the modified battle participants based on the input player
   // number
   Entity returnModifiedBattleParticipants(int inputPlayerNumber);
+
+
+
+
 };
 #endif // COMBAT_CALCULATOR_H
 
@@ -343,6 +361,39 @@ public:
     int*         p1Technologies,
     int*         p2Technologies,
     ActivePlayer activePlayer) override;
+
+
+  void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
+    // Given player stuff
+    bool& givenPlayerBombardmentEntityActivated,
+    bool& givenPlayerIsFightingBuilding,
+    bool& givenPlayerIsFightingUnit,
+    float& givenPlayerPointsGained,
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int& opposingPlayerBuildingDamage,
+    int& opposingPlayerEntityDeaths
+    );
+
+
+  void calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
+                                                           // Shared stuff
+    const int roundDownBasedOnMultiplesOfThisNumber,
+       // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    bool& givenPlayerIsFightingBuilding,
+    bool& givenPlayerIsFightingUnit,
+    bool& givenPlayerBombardmentEntityActivated,
+    float& givenPlayerRemainingDamage,
+    int& givenPlayerRoundAttackModifiers,
+       // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int& opposingPlayerBuildingDamage,
+    int& opposingPlayerDamageDie,
+    int& opposingPlayerEntityDeaths);
+
+
+
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 
@@ -363,7 +414,7 @@ public:
 
 
   void calculatingStandardRoundOutcomeForAnIndividualPlayer(
-                                                             // Shared stuff
+    // Shared stuff
     int& numberOfTimesToRunTheStandardRound,
     const int roundDownBasedOnMultiplesOfThisNumber,
     // Given player stuff
