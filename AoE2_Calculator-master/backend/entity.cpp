@@ -21,14 +21,13 @@ Entity::Entity()
     armorClass[i] = false;
   }
   entitiesArmorClasses                        = 0;
-  onlyAttacksInTheSecondRoundOfStandardCombat = false;
+  onlyAttacksOnceInTheFirstRoundOfCombat = false;
   dealsAreaEffectDamage                       = false;
-  onlyAttacksOnce                             = false;
+  onlyAttacksOnceInTheSecondRoundOfCombat                             = false;
   isKamikaze                                  = false;
   initialEntityQuantity                       = 0;
   healsAvailable                              = 0;
-
-  showArmorClassesInOutput = false;
+  showArmorClassesInOutput = false; // @todo Kory
 }
 
 Entity::~Entity()
@@ -365,6 +364,25 @@ void Entity::outputEntity(std::string playerName)
       std::cout << "garrison value";
     }
     */
+
+    //  Show maximum range
+    if (maximumRange != 0) {
+      std::cout << ", ";
+      displayColorfulText(
+        "bold", "green", "default", std::to_string(maximumRange), false);
+      std::cout << " ";
+      std::cout << "max. range";
+    }
+
+    // Show minimum range value
+    if (minimumRange != 0) {
+      std::cout << ", ";
+      displayColorfulText(
+        "bold", "green", "default", std::to_string(minimumRange), false);
+      std::cout << " ";
+      std::cout << "min. range";
+    }
+
     if (pointValue != 0) {
       std::cout << ", and are worth ";
       displayColorfulText(

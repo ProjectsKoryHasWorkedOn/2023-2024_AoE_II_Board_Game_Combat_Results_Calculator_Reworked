@@ -1982,7 +1982,7 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
          // Behaviour: Clear the results if the entity only attacks once (in the
          // first round of combat) and we are not in the 1st round
   if (
-    (givenPlayerBattleParticipant.onlyAttacksOnce == true)
+    (givenPlayerBattleParticipant.onlyAttacksOnceInTheFirstRoundOfCombat == true)
     && (numberOfTimesToRunTheStandardRound + 1 != 1)) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
@@ -1992,7 +1992,7 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
          // Behaviour: Clear the results if the entity only attacks in the second
          // round of combat and we are not in the 2nd round
   if (
-    (givenPlayerBattleParticipant.onlyAttacksInTheSecondRoundOfStandardCombat
+    (givenPlayerBattleParticipant.onlyAttacksOnceInTheSecondRoundOfCombat
      == true)
     && (numberOfTimesToRunTheStandardRound + 1 != 2)) {
     opposingPlayerBuildingDamage = 0;

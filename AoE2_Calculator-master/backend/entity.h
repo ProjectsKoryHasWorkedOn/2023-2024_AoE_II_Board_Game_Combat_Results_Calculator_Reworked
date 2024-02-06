@@ -51,14 +51,16 @@ struct Entity {
   int maximumRange;
   int minimumRange;
 
+
+  bool onlyAttacksOnceInTheSecondRoundOfCombat; /* Where a Standard or Ranged round counts as one round of the two */
+  bool onlyAttacksOnceInTheFirstRoundOfCombat; /* Where a Standard or Ranged round counts as the first round */
+  bool dealsAreaEffectDamage;
+  bool isKamikaze; /* Suicide attacks */
+  int  entitiesArmorClasses;
   // ^ Obtained via DB
 
 
-  bool onlyAttacksInTheSecondRoundOfStandardCombat;
-  bool onlyAttacksOnce;
-  bool dealsAreaEffectDamage;
-  bool isKamikaze;
-  int  entitiesArmorClasses;
+
 
   int healsAvailable;
 

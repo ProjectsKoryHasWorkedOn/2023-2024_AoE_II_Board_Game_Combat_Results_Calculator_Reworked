@@ -128,6 +128,7 @@ void runGame(
   int numberOfArcherCombatRounds      = 1;
   int numberOfBombardmentCombatRounds = 1;
   int numberOfNormalCombatRounds      = 2;
+  bool isThereAStandaloneBombardmentCombatRound = false; // Normally it's like apart of the first archer / normal combat round
 
          // Integer: Modifiers to the attack dealt in each round of combat for p1/p2
   int modifyRoundAttackP1 = 0, modifyRoundAttackP2 = 0;
@@ -361,8 +362,8 @@ void runGame(
       ((p1BattleParticipant.armorClass[21] == true)
        || (p2BattleParticipant.armorClass[21] == true))
       || ((p1BattleParticipant.armorClass[22] == true) || (p2BattleParticipant.armorClass[22] == true))) {
-      // Behaviour: Set event 4 to active
-      numberOfBombardmentCombatRounds +=1;
+      // Behaviour: Make it so there's a standalone bombardment round
+      isThereAStandaloneBombardmentCombatRound = true;
     }
   }
 
@@ -555,6 +556,7 @@ void runGame(
          // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
 
   /** Part 4.3: Bonus round **/
+  if(isThereAStandaloneBombardmentCombatRound == true){
   // Bombardment round
   ///
 
@@ -672,7 +674,7 @@ void runGame(
     p2BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-
+  }
 
   /** Part 4.4: Round 3 & 4 **/
 
