@@ -210,61 +210,54 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
 
 
 std::string combatCalculator::returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound){
-
-  if(inputtedEntity.armorClass[1] == true){
-    if(inputtedRound == "Bombardment round"){
-      if(inputtedEntity.standardDamage > 0){
-        return "Bombardment building fighting with SD";
+  if(inputtedRound == "Bombardment round"){
+    if( (inputtedEntity.standardDamage > 0) && (inputtedEntity.maximumRange >= 1) ){
+      if((inputtedEntity.armorClass[1] == true) ){ // building
+        return "Ranged building fighting with SD";
+      }
+      else if((inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){ // land unit or ship
+        return "Ranged unit fighting with SD";
       }
     }
     else{
-      return "Building";
-    }
-
-  }
-
-  if(inputtedEntity.armorClass[0] == true){
-    if(inputtedRound == "Ranged round"){
-      if(inputtedEntity.rangedDamage > 0){
-        return "Ranged unit fighting with RD";
+      if(inputtedEntity.armorClass[1] == true){ // Building
+        return "Non-fighting building";
       }
+      else if( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){
+        return "Non-fighting unit";
+      }
+    }
+  }
+  else if(inputtedRound == "Ranged round"){
+    if( (inputtedEntity.rangedDamage > 0) && (inputtedEntity.armorClass[0] == true) ){ // Archer armor class
+      return "Ranged unit fighting with RD";
     }
     else{
-      return "Ranged unit";
+      if(inputtedEntity.armorClass[1] == true){ // Building
+        return "Non-fighting building";
+      }
+      else if( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){
+        return "Non-fighting unit";
+      }
+    }
+  }
+  else if(inputtedRound == "Standard round"){
+    if( (inputtedEntity.standardDamage > 0) && (inputtedEntity.armorClass[25] == true) ){ // Land unit
+      return "Melee unit fighting with SD";
+    }
+    else{
+      if(inputtedEntity.armorClass[1] == true){ // Building
+        return "Non-fighting building";
+      }
+      else if( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){
+        return "Non-fighting unit";
+      }
     }
   }
 
 
-  if( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){
-    if(inputtedRound == "Bombardment round"){
-      if(inputtedEntity.standardDamage > 0){
-        return "Bombardment unit fighting with SD";
-      }
-      else{
-        return "Unit";
-      }
-
-    }
-    else if(inputtedRound == "Standard round"){
-      if(inputtedEntity.standardDamage > 0){
-        return "Unit fighting with SD";
-      }
-      else{
-        return "Unit";
-      }
-
-    }
-
-
-
-  }
-
-
-  std::cout << "Error: Unrecognized entity";
+  std::cout << "Error: inputtedRound not recognized or inputtedEntity type not found";
   std::terminate();
-
-
-
 }
 
 void combatCalculator::checkIfItCanBeHealed()
@@ -280,10 +273,6 @@ void combatCalculator::checkIfItCanBeHealed()
                 << p1BattleParticipant.entityName << "<br>";
     }
   }
-  // If p2BattleParticipant has less units than it started with and there are
-  // heals available to it, heal it
-  qDebug() << "now: " << p2BattleParticipant.entityQuantity
-           << "started with: " << startingBattleParticipantQuantityP2;
 
 
   if (
@@ -1424,6 +1413,40 @@ void archerRounds::roundOutcome(
 } // Archer round function end
 
 
+
+
+void bombardmentRounds::outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
+                                                                          // Given player stuff
+  std::string& givenPlayerName,
+
+  float& givenPlayerPointsGained,
+  bool&        givenPlayerIsFightingABuilding,
+
+     // Opposing player stuff
+  std::string& opposingPlayerName,
+  Entity& opposingPlayerBattleParticipant,
+  int& opposingPlayerDamageDie
+  ){
+
+         // Behaviour: Display how many damage die to place if appropriate
+  if (givenPlayerIsFightingABuilding == true) {
+    if ((opposingPlayerBattleParticipant.entityHealth > 0) && (opposingPlayerDamageDie > 0)) {
+      std::cout << ">> Place " << opposingPlayerDamageDie << " damage die onto "
+                << opposingPlayerName << "'s " << opposingPlayerBattleParticipant.entityName
+                << "<br>";
+    }
+  }
+
+         // Behaviour: Display how many points were added if appropriate
+  if (givenPlayerPointsGained != 0) {
+    std::cout << ">> " << givenPlayerName << " gets " << givenPlayerPointsGained
+              << " points"
+              << "<br>";
+  }
+
+
+}
+
 void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   // Given player stuff
   bool& givenPlayerBombardmentEntityActivated,
@@ -1544,11 +1567,34 @@ void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   }
 
 
+  // todo @kory add condition like
+  bool givenPlayerIsInRange;
+  /*
+   if(givenPlayerBattleParticipant.maximumRange <= distanceBetweenPlayersValue)
+
+    AND
+
+    if(givenPlayerBattleParticipant.minimumRange >= distanceBetweenPlayersValue)
+
+   givenPlayerIsInRange = true;
+
+    }
+    else{
+    givenPlayerIsInRange = false;
+
+    }
+
+   */
+
+
 
 
          // Behaviour: Calculate the damage against buildings if player 1 is
          // fighting a building
   givenPlayerBombardmentEntityActivated = false;
+
+
+  // @kory add that  givenPlayerIsInRange condition on top of this condition for this to run
 
   if (givenPlayerIsFightingBuilding == true) {
     opposingPlayerBuildingDamage = ( ((givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity) + givenPlayerRoundAttackModifiers) - ((opposingPlayerBattleParticipant.entityHealth) % roundDownBasedOnMultiplesOfThisNumber));
@@ -1564,6 +1610,11 @@ void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   }
   // Behaviour: Calculate the damage against units if player 1 is fighting a
   // unit
+
+
+   // @kory add that givenPlayerIsInRange condition on top of this condition for this to run
+
+
   if(givenPlayerIsFightingUnit == true) {
     // Behaviour: The damage only applies if p1 has a Galley or Fire Ship
     if (
@@ -1672,33 +1723,8 @@ void bombardmentRounds::roundOutcome(
 
       outputEntityInformation(outputString);
 
-             // Behaviour: Display how many damage die to place if appropriate
-      if (p1IsFightingBuilding == true) {
-        if ((p2BattleParticipant.entityHealth > 0) && (p2DamageDie > 0)) {
-          std::cout << ">> Place " << p2DamageDie << " damage die onto "
-                    << player2Name << "'s " << p2BattleParticipant.entityName
-                    << "<br>";
-        }
-      }
-      else if (p2IsFightingBuilding == true) {
-        if ((p1BattleParticipant.entityHealth > 0) && (p1DamageDie > 0)) {
-          std::cout << ">> Place " << p1DamageDie << " damage die onto "
-                    << player1Name << "'s " << p1BattleParticipant.entityName
-                    << "<br>";
-        }
-      }
-
-             // Behaviour: Display how many points were added if appropriate
-      if (p1PointsGained != 0) {
-        std::cout << ">> " << player1Name << " gets " << p1PointsGained
-                  << " points"
-                  << "<br>";
-      }
-      if (p2PointsGained != 0) {
-        std::cout << ">> " << player2Name << " gets " << p2PointsGained
-                  << " points"
-                  << "<br>";
-      }
+          outputtingBombardmentRoundOutcomeForAnIndividualPlayer(player1Name, p1PointsGained, p1IsFightingBuilding, player2Name, p2BattleParticipant, p2DamageDie);
+          outputtingBombardmentRoundOutcomeForAnIndividualPlayer(player2Name, p2PointsGained, p2IsFightingBuilding, player1Name, p1BattleParticipant, p1DamageDie);
 
       std::cout << "<br>";
 
@@ -1713,21 +1739,8 @@ void bombardmentRounds::roundOutcome(
         }
       }
     }
-    else {
-      // Behaviour: Stop from this showing up if a unit dies in the monk round
-      // of combat
-      if ((aDeathHasOccured == false) && (isRetreating != "1")) {
-        std::cout
-          << "Skipping Caught from the Crow's Nest Phase) Bombardment round "
-               + std::to_string(numberOfTimesToRunTheBombardmentRound + 1) + " calculations..."
-          << "<br>";
-      }
-    }
   }
 }
-
-
-
 }
 }
 

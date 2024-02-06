@@ -363,6 +363,22 @@ public:
     ActivePlayer activePlayer) override;
 
 
+  void outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
+                                                          // Given player stuff
+    std::string& givenPlayerName,
+
+    float& givenPlayerPointsGained,
+    bool&        givenPlayerIsFightingABuilding,
+
+       // Opposing player stuff
+    std::string& opposingPlayerName,
+    Entity& opposingPlayerBattleParticipant,
+    int& opposingPlayerDamageDie
+    );
+
+
+
+
   void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
     // Given player stuff
     bool& givenPlayerBombardmentEntityActivated,

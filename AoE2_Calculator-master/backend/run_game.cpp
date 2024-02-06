@@ -136,9 +136,6 @@ void runGame(
          // value)
   float p1RemainingDamage = 0, p2RemainingDamage = 0;
 
-         // Boolean: Whether event 4 is active
-  bool isEvent4Active = false;
-
          // Integer array: The technologies
   int* p1Technologies;
   int* p2Technologies;
@@ -365,14 +362,8 @@ void runGame(
        || (p2BattleParticipant.armorClass[21] == true))
       || ((p1BattleParticipant.armorClass[22] == true) || (p2BattleParticipant.armorClass[22] == true))) {
       // Behaviour: Set event 4 to active
-      isEvent4Active = true;
+      numberOfBombardmentCombatRounds +=1;
     }
-    else {
-      isEvent4Active = false;
-    }
-  }
-  else {
-    isEvent4Active = false;
   }
 
          // Event [38] You Will Die! (Saracen) - This battle goes for four rounds of
@@ -564,13 +555,9 @@ void runGame(
          // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
 
   /** Part 4.3: Bonus round **/
-  // Behaviour: Check for the Caught from the Crow's Nest extra bombardment
-  // round Reference: I otherwise deal with a single bombardment round within
-  // the standardCombat subclass
-  ///
   // Bombardment round
   ///
-  if (isEvent4Active == true) {
+
     bool player1UsesBombardmentAgainstMonks{false};
     if (p2BattleAssistant.entityQuantity > 0) {
       const bool shouldFightMonks{queryIfMonksShouldBeFought(
@@ -685,7 +672,7 @@ void runGame(
     p2BattleParticipant
       = theCombatCalculator->returnModifiedBattleParticipants(player2);
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
-  }
+
 
   /** Part 4.4: Round 3 & 4 **/
 

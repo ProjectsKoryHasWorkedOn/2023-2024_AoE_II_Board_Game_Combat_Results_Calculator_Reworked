@@ -176,20 +176,22 @@ std::unordered_map<std::string, Entity> Database::getUnitEntities()
   std::unordered_map<std::string, Entity> map{};
   QSqlQuery                               query{QString{R"(
 SELECT
-    Units.unitID,
-    Units.ageID,
-    Units.unitName,
-    Units.unitHealth,
-    Units.unitStandardDamage,
-    Units.unitRangedDamage,
-    Units.unitPointValue,
-    ArmorClasses.armorID
+    u.unitID,
+    u.ageID,
+    u.unitName,
+    u.unitHealth,
+    u.unitStandardDamage,
+    u.unitRangedDamage,
+    u.unitPointValue,
+    u.unitMaximumRange,
+    u.unitMinimumRange,
+    aC.armorID
 FROM
-    Units
+    Units u
 INNER JOIN
-    UnitArmorClasses ON Units.unitID = UnitArmorClasses.unitID
+    UnitArmorClasses uAC ON u.unitID = uAC.unitID
 INNER JOIN
-    ArmorClasses ON UnitArmorClasses.armorID = ArmorClasses.armorID;
+    ArmorClasses aC ON uAC.armorID = aC.armorID;
 )"}};
   const int ageIdIndex{query.record().indexOf("ageID")};
   const int unitNameIndex{query.record().indexOf("unitName")};
@@ -198,7 +200,12 @@ INNER JOIN
     query.record().indexOf("unitStandardDamage")};
   const int unitRangedDamageIndex{query.record().indexOf("unitRangedDamage")};
   const int unitPointValueIndex{query.record().indexOf("unitPointValue")};
+
+  const int unitMaximumRangeIndex{query.record().indexOf("unitMaximumRange")};
+  const int unitMinimumRangeIndex{query.record().indexOf("unitMinimumRange")};
+
   const int armorIdIndex{query.record().indexOf("armorID")};
+
 
   while (query.next()) {
     bool      ok{};
@@ -218,10 +225,18 @@ INNER JOIN
     const QString unitRangedDamage{
       query.value(unitRangedDamageIndex).toString()};
     const QString unitPointValue{query.value(unitPointValueIndex).toString()};
+
+    const QString unitMaximumRange{query.value(unitMaximumRangeIndex).toString()};
+    const QString unitMinimumRange{query.value(unitMinimumRangeIndex).toString()};
+
+
+
     const int     armorId{query.value(armorIdIndex).toInt(&ok)};
     if (!ok) {
       qFatal() << "Could not convert armor Id to integer.";
     }
+
+
 
     const std::unordered_map<std::string, Entity>::iterator it{
       map.find(unitNameMapKey)};
@@ -248,6 +263,20 @@ INNER JOIN
       if (!ok) {
         qFatal() << "Could not convert unitRangedDamage to integer.";
       }
+
+
+      entity.maximumRange = unitMaximumRange.toInt(&ok);
+
+      if (!ok) {
+        qFatal() << "Could not convert unitMaximumRange to integer.";
+      }
+
+      entity.minimumRange = unitMinimumRange.toInt(&ok);
+
+      if (!ok) {
+        qFatal() << "Could not convert unitMaximumRange to integer.";
+      }
+
 
       entity.pointValue = unitPointValue.toInt(&ok);
 
@@ -278,6 +307,8 @@ SELECT
     b.buildingStandardDamage,
     b.buildingGarrisonValue,
     b.buildingPointValue,
+    b.buildingMaximumRange,
+    b.buildingMinimumRange,
     bhbocs.constructionPercentageOutOf100,
     bhbocs.buildingHealth,
     ac.armorID
@@ -297,7 +328,14 @@ INNER JOIN
     query.record().indexOf("buildingStandardDamage")};
   const int buildingPointValueIndex{
     query.record().indexOf("buildingPointValue")};
+
+
+  const int buildingMaximumRangeIndex{query.record().indexOf("buildingMaximumRange")};
+  const int buildingMinimumRangeIndex{query.record().indexOf("buildingMinimumRange")};
+
   const int armorIdIndex{query.record().indexOf("armorID")};
+
+
 
   while (query.next()) {
     bool      ok{};
@@ -318,10 +356,18 @@ INNER JOIN
       query.value(buildingStandardDamageIndex).toString()};
     const QString buildingPointValue{
       query.value(buildingPointValueIndex).toString()};
+
+
+    const QString buildingMaximumRange{query.value(buildingMaximumRangeIndex).toString()};
+    const QString buildingMinimumRange{query.value(buildingMinimumRangeIndex).toString()};
+
     const int armorId{query.value(armorIdIndex).toInt(&ok)};
     if (!ok) {
       qFatal() << "Could not convert armor Id to integer.";
     }
+
+
+
 
     // Skip wonders, they're loaded in a special way.
     if (
@@ -362,6 +408,22 @@ INNER JOIN
       if (!ok) {
         qFatal() << "Could not convert buildingPointValue to integer.";
       }
+
+
+      entity.maximumRange = buildingMaximumRange.toInt(&ok);
+
+      if (!ok) {
+        qFatal() << "Could not convert buildingMaximumRange to integer.";
+      }
+
+      entity.minimumRange = buildingMinimumRange.toInt(&ok);
+
+      if (!ok) {
+        qFatal() << "Could not convert buildingMaximumRange to integer.";
+      }
+
+
+
 
       entity.armorClass[armorId - 1] = true;
       map.emplace(buildingNameMapKey, entity);

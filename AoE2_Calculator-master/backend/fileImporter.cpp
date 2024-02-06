@@ -27,6 +27,9 @@ Entity fileImporter::conductASearch(
   // Struct: Declare a blank entity to store the return information
   Entity returnEntity;
 
+
+
+
   std::unordered_map<std::string, Entity> map = m_database->getUnitEntities();
   std::unordered_map<std::string, Entity> buildings
     = m_database->getBuildingEntities();
@@ -54,8 +57,7 @@ Entity fileImporter::conductASearch(
     returnEntity = returnWonder;
   }
 
-  // Behaviour: Search for the input entity name and return the associated
-  // entity
+  // Behaviour: Search for the input entity name and return the associated entity
 
   // Behaviour: Make sure that the quantity is > 0 for non-Monks
   if ((inputEntityName != "MONK") && (inputEntityQuantity <= 0)) {
@@ -74,22 +76,19 @@ Entity fileImporter::conductASearch(
     std::terminate();
   }
 
-  // Behaviour: Make sure that each entity (except for Villagers) has at least 1
-  // armor class
+  // Behaviour: Make sure that each entity has at least 1 armor class
   bool hasArmorClass = false;
+
   for (int i = 0; i < returnEntity.numberOfArmorClasses; i++) {
     if (returnEntity.armorClass[i] == true) {
       hasArmorClass = true;
     }
   }
   if (hasArmorClass == false) {
-    // Error: Each entity should have at least 1 armor class unless a villager
-    if (returnEntity.entityName != "Villager") {
       std::cout << "Error: " << returnEntity.entityName
                 << " is missing at least 1 armor class"
                 << "\n";
       std::terminate();
-    }
   }
 
   // Behaviour: Calculate the number of armor classes the entity has now
@@ -126,7 +125,6 @@ Entity fileImporter::conductASearch(
 
   return returnEntity;
 }
-// BANANA
 
 // Function: Check if a string is an integer
 int fileImporter::checkIsInteger(std::string inputWord)

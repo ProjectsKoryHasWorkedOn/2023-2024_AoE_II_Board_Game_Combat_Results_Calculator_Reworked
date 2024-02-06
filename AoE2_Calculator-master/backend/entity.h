@@ -47,6 +47,13 @@ struct Entity {
   armorClass[26] -> longboat
   armorClass[27] -> villager
   */
+
+  int maximumRange;
+  int minimumRange;
+
+  // ^ Obtained via DB
+
+
   bool onlyAttacksInTheSecondRoundOfStandardCombat;
   bool onlyAttacksOnce;
   bool dealsAreaEffectDamage;
