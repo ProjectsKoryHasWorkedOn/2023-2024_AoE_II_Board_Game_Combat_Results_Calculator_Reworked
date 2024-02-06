@@ -1253,11 +1253,12 @@ void archerRounds::applyingArcherRoundOutcomeForAnIndividualPlayer(
       // Behavior: Store the starting quantity
       opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
 
-             // Behaviour: Now decrease the quantity
-      opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
-      checkIfItCanBeHealed(); // Check for healing every time quantity
-                              // goes down
-
+      // Behaviour: Now decrease the quantity 1 by 1, applying heals if there any available
+      while(opposingPlayerEntityDeaths != 0){
+        opposingPlayerBattleParticipant.entityQuantity -=1;
+        opposingPlayerEntityDeaths -= 1;
+        checkIfItCanBeHealed();
+      }
 
              // Behavior: Store the ending quantity and cap the ending quantity
              // at 0
@@ -1469,9 +1470,12 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
 
 
              // Behaviour: Now decrease the quantity
-      opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
-      checkIfItCanBeHealed(); // Check for healing every time quantity
-                              // goes down
+      while(opposingPlayerEntityDeaths != 0){
+        opposingPlayerBattleParticipant.entityQuantity -=1;
+        opposingPlayerEntityDeaths -= 1;
+        checkIfItCanBeHealed();
+      }
+
 
 
              // Behavior: Store the ending quantity and cap the ending quantity at
@@ -2088,9 +2092,12 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
     givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
 
            // Behaviour: Now decrease the quantity
-    opposingPlayerBattleParticipant.entityQuantity -= opposingPlayerEntityDeaths;
-    checkIfItCanBeHealed(); // Check for healing every time quantity
-                            // goes down
+    while(opposingPlayerEntityDeaths != 0){
+      opposingPlayerBattleParticipant.entityQuantity -=1;
+      opposingPlayerEntityDeaths -= 1;
+      checkIfItCanBeHealed();
+    }
+
 
            // Behavior: Store the ending quantity and cap the ending quantity
            // at
