@@ -347,14 +347,14 @@ void Entity::outputEntity(std::string playerName)
       displayColorfulText(
         "bold", "yellow", "default", std::to_string(standardDamage), false);
       std::cout << " "
-                << "melee attack";
+                << "melee damage";
     }
     if (rangedDamage != 0) {
       std::cout << ", ";
       displayColorfulText(
         "bold", "magenta", "default", std::to_string(rangedDamage), false);
       std::cout << " "
-                << "ranged attack";
+                << "ranged damage";
     }
     /* Show garrrison value
     if (garrisonValue != 0) {

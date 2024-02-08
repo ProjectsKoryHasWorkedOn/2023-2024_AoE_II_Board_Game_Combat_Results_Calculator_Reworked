@@ -605,6 +605,7 @@
      <addaction name="actionSetDefaultAnswerToRetreatingPrompt"/>
      <addaction name="actionSetDefaultAnswerToConvertingHealingPrompt"/>
      <addaction name="actionShow_the_armor_classes_in_the_output"/>
+     <addaction name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output"/>
     </widget>
     <widget class="QMenu" name="menuDocumentation">
      <property name="title">
@@ -755,7 +756,12 @@
   </action>
   <action name="actionShow_the_armor_classes_in_the_output">
    <property name="text">
-    <string>Show armor classes in the output</string>
+    <string>Show further information about the battle participants in the output</string>
+   </property>
+  </action>
+  <action name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output">
+   <property name="text">
+    <string>Show the total instead of individual values of battle participants in the output</string>
    </property>
   </action>
  </widget>

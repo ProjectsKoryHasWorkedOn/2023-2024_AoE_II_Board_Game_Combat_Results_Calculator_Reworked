@@ -213,10 +213,10 @@ std::string combatCalculator::returnWhatIAm(Entity& inputtedEntity, std::string 
   if(inputtedRound == "Bombardment round"){
     if( (inputtedEntity.standardDamage > 0) && (inputtedEntity.maximumRange >= 1) ){
       if((inputtedEntity.armorClass[1] == true) ){ // building
-        return "Ranged building fighting with SD";
+        return "Ranged building fighting with melee damage";
       }
       else if((inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ){ // land unit or ship
-        return "Ranged unit fighting with SD";
+        return "Ranged unit fighting with melee damage";
       }
     }
     else{
@@ -230,7 +230,7 @@ std::string combatCalculator::returnWhatIAm(Entity& inputtedEntity, std::string 
   }
   else if(inputtedRound == "Ranged round"){
     if( (inputtedEntity.rangedDamage > 0) && (inputtedEntity.armorClass[0] == true) ){ // Archer armor class
-      return "Ranged unit fighting with RD";
+      return "Ranged unit fighting with ranged damage";
     }
     else{
       if(inputtedEntity.armorClass[1] == true){ // Building
@@ -243,7 +243,7 @@ std::string combatCalculator::returnWhatIAm(Entity& inputtedEntity, std::string 
   }
   else if(inputtedRound == "Standard round"){
     if( (inputtedEntity.standardDamage > 0) && (inputtedEntity.armorClass[25] == true) ){ // Land unit
-      return "Melee unit fighting with SD";
+      return "Melee unit fighting with melee damage";
     }
     else{
       if(inputtedEntity.armorClass[1] == true){ // Building
