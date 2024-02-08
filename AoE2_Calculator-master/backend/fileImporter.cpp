@@ -156,8 +156,8 @@ int fileImporter::checkIsInteger(std::string inputWord)
       // I'll check for the appropriate quantity based on entity types later
     }
   }
-  else if (anInteger > 99) {
-    std::cout << "Error: A limit of 100 units is more than reasonable"
+  else if (anInteger > 500) {
+    std::cout << "Error: A limit of 500 units is more than reasonable"
               << "\n";
     std::terminate();
   }

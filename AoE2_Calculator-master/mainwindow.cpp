@@ -666,13 +666,24 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
   player1EntityQuantity = valueInsideOfField;
 
   // Give an error to Console if quantity isn't right
-  if (
-    player1EntityQuantity != 1 && player1EntityQuantity != 2
-    && player1EntityQuantity != 3 && player1EntityQuantity != 4
-    && player1EntityQuantity != 5) {
-    qDebug()
-      << "Error: Player 1's entity quantity input should be between 1 and 5";
+  if(ui.player1EntityNames->currentItem()->text() != "Villager"){
+    if (
+      player1EntityQuantity != 1 && player1EntityQuantity != 2
+      && player1EntityQuantity != 3 && player1EntityQuantity != 4
+      && player1EntityQuantity != 5) {
+      qDebug()
+        << "Error: Player 1's entity quantity input should be between 1 and 5";
+      std::terminate();
+    }
   }
+  else{
+    if (player1EntityQuantity <= 0) {
+      qDebug()
+        << "Error: Player 1's entity quantity input should be > 0";
+      std::terminate();
+    }
+  }
+
 
   m_entities.changePlayer1EntityQuantity(player1EntityQuantity);
 }
@@ -684,13 +695,24 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
   // Get what entity quantity the user is entering
   player2EntityQuantity = valueInsideOfField;
 
+
   // Give an error to Console if quantity isn't right
-  if (
-    player2EntityQuantity != 1 && player2EntityQuantity != 2
-    && player2EntityQuantity != 3 && player2EntityQuantity != 4
-    && player2EntityQuantity != 5) {
-    qDebug()
-      << "Error: Player 2's entity quantity input should be between 1 and 5";
+  if(ui.player2EntityNames->currentItem()->text() != "Villager"){
+    // Give an error to Console if quantity isn't right
+    if (
+      player2EntityQuantity != 1 && player2EntityQuantity != 2
+      && player2EntityQuantity != 3 && player2EntityQuantity != 4
+      && player2EntityQuantity != 5) {
+      qDebug()
+        << "Error: Player 2's entity quantity input should be between 1 and 5";
+    }
+  }
+  else{
+    if (player2EntityQuantity <= 0) {
+      qDebug()
+        << "Error: Player 2's entity quantity input should be > 0";
+      std::terminate();
+    }
   }
 
   m_entities.changePlayer2EntityQuantity(player2EntityQuantity);
@@ -843,7 +865,13 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
     assistantQuantitySpinBox->setRange(0, 0);
   }
   else {
+    if(nameOfSelection.contains("VILLAGER")){
+    entityQuantitySpinBox->setRange(1, 500);
+    }
+    else{
     entityQuantitySpinBox->setRange(1, 5);
+    }
+
     assistantQuantitySpinBox->setRange(0, 5);
   }
 }
