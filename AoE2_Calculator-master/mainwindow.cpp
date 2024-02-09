@@ -49,6 +49,9 @@
 // Librraries used for hotkeys
 #include <QShortcut>
 
+// Libraries used for tooltips
+#include <QToolTip>
+
 // Animation variables
 QString p1BuildingArchitecturalStyle
   = "_western_european"; // _african, _asian, _central_european, _east_asian,
@@ -128,6 +131,14 @@ QString     player2Age = "Dark Age";
 QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
+
+
+// Get some more stuff to send to the backend
+bool showFurtherInformationAboutTheBattleParticipantsInTheOutput = false;
+bool showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = false;
+int distanceBetweenTheBattleParticipants = 0;
+
+
 
 MainWindow::MainWindow(Database* database, QWidget* parent)
   : QMainWindow{parent}
@@ -556,6 +567,7 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
   }
 
   filterBasedOnAgeAndCivilization("1");
+
 }
 
 // Run this when the text inside of the player 2 entities search field changes
@@ -589,6 +601,7 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
   }
 
   filterBasedOnAgeAndCivilization("2");
+
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -834,6 +847,9 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
+
+
+
 static bool isUnitWithOneToken(const QString& entity)
 {
   return (entity.contains("RAM")) || (entity.contains("DEMOLITION_SHIP"))
@@ -845,6 +861,8 @@ static bool isUnitWithOneToken(const QString& entity)
          || (entity.contains("SCORPION")) || (entity.contains("TREBUCHET"))
          || (entity.contains("WAR_ELEPHANT_(PERSIAN)"));
 }
+
+
 
 void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 {
@@ -874,6 +892,12 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 
     assistantQuantitySpinBox->setRange(0, 5);
   }
+
+
+
+
+
+
 }
 
 // Run on change of what battle participant is selected by player 1
@@ -892,6 +916,8 @@ void MainWindow::on_player1EntityNames_itemClicked(
   m_entities.changePlayer1EntityName(m_player1EntityName);
 
   getEntityAnimationForSelectedEntity(selectedItem->text(), "1", "_idle");
+
+  checkIfEitherPlayerHasBombardmentEntity();
 }
 
 void MainWindow::on_player2EntityNames_itemClicked(
@@ -909,6 +935,8 @@ void MainWindow::on_player2EntityNames_itemClicked(
   m_entities.changePlayer2EntityName(m_player2EntityName);
 
   getEntityAnimationForSelectedEntity(selectedItem->text(), "2", "_idle");
+
+  checkIfEitherPlayerHasBombardmentEntity();
 }
 
 // Input validation. Superior technologies take the place of lesser technologies
@@ -1161,6 +1189,26 @@ void MainWindow::setColorTheToggleElements()
       QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
 
+    if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
+    }
+    else{
+ ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    }
+
+
+    if(showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
+
+    }
+    else{
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    }
+
     if (soundEffectsEnabled == false) {
       ui.actionEnableDisableSFX->setIcon(
         QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
@@ -1172,6 +1220,29 @@ void MainWindow::setColorTheToggleElements()
   }
   else if (palettes.darkModeEnabled == false) {
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(false);
+
+
+    if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
+    }
+    else{
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    }
+
+
+    if(showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
+        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
+
+    }
+    else{
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    }
+
+
 
     if (soundEffectsEnabled == false) {
       ui.actionEnableDisableSFX->setIcon(
@@ -1622,6 +1693,8 @@ void MainWindow::selectInitialEntities()
 
     updateRangeAllowed(m_entities.player2Entity().entityName(), 2);
   }
+
+  checkIfEitherPlayerHasBombardmentEntity();
 }
 
 static void selectAssistant(const QString& assistant, QComboBox* comboBox)
@@ -2299,3 +2372,77 @@ void MainWindow::filterBasedOnAgeAndCivilization(QString player)
     }
   }
 }
+
+
+
+static bool isBombardmentUnitOrBuilding(const QString& entity)
+{
+  return (entity.contains("LONGBOAT")) || (entity.contains("GALLEON"))
+         || (entity.contains("GALLEY_(JAPANESE)")) || (entity.contains("SCORPION"))
+         || (entity.contains("MANGONEL")) || (entity.contains("ONAGER")) || (entity.contains("TOWER"))
+         || (entity.contains("TREBUCHET"));
+}
+
+void MainWindow::checkIfEitherPlayerHasBombardmentEntity(){
+  QString player1Selection = ui.player1EntityNames->currentItem()->text();
+  QString player2Selection = ui.player2EntityNames->currentItem()->text();
+
+  player1Selection = player1Selection.toUpper();
+  player1Selection = convertSpacesToUnderscores(player1Selection);
+
+  player2Selection = player2Selection.toUpper();
+  player2Selection = convertSpacesToUnderscores(player2Selection);
+
+  const bool isBombardmentEntity = isBombardmentUnitOrBuilding(player1Selection) || isBombardmentUnitOrBuilding(player2Selection);
+
+  if(isBombardmentEntity == true){
+    ui.distanceBetweenTheBattleParticipantsSlider->setMaximum(10);
+    ui.distanceBetweenTheBattleParticipantsSlider->setMinimum(0);
+    ui.distanceBetweenTheBattleParticipantsSlider->setEnabled(true);
+  }
+  else{
+    ui.distanceBetweenTheBattleParticipantsSlider->setValue(0);
+    ui.distanceBetweenTheBattleParticipantsSlider->setMaximum(0);
+    ui.distanceBetweenTheBattleParticipantsSlider->setMinimum(0);
+    ui.distanceBetweenTheBattleParticipantsSlider->setEnabled(false);
+
+  }
+}
+
+
+
+void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_valueChanged(int value)
+{
+  // @todo Bring distanceBetweenTheBattleParticipants to backend combatCalculator.cpp
+  distanceBetweenTheBattleParticipants = value;
+}
+
+
+void MainWindow::on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(bool checked)
+{
+  //@todo Bring showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput to backend entity.cpp
+  showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = !showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
+
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  setColorTheToggleElements();
+}
+
+
+
+
+void MainWindow::on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(bool checked)
+{
+  //@todo Bring showFurtherInformationAboutTheBattleParticipantsInTheOutput to backend entity.cpp
+  showFurtherInformationAboutTheBattleParticipantsInTheOutput = !showFurtherInformationAboutTheBattleParticipantsInTheOutput;
+
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  setColorTheToggleElements();
+}
+
+void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(int position)
+{
+  QToolTip::showText(QCursor::pos(), QString("%1").arg(position), nullptr);
+}
+

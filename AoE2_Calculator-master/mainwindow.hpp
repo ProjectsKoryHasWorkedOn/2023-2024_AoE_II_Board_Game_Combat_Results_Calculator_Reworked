@@ -115,6 +115,16 @@ private slots:
 
   void onShowDeveloperWindowTriggered();
 
+  void on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(bool checked);
+
+  void on_distanceBetweenTheBattleParticipantsSlider_valueChanged(int value);
+
+  void on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(bool checked);
+
+  void checkIfEitherPlayerHasBombardmentEntity();
+
+  void on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(int position);
+
 private:
   void initializeEntityAliases();
 

@@ -140,13 +140,13 @@
                <widget class="QSpinBox" name="player1EntityQuantity">
                 <property name="minimumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -180,13 +180,13 @@
                <widget class="QSpinBox" name="player2EntityQuantity">
                 <property name="minimumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -350,13 +350,13 @@
                <widget class="QSpinBox" name="player2EntityAssistantQuantity">
                 <property name="minimumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -416,13 +416,13 @@
                <widget class="QSpinBox" name="player1EntityAssistantQuantity">
                 <property name="minimumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>40</width>
+                  <width>50</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -536,6 +536,9 @@
             </item>
             <item row="7" column="0" colspan="2">
              <widget class="QSlider" name="distanceBetweenTheBattleParticipantsSlider">
+              <property name="maximum">
+               <number>10</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -604,8 +607,8 @@
      <addaction name="actionEnableDisableDarkMode"/>
      <addaction name="actionSetDefaultAnswerToRetreatingPrompt"/>
      <addaction name="actionSetDefaultAnswerToConvertingHealingPrompt"/>
-     <addaction name="actionShow_the_armor_classes_in_the_output"/>
      <addaction name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output"/>
+     <addaction name="actionShow_further_information_about_the_battle_participants_in_the_output"/>
     </widget>
     <widget class="QMenu" name="menuDocumentation">
      <property name="title">
@@ -754,14 +757,14 @@
     <string>Show developer window</string>
    </property>
   </action>
-  <action name="actionShow_the_armor_classes_in_the_output">
-   <property name="text">
-    <string>Show further information about the battle participants in the output</string>
-   </property>
-  </action>
   <action name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output">
    <property name="text">
     <string>Show the total instead of individual values of battle participants in the output</string>
+   </property>
+  </action>
+  <action name="actionShow_further_information_about_the_battle_participants_in_the_output">
+   <property name="text">
+    <string>Show further information about the battle participants in the output</string>
    </property>
   </action>
  </widget>
