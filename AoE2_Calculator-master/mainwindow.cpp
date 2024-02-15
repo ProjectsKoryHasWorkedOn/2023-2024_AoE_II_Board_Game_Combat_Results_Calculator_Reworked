@@ -74,6 +74,7 @@ bool        hasProgramInitialized = false;
 
 // Getting default selection for the prompts
 QString retreatingPromptAnswer        = "Ask each time";
+QString monkAttackingPromptAnswer     = "Ask each time";
 QString convertingHealingPromptAnswer = "Ask each time";
 
 // More global variables
@@ -154,6 +155,12 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     &QAction::triggered,
     this,
     &MainWindow::onShowDeveloperWindowTriggered);
+  connect(
+    ui.actionSet_default_answer_to_attack_monks_prompt,
+    &QAction::triggered,
+    this,
+    &MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered
+  );
 
   QIntValidator myName;
   myName.setRange(100, 999);
@@ -664,7 +671,8 @@ void MainWindow::on_calculateResultsButton_clicked()
     EntityOutputConfig{
       m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput,
       m_showFurtherInformationAboutTheBattleParticipantsInTheOutput
-    }
+    },
+    monkAttackingPromptAnswer
     );
 }
 
@@ -1855,6 +1863,27 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
 
   convertingHealingPromptAnswer
     = defaultAnswerToConversionHealingPromptDialog.textValue();
+}
+
+void MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered()
+{
+  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+
+  QStringList options
+    = {"Ask each time", "Always attack monks", "Never attack monks"};
+
+  QInputDialog defaultAnswerToAttackMonksPromptDialog;
+
+  QLabel dialogLabel(palettes.getDialogBoxTextTags("Players' default answer:"));
+  defaultAnswerToAttackMonksPromptDialog.setLabelText(dialogLabel.text());
+  defaultAnswerToAttackMonksPromptDialog.setWindowTitle(
+    "Handling of the monk attacking prompt");
+  defaultAnswerToAttackMonksPromptDialog.setStyleSheet(
+    palettes.getDialogBoxStyling());
+  defaultAnswerToAttackMonksPromptDialog.setComboBoxItems(options);
+  defaultAnswerToAttackMonksPromptDialog.exec();
+
+  monkAttackingPromptAnswer = defaultAnswerToAttackMonksPromptDialog.textValue();
 }
 
 void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(

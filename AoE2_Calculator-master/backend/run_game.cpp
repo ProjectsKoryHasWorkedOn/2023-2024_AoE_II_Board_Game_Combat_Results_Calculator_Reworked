@@ -94,12 +94,38 @@ static ActivePlayer getActivePlayerForNormalCombatRound(
   return ActivePlayer::Player1;
 }
 
+struct AttackMonksInitialValues {
+  bool isAttackingMonks;
+  bool isQuestionAnswered;
+};
+
+static AttackMonksInitialValues determineAttackMonksInitialValues(
+  const QString& attackMonksQueryingMode)
+{
+  if (attackMonksQueryingMode == "Ask each time") {
+    return AttackMonksInitialValues{.isAttackingMonks = false, .isQuestionAnswered = false};
+  }
+
+  if (attackMonksQueryingMode == "Always attack monks") {
+    return AttackMonksInitialValues{
+                                    .isAttackingMonks = true, .isQuestionAnswered = true};
+  }
+
+  if (attackMonksQueryingMode == "Never attack monks") {
+    return AttackMonksInitialValues{
+                               .isAttackingMonks = false, .isQuestionAnswered = true};
+  }
+
+  Q_UNREACHABLE();
+}
+
 /** The main function **/
 void runGame(
   Database*                         database,
   std::function<void(Player, bool)> onPlayerEntityDeath,
   int distanceBetweenTheBattleParticipants,
-  EntityOutputConfig entityOutputConfig)
+  EntityOutputConfig entityOutputConfig,
+  const QString& attackMonksQueryingMode)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -428,8 +454,12 @@ void runGame(
   // buildings
 
          // Check if player1 is able to attack player2's monks with ranged attacks.
-  bool player1AttacksMonks{false};
-  bool player1HasAnsweredAttackMonksQuestion{false};
+
+  const AttackMonksInitialValues attackMonksValues{
+    determineAttackMonksInitialValues(attackMonksQueryingMode)
+  };
+  bool player1AttacksMonks{attackMonksValues.isAttackingMonks};
+  bool player1HasAnsweredAttackMonksQuestion{attackMonksValues.isQuestionAnswered};
   if (
     !player1HasAnsweredAttackMonksQuestion &&
     (p1BattleParticipant.rangedDamage > 0)
@@ -440,8 +470,8 @@ void runGame(
     player1HasAnsweredAttackMonksQuestion = true;
   }
 
-  bool player2AttacksMonks{false};
-  bool player2HasAnsweredAttackMonksQuestion{false};
+  bool player2AttacksMonks{attackMonksValues.isAttackingMonks};
+  bool player2HasAnsweredAttackMonksQuestion{attackMonksValues.isQuestionAnswered};
   if (
     !player2HasAnsweredAttackMonksQuestion &&
     (p2BattleParticipant.rangedDamage > 0)

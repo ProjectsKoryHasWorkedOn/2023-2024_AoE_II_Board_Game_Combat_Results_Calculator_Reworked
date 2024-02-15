@@ -607,6 +607,7 @@
      <addaction name="actionEnableDisableDarkMode"/>
      <addaction name="actionSetDefaultAnswerToRetreatingPrompt"/>
      <addaction name="actionSetDefaultAnswerToConvertingHealingPrompt"/>
+     <addaction name="actionSet_default_answer_to_attack_monks_prompt"/>
      <addaction name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output"/>
      <addaction name="actionShow_further_information_about_the_battle_participants_in_the_output"/>
     </widget>
@@ -765,6 +766,11 @@
   <action name="actionShow_further_information_about_the_battle_participants_in_the_output">
    <property name="text">
     <string>Show further information about the battle participants in the output</string>
+   </property>
+  </action>
+  <action name="actionSet_default_answer_to_attack_monks_prompt">
+   <property name="text">
+    <string>Set default answer to attack monks prompt</string>
    </property>
   </action>
  </widget>
