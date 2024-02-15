@@ -47,23 +47,10 @@ void outputRemainingDamage(
 extern const int technologiesRows = 19, eventsRows = 42, playerAgeRows = 2;
 
 static bool queryIfMonksShouldBeFought(
-  FightMonksRounds::Kind kind,
   const std::string&     playerName)
 {
-  std::cout << "Hey " << playerName << ", ";
-  std::cout << "do you want to fight the monks";
-
-  switch (kind) {
-  case FightMonksRounds::Kind::Ranged:
-    std::cout << " with ranged attacks?<br>";
-    break;
-  case FightMonksRounds::Kind::Melee:
-    std::cout << " with melee attacks?<br>";
-    break;
-  default:
-    Q_UNREACHABLE();
-  }
-
+  std::cout << "Hey " << playerName
+   << ", do you want to attack the monks instead of the opponent's battle participant?<br>";
   bool shouldFightMonks{false};
   DIN >> shouldFightMonks;
   return shouldFightMonks;
@@ -441,22 +428,28 @@ void runGame(
   // buildings
 
          // Check if player1 is able to attack player2's monks with ranged attacks.
-  bool player1UsesRangedAttacksAgainstMonks{false};
+  bool player1AttacksMonks{false};
+  bool player1HasAnsweredAttackMonksQuestion{false};
   if (
+    !player1HasAnsweredAttackMonksQuestion &&
     (p1BattleParticipant.rangedDamage > 0)
     && (p2BattleAssistant.entityQuantity > 0)) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Ranged, playerNames[0])};
-    player1UsesRangedAttacksAgainstMonks = shouldFightMonks;
+      playerNames[0])};
+    player1AttacksMonks = shouldFightMonks;
+    player1HasAnsweredAttackMonksQuestion = true;
   }
 
-  bool player2UsesRangedAttacksAgainstMonks{false};
+  bool player2AttacksMonks{false};
+  bool player2HasAnsweredAttackMonksQuestion{false};
   if (
+    !player2HasAnsweredAttackMonksQuestion &&
     (p2BattleParticipant.rangedDamage > 0)
     && (p1BattleAssistant.entityQuantity > 0)) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Ranged, playerNames[1])};
-    player2UsesRangedAttacksAgainstMonks = shouldFightMonks;
+       playerNames[1])};
+    player2AttacksMonks = shouldFightMonks;
+    player2HasAnsweredAttackMonksQuestion = true;
   }
 
   theCombatCalculator = &fightMonksRangedRounds;
@@ -482,8 +475,8 @@ void runGame(
 
   const ActivePlayer fightMonksRangedRoundsActivePlayer{
                                                         getActivePlayerForFightMonks(
-                                                          player1UsesRangedAttacksAgainstMonks,
-                                                          player2UsesRangedAttacksAgainstMonks)};
+                                                          player1AttacksMonks,
+                                                          player2AttacksMonks)};
   qDebug() << ">>>>>>>> active player for fight monks ranged:"
            << fightMonksRangedRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
@@ -534,8 +527,8 @@ void runGame(
 
   const ActivePlayer rangedRoundActivePlayer{
                                              getActivePlayerForNormalCombatRound(
-                                               player1UsesRangedAttacksAgainstMonks,
-                                               player2UsesRangedAttacksAgainstMonks)};
+                                               player1AttacksMonks,
+                                               player2AttacksMonks)};
   qDebug() << ">>>>>>>> Active player for ranged rounds:"
            << rangedRoundActivePlayer;
   theCombatCalculator->roundOutcome(
@@ -564,19 +557,18 @@ void runGame(
   if(isThereAStandaloneBombardmentCombatRound == true){
   // Bombardment round
   ///
-
-    bool player1UsesBombardmentAgainstMonks{false};
-    if (p2BattleAssistant.entityQuantity > 0) {
+    if (!player1HasAnsweredAttackMonksQuestion && p2BattleAssistant.entityQuantity > 0) {
       const bool shouldFightMonks{queryIfMonksShouldBeFought(
-        FightMonksRounds::Kind::Melee, playerNames[0])};
-      player1UsesBombardmentAgainstMonks = shouldFightMonks;
+        playerNames[0])};
+      player1AttacksMonks                   = shouldFightMonks;
+      player1HasAnsweredAttackMonksQuestion = true;
     }
 
-    bool player2UsesBombardmentAgainstMonks{false};
-    if (p1BattleAssistant.entityQuantity > 0) {
+    if (!player2HasAnsweredAttackMonksQuestion && p1BattleAssistant.entityQuantity > 0) {
       const bool shouldFightMonks{queryIfMonksShouldBeFought(
-        FightMonksRounds::Kind::Melee, playerNames[1])};
-      player2UsesBombardmentAgainstMonks = shouldFightMonks;
+         playerNames[1])};
+      player2AttacksMonks                   = shouldFightMonks;
+      player2HasAnsweredAttackMonksQuestion = true;
     }
 
            // Behaviour: Set the combat calculator to the bombardment rounds
@@ -602,7 +594,7 @@ void runGame(
       p1RemainingDamage, p2RemainingDamage);
 
     const ActivePlayer bombardMonksActivePlayer{getActivePlayerForFightMonks(
-      player1UsesBombardmentAgainstMonks, player2UsesBombardmentAgainstMonks)};
+      player1AttacksMonks, player2AttacksMonks)};
     qDebug() << ">>>>>>>>>> active player for bombard monks:"
              << bombardMonksActivePlayer;
     theCombatCalculator->roundOutcome(
@@ -654,8 +646,8 @@ void runGame(
 
     const ActivePlayer normalBombardmentActivePlayer{
                                                      getActivePlayerForNormalCombatRound(
-                                                       player1UsesBombardmentAgainstMonks,
-                                                       player2UsesBombardmentAgainstMonks)};
+                                                       player1AttacksMonks,
+                                                       player2AttacksMonks)};
     qDebug() << ">>>>>>>> active player for normal bombardment round:"
              << normalBombardmentActivePlayer;
 
@@ -690,22 +682,19 @@ void runGame(
          ///
          // This is the fight monks melee round
          ///
-  bool player1UsesMeleeAttacksAgainstMonks{false};
-  if (p2BattleAssistant.entityQuantity > 0) {
+ if (!player1HasAnsweredAttackMonksQuestion && p2BattleAssistant.entityQuantity > 0) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Melee, playerNames[0])};
-    player1UsesMeleeAttacksAgainstMonks = shouldFightMonks;
+       playerNames[0])};
+    player1AttacksMonks                   = shouldFightMonks;
+    player1HasAnsweredAttackMonksQuestion = true;
   }
 
-  bool player2UsesMeleeAttacksAgainstMonks{false};
-  if (p1BattleAssistant.entityQuantity > 0) {
+ if (!player2HasAnsweredAttackMonksQuestion && p1BattleAssistant.entityQuantity > 0) {
     const bool shouldFightMonks{queryIfMonksShouldBeFought(
-      FightMonksRounds::Kind::Melee, playerNames[1])};
-    player2UsesMeleeAttacksAgainstMonks = shouldFightMonks;
+     playerNames[1])};
+    player2AttacksMonks                   = shouldFightMonks;
+    player2HasAnsweredAttackMonksQuestion = true;
   }
-
-
-
 
   theCombatCalculator = &fightMonksMeleeRounds;
 
@@ -730,8 +719,8 @@ void runGame(
 
   const ActivePlayer fightMonksMeleeRoundsActivePlayer{
                                                        getActivePlayerForFightMonks(
-                                                         player1UsesMeleeAttacksAgainstMonks,
-                                                         player2UsesMeleeAttacksAgainstMonks)};
+                                                         player1AttacksMonks,
+                                                         player2AttacksMonks)};
   qDebug() << ">>>>>>>> active player for fight monks melee:"
            << fightMonksMeleeRoundsActivePlayer;
   theCombatCalculator->roundOutcome(
@@ -784,8 +773,8 @@ void runGame(
 
   const ActivePlayer regularMeleeRoundActivePlayer{
                                                    getActivePlayerForNormalCombatRound(
-                                                     player1UsesMeleeAttacksAgainstMonks,
-                                                     player2UsesMeleeAttacksAgainstMonks)};
+                                                     player1AttacksMonks,
+                                                     player2AttacksMonks)};
   qDebug() << ">>>>>>>> active player for regular melee round:"
            << regularMeleeRoundActivePlayer;
   theCombatCalculator->roundOutcome(
