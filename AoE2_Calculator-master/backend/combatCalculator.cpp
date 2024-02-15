@@ -310,64 +310,68 @@ void combatCalculator::checkIfItCanBeHealed()
 
 // Function: Check if any of the entities have died before proceeding to the
 // next round of combat
+void combatCalculator::resurrectForEachPlayer(
+  std::string& givenPlayerName,
+  Entity& givenPlayerBattleParticipant,
+  Entity& givenPlayerBattleAssistant)
+{
+  // Check if the rule about monks resurrecting units applies
+  // "If a military unit loses its last token but still has monks attached,
+  // these monks keep the unit alive and in play"
+  // So this won't apply to villagers and monks I imagine
+
+  if (
+    (givenPlayerBattleParticipant.entityQuantity <= 0)
+    && (givenPlayerBattleParticipant.armorClass[1] == false)
+    && (givenPlayerBattleParticipant.entityName != "Villager") &&
+    (givenPlayerBattleParticipant.entityName != "Monk") ) {
+    if (givenPlayerBattleAssistant.entityQuantity > 0) {
+      std::cout
+        << givenPlayerName
+        << " has a monk that has prevented all of their units from dying<br>";
+      givenPlayerBattleParticipant.entityQuantity++;
+    }
+  }
+
+
+
+}
+
+void combatCalculator::deathDetectionForEachPlayer(
+  // Given player information
+  Player currentPlayer,
+  Entity& givenPlayerBattleParticipant)
+{
+
+  if(givenPlayerBattleParticipant.entityQuantity <= 0) {
+    aDeathHasOccured = true;
+
+    if (givenPlayerBattleParticipant.entityName == "Monk") {
+      m_callbacks->getOnPlayerEntityDeath()(currentPlayer, true);
+    }
+    else {
+      m_callbacks->getOnPlayerEntityDeath()(currentPlayer, false);
+    }
+
+    if (givenPlayerBattleParticipant.entityName == "Wonder") {
+      SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+    }
+  }
+}
+
+
+
 void combatCalculator::checkIfDead()
 {
   // Check if what would otherwise die, can be healed
   checkIfItCanBeHealed();
 
-         // Check if the rule about monks resurrecting units applies
-         // "If a military unit loses its last token but still has monks attached,
-         // these monks keep the unit alive and in play"
+  resurrectForEachPlayer(player1Name, p1BattleParticipant, p1BattleAssistant);
+  resurrectForEachPlayer(player2Name, p2BattleParticipant, p2BattleAssistant);
 
-  if (
-    (p1BattleParticipant.entityQuantity <= 0)
-    && (p1BattleParticipant.armorClass[1] == false)) {
-    if (p1BattleAssistant.entityQuantity > 0) {
-      std::cout
-        << player1Name
-        << " has a monk that has prevented all of their units from dying<br>";
-      p1BattleParticipant.entityQuantity++;
-    }
-    else {
-      aDeathHasOccured = true;
+  deathDetectionForEachPlayer(Player::Player1, p1BattleParticipant);
+  deathDetectionForEachPlayer(Player::Player2, p2BattleParticipant);
 
-      if (p1BattleParticipant.entityName == "Monk") {
-        m_callbacks->getOnPlayerEntityDeath()(Player::Player1, true);
-      }
-      else {
-        m_callbacks->getOnPlayerEntityDeath()(Player::Player1, false);
-      }
-
-      if (p1BattleParticipant.entityName == "Wonder") {
-        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
-      }
-    }
-  }
-
-  if (
-    (p2BattleParticipant.entityQuantity <= 0)
-    && (p2BattleParticipant.armorClass[1] == false)) {
-    if (p2BattleAssistant.entityQuantity > 0) {
-      std::cout
-        << player2Name
-        << " has a monk that has prevented all of their units from dying<br>";
-      p2BattleParticipant.entityQuantity++;
-    }
-    else {
-      aDeathHasOccured = true;
-
-      if (p2BattleParticipant.entityName == "Monk") {
-        m_callbacks->getOnPlayerEntityDeath()(Player::Player2, true);
-      }
-      else {
-        m_callbacks->getOnPlayerEntityDeath()(Player::Player2, false);
-      }
-
-      if (p2BattleParticipant.entityName == "Wonder") {
-        SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
-      }
-    }
-  }
 }
 
 // Function: Check if the attacking ranged archer is retreating
@@ -1216,6 +1220,7 @@ void archerRounds::applyingArcherRoundOutcomeForAnIndividualPlayer(
   //  Store if changes occured to the quantity of units P1 & P2 started with
   int opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
   int opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+  int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
 
          // Behaviour: Apply the results for p1 if ranged damage occured
@@ -1246,7 +1251,7 @@ void archerRounds::applyingArcherRoundOutcomeForAnIndividualPlayer(
       while(opposingPlayerEntityDeaths != 0){
         opposingPlayerBattleParticipant.entityQuantity -=1;
         opposingPlayerEntityDeaths -= 1;
-        checkIfItCanBeHealed();
+        checkIfDead();
       }
 
              // Behavior: Store the ending quantity and cap the ending quantity
@@ -1257,8 +1262,8 @@ void archerRounds::applyingArcherRoundOutcomeForAnIndividualPlayer(
       else {
         opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
       }
-      // Behaviour: Calculate the difference between the two quantities
-      int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+      // Behaviour: Update the difference between the two quantities
+      opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
              // Behaviour: Award points if deaths occured
       if (opposingPlayerEntityDeaths >= 0) {
@@ -1461,6 +1466,7 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   //  Track if changes occured to the quantity
   int opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
   int opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
+  int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
 
 
@@ -1496,7 +1502,7 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
       while(opposingPlayerEntityDeaths != 0){
         opposingPlayerBattleParticipant.entityQuantity -=1;
         opposingPlayerEntityDeaths -= 1;
-        checkIfItCanBeHealed();
+        checkIfDead();
       }
 
 
@@ -1510,8 +1516,8 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
         opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
       }
 
-             // Behaviour: Calculate the difference between the two quantities
-      int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+             // Behaviour: Update the difference between the two quantities
+      opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
              // Behaviour: Award points if deaths occured
       if (opposingPlayerEntityDeaths >= 0) {
@@ -2089,11 +2095,11 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
   int&         opposingPlayerEntityDeaths)
 {
 
-         //  Track if changes occured to the quantity
+  //  Track if changes occured to the quantity
 
   int opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
   int opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
-
+  int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
          // Behaviour: Apply the results to units
 
@@ -2108,7 +2114,7 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
     while(opposingPlayerEntityDeaths != 0){
       opposingPlayerBattleParticipant.entityQuantity -=1;
       opposingPlayerEntityDeaths -= 1;
-      checkIfItCanBeHealed();
+      checkIfDead();
     }
 
 
@@ -2122,8 +2128,8 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
       opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;
     }
 
-           // Behaviour: Calculate the difference between the two quantities
-    int opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+           // Behaviour: Update the difference between the two quantities
+    opposingPlayerQuantityDifference = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
            // Behaviour: Award points if deaths occured
     if (opposingPlayerEntityDeaths >= 0) {

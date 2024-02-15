@@ -137,7 +137,17 @@ public:
     int&    inputtedP1RoundAttackModifiers,
     int&    inputtedP2RoundAttackModifiers);
 
+  void resurrectForEachPlayer(
+     // Given player information
+    std::string& givenPlayerName,
+    Entity& givenPlayerBattleParticipant,
+    Entity& givenPlayerBattleAssistant);
 
+
+  void deathDetectionForEachPlayer(
+    // Given player information
+    Player currentPlayer,
+    Entity& givenPlayerBattleParticipant);
 
   void setStartingQuantites();
 
