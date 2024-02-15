@@ -206,27 +206,20 @@ INNER JOIN
   const int unitRangedDamageIndex{query.record().indexOf("unitRangedDamage")};
   const int unitPointValueIndex{query.record().indexOf("unitPointValue")};
 
-
-
-
   const int unitGarrisonValueIndex{query.record().indexOf("unitGarrisonValue")};
-  const int unitAttacksInSecondRoundIndex{query.record().indexOf("doesTheUnitOnlyAttackOnceInTheSecondRoundOfCombat")};
-  const int unitDoesAreaEffectDamageIndex{query.record().indexOf("doesTheUnitDealAreaEffectDamage")};
+  const int unitAttacksInSecondRoundIndex{query.record().indexOf(
+    "doesTheUnitOnlyAttackOnceInTheSecondRoundOfCombat")};
+  const int unitDoesAreaEffectDamageIndex{
+    query.record().indexOf("doesTheUnitDealAreaEffectDamage")};
   const int unitSuicideAttacksIndex{
-                                        query.record().indexOf("doesTheUnitSuicideAttack")};
+    query.record().indexOf("doesTheUnitSuicideAttack")};
   const int unitAttacksInFirstRoundIndex{
-                                             query.record().indexOf("doesTheUnitOnlyAttackOnceInTheFirstRoundOfCombat")};
-
-
-
-
-
+    query.record().indexOf("doesTheUnitOnlyAttackOnceInTheFirstRoundOfCombat")};
 
   const int unitMaximumRangeIndex{query.record().indexOf("unitMaximumRange")};
   const int unitMinimumRangeIndex{query.record().indexOf("unitMinimumRange")};
 
   const int armorIdIndex{query.record().indexOf("armorID")};
-
 
   while (query.next()) {
     bool      ok{};
@@ -247,43 +240,30 @@ INNER JOIN
       query.value(unitRangedDamageIndex).toString()};
     const QString unitPointValue{query.value(unitPointValueIndex).toString()};
 
-
-
-
-
-
-    const QString unitGarrisonValue{query.value(unitGarrisonValueIndex).toString()};
-
+    const QString unitGarrisonValue{
+      query.value(unitGarrisonValueIndex).toString()};
 
     const bool unitAttacksInSecondRound{
-                                            query.value(unitAttacksInSecondRoundIndex).toString() == "Y"};
+      query.value(unitAttacksInSecondRoundIndex).toString() == "Y"};
 
     const bool unitDoesAreaEffectDamage{
-                                            query.value(unitDoesAreaEffectDamageIndex).toString() == "Y"};
+      query.value(unitDoesAreaEffectDamageIndex).toString() == "Y"};
 
     const bool unitSuicideAttacks{
-                                      query.value(unitSuicideAttacksIndex).toString() == "Y"};
+      query.value(unitSuicideAttacksIndex).toString() == "Y"};
 
     const bool unitAttacksInFirstRound{
-                                           query.value(unitAttacksInFirstRoundIndex).toString() == "Y"};
+      query.value(unitAttacksInFirstRoundIndex).toString() == "Y"};
 
+    const QString unitMaximumRange{
+      query.value(unitMaximumRangeIndex).toString()};
+    const QString unitMinimumRange{
+      query.value(unitMinimumRangeIndex).toString()};
 
-
-
-
-
-
-    const QString unitMaximumRange{query.value(unitMaximumRangeIndex).toString()};
-    const QString unitMinimumRange{query.value(unitMinimumRangeIndex).toString()};
-
-
-
-    const int     armorId{query.value(armorIdIndex).toInt(&ok)};
+    const int armorId{query.value(armorIdIndex).toInt(&ok)};
     if (!ok) {
       qFatal() << "Could not convert armor Id to integer.";
     }
-
-
 
     const std::unordered_map<std::string, Entity>::iterator it{
       map.find(unitNameMapKey)};
@@ -311,17 +291,11 @@ INNER JOIN
         qFatal() << "Could not convert unitRangedDamage to integer.";
       }
 
-
-
-
-
-
       entity.garrisonValue = unitGarrisonValue.toInt(&ok);
 
       if (!ok) {
         qFatal() << "Could not convert unitGarrisonValue to integer.";
       }
-
 
       entity.onlyAttacksOnceInTheFirstRoundOfCombat = unitAttacksInFirstRound;
 
@@ -330,12 +304,6 @@ INNER JOIN
       entity.dealsAreaEffectDamage = unitDoesAreaEffectDamage;
 
       entity.isKamikaze = unitSuicideAttacks;
-
-
-
-
-
-
 
       entity.maximumRange = unitMaximumRange.toInt(&ok);
 
@@ -348,7 +316,6 @@ INNER JOIN
       if (!ok) {
         qFatal() << "Could not convert unitMaximumRange to integer.";
       }
-
 
       entity.pointValue = unitPointValue.toInt(&ok);
 
@@ -405,22 +372,23 @@ INNER JOIN
   const int buildingPointValueIndex{
     query.record().indexOf("buildingPointValue")};
 
-
-  const int buildingGarrisonValueIndex{query.record().indexOf("buildingGarrisonValue")};
-  const int buildingAttacksInSecondRoundIndex{query.record().indexOf("doesTheBuildingOnlyAttackOnceInTheSecondRoundOfCombat")};
-  const int buildingDoesAreaEffectDamageIndex{query.record().indexOf("doesTheBuildingDealAreaEffectDamage")};
+  const int buildingGarrisonValueIndex{
+    query.record().indexOf("buildingGarrisonValue")};
+  const int buildingAttacksInSecondRoundIndex{query.record().indexOf(
+    "doesTheBuildingOnlyAttackOnceInTheSecondRoundOfCombat")};
+  const int buildingDoesAreaEffectDamageIndex{
+    query.record().indexOf("doesTheBuildingDealAreaEffectDamage")};
   const int buildingSuicideAttacksIndex{
-                                        query.record().indexOf("doesTheBuildingSuicideAttack")};
-  const int buildingAttacksInFirstRoundIndex{
-                                    query.record().indexOf("doesTheBuildingOnlyAttackOnceInTheFirstRoundOfCombat")};
+    query.record().indexOf("doesTheBuildingSuicideAttack")};
+  const int buildingAttacksInFirstRoundIndex{query.record().indexOf(
+    "doesTheBuildingOnlyAttackOnceInTheFirstRoundOfCombat")};
 
-
-  const int buildingMaximumRangeIndex{query.record().indexOf("buildingMaximumRange")};
-  const int buildingMinimumRangeIndex{query.record().indexOf("buildingMinimumRange")};
+  const int buildingMaximumRangeIndex{
+    query.record().indexOf("buildingMaximumRange")};
+  const int buildingMinimumRangeIndex{
+    query.record().indexOf("buildingMinimumRange")};
 
   const int armorIdIndex{query.record().indexOf("armorID")};
-
-
 
   while (query.next()) {
     bool      ok{};
@@ -442,25 +410,25 @@ INNER JOIN
     const QString buildingPointValue{
       query.value(buildingPointValueIndex).toString()};
 
-
-    const QString buildingGarrisonValue{query.value(buildingGarrisonValueIndex).toString()};
-
+    const QString buildingGarrisonValue{
+      query.value(buildingGarrisonValueIndex).toString()};
 
     const bool buildingAttacksInSecondRound{
-                                 query.value(buildingAttacksInSecondRoundIndex).toString() == "Y"};
+      query.value(buildingAttacksInSecondRoundIndex).toString() == "Y"};
 
     const bool buildingDoesAreaEffectDamage{
-                                 query.value(buildingDoesAreaEffectDamageIndex).toString() == "Y"};
+      query.value(buildingDoesAreaEffectDamageIndex).toString() == "Y"};
 
     const bool buildingSuicideAttacks{
-                                 query.value(buildingSuicideAttacksIndex).toString() == "Y"};
+      query.value(buildingSuicideAttacksIndex).toString() == "Y"};
 
     const bool buildingAttacksInFirstRound{
-                                 query.value(buildingAttacksInFirstRoundIndex).toString() == "Y"};
+      query.value(buildingAttacksInFirstRoundIndex).toString() == "Y"};
 
-
-    const QString buildingMaximumRange{query.value(buildingMaximumRangeIndex).toString()};
-    const QString buildingMinimumRange{query.value(buildingMinimumRangeIndex).toString()};
+    const QString buildingMaximumRange{
+      query.value(buildingMaximumRangeIndex).toString()};
+    const QString buildingMinimumRange{
+      query.value(buildingMinimumRangeIndex).toString()};
 
     const int armorId{query.value(armorIdIndex).toInt(&ok)};
     if (!ok) {
@@ -507,21 +475,21 @@ INNER JOIN
         qFatal() << "Could not convert buildingPointValue to integer.";
       }
 
-
       entity.garrisonValue = buildingGarrisonValue.toInt(&ok);
 
       if (!ok) {
         qFatal() << "Could not convert buildingGarrisonValue to integer.";
       }
 
+      entity.onlyAttacksOnceInTheFirstRoundOfCombat
+        = buildingAttacksInFirstRound;
 
-      entity.onlyAttacksOnceInTheFirstRoundOfCombat = buildingAttacksInFirstRound;
-
-      entity.onlyAttacksOnceInTheSecondRoundOfCombat = buildingAttacksInSecondRound;
+      entity.onlyAttacksOnceInTheSecondRoundOfCombat
+        = buildingAttacksInSecondRound;
 
       entity.dealsAreaEffectDamage = buildingDoesAreaEffectDamage;
 
-        entity.isKamikaze = buildingSuicideAttacks;
+      entity.isKamikaze = buildingSuicideAttacks;
 
       entity.maximumRange = buildingMaximumRange.toInt(&ok);
 
@@ -534,9 +502,6 @@ INNER JOIN
       if (!ok) {
         qFatal() << "Could not convert buildingMaximumRange to integer.";
       }
-
-
-
 
       entity.armorClass[armorId - 1] = true;
       map.emplace(buildingNameMapKey, entity);

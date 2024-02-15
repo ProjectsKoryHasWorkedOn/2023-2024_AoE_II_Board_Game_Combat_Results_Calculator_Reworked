@@ -159,8 +159,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     ui.actionSet_default_answer_to_attack_monks_prompt,
     &QAction::triggered,
     this,
-    &MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered
-  );
+    &MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered);
 
   QIntValidator myName;
   myName.setRange(100, 999);
@@ -287,7 +286,6 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
         m_player2Events.isActive(eventNameWithUnderscores) ? Qt::Checked
                                                            : Qt::Unchecked);
 
-
       if (eventPlayer1->text().contains("{2E}")) {
         eventPlayer1->setForeground(QColor(255, 255, 255));
         eventPlayer1->setBackground(QColor(90, 90, 90));
@@ -297,7 +295,6 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
         eventPlayer2->setForeground(QColor(255, 255, 255));
         eventPlayer2->setBackground(QColor(90, 90, 90));
       }
-
     }
     else {
       if (
@@ -566,7 +563,6 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
   }
 
   filterBasedOnAgeAndCivilization("1");
-
 }
 
 // Run this when the text inside of the player 2 entities search field changes
@@ -600,7 +596,6 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
   }
 
   filterBasedOnAgeAndCivilization("2");
-
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -665,15 +660,16 @@ void MainWindow::on_calculateResultsButton_clicked()
     ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
   // Calculate the results of a battle
-  runGame(m_database, [this](Player player, bool didAnAsssitantDie) {
-    onPlayerEntityDeath(player, didAnAsssitantDie);
-  }, m_distanceBetweenTheBattleParticipants,
+  runGame(
+    m_database,
+    [this](Player player, bool didAnAsssitantDie) {
+      onPlayerEntityDeath(player, didAnAsssitantDie);
+    },
+    m_distanceBetweenTheBattleParticipants,
     EntityOutputConfig{
       m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput,
-      m_showFurtherInformationAboutTheBattleParticipantsInTheOutput
-    },
-    monkAttackingPromptAnswer
-    );
+      m_showFurtherInformationAboutTheBattleParticipantsInTheOutput},
+    monkAttackingPromptAnswer);
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -684,7 +680,7 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
   player1EntityQuantity = valueInsideOfField;
 
   // Give an error to Console if quantity isn't right
-  if(ui.player1EntityNames->currentItem()->text() != "Villager"){
+  if (ui.player1EntityNames->currentItem()->text() != "Villager") {
     if (
       player1EntityQuantity != 1 && player1EntityQuantity != 2
       && player1EntityQuantity != 3 && player1EntityQuantity != 4
@@ -694,14 +690,12 @@ void MainWindow::on_player1EntityQuantity_valueChanged(int valueInsideOfField)
       std::terminate();
     }
   }
-  else{
+  else {
     if (player1EntityQuantity <= 0) {
-      qDebug()
-        << "Error: Player 1's entity quantity input should be > 0";
+      qDebug() << "Error: Player 1's entity quantity input should be > 0";
       std::terminate();
     }
   }
-
 
   m_entities.changePlayer1EntityQuantity(player1EntityQuantity);
 }
@@ -713,9 +707,8 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
   // Get what entity quantity the user is entering
   player2EntityQuantity = valueInsideOfField;
 
-
   // Give an error to Console if quantity isn't right
-  if(ui.player2EntityNames->currentItem()->text() != "Villager"){
+  if (ui.player2EntityNames->currentItem()->text() != "Villager") {
     // Give an error to Console if quantity isn't right
     if (
       player2EntityQuantity != 1 && player2EntityQuantity != 2
@@ -725,10 +718,9 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
         << "Error: Player 2's entity quantity input should be between 1 and 5";
     }
   }
-  else{
+  else {
     if (player2EntityQuantity <= 0) {
-      qDebug()
-        << "Error: Player 2's entity quantity input should be > 0";
+      qDebug() << "Error: Player 2's entity quantity input should be > 0";
       std::terminate();
     }
   }
@@ -852,9 +844,6 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
-
-
-
 static bool isUnitWithOneToken(const QString& entity)
 {
   return (entity.contains("RAM")) || (entity.contains("DEMOLITION_SHIP"))
@@ -866,8 +855,6 @@ static bool isUnitWithOneToken(const QString& entity)
          || (entity.contains("SCORPION")) || (entity.contains("TREBUCHET"))
          || (entity.contains("WAR_ELEPHANT_(PERSIAN)"));
 }
-
-
 
 void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 {
@@ -888,21 +875,15 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
     assistantQuantitySpinBox->setRange(0, 0);
   }
   else {
-    if(nameOfSelection.contains("VILLAGER")){
-    entityQuantitySpinBox->setRange(1, 500);
+    if (nameOfSelection.contains("VILLAGER")) {
+      entityQuantitySpinBox->setRange(1, 500);
     }
-    else{
-    entityQuantitySpinBox->setRange(1, 5);
+    else {
+      entityQuantitySpinBox->setRange(1, 5);
     }
 
     assistantQuantitySpinBox->setRange(0, 5);
   }
-
-
-
-
-
-
 }
 
 // Run on change of what battle participant is selected by player 1
@@ -1194,24 +1175,30 @@ void MainWindow::setColorTheToggleElements()
       QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
 
-    if(m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
-      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
+    if (
+      m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+      == true) {
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIcon(
+          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIconVisibleInMenu(true);
     }
-    else{
- ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    else {
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIconVisibleInMenu(false);
     }
 
-
-    if(m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
-
+    if (m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIcon(
+          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIconVisibleInMenu(true);
     }
-    else{
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    else {
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIconVisibleInMenu(false);
     }
 
     if (soundEffectsEnabled == false) {
@@ -1226,28 +1213,29 @@ void MainWindow::setColorTheToggleElements()
   else if (palettes.darkModeEnabled == false) {
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(false);
 
-
-    if(m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
-      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
+    if (
+      m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+      == true) {
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIconVisibleInMenu(true);
     }
-    else{
-      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(false);
-    }
-
-
-    if(m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
-
-    }
-    else{
-      ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(false);
+    else {
+      ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
+        ->setIconVisibleInMenu(false);
     }
 
-
+    if (m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIconVisibleInMenu(true);
+    }
+    else {
+      ui.actionShow_further_information_about_the_battle_participants_in_the_output
+        ->setIconVisibleInMenu(false);
+    }
 
     if (soundEffectsEnabled == false) {
       ui.actionEnableDisableSFX->setIcon(
@@ -1883,7 +1871,8 @@ void MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered()
   defaultAnswerToAttackMonksPromptDialog.setComboBoxItems(options);
   defaultAnswerToAttackMonksPromptDialog.exec();
 
-  monkAttackingPromptAnswer = defaultAnswerToAttackMonksPromptDialog.textValue();
+  monkAttackingPromptAnswer
+    = defaultAnswerToAttackMonksPromptDialog.textValue();
 }
 
 void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(
@@ -2399,17 +2388,17 @@ void MainWindow::filterBasedOnAgeAndCivilization(QString player)
   }
 }
 
-
-
 static bool isBombardmentUnitOrBuilding(const QString& entity)
 {
   return (entity.contains("LONGBOAT")) || (entity.contains("GALLEON"))
-         || (entity.contains("GALLEY_(JAPANESE)")) || (entity.contains("SCORPION"))
-         || (entity.contains("MANGONEL")) || (entity.contains("ONAGER")) || (entity.contains("TOWER"))
+         || (entity.contains("GALLEY_(JAPANESE)"))
+         || (entity.contains("SCORPION")) || (entity.contains("MANGONEL"))
+         || (entity.contains("ONAGER")) || (entity.contains("TOWER"))
          || (entity.contains("TREBUCHET"));
 }
 
-void MainWindow::checkIfEitherPlayerHasBombardmentEntity(){
+void MainWindow::checkIfEitherPlayerHasBombardmentEntity()
+{
   QString player1Selection = ui.player1EntityNames->currentItem()->text();
   QString player2Selection = ui.player2EntityNames->currentItem()->text();
 
@@ -2419,50 +2408,62 @@ void MainWindow::checkIfEitherPlayerHasBombardmentEntity(){
   player2Selection = player2Selection.toUpper();
   player2Selection = convertSpacesToUnderscores(player2Selection);
 
-  const bool isBombardmentEntity = isBombardmentUnitOrBuilding(player1Selection) || isBombardmentUnitOrBuilding(player2Selection);
+  const bool isBombardmentEntity
+    = isBombardmentUnitOrBuilding(player1Selection)
+      || isBombardmentUnitOrBuilding(player2Selection);
 
-  if(isBombardmentEntity == true){
+  if (isBombardmentEntity == true) {
     ui.distanceBetweenTheBattleParticipantsSlider->setMaximum(10);
     ui.distanceBetweenTheBattleParticipantsSlider->setMinimum(0);
     ui.distanceBetweenTheBattleParticipantsSlider->setEnabled(true);
   }
-  else{
+  else {
     ui.distanceBetweenTheBattleParticipantsSlider->setValue(0);
     ui.distanceBetweenTheBattleParticipantsSlider->setMaximum(0);
     ui.distanceBetweenTheBattleParticipantsSlider->setMinimum(0);
     ui.distanceBetweenTheBattleParticipantsSlider->setEnabled(false);
-
   }
 }
 
-void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_valueChanged(int value)
+void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_valueChanged(
+  int value)
 {
-  // @todo Bring distanceBetweenTheBattleParticipants to backend combatCalculator.cpp
+  // @todo Bring distanceBetweenTheBattleParticipants to backend
+  // combatCalculator.cpp
   m_distanceBetweenTheBattleParticipants = value;
 }
 
-void MainWindow::on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(bool checked)
+void MainWindow::
+  on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(
+    bool checked)
 {
-  //@todo Bring showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput to backend entity.cpp
-  m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
+  //@todo Bring
+  //showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput to
+  //backend entity.cpp
+  m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+    = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
   setColorTheToggleElements();
 }
 
-void MainWindow::on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(bool checked)
+void MainWindow::
+  on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(
+    bool checked)
 {
-  //@todo Bring showFurtherInformationAboutTheBattleParticipantsInTheOutput to backend entity.cpp
-  m_showFurtherInformationAboutTheBattleParticipantsInTheOutput = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput;
+  //@todo Bring showFurtherInformationAboutTheBattleParticipantsInTheOutput to
+  //backend entity.cpp
+  m_showFurtherInformationAboutTheBattleParticipantsInTheOutput
+    = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput;
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
   setColorTheToggleElements();
 }
 
-void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(int position)
+void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(
+  int position)
 {
   QToolTip::showText(QCursor::pos(), QString("%1").arg(position), nullptr);
 }
-

@@ -27,9 +27,6 @@ Entity fileImporter::conductASearch(
   // Struct: Declare a blank entity to store the return information
   Entity returnEntity;
 
-
-
-
   std::unordered_map<std::string, Entity> map = m_database->getUnitEntities();
   std::unordered_map<std::string, Entity> buildings
     = m_database->getBuildingEntities();
@@ -57,7 +54,8 @@ Entity fileImporter::conductASearch(
     returnEntity = returnWonder;
   }
 
-  // Behaviour: Search for the input entity name and return the associated entity
+  // Behaviour: Search for the input entity name and return the associated
+  // entity
 
   // Behaviour: Make sure that the quantity is > 0 for non-Monks
   if ((inputEntityName != "MONK") && (inputEntityQuantity <= 0)) {
@@ -85,10 +83,10 @@ Entity fileImporter::conductASearch(
     }
   }
   if (hasArmorClass == false) {
-      std::cout << "Error: " << returnEntity.entityName
-                << " is missing at least 1 armor class"
-                << "\n";
-      std::terminate();
+    std::cout << "Error: " << returnEntity.entityName
+              << " is missing at least 1 armor class"
+              << "\n";
+    std::terminate();
   }
 
   // Behaviour: Calculate the number of armor classes the entity has now

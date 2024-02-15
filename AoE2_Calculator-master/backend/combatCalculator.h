@@ -42,11 +42,11 @@ private:
 
 class CombatCalculatorState {
 public:
-   CombatCalculatorState(
-    int distanceBetweenTheBattleParticipants,
+  CombatCalculatorState(
+    int                distanceBetweenTheBattleParticipants,
     EntityOutputConfig entityOutputConfig);
 
-  int distanceBetweenTheBattleParticipants;
+  int                distanceBetweenTheBattleParticipants;
   EntityOutputConfig entityOutputConfig;
 
   /** Values attained sometime during the running of the combat rounds **/
@@ -55,13 +55,13 @@ public:
 
   int startingAssistantQuantityP1, startingAssistantQuantityP2;
 
-         // Int: Store the die roll input
+  // Int: Store the die roll input
   int d6DieRoll;
 
-         // Bool: Store whether or not one of the unit has died
+  // Bool: Store whether or not one of the unit has died
   bool aDeathHasOccured;
 
-         // String: Store whether or not an entity is retreating
+  // String: Store whether or not an entity is retreating
   std::string isRetreating;
 
   std::string player1Name;
@@ -74,7 +74,7 @@ public:
   Entity p1BattleAssistant;
   Entity p2BattleAssistant;
 
-         // Integer: Store modifiers to the attack dealt
+  // Integer: Store modifiers to the attack dealt
   int p1RoundAttackModifiers;
   int p2RoundAttackModifiers;
 
@@ -82,8 +82,6 @@ public:
   // Integer: Store the remaining damage
   float p1RemainingDamage;
   float p2RemainingDamage;
-
-
 };
 
 /** The combat calculator class **/
@@ -132,7 +130,7 @@ public:
   // Function: Set the player names
   void setPlayerNames(std::string& inputtedP1Name, std::string& inputtedP2Name);
 
-         // Function: Set the battle participants
+  // Function: Set the battle participants
   void setCombatParticipants(
     Entity& inputtedP1BattleParticipant,
     Entity& inputtedP2BattleParticipant,
@@ -142,23 +140,21 @@ public:
     int&    inputtedP2RoundAttackModifiers);
 
   void resurrectForEachPlayer(
-     // Given player information
+    // Given player information
     std::string& givenPlayerName,
-    Entity& givenPlayerBattleParticipant,
-    Entity& givenPlayerBattleAssistant);
-
+    Entity&      givenPlayerBattleParticipant,
+    Entity&      givenPlayerBattleAssistant);
 
   void deathDetectionForEachPlayer(
     // Given player information
-    Player currentPlayer,
+    Player  currentPlayer,
     Entity& givenPlayerBattleParticipant);
 
   void setStartingQuantites();
 
-
-         // Function: Pass the address of the remaining damage into the superclass
-         // variable Reference: I tried storing the integer arrays but this is caused a
-         // segmentation fault (core dump) that was hard to fix
+  // Function: Pass the address of the remaining damage into the superclass
+  // variable Reference: I tried storing the integer arrays but this is caused a
+  // segmentation fault (core dump) that was hard to fix
   void setAdditionalValues(
     float& inputtedRemainingDamageP1,
     float& inputtedRemainingDamageP2);
@@ -167,7 +163,7 @@ public:
   // Function: Generate d6 die input
   int generateD6DieInput();
 
-         // Function: Check the randomness of the d6 dice roller
+  // Function: Check the randomness of the d6 dice roller
   void checkD6DiceSimulator();
 
   /** The remainder functions **/
@@ -179,11 +175,11 @@ public:
     int inputDefenderHealth,
     int inputSetting);
 
-         // Function: Check the remaining damage values for the effects of relentless
-         // attack
+  // Function: Check the remaining damage values for the effects of relentless
+  // attack
   void checkRemainingDamage(int* p1Events, int* p2Events);
 
-         // Function: Return the remaining damage
+  // Function: Return the remaining damage
   float returnRemaningDamage(int inputPlayerNumber);
 
   /** Function: Output the entity information  **/
@@ -194,7 +190,7 @@ public:
   // next round of combat
   void checkIfDead();
 
-         // Function: Check if the attacking ranged archer is retreating
+  // Function: Check if the attacking ranged archer is retreating
   void checkIfRetreating(std::string roundType);
 
   /** Combat rounds functions **/
@@ -209,32 +205,15 @@ public:
     = 0; // Abstract class with no implementation (overrided
          // by the subclasses)
 
-         // Function: Make some final checks (after the end of the rounds of combat)
+  // Function: Make some final checks (after the end of the rounds of combat)
   void checkIfItCanBeHealed();
-
-
-
-
-
-
-
-
 
   /** Return information functions **/
   std::string returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound);
 
-
-
-
-
-
   // Function: Return the modified battle participants based on the input player
   // number
   Entity returnModifiedBattleParticipants(int inputPlayerNumber);
-
-
-
-
 };
 #endif // COMBAT_CALCULATOR_H
 
@@ -244,7 +223,7 @@ class monkRounds : public combatCalculator {
 public:
   using combatCalculator::combatCalculator;
 
-         // Function: Calculate the outcome of a monk battle
+  // Function: Calculate the outcome of a monk battle
   void roundOutcome(
     int          roundRunTimes,
     int*         p1Events,
@@ -253,9 +232,8 @@ public:
     int*         p2Technologies,
     ActivePlayer activePlayer) override;
 
-
   void calculatingMonkRoundOutcomeForAnIndividualPlayer(
-                                                         // Both player names
+    // Both player names
     std::string& givenPlayerName,
     std::string& opposingPlayerName,
     // Both player battle participants
@@ -277,24 +255,15 @@ public:
     int&         givenPlayerPointsGained,
     int&         givenPlayerEntitiesHealed);
 
-
-
-
-
   void outputtingMonkRoundOutcomeForAnIndividualPlayer(
 
-           // The active player
+    // The active player
     ActivePlayer activePlayer,
     std::string& givenPlayerName,
     int&         givenPlayerPointsAwarded,
     bool&        givenPlayerMonkPowersActivated,
     Entity&      givenPlayerBattleParticipant,
     Entity&      givenPlayerBattleAssistant);
-
-
-
-
-
 };
 #endif // COMBAT_CALCULATOR_MONK_ROUNDS_H
 
@@ -304,7 +273,7 @@ class archerRounds : public combatCalculator {
 public:
   using combatCalculator::combatCalculator;
 
-         // Function: Determine the outcome of a ranged battle
+  // Function: Determine the outcome of a ranged battle
   void roundOutcome(
     int          roundRunTimes,
     int*         p1Events,
@@ -313,51 +282,50 @@ public:
     int*         p2Technologies,
     ActivePlayer activePlayer) override;
 
-         // Calculate the outcome of a ranged battle
+  // Calculate the outcome of a ranged battle
   void calculatingArcherRoundOutcomeForAnIndividualPlayer(
-                                                           // Shared stuff
+    // Shared stuff
     const int roundDownBasedOnMultiplesOfThisNumber,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
-    int* givenPlayerEvents,
-    int givenPlayerRoundAttackModifiers,
-    float& givenPlayerRemainingDamage,
-    bool&        givenPlayerHasAArcherActivated,
-    bool&        givenPlayerIsFightingBuilding,
-    bool&        givenPlayerIsFightingUnit,
-    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
-    bool&        givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
-    int&         givenPlayerRangedDamageDealt,
+    int*    givenPlayerEvents,
+    int     givenPlayerRoundAttackModifiers,
+    float&  givenPlayerRemainingDamage,
+    bool&   givenPlayerHasAArcherActivated,
+    bool&   givenPlayerIsFightingBuilding,
+    bool&   givenPlayerIsFightingUnit,
+    bool&   givenPlayerRangedUnitCanAttackOpposingPlayerBuilding,
+    bool&   givenPlayerRangedUnitCanAttackOpposingPlayerCavalry,
+    int&    givenPlayerRangedDamageDealt,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
-    int* opposingPlayerEvents,
-    bool&        opposingPlayerTakesNoDamageDueToShotsInTheBack,
-    int&         opposingPlayerEntityDeaths,
-    int&         opposingPlayerBuildingDamage,
-    int& opposingPlayerDamageDie);
+    int*    opposingPlayerEvents,
+    bool&   opposingPlayerTakesNoDamageDueToShotsInTheBack,
+    int&    opposingPlayerEntityDeaths,
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerDamageDie);
 
-
-         // Apply the outcome of a ranged battle
+  // Apply the outcome of a ranged battle
   void applyingArcherRoundOutcomeForAnIndividualPlayer(
-                                                        // Given player
-    bool&        givenPlayerHasAArcherActivated,
-    bool&        givenPlayerIsFightingBuilding,
-    bool& givenPlayerCanAttackOpposingPlayerBuilding,
-    bool& givenPlayerIsFightingUnit,
-    float&        givenPlayerPointsGained,
+    // Given player
+    bool&  givenPlayerHasAArcherActivated,
+    bool&  givenPlayerIsFightingBuilding,
+    bool&  givenPlayerCanAttackOpposingPlayerBuilding,
+    bool&  givenPlayerIsFightingUnit,
+    float& givenPlayerPointsGained,
     // Opposing player
     Entity& opposingPlayerBattleParticipant,
-    int&         opposingPlayerEntityDeaths,
-    int&         opposingPlayerBuildingDamage);
+    int&    opposingPlayerEntityDeaths,
+    int&    opposingPlayerBuildingDamage);
 
-         // Show the outcome of a ranged battle
+  // Show the outcome of a ranged battle
   void outputtingArcherRoundOutcomeForAnIndividualPlayer(
     std::string& givenPlayerName,
-    float&         givenPlayerPointsGained,
+    float&       givenPlayerPointsGained,
     bool&        isGivenPlayerFightingBuilding,
     Entity&      opposingPlayerBattleParticipant,
     int&         opposingPlayerDamageDie,
-    std::string&         opposingPlayerName);
+    std::string& opposingPlayerName);
 };
 #endif // COMBAT_CALCULATOR_ARCHER_ROUNDS_H
 
@@ -367,7 +335,7 @@ class bombardmentRounds : public combatCalculator {
 public:
   using combatCalculator::combatCalculator;
 
-         // Function: Calculate the outcome of a bombardment battle
+  // Function: Calculate the outcome of a bombardment battle
   void roundOutcome(
     int          roundRunTimes,
     int*         p1Events,
@@ -376,54 +344,44 @@ public:
     int*         p2Technologies,
     ActivePlayer activePlayer) override;
 
-
   void outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
-                                                          // Given player stuff
+    // Given player stuff
     std::string& givenPlayerName,
 
     float& givenPlayerPointsGained,
-    bool&        givenPlayerIsFightingABuilding,
+    bool&  givenPlayerIsFightingABuilding,
 
-       // Opposing player stuff
+    // Opposing player stuff
     std::string& opposingPlayerName,
-    Entity& opposingPlayerBattleParticipant,
-    int& opposingPlayerDamageDie
-    );
-
-
-
+    Entity&      opposingPlayerBattleParticipant,
+    int&         opposingPlayerDamageDie);
 
   void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
     // Given player stuff
-    bool& givenPlayerBombardmentEntityActivated,
-    bool& givenPlayerIsFightingBuilding,
-    bool& givenPlayerIsFightingUnit,
+    bool&  givenPlayerBombardmentEntityActivated,
+    bool&  givenPlayerIsFightingBuilding,
+    bool&  givenPlayerIsFightingUnit,
     float& givenPlayerPointsGained,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
-    int& opposingPlayerBuildingDamage,
-    int& opposingPlayerEntityDeaths
-    );
-
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerEntityDeaths);
 
   void calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
-                                                           // Shared stuff
+    // Shared stuff
     const int roundDownBasedOnMultiplesOfThisNumber,
-       // Given player stuff
+    // Given player stuff
     Entity& givenPlayerBattleParticipant,
-    bool& givenPlayerIsFightingBuilding,
-    bool& givenPlayerIsFightingUnit,
-    bool& givenPlayerBombardmentEntityActivated,
-    float& givenPlayerRemainingDamage,
-    int& givenPlayerRoundAttackModifiers,
-       // Opposing player stuff
+    bool&   givenPlayerIsFightingBuilding,
+    bool&   givenPlayerIsFightingUnit,
+    bool&   givenPlayerBombardmentEntityActivated,
+    float&  givenPlayerRemainingDamage,
+    int&    givenPlayerRoundAttackModifiers,
+    // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
-    int& opposingPlayerBuildingDamage,
-    int& opposingPlayerDamageDie,
-    int& opposingPlayerEntityDeaths);
-
-
-
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerDamageDie,
+    int&    opposingPlayerEntityDeaths);
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 
@@ -433,7 +391,7 @@ class standardRounds : public combatCalculator {
 public:
   using combatCalculator::combatCalculator;
 
-         // Function: Calculate the outcome of a standard battle
+  // Function: Calculate the outcome of a standard battle
   void roundOutcome(
     int          roundRunTimes,
     int*         p1Events,
@@ -442,57 +400,52 @@ public:
     int*         p2Technologies,
     ActivePlayer activePlayer) override;
 
-
   void calculatingStandardRoundOutcomeForAnIndividualPlayer(
     // Shared stuff
-    int& numberOfTimesToRunTheStandardRound,
+    int&      numberOfTimesToRunTheStandardRound,
     const int roundDownBasedOnMultiplesOfThisNumber,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
-    int* givenPlayerEvents,
-    int givenPlayerRoundAttackModifiers,
-    float& givenPlayerRemainingDamage,
-    bool&        givenPlayerHasAEntityThatActivated,
-    bool&        givenPlayerIsFightingBuilding,
-    bool&        givenPlayerIsFightingAUnit,
-    float& givenPlayerPointsGained,
-    int & givenPlayerEntityDeaths,
+    int*    givenPlayerEvents,
+    int     givenPlayerRoundAttackModifiers,
+    float&  givenPlayerRemainingDamage,
+    bool&   givenPlayerHasAEntityThatActivated,
+    bool&   givenPlayerIsFightingBuilding,
+    bool&   givenPlayerIsFightingAUnit,
+    float&  givenPlayerPointsGained,
+    int&    givenPlayerEntityDeaths,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
-    int* opposingPlayerEvents,
-    int&         opposingPlayerEntityDeaths,
-    int&         opposingPlayerBuildingDamage,
-    int& opposingPlayerDamageDie);
-
-
+    int*    opposingPlayerEvents,
+    int&    opposingPlayerEntityDeaths,
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerDamageDie);
 
   void applyingStandardRoundOutcomeForAnIndividualPlayer(
-                                                          // Shared stuff
+    // Shared stuff
     int& numberOfTimesToRunTheStandardRound,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
-    int* givenPlayerEvents,
-    bool&        givenPlayerHasAEntityThatActivated,
-    bool&        givenPlayerIsFightingAUnit,
-    float& givenPlayerPointsGained,
+    int*    givenPlayerEvents,
+    bool&   givenPlayerHasAEntityThatActivated,
+    bool&   givenPlayerIsFightingAUnit,
+    float&  givenPlayerPointsGained,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
-    float& opposingPlayerPointsGained,
-    int&         opposingPlayerEntityDeaths);
+    float&  opposingPlayerPointsGained,
+    int&    opposingPlayerEntityDeaths);
 
   void outputtingStandardRoundOutcomeForAnIndividualPlayer(
-                                                            // Given player stuff
+    // Given player stuff
     std::string& givenPlayerName,
 
     float& givenPlayerPointsGained,
 
-    bool&        givenPlayerIsFightingABuilding,
-                                          // Opposing player stuff
+    bool& givenPlayerIsFightingABuilding,
+    // Opposing player stuff
     std::string& opposingPlayerName,
-    Entity& opposingPlayerBattleParticipant,
-    int& opposingPlayerDamageDie
-    );
-
+    Entity&      opposingPlayerBattleParticipant,
+    int&         opposingPlayerDamageDie);
 };
 #endif // COMBAT_CALCULATOR_STANDARD_ROUNDS_H
 
