@@ -191,5 +191,8 @@ private:
   Events             m_player2Events;
   Technologies       m_player1Technologies;
   Technologies       m_player2Technologies;
+  bool m_showFurtherInformationAboutTheBattleParticipantsInTheOutput = false;
+  bool m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = false;
+  int m_distanceBetweenTheBattleParticipants = 0;
 };
 #endif // MAINWINDOW_HPP

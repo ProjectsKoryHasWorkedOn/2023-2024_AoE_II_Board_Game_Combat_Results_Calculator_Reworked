@@ -132,14 +132,6 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
-
-// Get some more stuff to send to the backend
-bool showFurtherInformationAboutTheBattleParticipantsInTheOutput = false;
-bool showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = false;
-int distanceBetweenTheBattleParticipants = 0;
-
-
-
 MainWindow::MainWindow(Database* database, QWidget* parent)
   : QMainWindow{parent}
   , m_database{database}
@@ -668,7 +660,12 @@ void MainWindow::on_calculateResultsButton_clicked()
   // Calculate the results of a battle
   runGame(m_database, [this](Player player, bool didAnAsssitantDie) {
     onPlayerEntityDeath(player, didAnAsssitantDie);
-  });
+  }, m_distanceBetweenTheBattleParticipants,
+    EntityOutputConfig{
+      m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput,
+      m_showFurtherInformationAboutTheBattleParticipantsInTheOutput
+    }
+    );
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -1189,7 +1186,7 @@ void MainWindow::setColorTheToggleElements()
       QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
 
-    if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
+    if(m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
         QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
@@ -1199,7 +1196,7 @@ void MainWindow::setColorTheToggleElements()
     }
 
 
-    if(showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
+    if(m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
       ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
         QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
       ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
@@ -1222,7 +1219,7 @@ void MainWindow::setColorTheToggleElements()
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(false);
 
 
-    if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
+    if(m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIcon(
         QIcon(workingDirectory.absolutePath() + checkedIconFilename));
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output->setIconVisibleInMenu(true);
@@ -1232,7 +1229,7 @@ void MainWindow::setColorTheToggleElements()
     }
 
 
-    if(showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
+    if(m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
       ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIcon(
         QIcon(workingDirectory.absolutePath() + checkedIconFilename));
       ui.actionShow_further_information_about_the_battle_participants_in_the_output->setIconVisibleInMenu(true);
@@ -2409,32 +2406,26 @@ void MainWindow::checkIfEitherPlayerHasBombardmentEntity(){
   }
 }
 
-
-
 void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_valueChanged(int value)
 {
   // @todo Bring distanceBetweenTheBattleParticipants to backend combatCalculator.cpp
-  distanceBetweenTheBattleParticipants = value;
+  m_distanceBetweenTheBattleParticipants = value;
 }
-
 
 void MainWindow::on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(bool checked)
 {
   //@todo Bring showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput to backend entity.cpp
-  showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = !showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
+  m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
   setColorTheToggleElements();
 }
 
-
-
-
 void MainWindow::on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(bool checked)
 {
   //@todo Bring showFurtherInformationAboutTheBattleParticipantsInTheOutput to backend entity.cpp
-  showFurtherInformationAboutTheBattleParticipantsInTheOutput = !showFurtherInformationAboutTheBattleParticipantsInTheOutput;
+  m_showFurtherInformationAboutTheBattleParticipantsInTheOutput = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput;
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 

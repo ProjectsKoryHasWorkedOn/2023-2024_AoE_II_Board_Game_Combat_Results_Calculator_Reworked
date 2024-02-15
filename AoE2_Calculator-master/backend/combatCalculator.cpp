@@ -59,7 +59,10 @@ CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
 }
 
 
-CombatCalculatorState::CombatCalculatorState()
+CombatCalculatorState::CombatCalculatorState(int distanceBetweenTheBattleParticipants,
+EntityOutputConfig entityOutputConfig)
+  : distanceBetweenTheBattleParticipants{distanceBetweenTheBattleParticipants}
+  , entityOutputConfig{entityOutputConfig}
 {
   // Set all of the stored values to their initial values
   startingBattleParticipantQuantityP1 = 0;
@@ -422,15 +425,15 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
     std::cout << inputMessage << "<br>";
   }
 
-  p1BattleParticipant.outputEntity(player1Name);
+  p1BattleParticipant.outputEntity(player1Name, m_state->entityOutputConfig);
   // Do not show monks as being dead if started with 0
   if (
     (p1BattleAssistant.entityQuantity >= 0)
     && (p1BattleAssistant.initialEntityQuantity != 0)) {
     std::cout << "(Assisting) ";
-    p1BattleAssistant.outputEntity(player1Name);
+    p1BattleAssistant.outputEntity(player1Name ,m_state->entityOutputConfig);
   }
-  p2BattleParticipant.outputEntity(player2Name);
+  p2BattleParticipant.outputEntity(player2Name, m_state->entityOutputConfig);
 
          // Do not show monks as being dead if started with 0
   if (
@@ -439,7 +442,7 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
 
   {
     std::cout << "(Assisting) ";
-    p2BattleAssistant.outputEntity(player2Name);
+    p2BattleAssistant.outputEntity(player2Name,  m_state->entityOutputConfig);
   }
 
 }
@@ -1463,6 +1466,10 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   int& opposingPlayerBuildingDamage,
   int& opposingPlayerEntityDeaths
   ){
+
+  // Read distanceBetweenTheBattleParticipants
+  // m_state->distanceBetweenTheBattleParticipants
+
   //  Track if changes occured to the quantity
   int opposingPlayerStartingQuantity = opposingPlayerBattleParticipant.entityQuantity;
   int opposingPlayerEndingQuantity = opposingPlayerBattleParticipant.entityQuantity;

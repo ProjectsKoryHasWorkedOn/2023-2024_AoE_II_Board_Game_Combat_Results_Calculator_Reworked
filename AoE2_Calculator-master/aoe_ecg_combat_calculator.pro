@@ -47,6 +47,7 @@ HEADERS += \
     aliases.h \
     backend/combatCalculator.h \
     backend/entity.h \
+    backend/entity_output_config.h \
     backend/fileImporter.h \
     backend/modifiersCalculator.h \
     backend/run_game.h \

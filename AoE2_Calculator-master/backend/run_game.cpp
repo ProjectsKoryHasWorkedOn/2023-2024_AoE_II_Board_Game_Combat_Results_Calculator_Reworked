@@ -4,6 +4,8 @@
 #include "entity.h"              // Using: entity class
 #include "fileImporter.h"        // Using: fileImporter class
 #include "modifiersCalculator.h" // Using: modifiers calculator class
+#include "run_game.h"
+
 #include <cstdlib>               // Using: exit(EXIT_FAILURE)
 #include <iostream>              // Using: cin, cout
 #include <memory>
@@ -108,7 +110,9 @@ static ActivePlayer getActivePlayerForNormalCombatRound(
 /** The main function **/
 void runGame(
   Database*                         database,
-  std::function<void(Player, bool)> onPlayerEntityDeath)
+  std::function<void(Player, bool)> onPlayerEntityDeath,
+  int distanceBetweenTheBattleParticipants,
+  EntityOutputConfig entityOutputConfig)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -224,7 +228,8 @@ void runGame(
   modifiersCalculator theModifiersCalculator{database};
 
          // Object: The combat calculator superclass and the combat rounds subclasses
-  CombatCalculatorState     combatCalculatorState{};
+  CombatCalculatorState     combatCalculatorState{distanceBetweenTheBattleParticipants,
+              entityOutputConfig};
 
   CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
   combatCalculator*         theCombatCalculator;
@@ -278,15 +283,15 @@ void runGame(
          // modified (before further calculations occur)
   std::cout << "You entered..."
             << "<br>";
-  p1BattleParticipant.outputEntity(playerNames[0]);
+  p1BattleParticipant.outputEntity(playerNames[0], entityOutputConfig);
   if (p1BattleAssistant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p1BattleAssistant.outputEntity(playerNames[0]);
+    p1BattleAssistant.outputEntity(playerNames[0], entityOutputConfig);
   }
-  p2BattleParticipant.outputEntity(playerNames[1]);
+  p2BattleParticipant.outputEntity(playerNames[1], entityOutputConfig);
   if (p2BattleAssistant.entityQuantity > 0) {
     std::cout << "(Assisting) ";
-    p2BattleAssistant.outputEntity(playerNames[1]);
+    p2BattleAssistant.outputEntity(playerNames[1], entityOutputConfig);
   }
 
   /** Part 3: Applying further modifiers **/

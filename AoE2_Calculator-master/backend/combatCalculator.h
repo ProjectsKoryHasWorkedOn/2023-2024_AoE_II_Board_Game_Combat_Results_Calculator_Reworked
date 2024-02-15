@@ -42,9 +42,13 @@ private:
 
 class CombatCalculatorState {
 public:
-  CombatCalculatorState();
+   CombatCalculatorState(
+    int distanceBetweenTheBattleParticipants,
+    EntityOutputConfig entityOutputConfig);
 
-public:
+  int distanceBetweenTheBattleParticipants;
+  EntityOutputConfig entityOutputConfig;
+
   /** Values attained sometime during the running of the combat rounds **/
 
   int startingBattleParticipantQuantityP1, startingBattleParticipantQuantityP2;

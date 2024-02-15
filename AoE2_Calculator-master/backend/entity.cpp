@@ -285,8 +285,16 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
 }
 
 // Function: Return entity information
-void Entity::outputEntity(std::string playerName)
+void Entity::outputEntity(std::string playerName, EntityOutputConfig entityOutputConfig)
 {
+  // TODO: HERE
+  const bool showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput{
+    entityOutputConfig.showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+  };
+  const bool showFurtherInformationAboutTheBattleParticipantsInTheOutput{
+    entityOutputConfig.showFurtherInformationAboutTheBattleParticipantsInTheOutput
+  };
+
   // Behaviour: Display the player's name first (no matter what)
   displayColorfulText("bold", "white", "default", playerName + "'s", false);
   std::cout << " ";

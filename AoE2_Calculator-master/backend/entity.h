@@ -3,6 +3,8 @@
 #include <iostream> // Using: cin, cout
 #include <string>   // Using: string
 
+#include "entity_output_config.h"
+
 /** Class: Entity **/
 struct Entity {
   // Variables/Array: Store entity information
@@ -87,7 +89,7 @@ struct Entity {
     bool        isLineBreak);
 
   // Function: Return entity information
-  void outputEntity(std::string playerName);
+  void outputEntity(std::string playerName, EntityOutputConfig entityOutputConfig);
 
   std::string getPluralName() const;
 };
