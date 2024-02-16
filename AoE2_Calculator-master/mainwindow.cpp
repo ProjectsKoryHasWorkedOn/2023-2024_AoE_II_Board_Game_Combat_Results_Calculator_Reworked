@@ -5,6 +5,7 @@
 #include "database.hpp"
 #include "developerwindow.hpp"
 #include "dialog_input.h"
+#include "outputwindow.h"
 #include "file_paths.h"
 #include "pdfwindow.hpp"
 #include "soundEffects.h" // Sound playing class
@@ -2467,3 +2468,17 @@ void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(
 {
   QToolTip::showText(QCursor::pos(), QString("%1").arg(position), nullptr);
 }
+
+
+
+
+void MainWindow::on_pushButton_clicked()
+{
+  qDebug() << "clicked";
+
+  outputwindow outputWindow(ui.gameOutputTextEdit);
+  outputWindow.exec();
+
+
+}
+

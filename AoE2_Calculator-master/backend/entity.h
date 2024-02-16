@@ -60,16 +60,13 @@ struct Entity {
     onlyAttacksOnceInTheFirstRoundOfCombat; /* Where a Standard or Ranged round
                                                counts as the first round */
   bool dealsAreaEffectDamage;
-  bool isKamikaze; /* Suicide attacks */
+  bool isKamikaze;  /* Suicide attacks */
   int  entitiesArmorClasses;
   // ^ Obtained via DB
 
   int healsAvailable;
 
   int initialEntityQuantity;
-
-  // Store toggle for outputting armor classes
-  bool showArmorClassesInOutput;
 
   // Functions: The constructor and deconstructor
   Entity();

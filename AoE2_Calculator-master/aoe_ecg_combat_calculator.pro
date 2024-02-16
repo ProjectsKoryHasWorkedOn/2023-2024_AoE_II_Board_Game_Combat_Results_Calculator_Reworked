@@ -37,6 +37,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     output_redirector.cpp \
+    outputwindow.cpp \
     pdfwindow.cpp \
     soundEffects.cpp \
     stream_buffer.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
     mainwindow.h \
     mainwindow.hpp \
     output_redirector.h \
+    outputwindow.h \
     pdfwindow.hpp \
     player.h \
     soundEffects.h \
@@ -81,6 +83,7 @@ FORMS += \
     aboutwindow.ui \
     developerwindow.ui \
     mainwindow.ui \
+    outputwindow.ui \
     pdfwindow.ui
 
 # Default rules for deployment.

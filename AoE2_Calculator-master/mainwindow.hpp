@@ -131,6 +131,9 @@ private slots:
 
   void on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(int position);
 
+
+  void on_pushButton_clicked();
+
 private:
   void initializeEntityAliases();
 
