@@ -351,6 +351,10 @@ public:
     float& givenPlayerPointsGained,
     bool&  givenPlayerIsFightingABuilding,
 
+
+    Entity& givenPlayerBattleParticipant,
+    bool& givenPlayerIsInRange,
+
     // Opposing player stuff
     std::string& opposingPlayerName,
     Entity&      opposingPlayerBattleParticipant,
@@ -377,6 +381,8 @@ public:
     bool&   givenPlayerBombardmentEntityActivated,
     float&  givenPlayerRemainingDamage,
     int&    givenPlayerRoundAttackModifiers,
+    bool& givenPlayerIsInRange,
+
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     int&    opposingPlayerBuildingDamage,
@@ -414,6 +420,7 @@ public:
     bool&   givenPlayerIsFightingAUnit,
     float&  givenPlayerPointsGained,
     int&    givenPlayerEntityDeaths,
+    bool& givenPlayerIsInRange,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     int*    opposingPlayerEvents,
@@ -421,8 +428,7 @@ public:
     int&    opposingPlayerBuildingDamage,
     int&    opposingPlayerDamageDie);
 
-  void applyingStandardRoundOutcomeForAnIndividualPlayer(
-    // Shared stuff
+  void applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared stuff
     int& numberOfTimesToRunTheStandardRound,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
@@ -430,10 +436,12 @@ public:
     bool&   givenPlayerHasAEntityThatActivated,
     bool&   givenPlayerIsFightingAUnit,
     float&  givenPlayerPointsGained,
+    bool &givenPlayerIsFightingBuilding,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     float&  opposingPlayerPointsGained,
-    int&    opposingPlayerEntityDeaths);
+    int&    opposingPlayerEntityDeaths,
+    int& opposingPlayerBuildingDamage);
 
   void outputtingStandardRoundOutcomeForAnIndividualPlayer(
     // Given player stuff
@@ -442,6 +450,10 @@ public:
     float& givenPlayerPointsGained,
 
     bool& givenPlayerIsFightingABuilding,
+
+    Entity& givenPlayerBattleParticipant,
+    bool& givenPlayerIsInRange,
+
     // Opposing player stuff
     std::string& opposingPlayerName,
     Entity&      opposingPlayerBattleParticipant,

@@ -1120,17 +1120,13 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingUnit = false;
   }
 
-  // @todo: Kory Add an event that allows for archers to target buildings
-
+ // Event that allows archers to attack buildigns
   if (givenPlayerEvents[41] == 1) {
     givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true;
   }
   else {
     givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = false;
   }
-
-  // givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true if event is
-  // active else false
 
   // Apply the effects of event 33
   if (givenPlayerEvents[33] == 1) {
@@ -1506,11 +1502,21 @@ void bombardmentRounds::outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
   float& givenPlayerPointsGained,
   bool&  givenPlayerIsFightingABuilding,
 
+  Entity& givenPlayerBattleParticipant,
+  bool& givenPlayerIsInRange,
+
   // Opposing player stuff
   std::string& opposingPlayerName,
   Entity&      opposingPlayerBattleParticipant,
   int&         opposingPlayerDamageDie)
 {
+  // Behavior: Display if it wasn't able to fight due to being out of range
+  if(givenPlayerIsInRange == false){
+    std::cout << givenPlayerBattleParticipant.entityName << " is unable to range " << opposingPlayerBattleParticipant.entityName << "<br>";
+  }
+
+
+
   // Behaviour: Display how many damage die to place if appropriate
   if (givenPlayerIsFightingABuilding == true) {
     if (
@@ -1541,8 +1547,7 @@ void bombardmentRounds::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   int&    opposingPlayerBuildingDamage,
   int&    opposingPlayerEntityDeaths)
 {
-  // Read distanceBetweenTheBattleParticipants
-  // m_state->distanceBetweenTheBattleParticipants
+
 
   //  Track if changes occured to the quantity
   int opposingPlayerStartingQuantity
@@ -1624,6 +1629,7 @@ void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   bool&   givenPlayerBombardmentEntityActivated,
   float&  givenPlayerRemainingDamage,
   int&    givenPlayerRoundAttackModifiers,
+  bool& givenPlayerIsInRange,
 
   // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
@@ -1651,33 +1657,31 @@ void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingUnit = false;
   }
 
-  // todo @kory add condition like
-  bool givenPlayerIsInRange;
-  /*
-   if(givenPlayerBattleParticipant.maximumRange <= distanceBetweenPlayersValue)
 
-    AND
 
-    if(givenPlayerBattleParticipant.minimumRange >= distanceBetweenPlayersValue)
+         // Behavior: Check if what's fighting can fight / fight back
+  bool givenPlayerNotInMinimumRange = false, givenPlayerNotOutOfMaximumRange = false;
 
-   givenPlayerIsInRange = true;
+  if(m_state->distanceBetweenTheBattleParticipants >= givenPlayerBattleParticipant.minimumRange)
+  {
+    givenPlayerNotInMinimumRange = true;
+  }
 
-    }
-    else{
-    givenPlayerIsInRange = false;
+  if(m_state->distanceBetweenTheBattleParticipants <= givenPlayerBattleParticipant.maximumRange){
+    givenPlayerNotOutOfMaximumRange = true;
+  }
 
-    }
+  if(givenPlayerNotInMinimumRange == true && givenPlayerNotOutOfMaximumRange == true){
+    givenPlayerIsInRange = true;
+  }
 
-   */
+
 
   // Behaviour: Calculate the damage against buildings if player 1 is
   // fighting a building
   givenPlayerBombardmentEntityActivated = false;
 
-  // @kory add that  givenPlayerIsInRange condition on top of this condition for
-  // this to run
-
-  if (givenPlayerIsFightingBuilding == true) {
+  if (givenPlayerIsFightingBuilding == true && givenPlayerIsInRange == true) {
     opposingPlayerBuildingDamage = ( ((givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity) + givenPlayerRoundAttackModifiers) - ((opposingPlayerBattleParticipant.entityHealth) % roundDownBasedOnMultiplesOfThisNumber));
     opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
     givenPlayerRemainingDamage += calculateRemainingDamage(
@@ -1692,10 +1696,7 @@ void bombardmentRounds::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   // Behaviour: Calculate the damage against units if player 1 is fighting a
   // unit
 
-  // @kory add that givenPlayerIsInRange condition on top of this condition for
-  // this to run
-
-  if (givenPlayerIsFightingUnit == true) {
+  if (givenPlayerIsFightingUnit == true && givenPlayerIsInRange == true) {
     // Behaviour: The damage only applies if p1 has a Galley or Fire Ship
     if (
       (givenPlayerBattleParticipant.armorClass[21] == true)
@@ -1745,6 +1746,7 @@ void bombardmentRounds::roundOutcome(
       = 0; //  Declare the amount of damage die to place onto buildings
   float p2PointsGained = 0,
         p1PointsGained = 0; //  Declare the amount of points awarded
+  bool p1InRange = false, p2InRange = false; // Declare if the bombardment entity is in range
 
   // Behaviour: Run the bombardment battle round for X times
   for (int numberOfTimesToRunTheBombardmentRound = 0;
@@ -1770,6 +1772,7 @@ void bombardmentRounds::roundOutcome(
           p1BombardmentEntityActivated,
           p1RemainingDamage,
           p1RoundAttackModifiers,
+          p1InRange,
           p2BattleParticipant,
           p2BuildingDamage,
           p2DamageDie,
@@ -1788,6 +1791,7 @@ void bombardmentRounds::roundOutcome(
           p2BombardmentEntityActivated,
           p2RemainingDamage,
           p2RoundAttackModifiers,
+          p2InRange,
           p1BattleParticipant,
           p1BuildingDamage,
           p1DamageDie,
@@ -1844,6 +1848,8 @@ void bombardmentRounds::roundOutcome(
             player1Name,
             p1PointsGained,
             p1IsFightingBuilding,
+            p1BattleParticipant,
+            p1InRange,
             player2Name,
             p2BattleParticipant,
             p2DamageDie);
@@ -1851,6 +1857,8 @@ void bombardmentRounds::roundOutcome(
             player2Name,
             p2PointsGained,
             p2IsFightingBuilding,
+            p2BattleParticipant,
+            p2InRange,
             player1Name,
             p1BattleParticipant,
             p1DamageDie);
@@ -1889,6 +1897,8 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
   bool&   givenPlayerIsFightingAUnit,
   float&  givenPlayerPointsGained,
   int&    givenPlayerEntityDeaths,
+  bool& givenPlayerIsInRange,
+
   // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
   int*    opposingPlayerEvents,
@@ -2042,10 +2052,27 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
+
+         // Behavior: Check if what's fighting can fight / fight back
+  bool givenPlayerNotInMinimumRange = false, givenPlayerNotOutOfMaximumRange = false;
+
+  if(m_state->distanceBetweenTheBattleParticipants >= givenPlayerBattleParticipant.minimumRange)
+  {
+    givenPlayerNotInMinimumRange = true;
+  }
+
+  if(m_state->distanceBetweenTheBattleParticipants <= givenPlayerBattleParticipant.maximumRange){
+    givenPlayerNotOutOfMaximumRange = true;
+  }
+
+  if(givenPlayerNotInMinimumRange == true && givenPlayerNotOutOfMaximumRange == true){
+    givenPlayerIsInRange = true;
+  }
+
   // Behaviour: Calculate the damage against buildings if player 1 is fighting a
   // building
 
-  if (givenPlayerIsFightingBuilding == true) {
+  if (givenPlayerIsFightingBuilding == true && givenPlayerIsInRange == true) {
     opposingPlayerBuildingDamage = (givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity);
     opposingPlayerBuildingDamage
       -= (opposingPlayerBuildingDamage % roundDownBasedOnMultiplesOfThisNumber);
@@ -2062,7 +2089,7 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
   // Behaviour: Calculate the damage against units if player 1 is fighting
   // a unit
 
-  if (givenPlayerIsFightingAUnit == true) {
+  if (givenPlayerIsFightingAUnit == true && givenPlayerIsInRange == true) {
     // Behaviour: Check if player 1 has an area effect unit and if so then
     // apply area effect damage
     if (givenPlayerBattleParticipant.dealsAreaEffectDamage == true) {
@@ -2133,32 +2160,10 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
-  // Behaviour: Apply the results for p1 if the activation conditions were
-  // met
-  if (givenPlayerHasAEntityThatActivated == true) {
-    // Behaviour: Apply the results to buildings or non-buildings
-    if (givenPlayerIsFightingBuilding == true) {
-      // Behaviour: Decrease the building HP
-      if (opposingPlayerBuildingDamage != 0) {
-        // Behaviour: Set the point value to the buildings point
-        givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
 
-        opposingPlayerBattleParticipant.entityHealth
-          -= opposingPlayerBuildingDamage;
 
-        // Behaviour: if the HP of the building is > 0 then do not keep
-        // the set the point value
-        if (opposingPlayerBattleParticipant.entityHealth > 0) {
-          givenPlayerPointsGained = 0;
-        }
 
-        // Update the quantity of the building
-        if (opposingPlayerBattleParticipant.entityHealth < 0) {
-          opposingPlayerBattleParticipant.entityQuantity -= 1;
-        }
-      }
-    }
-  }
+
 }
 
 void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
@@ -2168,11 +2173,21 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
   float& givenPlayerPointsGained,
   bool&  givenPlayerIsFightingABuilding,
 
+
+  Entity& givenPlayerBattleParticipant,
+  bool& givenPlayerIsInRange,
+
   // Opposing player stuff
   std::string& opposingPlayerName,
   Entity&      opposingPlayerBattleParticipant,
   int&         opposingPlayerDamageDie)
 {
+  // Behavior: Display if it wasn't able to fight due to being out of range
+  if(givenPlayerIsInRange == false){
+    std::cout << givenPlayerBattleParticipant.entityName << " is unable to range " << opposingPlayerBattleParticipant.entityName << "<br>";
+  }
+
+
   // Behaviour: Display how many damage die to place if appropriate
   if (givenPlayerIsFightingABuilding == true) {
     if (
@@ -2194,8 +2209,7 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
 
 // Function: Apply the outcome of a standard battle
 
-void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
-  // Shared stuff
+void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared stuff
   int& numberOfTimesToRunTheStandardRound,
   // Given player stuff
   Entity& givenPlayerBattleParticipant,
@@ -2203,10 +2217,13 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
   bool&   givenPlayerHasAEntityThatActivated,
   bool&   givenPlayerIsFightingAUnit,
   float&  givenPlayerPointsGained,
+  bool& givenPlayerIsFightingBuilding,
+
   // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
   float&  opposingPlayerPointsGained,
-  int&    opposingPlayerEntityDeaths)
+  int&    opposingPlayerEntityDeaths,
+  int &opposingPlayerBuildingDamage)
 {
   //  Track if changes occured to the quantity
 
@@ -2218,6 +2235,36 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
     = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
   // Behaviour: Apply the results to units
+
+
+
+         // Behaviour: Apply the results for p1 if the activation conditions were
+         // met
+  if (givenPlayerHasAEntityThatActivated == true) {
+    // Behaviour: Apply the results to buildings or non-buildings
+    if (givenPlayerIsFightingBuilding == true) {
+      // Behaviour: Decrease the building HP
+      if (opposingPlayerBuildingDamage != 0) {
+        // Behaviour: Set the point value to the buildings point
+        givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
+
+        opposingPlayerBattleParticipant.entityHealth
+          -= opposingPlayerBuildingDamage;
+
+               // Behaviour: if the HP of the building is > 0 then do not keep
+               // the set the point value
+        if (opposingPlayerBattleParticipant.entityHealth > 0) {
+          givenPlayerPointsGained = 0;
+        }
+
+               // Update the quantity of the building
+        if (opposingPlayerBattleParticipant.entityHealth < 0) {
+          opposingPlayerBattleParticipant.entityQuantity -= 1;
+        }
+      }
+    }
+
+
 
   if (givenPlayerIsFightingAUnit == true) {
     // Behavior: Store the starting quantity
@@ -2258,6 +2305,8 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
       givenPlayerPointsGained = 0;
     }
   }
+}
+
 
   // Apply the effects of certain entities that automatically die in the
   // second round of combat Make sure that the standard round got
@@ -2282,6 +2331,7 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(
       }
     }
   }
+
 }
 
 // Function: Calculate the outcome of a standard round of battle
@@ -2309,6 +2359,7 @@ void standardRounds::roundOutcome(
   int p1DamageDie = 0,
       p2DamageDie
       = 0; //  Declare the amount of damage die to place onto buildings
+  bool p1IsInRange = false, p2IsInRange = false; // Declare if it's in range of what it's attacking
 
   /* Run the standard battle round for X times */
   for (int numberOfTimesToRunTheStandardRound = 0;
@@ -2344,6 +2395,7 @@ void standardRounds::roundOutcome(
           p1IsFightingUnit,
           p1PointsGained,
           p1EntityDeaths,
+          p1IsInRange,
           p2BattleParticipant,
           p2Events,
           p2EntityDeaths,
@@ -2367,6 +2419,7 @@ void standardRounds::roundOutcome(
           p2IsFightingUnit,
           p2PointsGained,
           p2EntityDeaths,
+          p2IsInRange,
           p1BattleParticipant,
           p1Events,
           p1EntityDeaths,
@@ -2385,9 +2438,11 @@ void standardRounds::roundOutcome(
           p1EntityActivated,
           p1IsFightingUnit,
           p1PointsGained,
+          p1IsFightingBuilding,
           p2BattleParticipant,
           p2PointsGained,
-          p2EntityDeaths);
+          p2EntityDeaths,
+          p2BuildingDamage);
 
         applyingStandardRoundOutcomeForAnIndividualPlayer(
           numberOfTimesToRunTheStandardRound,
@@ -2396,9 +2451,11 @@ void standardRounds::roundOutcome(
           p2EntityActivated,
           p2IsFightingUnit,
           p2PointsGained,
+          p2IsFightingBuilding,
           p1BattleParticipant,
           p1PointsGained,
-          p1EntityDeaths);
+          p1EntityDeaths,
+          p1BuildingDamage);
       }
 
       // Behaviour: Check if the remaining damage value triggers a death
@@ -2430,6 +2487,8 @@ void standardRounds::roundOutcome(
           player1Name,
           p1PointsGained,
           p1IsFightingBuilding,
+          p1BattleParticipant,
+          p1IsInRange,
           player2Name,
           p2BattleParticipant,
           p2DamageDie);
@@ -2437,6 +2496,8 @@ void standardRounds::roundOutcome(
           player2Name,
           p2PointsGained,
           p2IsFightingBuilding,
+          p2BattleParticipant,
+          p2IsInRange,
           player1Name,
           p1BattleParticipant,
           p1DamageDie);

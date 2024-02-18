@@ -432,7 +432,13 @@ void Entity::outputEntity(
 
     if (pointValue != 0) {
       if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-      std::cout << ", and are worth a total of ";
+        if(entityQuantity > 1){
+                std::cout << ", and are worth a total of ";
+        }
+        else{
+                std::cout << ", and is worth a total of ";
+        }
+
 
       }
       else{
