@@ -68,6 +68,8 @@ struct Entity {
 
   int initialEntityQuantity;
 
+  int numberOfRoundsItHasBeenIn;
+
   // Functions: The constructor and deconstructor
   Entity();
   ~Entity();

@@ -529,11 +529,11 @@ void monkRounds::outputtingMonkRoundOutcomeForAnIndividualPlayer(
   // Shows whether or not the given player's monk powers activated if
   // appropriate
   if (activePlayer != ActivePlayer::None) {
-    if (givenPlayerMonkPowersActivated == false) {
+    if (givenPlayerMonkPowersActivated == false && givenPlayerBattleAssistant.entityQuantity > 0) {
       std::cout << givenPlayerName << "'s monk powers failed to activate"
                 << "<br>";
     }
-    else if (givenPlayerMonkPowersActivated == true) {
+    else if (givenPlayerMonkPowersActivated == true && givenPlayerBattleAssistant.entityQuantity > 0) {
       std::cout << givenPlayerName << "'s monk powers activated"
                 << "<br>";
     }
@@ -1033,6 +1033,9 @@ void monkRounds::roundOutcome(
           monkPowersActivatedP1,
           p1BattleParticipant,
           p1BattleAssistant);
+
+        p1BattleParticipant.numberOfRoundsItHasBeenIn++;
+
         outputtingMonkRoundOutcomeForAnIndividualPlayer(
           activePlayer,
           player2Name,
@@ -1040,6 +1043,11 @@ void monkRounds::roundOutcome(
           monkPowersActivatedP2,
           p2BattleParticipant,
           p2BattleAssistant);
+
+
+        p2BattleParticipant.numberOfRoundsItHasBeenIn++;
+
+
       }
 
     } // End if conditional checking for no deaths
@@ -1363,6 +1371,9 @@ void archerRounds::roundOutcome(
           p2BuildingDamage,
           p2DamageDie);
 
+
+
+
       } // End of p1 stuff conditional
 
       // Determine if we'll be running the calculations for P1 and P2
@@ -1386,6 +1397,9 @@ void archerRounds::roundOutcome(
           p1EntityDeaths,
           p1BuildingDamage,
           p1DamageDie);
+
+
+
 
       } // End of p2 stuff conditional
 
@@ -1438,6 +1452,11 @@ void archerRounds::roundOutcome(
           p2BattleParticipant,
           p2DamageDie,
           player2Name);
+
+
+
+        p1BattleParticipant.numberOfRoundsItHasBeenIn++;
+
         outputtingArcherRoundOutcomeForAnIndividualPlayer(
           player2Name,
           p2PointsGained,
@@ -1445,6 +1464,8 @@ void archerRounds::roundOutcome(
           p1BattleParticipant,
           p1DamageDie,
           player1Name);
+
+        p2BattleParticipant.numberOfRoundsItHasBeenIn++;
 
         std::cout << "<br>";
 
@@ -1492,6 +1513,11 @@ void archerRounds::roundOutcome(
       }
 
     } // Check if dead or retreating conditional end
+
+
+
+
+
   }   // For loop end
 } // Archer round function end
 
@@ -1853,6 +1879,10 @@ void bombardmentRounds::roundOutcome(
             player2Name,
             p2BattleParticipant,
             p2DamageDie);
+
+          p1BattleParticipant.numberOfRoundsItHasBeenIn++;
+
+
           outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
             player2Name,
             p2PointsGained,
@@ -1862,6 +1892,9 @@ void bombardmentRounds::roundOutcome(
             player1Name,
             p1BattleParticipant,
             p1DamageDie);
+
+
+          p2BattleParticipant.numberOfRoundsItHasBeenIn++;
 
           std::cout << "<br>";
 
@@ -2128,22 +2161,27 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
   }
 
   // Behaviour: Clear the results if the entity only attacks once (in the
-  // first round of combat) and we are not in the 1st round
+  // first round of combat) and this will not be the first round it has been in
+
+
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheFirstRoundOfCombat
      == true)
-    && (numberOfTimesToRunTheStandardRound + 1 != 1)) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 1)
+    ) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
   }
 
   // Behaviour: Clear the results if the entity only attacks in the second
-  // round of combat and we are not in the 2nd round
+  // round of combat and this will not be the second round it has been in
+
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheSecondRoundOfCombat
      == true)
-    && (numberOfTimesToRunTheStandardRound + 1 != 2)) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 2)
+    ) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
@@ -2312,7 +2350,7 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared
   // second round of combat Make sure that the standard round got
   // activated to avoid an arithmetic exception
   if (givenPlayerHasAEntityThatActivated == true) {
-    if (numberOfTimesToRunTheStandardRound + 1 == 2) {
+    if (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 == 2) {
       if (givenPlayerBattleParticipant.isKamikaze == true) {
         opposingPlayerPointsGained
           = (givenPlayerBattleParticipant.pointValue / givenPlayerBattleParticipant.entityQuantity);
@@ -2492,6 +2530,11 @@ void standardRounds::roundOutcome(
           player2Name,
           p2BattleParticipant,
           p2DamageDie);
+
+
+        p1BattleParticipant.numberOfRoundsItHasBeenIn++;
+
+
         outputtingStandardRoundOutcomeForAnIndividualPlayer(
           player2Name,
           p2PointsGained,
@@ -2501,6 +2544,8 @@ void standardRounds::roundOutcome(
           player1Name,
           p1BattleParticipant,
           p1DamageDie);
+
+        p2BattleParticipant.numberOfRoundsItHasBeenIn++;
 
         std::cout << "<br>";
 
@@ -2524,6 +2569,10 @@ void standardRounds::roundOutcome(
         }
       }
     }
+
+
+
+
   }
 }
 

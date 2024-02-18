@@ -27,6 +27,7 @@ Entity::Entity()
   isKamikaze                              = false;
   initialEntityQuantity                   = 0;
   healsAvailable                          = 0;
+  numberOfRoundsItHasBeenIn = 0;
 }
 
 Entity::~Entity()
