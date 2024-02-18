@@ -12,6 +12,8 @@
 #include <QLabel>
 #include <ranges>
 
+
+
 #include "cross-window_palette.h" // Coloring of the UI
 
 // Libraries for gifs
@@ -1657,6 +1659,38 @@ void MainWindow::markInitialPlayerMedievalAge()
     = m_player_medieval_age.player1MedievalAge().PlayerMedievalAge();
   representationOfPlayer2Age
     = m_player_medieval_age.player2MedievalAge().PlayerMedievalAge();
+
+
+  if(representationOfPlayer1Age == 1){
+    player1Age = "Dark Age";
+  }
+  else if(representationOfPlayer1Age == 2){
+    player1Age = "Feudal Age";
+  }
+  else if(representationOfPlayer1Age == 3){
+    player1Age = "Castle Age";
+  }
+  else if(representationOfPlayer1Age == 4){
+    player1Age = "Imperial Age";
+  }
+
+  if(representationOfPlayer2Age == 1){
+    player2Age = "Dark Age";
+  }
+  else if(representationOfPlayer2Age == 2){
+    player2Age = "Feudal Age";
+  }
+  else if(representationOfPlayer2Age == 3){
+    player2Age = "Castle Age";
+  }
+  else if(representationOfPlayer2Age == 4){
+    player2Age = "Imperial Age";
+  }
+
+
+  filterBasedOnAgeAndCivilization("1");
+  filterBasedOnAgeAndCivilization("2");
+
 }
 
 void MainWindow::selectInitialEntities()
