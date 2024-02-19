@@ -685,8 +685,39 @@ void Entity::outputEntity(
 
 std::string Entity::getPluralName() const
 {
+
+  qDebug() << entityName;
+
   if (entityName == "Man-at-Arms") {
     return "Men-at-Arms";
+  }
+
+  if(entityName == "Scout_Cavalry"){
+    return entityName;
+  }
+
+  if(entityName == "Light_Cavalry"){
+    return entityName;
+  }
+
+  if (entityName == "Crossbowman") {
+    return "Crossbowmen";
+  }
+
+  if (entityName == "Long_Swordsman") {
+    return "Long_Swordsmen";
+  }
+
+  if (entityName == "Spearman") {
+    return "Spearmen";
+  }
+
+  if (entityName == "Pikeman") {
+    return "Pikemen";
+  }
+
+  if (entityName == "Two-handed_Swordsman") {
+    return "Two-handed_Swordsmen";
   }
 
   return entityName + "s";

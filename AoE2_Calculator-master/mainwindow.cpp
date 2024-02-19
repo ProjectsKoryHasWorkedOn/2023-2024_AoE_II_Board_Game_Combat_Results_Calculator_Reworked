@@ -2355,7 +2355,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
   }
 
-  qDebug() << filePath;
+  /* qDebug() << filePath; */
 
   QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 

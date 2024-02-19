@@ -489,8 +489,8 @@ void runGame(
 
   const ActivePlayer fightMonksRangedRoundsActivePlayer{
     getActivePlayerForFightMonks(player1AttacksMonks, player2AttacksMonks)};
-  qDebug() << ">>>>>>>> active player for fight monks ranged:"
-           << fightMonksRangedRoundsActivePlayer;
+  /* qDebug() << ">>>>>>>> active player for fight monks ranged:"
+           << fightMonksRangedRoundsActivePlayer; */
   theCombatCalculator->roundOutcome(
     numberOfArcherCombatRounds,
     p1Events,
@@ -539,8 +539,8 @@ void runGame(
   const ActivePlayer rangedRoundActivePlayer{
     getActivePlayerForNormalCombatRound(
       player1AttacksMonks, player2AttacksMonks)};
-  qDebug() << ">>>>>>>> Active player for ranged rounds:"
-           << rangedRoundActivePlayer;
+  /* qDebug() << ">>>>>>>> Active player for ranged rounds:"
+           << rangedRoundActivePlayer; */
   theCombatCalculator->roundOutcome(
     numberOfArcherCombatRounds,
     p1Events,
@@ -606,8 +606,8 @@ void runGame(
 
     const ActivePlayer bombardMonksActivePlayer{
       getActivePlayerForFightMonks(player1AttacksMonks, player2AttacksMonks)};
-    qDebug() << ">>>>>>>>>> active player for bombard monks:"
-             << bombardMonksActivePlayer;
+    /* qDebug() << ">>>>>>>>>> active player for bombard monks:"
+             << bombardMonksActivePlayer; */
     theCombatCalculator->roundOutcome(
       numberOfBombardmentCombatRounds,
       p1Events,
@@ -656,8 +656,8 @@ void runGame(
     const ActivePlayer normalBombardmentActivePlayer{
       getActivePlayerForNormalCombatRound(
         player1AttacksMonks, player2AttacksMonks)};
-    qDebug() << ">>>>>>>> active player for normal bombardment round:"
-             << normalBombardmentActivePlayer;
+    /* qDebug() << ">>>>>>>> active player for normal bombardment round:"
+             << normalBombardmentActivePlayer; */
 
     // Behaviour: Calculate the damage dealt for numberOfBombardmentCombatRounds
     // rounds of bombardment combat and display the results
@@ -728,8 +728,8 @@ void runGame(
 
   const ActivePlayer fightMonksMeleeRoundsActivePlayer{
     getActivePlayerForFightMonks(player1AttacksMonks, player2AttacksMonks)};
-  qDebug() << ">>>>>>>> active player for fight monks melee:"
-           << fightMonksMeleeRoundsActivePlayer;
+  /* qDebug() << ">>>>>>>> active player for fight monks melee:"
+           << fightMonksMeleeRoundsActivePlayer; */
   theCombatCalculator->roundOutcome(
     numberOfNormalCombatRounds,
     p1Events,
@@ -778,8 +778,8 @@ void runGame(
   const ActivePlayer regularMeleeRoundActivePlayer{
     getActivePlayerForNormalCombatRound(
       player1AttacksMonks, player2AttacksMonks)};
-  qDebug() << ">>>>>>>> active player for regular melee round:"
-           << regularMeleeRoundActivePlayer;
+  /* qDebug() << ">>>>>>>> active player for regular melee round:"
+           << regularMeleeRoundActivePlayer; */
   theCombatCalculator->roundOutcome(
     numberOfNormalCombatRounds,
     p1Events,
