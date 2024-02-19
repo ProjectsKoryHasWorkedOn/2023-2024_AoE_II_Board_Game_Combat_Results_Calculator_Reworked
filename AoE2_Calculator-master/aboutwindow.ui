@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>246</height>
+    <height>367</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>40</y>
+     <y>70</y>
      <width>91</width>
      <height>20</height>
     </rect>
@@ -48,7 +48,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>70</y>
+     <y>100</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -61,7 +61,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>180</y>
      <width>91</width>
      <height>20</height>
     </rect>
@@ -74,7 +74,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>200</y>
      <width>381</width>
      <height>41</height>
     </rect>
@@ -89,8 +89,8 @@
   <widget class="QPushButton" name="okayButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>210</y>
+     <x>290</x>
+     <y>330</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -103,7 +103,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>90</y>
+     <y>120</y>
      <width>371</width>
      <height>51</height>
     </rect>
@@ -113,6 +113,61 @@
    </property>
    <property name="wordWrap">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="developers_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>371</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>[Developers]</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="assets_used_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>240</y>
+     <width>371</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>[Assets used]</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="assets_used_list_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>260</y>
+     <width>381</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>[Assets used list]</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="asset_rights_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>371</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>[Assets right]</string>
    </property>
   </widget>
  </widget>

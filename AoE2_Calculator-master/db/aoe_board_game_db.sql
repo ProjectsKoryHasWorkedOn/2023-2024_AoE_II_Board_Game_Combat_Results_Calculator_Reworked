@@ -330,7 +330,7 @@ VALUES
 ('1','Dock (Persian)','0','5','8','0','0','N','N','N','N'),
 ('1','Dock','0','5','8','0','0','N','N','N','N'),
 ('1','Farm','0','0','4','0','0','N','N','N','N'),
-('2','Palisade Gate','0','0','8','0','0','N','N','N','N'),
+('1','Palisade Gate','0','0','8','0','0','N','N','N','N'),
 ('1','Gold Mine (Japanese)','0','0','4','0','0','N','N','N','N'),
 ('1','Gold Mine','0','0','6','0','0','N','N','N','N'),
 ('1','House','0','0','2','0','0','N','N','N','N'),
@@ -355,7 +355,10 @@ VALUES
 ('4','The Golden Tent Of The Great Khan (Mongol)','0','0','0','0','0','N','N','N','N'),
 ('4','The Great Temple At Nara (Japanese)','0','0','','0','0','N','N','N','N'),
 ('4','The Palace Of Ctesiphon On The Tigris (Persian)','0','0','0','0','0','N','N','N','N'),
-('4','Tomb Of Theodoric (Goth)','0','0','0','0','0','N','N','N','N');
+('4','Tomb Of Theodoric (Goth)','0','0','0','0','0','N','N','N','N'),
+('2','Stone Gate','0','0','4','0','0','N','N','N','N'),
+('3','Fortified Gate','0','0','8','0','0','N','N','N','N'),
+('4','The Great Mosque at Samarra (Saracen)','0','0','','0','0','N','N','N','N');
 
 DROP TABLE IF EXISTS BuildingHealthBasedOnConstructionStatus;
 CREATE TABLE IF NOT EXISTS BuildingHealthBasedOnConstructionStatus(
@@ -430,7 +433,13 @@ VALUES
 ('38','25','110'),
 ('38','50','220'),
 ('38','75','330'),
-('38','100','440');
+('38','100','440'),
+('39','100','150'),
+('40','100','280'),
+('41','25','110'),
+('41','50','220'),
+('41','75','330'),
+('41','100','440');
 
 /* Tables with 2+ FKs */
 DROP TABLE IF EXISTS WhatTechnologiesAppliesToWhatArmorClasses;
@@ -1029,15 +1038,22 @@ VALUES
 ('36','2'),
 ('37','2'),
 ('38','2'),
+('39','2'),
+('40','2'),
+('41','2'),
 /* Stone defence armor class (15) */
 ('29','15'),
 ('34','15'),
 ('33','15'),
+('39','15'),
+('40','15'),
 /* Wall and gate armor class (18) */
 ('2','18'),
 ('24','18'),
 ('29','18'),
 ('34','18'),
+('39','18'),
+('40','18'),
 /* Castle armor class (4) */
 ('4','4'),
 ('5','4'),
@@ -1074,7 +1090,8 @@ VALUES
 ('35','4'),
 ('36','7'),
 ('37','5'),
-('38','3');
+('38','3'),
+('41','8');
 
 DROP TABLE IF EXISTS CivSpecificUnits;
 CREATE TABLE IF NOT EXISTS CivSpecificUnits(

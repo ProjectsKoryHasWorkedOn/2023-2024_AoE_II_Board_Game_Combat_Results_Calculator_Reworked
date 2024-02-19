@@ -130,8 +130,8 @@ int representationOfPlayer1Age;
 int representationOfPlayer2Age;
 
 // Get what age the player is in
-QString     player1Age = "Dark Age";
-QString     player2Age = "Dark Age";
+QString     player1Age;
+QString     player2Age;
 QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
@@ -487,6 +487,9 @@ QString MainWindow::tooltipReturner(QString name)
   }
   else if (name == "The Great Temple At Nara (Japanese)") {
     tooltipForIt = "<b>Aliases:</b> Wonder (Japanese)";
+  }
+  else if(name == "The Great Mosque at Samarra (Saracen)"){
+    tooltipForIt = "<b>Aliases:</b> Wonder (Saracen)";
   }
   /*
   else if (name == "Bombard Cannon"){
@@ -1524,6 +1527,12 @@ void MainWindow::initializeEntityAliases()
   m_aliases.add("Notre-Dame Cathedral (Frank)", "Wonder (Frank)");
   m_aliases.add("Stave Church At Urnes (Viking)", "Wonder (Viking)");
   m_aliases.add("The Great Temple At Nara (Japanese)", "Wonder (Japanese)");
+  m_aliases.add("The Great Mosque at Samarra (Saracen)", "Wonder (Saracen)");
+
+
+
+
+
   m_aliases.add("Knight", "Kt");
   m_aliases.add("Knight (Frank)", "Kt (Frank)");
   m_aliases.add("Knight (Persian)", "Kt (Persian)");
@@ -2111,6 +2120,79 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     }
   }
 
+
+         // Manually correct it for edge cases
+  if( (currentSelection.contains("Gold Mine")) ||
+      (currentSelection.contains("Stone Mine")) ){
+    currentSelection = "Mining Camp";
+  }
+
+  int farmNumber = 0;
+  if(currentSelection.contains("Farm")){
+    farmNumber = rand() % 2;
+
+    if(farmNumber == 0){
+       currentSelection = "Farm Corn";
+    }
+    else if(farmNumber == 1){
+       currentSelection = "Farm Grape";
+    }
+    else{
+       Q_UNREACHABLE();
+    }
+  }
+
+  if(currentSelection.contains("Trebuchet")){
+
+    currentSelection = "Trebuchet Unpacked";
+  }
+
+
+  if(currentSelection.contains("Charlamagne")){
+    currentSelection = "Wonder Briton";
+  }
+  else if(currentSelection.contains("Rock Of Cashel")){
+    currentSelection = "Wonder Celt";
+  }
+  else if(currentSelection.contains("The Golden Tent Of The Great Khan")){
+    currentSelection = "Wonder Mongol";
+  }
+  else if(currentSelection.contains("The Palace Of Ctesiphon On The Tigris")){
+    currentSelection = "Wonder Persian";
+  }
+  else if(currentSelection.contains("Tomb Of Theodoric")){
+    currentSelection = "Wonder Goth";
+  }
+  else if(currentSelection.contains("Notre-Dame Cathedral")){
+    currentSelection = "Wonder Frank";
+  }
+    else if(currentSelection.contains("Stave Church At Urnes")){
+       currentSelection = "Wonder Viking";
+    }
+    else if(currentSelection.contains("The Great Temple At Nara")){
+       currentSelection = "Wonder Japanese";
+    }
+    else if(currentSelection.contains("The Great Mosque at Samarra")){
+       currentSelection = "Wonder Saracen";
+    }
+
+
+  if( currentSelection.contains("Elite")
+    & (currentSelection.contains("("))
+     & (currentSelection.contains(")"))
+
+
+      )
+
+
+  {
+
+    currentSelection.remove(0, 6);
+  }
+
+
+
+
   // Make the currentSelection string have the same name as it's corresponding
   // file
   fileName = (convertSpacesToUnderscores(currentSelection)).toLower();
@@ -2125,6 +2207,38 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   }
 
   // Manually correct it for edge cases
+  bool isADarkAgeBuilding = false;
+
+  if (building == true) {
+    for (int i = 0; i < age1BuildingNames.length(); i++) {
+       if (currentSelection.contains(age1BuildingNames[i])) {
+        isADarkAgeBuilding = true;
+        fileAge            = "dark_age";
+       }
+    }
+  }
+
+
+  if(currentSelection.contains("Mining Camp")){
+    if(player == "1"){
+       if(p1BuildingArchitecturalStyle.contains("asian")){
+        p1BuildingArchitecturalStyle = "_asian";
+       }
+    }
+    else if(player == "2"){
+       if(p2BuildingArchitecturalStyle.contains("asian")){
+        p2BuildingArchitecturalStyle = "_asian";
+       }
+    }
+  }
+
+
+  qDebug() << "current selection: " << currentSelection;
+  if(currentSelection.contains("Lumber Camp")){
+    fileAge = "feudal_age";
+    isADarkAgeBuilding = false;
+  }
+
   if (
     ((currentSelection.contains("Barracks"))
      || (currentSelection.contains("Archery Range"))
@@ -2133,29 +2247,30 @@ void MainWindow::getEntityAnimationForSelectedEntity(
      || (currentSelection.contains("Dock"))
      || (currentSelection.contains("House"))
      || (currentSelection.contains("Mill"))
-     || (currentSelection.contains("Monastery")))
+     || (currentSelection.contains("Monastery"))
+     || (currentSelection.contains("Fortified Gate"))
+      || (currentSelection.contains("Fortified Wall"))
+|| (currentSelection.contains("Stable"))
+|| (currentSelection.contains("Siege Workshop"))
+
+     )
     && (fileAge == "imperial_age")) {
     fileAge = "castle_age";
   }
 
   if (
-    ((currentSelection.contains("Stone Mine"))
-     || (currentSelection.contains("Gold Mine"))
-     || (currentSelection.contains("Lumber Camp")))
+    ((currentSelection.contains("Mining Camp"))
+     || (currentSelection.contains("Stone Wall")) || (currentSelection.contains("Stone Gate")) || (currentSelection.contains("Watch Tower")) )
     && ((fileAge == "castle_age") || (fileAge == "imperial_age"))) {
     fileAge = "feudal_age";
   }
 
-  bool isADarkAgeBuilding = false;
 
-  if (building == true) {
-    for (int i = 0; i < age1BuildingNames.length(); i++) {
-      if (currentSelection.contains(age1BuildingNames[i])) {
-        isADarkAgeBuilding = true;
-        fileAge            = "dark_age";
-      }
-    }
-  }
+
+
+
+
+
 
   // Randomly make it choose between female and male villagers
   // Todo: Make it reset p1VillagerMemory and p2VillagerMemory values to 0 upon
@@ -2226,6 +2341,19 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
       filePath = "/animations/" + fileName + entityStatus + ".gif";
     }
+  }
+
+
+  /* Manual correction */
+  if(currentSelection.contains("Monk")){
+    if(player == "1"){
+      filePath
+        = "/animations/" + fileName + p1UnitStyle + entityStatus + ".gif";
+    }
+    else if(player == "2"){
+        filePath = "/animations/" + fileName + p2UnitStyle + entityStatus + ".gif";
+    }
+
   }
 
   qDebug() << filePath;
