@@ -1474,8 +1474,17 @@ void archerRounds::roundOutcome(
 
         // Behaviour: Check if the attacking archer is retreating
         if (aDeathHasOccured == false) {
-          checkIfRetreating("Do you want to hit and run?<br>");
-          checkIfRetreating("Do you want to retreat?<br>");
+          std::string messageToAsk = "";
+
+          if(p1ArcherActivated == true){
+            messageToAsk = "Does " + player1Name + " want to hit and run" + " with the " + p1BattleParticipant.entityName + "?<br>";
+            checkIfRetreating(messageToAsk);
+          }
+
+          if(p2ArcherActivated == true){
+            messageToAsk = "Does " + player2Name + " want to hit and run" + " with the " + p2BattleParticipant.entityName + "?<br>";
+            checkIfRetreating(messageToAsk);
+          }
 
           // @Kory todo: Make sure that this event is working as intended
           if (
@@ -2563,7 +2572,19 @@ void standardRounds::roundOutcome(
               isRetreating = "1";
             }
             else {
-              checkIfRetreating("Do you want to retreat?<br>");
+
+
+              std::string messageToAsk = "";
+
+              if(p1EntityActivated == true){
+                messageToAsk = "Does " + player1Name + " want to retreat" + " with the " + p1BattleParticipant.entityName + "?<br>";
+                checkIfRetreating(messageToAsk);
+              }
+
+              if(p2EntityActivated == true){
+                messageToAsk = "Does " + player2Name + " want to retreat" + " with the " + p2BattleParticipant.entityName + "?<br>";
+                checkIfRetreating(messageToAsk);
+              }
             }
           }
         }
