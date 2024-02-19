@@ -2233,7 +2233,6 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   }
 
 
-  qDebug() << "current selection: " << currentSelection;
   if(currentSelection.contains("Lumber Camp")){
     fileAge = "feudal_age";
     isADarkAgeBuilding = false;

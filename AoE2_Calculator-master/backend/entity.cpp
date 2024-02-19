@@ -212,6 +212,8 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
 
   // Behaviour: Convert the input text into a color code for the background
   // color
+
+
   if (inputBackgroundColor == "black") {
     backgroundColorValue = "black";
   }
@@ -220,6 +222,9 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   }
   else if (inputBackgroundColor == "green") {
     backgroundColorValue = "green";
+  }
+  else if(inputBackgroundColor == "brown"){
+    backgroundColorValue = "rgb(139,69,19)";
   }
   else if (inputBackgroundColor == "yellow") {
     backgroundColorValue = "yellow";
@@ -415,6 +420,7 @@ void Entity::outputEntity(
         std::cout << ", ";
         displayColorfulText(
           "bold", "white", "brown", std::to_string(garrisonValue), false);
+        std::cout << " ";
         std::cout << "garrison value";
       }
     }
