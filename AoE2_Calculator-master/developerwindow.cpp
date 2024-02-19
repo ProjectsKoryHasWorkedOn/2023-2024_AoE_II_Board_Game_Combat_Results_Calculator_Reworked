@@ -52,7 +52,7 @@ void DeveloperWindow::onListItemClicked(QListWidgetItem* item)
 
 void DeveloperWindow::setTitle()
 {
-  setWindowTitle("Developer window");
+  setWindowTitle("Database");
 }
 
 void DeveloperWindow::loadTableNamesIntoListWidget()

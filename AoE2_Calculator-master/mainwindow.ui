@@ -643,12 +643,12 @@
      <addaction name="actionDeveloper_wishlist"/>
     </widget>
     <addaction name="actionAbout"/>
+    <addaction name="actionShow_developer_window"/>
     <addaction name="menuDocumentation"/>
     <addaction name="separator"/>
     <addaction name="closeProgram"/>
     <addaction name="separator"/>
     <addaction name="menuOptions"/>
-    <addaction name="actionShow_developer_window"/>
    </widget>
    <widget class="QMenu" name="menuPlayer_details">
     <property name="title">
@@ -778,7 +778,7 @@
   </action>
   <action name="actionShow_developer_window">
    <property name="text">
-    <string>Show developer window</string>
+    <string>Database</string>
    </property>
   </action>
   <action name="actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output">
