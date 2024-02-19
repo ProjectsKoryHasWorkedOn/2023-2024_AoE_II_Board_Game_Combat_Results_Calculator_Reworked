@@ -353,12 +353,12 @@ VALUES
 ('2','Watch Tower','15','0','9','1','1','N','N','N','Y'),
 ('3','Fortified Wall','0','0','8','0','0','N','N','N','N'),
 ('4','The Golden Tent Of The Great Khan (Mongol)','0','0','0','0','0','N','N','N','N'),
-('4','The Great Temple At Nara (Japanese)','0','0','','0','0','N','N','N','N'),
+('4','The Great Temple At Nara (Japanese)','0','0','0','0','0','N','N','N','N'),
 ('4','The Palace Of Ctesiphon On The Tigris (Persian)','0','0','0','0','0','N','N','N','N'),
 ('4','Tomb Of Theodoric (Goth)','0','0','0','0','0','N','N','N','N'),
 ('2','Stone Gate','0','0','4','0','0','N','N','N','N'),
 ('3','Fortified Gate','0','0','8','0','0','N','N','N','N'),
-('4','The Great Mosque at Samarra (Saracen)','0','0','','0','0','N','N','N','N');
+('4','The Great Mosque at Samarra (Saracen)','0','0','0','0','0','N','N','N','N');
 
 DROP TABLE IF EXISTS BuildingHealthBasedOnConstructionStatus;
 CREATE TABLE IF NOT EXISTS BuildingHealthBasedOnConstructionStatus(

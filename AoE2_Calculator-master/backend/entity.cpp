@@ -41,6 +41,12 @@ Wonder::Wonder()
   entityAge     = 4;
   pointValue    = 90;   // 20 wood, 20 stone, 20 gold, 30 bodies.
   armorClass[1] = true; // Building armor class
+  minimumRange = 0;
+  maximumRange = 0;
+  dealsAreaEffectDamage = false;
+  isKamikaze = false;
+  onlyAttacksOnceInTheFirstRoundOfCombat = false;
+  onlyAttacksOnceInTheSecondRoundOfCombat = false;
 }
 
 Wonder::~Wonder()
