@@ -1481,7 +1481,8 @@ void archerRounds::roundOutcome(
             checkIfRetreating(messageToAsk);
           }
 
-          if(p2ArcherActivated == true){
+          // Do not ask this question if p1 has retreated
+          if(p2ArcherActivated == true && isRetreating != "1"){
             messageToAsk = "Does " + player2Name + " want to hit and run" + " with the " + p2BattleParticipant.entityName + "?<br>";
             checkIfRetreating(messageToAsk);
           }
@@ -1914,7 +1915,21 @@ void bombardmentRounds::roundOutcome(
           // not the last round
           if (aDeathHasOccured == false) {
             if (numberOfTimesToRunTheBombardmentRound != roundRunTimes - 1) {
-              checkIfRetreating("Bombardment");
+              std::string messageToAsk = "";
+
+              if(p1BombardmentEntityActivated == true){
+                messageToAsk = "Does " + player1Name + " want to retreat" + " with the " + p1BattleParticipant.entityName + "?<br>";
+                checkIfRetreating(messageToAsk);
+              }
+
+                     // Do not ask this question if p1 has retreated
+              if(p2BombardmentEntityActivated == true && isRetreating != "1"){
+                messageToAsk = "Does " + player2Name + " want to retreat" + " with the " + p2BattleParticipant.entityName + "?<br>";
+                checkIfRetreating(messageToAsk);
+              }
+
+
+
             }
           }
         }
@@ -2581,7 +2596,8 @@ void standardRounds::roundOutcome(
                 checkIfRetreating(messageToAsk);
               }
 
-              if(p2EntityActivated == true){
+              // Do not ask this question if P1 has retreated
+              if(p2EntityActivated == true && isRetreating != "1"){
                 messageToAsk = "Does " + player2Name + " want to retreat" + " with the " + p2BattleParticipant.entityName + "?<br>";
                 checkIfRetreating(messageToAsk);
               }
