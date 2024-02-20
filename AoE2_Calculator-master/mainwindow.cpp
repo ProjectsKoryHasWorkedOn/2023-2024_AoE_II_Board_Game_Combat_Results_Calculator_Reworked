@@ -129,6 +129,10 @@ QString player2BattleAssistantName;
 int representationOfPlayer1Age;
 int representationOfPlayer2Age;
 
+// Remember the last player selection
+int p1VillagerMemoryOld;
+int p2VillagerMemoryOld;
+
 // Get what age the player is in
 QString     player1Age;
 QString     player2Age;
@@ -675,7 +679,13 @@ void MainWindow::on_calculateResultsButton_clicked()
     EntityOutputConfig{
       m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput,
       m_showFurtherInformationAboutTheBattleParticipantsInTheOutput},
-    monkAttackingPromptAnswer);
+    monkAttackingPromptAnswer,
+    PlayerSelectionMemory{
+      m_p1VillagerMemory,
+      m_p2VillagerMemory,
+      m_p1FarmMemory,
+      m_p2FarmMemory
+    });
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -2057,9 +2067,6 @@ void MainWindow::initializeAnimations()
     ui.player1BattleAssistantNames->currentText(), "2", "_idle");
 }
 
-int p1VillagerMemory = 0;
-int p2VillagerMemory = 0;
-
 void MainWindow::getAssistantEntityAnimationForSelectedAssistant(
   QString currentSelection,
   QString player,
@@ -2127,19 +2134,35 @@ void MainWindow::getEntityAnimationForSelectedEntity(
     currentSelection = "Mining Camp";
   }
 
-  int farmNumber = 0;
-  if(currentSelection.contains("Farm")){
-    farmNumber = rand() % 2;
 
-    if(farmNumber == 0){
-       currentSelection = "Farm Corn";
+  if(currentSelection.contains("Farm")){
+
+    if (m_p1FarmMemory == 0) {
+      m_p1FarmMemory = 1 + (rand() % 2);
     }
-    else if(farmNumber == 1){
-       currentSelection = "Farm Grape";
+
+    if (m_p2FarmMemory == 0) {
+      m_p2FarmMemory = 1 + (rand() % 2);
     }
-    else{
-       Q_UNREACHABLE();
+
+    if(player == "1"){
+      if(m_p1FarmMemory == 1){
+        currentSelection = "Farm Corn";
+      }
+      else if(m_p1FarmMemory == 2){
+        currentSelection = "Farm Grape";
+      }
     }
+    else if(player == "2"){
+      if(m_p2FarmMemory == 1){
+        currentSelection = "Farm Corn";
+      }
+      else if(m_p2FarmMemory == 2){
+        currentSelection = "Farm Grape";
+      }
+    }
+
+
   }
 
   if(currentSelection.contains("Trebuchet")){
@@ -2272,17 +2295,32 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
 
   // Randomly make it choose between female and male villagers
-  // Todo: Make it reset p1VillagerMemory and p2VillagerMemory values to 0 upon
+  // Todo: Make it reset m_p1VillagerMemory and m_p2VillagerMemory values to 0 upon
   // unit death So that it can randomly choose these values again
+  bool useOldP1VillagerMemoryValueTemporarily = false;
+  bool useOldP2VillagerMemoryValueTemporarily = false;
+
+
   if (unit == true) {
     if (currentSelection.contains("Villager")) {
-      if (p1VillagerMemory != 1 && p1VillagerMemory != 2) {
-        p1VillagerMemory = 1 + (rand() % 2);
+
+      if (m_p1VillagerMemory == 0 && entityStatus == "_idle") {
+        m_p1VillagerMemory = 1 + (rand() % 2);
+        p1VillagerMemoryOld = m_p1VillagerMemory;
+      }
+      else{
+        useOldP1VillagerMemoryValueTemporarily = true;
       }
 
-      if (p2VillagerMemory != 1 && p2VillagerMemory != 2) {
-        p2VillagerMemory = 1 + (rand() % 2);
+      if (m_p2VillagerMemory == 0 && entityStatus == "_idle") {
+        m_p2VillagerMemory = 1 + (rand() % 2);
+        p2VillagerMemoryOld = m_p2VillagerMemory;
       }
+      else{
+        useOldP2VillagerMemoryValueTemporarily = true;
+      }
+
+
     }
   }
   // Set which UI element is being modified
@@ -2303,12 +2341,23 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
     if (unit == true) {
       if (currentSelection.contains("Villager")) {
-        if (p1VillagerMemory == 1) {
-          fileName += "_male";
+        if(useOldP1VillagerMemoryValueTemporarily == false){
+          if (m_p1VillagerMemory == 1) {
+            fileName += "_male";
+          }
+          else if (m_p1VillagerMemory == 2) {
+            fileName += "_female";
+          }
         }
-        else if (p1VillagerMemory == 2) {
-          fileName += "_female";
+        else if(useOldP1VillagerMemoryValueTemporarily == true){
+          if (p1VillagerMemoryOld == 1) {
+            fileName += "_male";
+          }
+          else if (p1VillagerMemoryOld == 2) {
+            fileName += "_female";
+          }
         }
+
       }
 
       filePath = "/animations/" + fileName + entityStatus + ".gif";
@@ -2330,11 +2379,21 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
     if (unit == true) {
       if (currentSelection.contains("Villager")) {
-        if (p2VillagerMemory == 1) {
-          fileName += "_male";
+        if(useOldP2VillagerMemoryValueTemporarily == false){
+          if (m_p2VillagerMemory == 1) {
+            fileName += "_male";
+          }
+          else if (m_p2VillagerMemory == 2) {
+            fileName += "_female";
+          }
         }
-        else if (p2VillagerMemory == 2) {
-          fileName += "_female";
+        else if(useOldP2VillagerMemoryValueTemporarily == true){
+          if (p2VillagerMemoryOld == 1) {
+            fileName += "_male";
+          }
+          else if (p2VillagerMemoryOld == 2) {
+            fileName += "_female";
+          }
         }
       }
 
@@ -2355,7 +2414,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
   }
 
-  /* qDebug() << filePath; */
+  qDebug() << "file path to animation file: " << filePath;
 
   QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
 
@@ -2590,20 +2649,15 @@ void MainWindow::checkIfEitherPlayerHasBombardmentEntity()
 void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_valueChanged(
   int value)
 {
-  // @todo Bring distanceBetweenTheBattleParticipants to backend
-  // combatCalculator.cpp
-  m_distanceBetweenTheBattleParticipants = value;
+  m_distanceBetweenTheBattleParticipants = value; // Used in combatCalculator.cpp
 }
 
 void MainWindow::
   on_actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output_triggered(
     bool checked)
 {
-  //@todo Bring
-  //showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput to
-  //backend entity.cpp
   m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
-    = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput;
+    = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput; // Used in entity.cpp
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
@@ -2614,10 +2668,8 @@ void MainWindow::
   on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(
     bool checked)
 {
-  //@todo Bring showFurtherInformationAboutTheBattleParticipantsInTheOutput to
-  //backend entity.cpp
   m_showFurtherInformationAboutTheBattleParticipantsInTheOutput
-    = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput;
+    = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput; // Used in entity.cpp
 
   SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
 
@@ -2639,6 +2691,8 @@ void MainWindow::on_pushButton_clicked()
 
   outputwindow outputWindow(ui.gameOutputTextEdit);
   outputWindow.exec();
+
+
 
 
 }

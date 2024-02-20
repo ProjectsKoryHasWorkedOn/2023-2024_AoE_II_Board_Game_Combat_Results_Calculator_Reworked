@@ -204,5 +204,13 @@ private:
   bool m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
     = false;
   int m_distanceBetweenTheBattleParticipants = 0;
+
+
+  int m_p1VillagerMemory = 0;
+   int   m_p2VillagerMemory = 0;
+   int   m_p1FarmMemory = 0;
+   int   m_p2FarmMemory = 0;
+
+
 };
 #endif // MAINWINDOW_HPP

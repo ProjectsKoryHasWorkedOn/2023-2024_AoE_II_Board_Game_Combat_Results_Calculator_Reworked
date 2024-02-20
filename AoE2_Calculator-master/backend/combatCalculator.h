@@ -1,6 +1,7 @@
 #pragma once
 /** The libaries **/
 #include "entity.h" // Using: Entity class
+#include "player_selection_memory.h"
 #include "player.h"
 #include <QDebug>
 #include <functional>
@@ -44,10 +45,12 @@ class CombatCalculatorState {
 public:
   CombatCalculatorState(
     int                distanceBetweenTheBattleParticipants,
-    EntityOutputConfig entityOutputConfig);
+    EntityOutputConfig entityOutputConfig,
+    PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath);
 
   int                distanceBetweenTheBattleParticipants;
   EntityOutputConfig entityOutputConfig;
+  PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath;
 
   /** Values attained sometime during the running of the combat rounds **/
 

@@ -51,6 +51,7 @@ HEADERS += \
     backend/entity_output_config.h \
     backend/fileImporter.h \
     backend/modifiersCalculator.h \
+    backend/player_selection_memory.h \
     backend/run_game.h \
     cross-window_palette.h \
     csv/csv_count_with_text.hpp \

@@ -1,6 +1,8 @@
 #ifndef RUN_GAME_H
 #define RUN_GAME_H
 #include "entity_output_config.h"
+
+#include "player_selection_memory.h"
 #include "player.h"
 
 #include <QString>
@@ -18,6 +20,7 @@ void runGame(
   std::function<void(Player, bool)> onPlayerEntityDeath,
   int                               distanceBetweenTheBattleParticipants,
   EntityOutputConfig                entityOutputConfig,
-  const QString&                    attackMonksQueryingMode);
+  const QString&                    attackMonksQueryingMode,
+  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath);
 
 #endif // RUN_GAME_H

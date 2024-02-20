@@ -2,7 +2,6 @@
 /** The libaries **/
 #include <iostream> // Using: cin, cout
 #include <string>   // Using: string
-
 #include "entity_output_config.h"
 
 /** Class: Entity **/

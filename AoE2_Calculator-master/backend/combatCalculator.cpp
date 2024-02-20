@@ -60,9 +60,10 @@ CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
 
 CombatCalculatorState::CombatCalculatorState(
   int                distanceBetweenTheBattleParticipants,
-  EntityOutputConfig entityOutputConfig)
+  EntityOutputConfig entityOutputConfig,
+  PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath)
   : distanceBetweenTheBattleParticipants{distanceBetweenTheBattleParticipants}
-  , entityOutputConfig{entityOutputConfig}
+  , entityOutputConfig{entityOutputConfig} , resetMemoryOfPlayerSelectionOnDeath{resetMemoryOfPlayerSelectionOnDeath}
 {
   // Set all of the stored values to their initial values
   startingBattleParticipantQuantityP1 = 0;
@@ -361,6 +362,29 @@ void combatCalculator::deathDetectionForEachPlayer(
   if (givenPlayerBattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
 
+    if(givenPlayerBattleParticipant.entityName == "Villager"){
+      if(currentPlayer == Player::Player1){
+        m_state->resetMemoryOfPlayerSelectionOnDeath.p1VillagerMemory = 0;
+      }
+      else if(currentPlayer == Player::Player2){
+        m_state->resetMemoryOfPlayerSelectionOnDeath.p2VillagerMemory = 0;
+
+      }
+    }
+
+
+    if(givenPlayerBattleParticipant.entityName == "Farm"){
+      if(currentPlayer == Player::Player1){
+        m_state->resetMemoryOfPlayerSelectionOnDeath.p1FarmMemory = 0;
+      }
+      else if(currentPlayer == Player::Player2){
+        m_state->resetMemoryOfPlayerSelectionOnDeath.p2FarmMemory = 0;
+
+      }
+    }
+
+
+
     if (givenPlayerBattleParticipant.entityName == "Monk") {
       m_callbacks->getOnPlayerEntityDeath()(currentPlayer, true);
     }
@@ -433,6 +457,8 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
   if (inputMessage != "") {
     std::cout << inputMessage << "<br>";
   }
+
+
 
   p1BattleParticipant.outputEntity(player1Name, m_state->entityOutputConfig);
   // Do not show monks as being dead if started with 0

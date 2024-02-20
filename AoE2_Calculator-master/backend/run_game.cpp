@@ -126,7 +126,9 @@ void runGame(
   std::function<void(Player, bool)> onPlayerEntityDeath,
   int                               distanceBetweenTheBattleParticipants,
   EntityOutputConfig                entityOutputConfig,
-  const QString&                    attackMonksQueryingMode)
+  const QString&                    attackMonksQueryingMode,
+  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath
+  )
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -237,7 +239,7 @@ void runGame(
 
   // Object: The combat calculator superclass and the combat rounds subclasses
   CombatCalculatorState combatCalculatorState{
-    distanceBetweenTheBattleParticipants, entityOutputConfig};
+    distanceBetweenTheBattleParticipants, entityOutputConfig, resetMemoryOfPlayerSelectionOnDeath};
 
   CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
   combatCalculator*         theCombatCalculator;
