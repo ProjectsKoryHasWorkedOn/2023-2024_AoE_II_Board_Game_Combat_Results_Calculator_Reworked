@@ -37,6 +37,10 @@ private slots:
 
   QString returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName);
 
+  QString returnUnitFileNameThatMatchesUnitName(QString unitName, QString runCondition);
+
+  QString returnBuildingFileNameThatMatchesBuildingName(QString buildingName);
+
   void on_closeProgram_triggered();
 
   void on_actionAbout_triggered();

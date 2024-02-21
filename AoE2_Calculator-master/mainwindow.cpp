@@ -204,11 +204,554 @@ QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString te
   }
   else{
     qDebug() << "Could not find: " << technologyName;
+    Q_UNREACHABLE();
+  }
+}
 
+
+QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName, QString runCondition){
+  if(unitName.startsWith("Arambai", Qt::CaseSensitive)){
+return uArambaiIconFilename;
+   }
+  else if(unitName.startsWith("Arbalest", Qt::CaseSensitive)){
+return uArbalestIconFilename;
+  }
+  else if(unitName.startsWith("Archer", Qt::CaseSensitive)){
+return uArcherIconFilename;
+  }
+  else if(unitName.startsWith("Armored Elephant", Qt::CaseSensitive)){
+return uArmoredElephantIconFilename;
+  }
+  else if(unitName.startsWith("Ballista Elephant", Qt::CaseSensitive)){
+return uBallistaElephantIconFilename;
+  }
+  else if(unitName.startsWith("Battering Ram", Qt::CaseSensitive)){
+return uBatteringRamIconFilename;
+  }
+  else if(unitName.startsWith("Battle Elephant", Qt::CaseSensitive)){
+return uBattleElephantIconFilename;
+  }
+  else if(unitName.startsWith("Berserk", Qt::CaseSensitive)){
+return uBerserkIconFilename;
+  }
+  else if(unitName.startsWith("Bombard Cannon", Qt::CaseSensitive)){
+return uBombardCannonIconFilename;
+  }
+  else if(unitName.startsWith("Boyar", Qt::CaseSensitive)){
+return uBoyarIconFilename;
+  }
+  else if(unitName.startsWith("Camel Archer", Qt::CaseSensitive)){
+return uCamelArcherIconFilename;
+  }
+  else if(unitName.startsWith("Camel Rider", Qt::CaseSensitive) || unitName == "Camel"){
+return uCamelRiderIconFilename;
+  }
+  else if(unitName.startsWith("Camel Scout", Qt::CaseSensitive)){
+return uCamelScoutIconFilename;
+  }
+  else if(unitName.startsWith("Cannon Galleon", Qt::CaseSensitive)){
+return uCannonGalleonIconFilename;
+  }
+  else if(unitName.startsWith("Capped Ram", Qt::CaseSensitive)){
+return uCappedRamIconFilename;
+  }
+  else if(unitName.startsWith("Caravel", Qt::CaseSensitive)){
+return uCaravelIconFilename;
+  }
+  else if(unitName.startsWith("Cataphract", Qt::CaseSensitive)){
+    return uCataphractIconFilename;
+  }
+  else if(unitName.startsWith("Cavalier", Qt::CaseSensitive)){
+return uCavalierIconFilename;
+  }
+  else if(unitName.startsWith("Cavalry Archer", Qt::CaseSensitive)){
+ return uCavalryArcherIconFilename;
+  }
+  else if(unitName.startsWith("Centurion", Qt::CaseSensitive)){
+return uCenturionIconFilename;
+  }
+  else if(unitName.startsWith("Chakram Thrower", Qt::CaseSensitive)){
+return uChakramThrowerIconFilename;
+  }
+  else if(unitName.startsWith("Champion", Qt::CaseSensitive)){
+return uChampionIconFilename;
+  }
+  else if(unitName.startsWith("Chu Ko Nu", Qt::CaseSensitive)){
+return uChuKoNuIconFilename;
+  }
+  else if(unitName.startsWith("Composite Bowman", Qt::CaseSensitive)){
+return uCompositeBowmanIconFilename;
+  }
+  else if(unitName.startsWith("Condottiero", Qt::CaseSensitive)){
+return uCondottieroIconFilename;
+  }
+  else if(unitName.startsWith("Conquistador", Qt::CaseSensitive)){
+return uConquistadorIconFilename;
+  }
+  else if(unitName.startsWith("Coustillier", Qt::CaseSensitive)){
+return uCoustillierIconFilename;
+  }
+  else if(unitName.startsWith("Crossbowman", Qt::CaseSensitive)){
+return uCrossbowmanIconFilename;
+  }
+  else if(unitName.startsWith("Demolition Raft", Qt::CaseSensitive)){
+return uDemolitionRaftIconFilename;
+  }
+  else if(unitName.startsWith("Demolition Ship", Qt::CaseSensitive)){
+return uDemolitionShipIconFilename;
+  }
+  else if(unitName.startsWith("Dismounted Konnik", Qt::CaseSensitive)){
+return uDismountedKonnikIconFilename;
+  }
+  else if(unitName.startsWith("Dromon", Qt::CaseSensitive)){
+return uDromonIconFilename;
+  }
+  else if(unitName.startsWith("Eagle Scout", Qt::CaseSensitive)){
+return uEagleScoutIconFilename;
+  }
+  else if(unitName.startsWith("Eagle Warrior", Qt::CaseSensitive)){
+return uEagleWarriorIconFilename;
+  }
+  else if(unitName.startsWith("Elephant Archer", Qt::CaseSensitive)){
+return uElephantArcherIconFilename;
+  }
+  else if(unitName.startsWith("Elite Battle Elephant", Qt::CaseSensitive)){
+return uEliteBattleElephantIconFilename;
+  }
+  else if(unitName.startsWith("Elite Cannon Galleon", Qt::CaseSensitive)){
+return uEliteCannonGalleonIconFilename;
+  }
+  else if(unitName.startsWith("Elite Eagle Warrior", Qt::CaseSensitive)){
+ return uEliteEagleWarriorIconFilename;
+  }
+  else if(unitName.startsWith("Elite Elephant Archer", Qt::CaseSensitive)){
+return uEliteElephantArcherIconFilename;
+  }
+  else if(unitName.startsWith("Elite Skirmisher", Qt::CaseSensitive)){
+    return uEliteSkirmisherIconFilename;
+  }
+  else if(unitName.startsWith("Elite Steppe Lancer", Qt::CaseSensitive)){
+    return uEliteSteppeLancerIconFilename;
+  }
+  else if(unitName.startsWith("Fast Fire Ship", Qt::CaseSensitive)){
+    return uFastFireShipIconFilename;
+  }
+  else if(unitName.startsWith("Fire Galley", Qt::CaseSensitive)){
+    return uFireGalleyIconFilename;
+  }
+  else if(unitName.startsWith("Fire Ship", Qt::CaseSensitive)){
+    return uFireShipIconFilename;
+  }
+  else if(unitName.startsWith("Fishing Ship", Qt::CaseSensitive)){
+    return uFishingShipIconFilename;
+  }
+  else if(unitName.startsWith("Flaming Camel", Qt::CaseSensitive)){
+    return uFlamingCamelIconFilename;
+  }
+  else if(unitName.startsWith("Flemish Militia", Qt::CaseSensitive)){
+    return uFlemishMilitiaIconFilename;
+  }
+  else if(unitName.startsWith("Galleon", Qt::CaseSensitive)){
+    return uGalleonIconFilename;
+  }
+  else if(unitName.startsWith("Galley", Qt::CaseSensitive)){
+    return uGalleyIconFilename;
+  }
+  else if(unitName.startsWith("Gbeto", Qt::CaseSensitive)){
+    return uGbetoIconFilename;
+  }
+  else if(unitName.startsWith("Genitour", Qt::CaseSensitive)){
+    return uGenitourIconFilename;
+  }
+  else if(unitName.startsWith("Genoese Crossbowman", Qt::CaseSensitive)){
+    return uGenoeseCrossbowmanIconFilename;
+  }
+  else if(unitName.startsWith("Ghulam", Qt::CaseSensitive)){
+    return uGhulamIconFilename;
+  }
+  else if(unitName.startsWith("Halbedier", Qt::CaseSensitive)){
+    return uHalbedierIconFilename;
+  }
+  else if(unitName.startsWith("Hand Cannoneer", Qt::CaseSensitive)){
+    return uHandCannoneerIconFilename;
+  }
+  else if(unitName.startsWith("Heavy Camel", Qt::CaseSensitive)){
+    return uHeavyCamelRiderIconFilename;
+  }
+  else if(unitName.startsWith("Heavy Cavalry Archer", Qt::CaseSensitive)){
+    return uHeavyCavalryArcherIconFilename;
+  }
+  else if(unitName.startsWith("Heavy Demolition Ship", Qt::CaseSensitive)){
+    return uHeavyDemolitionShipIconFilename;
+  }
+  else if(unitName.startsWith("Heavy Scorpion", Qt::CaseSensitive)){
+    return uHeavyScorpionIconFilename;
+  }
+  else if(unitName.startsWith("Houfnice", Qt::CaseSensitive)){
+    return uHoufniceIconFilename;
+  }
+  else if(unitName.startsWith("Huskarl", Qt::CaseSensitive)){
+    return uHuskarlIconFilename;
+  }
+  else if(unitName.startsWith("Hussar", Qt::CaseSensitive)){
+    return uHussarIconFilename;
+  }
+  else if(unitName.startsWith("Hussite Wagon", Qt::CaseSensitive)){
+    return uHussiteWagonIconFilename;
+  }
+  else if(unitName.startsWith("Imperial Camel Rider", Qt::CaseSensitive)){
+    return uImperialCamelRiderIconFilename;
+  }
+  else if(unitName.startsWith("Imperial Skirmisher", Qt::CaseSensitive)){
+    return uImperialSkirmisherIconFilename;
+  }
+  else if(unitName.startsWith("Jaguar Warrior", Qt::CaseSensitive)){
+    return uJaguarWarriorIconFilename;
+  }
+  else if(unitName.startsWith("Janissary", Qt::CaseSensitive)){
+    return uJanissaryIconFilename;
+  }
+  else if(unitName.startsWith("Kamayuk", Qt::CaseSensitive)){
+    return uKamayukIconFilename;
+  }
+  else if(unitName.startsWith("Karambit Warrior", Qt::CaseSensitive)){
+    return uKarambitWarriorIconFilename;
+  }
+  else if(unitName.startsWith("Keshik", Qt::CaseSensitive)){
+    return uKeshikIconFilename;
+  }
+  else if(unitName.startsWith("Kipchak", Qt::CaseSensitive)){
+    return uKipchakIconFilename;
+  }
+  else if(unitName.startsWith("Knight", Qt::CaseSensitive)){
+    return uKnightIconFilename;
+  }
+  else if(unitName.startsWith("Konnik", Qt::CaseSensitive)){
+    return uKonnikIconFilename;
+  }
+  else if(unitName.startsWith("Legionary", Qt::CaseSensitive)){
+    return uLegionaryIconFilename;
+  }
+  else if(unitName.startsWith("Leitis", Qt::CaseSensitive)){
+    return uLeitisIconFilename;
+  }
+  else if(unitName.startsWith("Light Cavalry", Qt::CaseSensitive)){
+    return uLightCavalryIconFilename;
+  }
+  else if(unitName.startsWith("Long Swordsman", Qt::CaseSensitive)){
+    return uLongSwordsmanIconFilename;
+  }
+  else if(unitName.startsWith("Longboat", Qt::CaseSensitive)){
+    return uLongboatIconFilename;
+  }
+  else if(unitName.startsWith("Longbowman", Qt::CaseSensitive)){
+    return uLongbowmanIconFilename;
+  }
+  else if(unitName.startsWith("Magyar Huszar", Qt::CaseSensitive)){
+    return uMagyarHuszarIconFilename;
+  }
+  else if(unitName.startsWith("Mameluke", Qt::CaseSensitive)){
+    return uMamelukeIconFilename;
+  }
+  else if(unitName.startsWith("Man-at-Arms", Qt::CaseSensitive)){
+    return uManAtArmsIconFilename;
+  }
+  else if(unitName.startsWith("Mangonel", Qt::CaseSensitive)){
+    return uMangonelIconFilename;
+  }
+  else if(unitName.startsWith("Mangudai", Qt::CaseSensitive)){
+    return uMangudaiIconFilename;
+  }
+  else if(unitName.startsWith("Militia", Qt::CaseSensitive)){
+    return uMilitiaIconFilename;
+  }
+  else if(unitName.startsWith("Missionary", Qt::CaseSensitive)){
+    return uMissionaryIconFilename;
+  }
+  else if(unitName.startsWith("Monaspa", Qt::CaseSensitive)){
+    return uMonaspaIconFilename;
+  }
+  else if(unitName.startsWith("Monk", Qt::CaseSensitive)){
+    return uMonkIconFilename;
+  }
+  else if(unitName.startsWith("Obuch", Qt::CaseSensitive)){
+    return uObuchIconFilename;
+  }
+  else if(unitName.startsWith("Onager", Qt::CaseSensitive)){
+    return uOnagerIconFilename;
+  }
+  else if(unitName.startsWith("Organ Gun", Qt::CaseSensitive)){
+    return uOrganGunIconFilename;
+  }
+  else if(unitName.startsWith("Paladin", Qt::CaseSensitive)){
+    return uPaladinIconFilename;
+  }
+  else if(unitName.startsWith("Petard", Qt::CaseSensitive)){
+    return uPetardIconFilename;
+  }
+  else if(unitName.startsWith("Pikeman", Qt::CaseSensitive)){
+    return uPikemanIconFilename;
+  }
+
+  if(unitName.startsWith("Plumed Archer", Qt::CaseSensitive)){
+    return uPlumedArcherIconFilename;
+  }
+  else if(unitName.startsWith("Ratha Melee Mode", Qt::CaseSensitive)){
+    return uRathaMeleeModeIconFilename;
+  }
+  else if(unitName.startsWith("Ratha Ranged Mode", Qt::CaseSensitive)){
+    return uRathaRangedModeIconFilename;
+  }
+  else if(unitName.startsWith("Rattan Archer", Qt::CaseSensitive)){
+    return uRattanArcherIconFilename;
+  }
+  else if(unitName.startsWith("Samurai", Qt::CaseSensitive)){
+    return uSamuraiIconFilename;
+  }
+  else if(unitName.startsWith("Savar", Qt::CaseSensitive)){
+    return uSavarIconFilename;
+  }
+  else if(unitName.startsWith("Scorpion", Qt::CaseSensitive)){
+    return uScorpionIconFilename;
+  }
+  else if(unitName.startsWith("Scout Cavalry", Qt::CaseSensitive)){
+    return uScoutCavalryIconFilename;
+  }
+  else if(unitName.startsWith("Serjeant", Qt::CaseSensitive)){
+    return uSerjeantIconFilename;
+  }
+  else if(unitName.startsWith("Shotel Warrior", Qt::CaseSensitive)){
+    return uShotelWarriorIconFilename;
+  }
+  else if(unitName.startsWith("Shivamsha Rider", Qt::CaseSensitive)){
+    return uShivamshaRiderIconFilename;
+  }
+  else if(unitName.startsWith("Siege Elephant", Qt::CaseSensitive)){
+    return uSiegeElephantIconFilename;
+  }
+  else if(unitName.startsWith("Siege Onager", Qt::CaseSensitive)){
+    return uSiegeOnagerIconFilename;
+  }
+  else if(unitName.startsWith("Siege Ram", Qt::CaseSensitive)){
+    return uSiegeRamIconFilename;
+  }
+  else if(unitName.startsWith("Siege Tower", Qt::CaseSensitive)){
+    return uSiegeTowerIconFilename;
+  }
+  else if(unitName.startsWith("Skirmisher", Qt::CaseSensitive)){
+    return uSkirmisherIconFilename;
   }
 
 
+  if(unitName.startsWith("Slinger", Qt::CaseSensitive)){
+    return uSlingerIconFilename;
+  }
+  else if(unitName.startsWith("Spearman", Qt::CaseSensitive)){
+    return uSpearmanIconFilename;
+  }
+  else if(unitName.startsWith("Steppe Lancer", Qt::CaseSensitive)){
+    return uSteppeLancerIconFilename;
+  }
+  else if(unitName.startsWith("Tarkan", Qt::CaseSensitive)){
+    return uTarkanIconFilename;
+  }
+  else if(unitName.startsWith("Teutonic Knight", Qt::CaseSensitive)){
+    return uTeutonicKnightIconFilename;
+  }
+  else if(unitName.startsWith("Thirisadai", Qt::CaseSensitive)){
+    return uThirisadaiIconFilename;
+  }
+  else if(unitName.startsWith("Throwing Axeman", Qt::CaseSensitive)){
+    return uThrowingAxemanIconFilename;
+  }
+  else if(unitName.startsWith("Trade Cart", Qt::CaseSensitive)){
+    return uTradeCartIconFilename;
+  }
+  else if(unitName.startsWith("Trade Cog", Qt::CaseSensitive)){
+    return uTradeCogIconFilename;
+  }
+  else if(unitName.startsWith("Transport Ship", Qt::CaseSensitive)){
+    return uTransportShipIconFilename;
+  }
+  else if(unitName.startsWith("Trebuchet", Qt::CaseSensitive)){
+    // return uTrebuchetPackedIconFilename;
+    return uTrebuchetUnpackedIconFilename;
+  }
+  else if(unitName.startsWith("Turtle Ship", Qt::CaseSensitive)){
+    return uTurtleShipIconFilename;
+  }
+  else if(unitName.startsWith("Two-handed Swordsman", Qt::CaseSensitive)){
+    return uTwoHandedSwordsmanIconFilename;
+  }
+  else if(unitName.startsWith("Urumi Swordsman", Qt::CaseSensitive)){
+    return uUrumiSwordsmanIconFilename;
+  }
+
+  else if(unitName.startsWith("Villager", Qt::CaseSensitive)){
+
+    // @kory todo make this in sync with anim
+    // return uMaleVillagerIconFilename;
+    return uFemaleVillagerIconFilename;
+  }
+  else if(unitName.startsWith("War Elephant", Qt::CaseSensitive)){
+    return uWarElephantIconFilename;
+  }
+  else if(unitName.startsWith("War Galley", Qt::CaseSensitive)){
+    return uWarGalleyIconFilename;
+  }
+  else if(unitName.startsWith("War Wagon", Qt::CaseSensitive)){
+    return uWarWagonIconFilename;
+  }
+  else if(unitName.startsWith("Warrior Priest", Qt::CaseSensitive)){
+    return uWarriorPriestIconFilename;
+  }
+  else if(unitName.startsWith("Winged Hussar", Qt::CaseSensitive)){
+    return uWingedHussarIconFilename;
+  }
+  else if(unitName.startsWith("Woad Raider", Qt::CaseSensitive)){
+    return uWoadRaiderIconFilename;
+  }
+  else if(unitName.startsWith("Xolotl Warrior", Qt::CaseSensitive)){
+    return uXolotlWarriorIconFilename;
+  }
+  else{
+    if(unitName.startsWith("Elite") &&
+        runCondition == "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon"
+        ){
+        unitName.remove(0, 6);
+        runCondition = "Checked for the non-elite version of the unit";
+        returnUnitFileNameThatMatchesUnitName(unitName, runCondition);
+      }
+    else{
+    qDebug() << "Could not find: " << unitName;
+      Q_UNREACHABLE();
+    }
+ }
 }
+
+QString MainWindow::returnBuildingFileNameThatMatchesBuildingName(QString buildingName){
+  if(buildingName.startsWith("Archery Range", Qt::CaseSensitive)){
+    return bArcheryRangeIconFilename;
+  }
+  else if(buildingName.startsWith("Barracks", Qt::CaseSensitive)){
+  return bBarracksIconFilename;
+  }
+  else if(buildingName.startsWith("Blacksmith", Qt::CaseSensitive)){
+  return bBlacksmithIconFilename;
+  }
+  else if(buildingName.startsWith("Bombard Tower", Qt::CaseSensitive)){
+
+  return bBombardTowerIconFilename;
+  }
+  else if(buildingName.startsWith("Caravanserai", Qt::CaseSensitive)){
+  return bCaravanseraiIconFilename;
+  }
+  else if(buildingName.startsWith("Castle", Qt::CaseSensitive)){
+  return bCastleIconFilename;
+  }
+  else if(buildingName.startsWith("Dock", Qt::CaseSensitive)){
+  return bDockIconFilename;
+  }
+  else if(buildingName.startsWith("Donjon", Qt::CaseSensitive)){
+  return bDonjonIconFilename;
+  }
+  else if(buildingName.startsWith("Farm", Qt::CaseSensitive)){
+  return bFarmIconFilename;
+  }
+  else if(buildingName.startsWith("Feitoria", Qt::CaseSensitive)){
+  return bFeitoriaIconFilename;
+  }
+  else if(buildingName.startsWith("Fish Trap", Qt::CaseSensitive)){
+  return bFishTrapIconFilename;
+  }
+  else if(buildingName.startsWith("Folwark", Qt::CaseSensitive)){
+  return bFolwarkIconFilename;
+  }
+  else if(buildingName.startsWith("Fortified Church", Qt::CaseSensitive)){
+  return bFortifiedChurchIconFilename;
+  }
+  else if(buildingName.startsWith("Guard Tower", Qt::CaseSensitive)){
+  return bGuardTowerIconFilename;
+  }
+  else if(buildingName.startsWith("Harbor", Qt::CaseSensitive)){
+  return bHarborIconFilename;
+  }
+  else if(buildingName.startsWith("House", Qt::CaseSensitive)){
+  return bHouseIconFilename;
+  }
+  else if(buildingName.startsWith("Keep", Qt::CaseSensitive)){
+  return bKeepIconFilename;
+  }
+  else if(buildingName.startsWith("Krepost", Qt::CaseSensitive)){
+  return bKrepostIconFilename;
+  }
+  else if(buildingName.startsWith("Lumber Camp", Qt::CaseSensitive)){
+  return bLumberCampIconFilename;
+  }
+  else if(buildingName.startsWith("Market", Qt::CaseSensitive)){
+  return bMarketIconFilename;
+  }
+  else if(buildingName.startsWith("Mill", Qt::CaseSensitive)){
+  return bMillIconFilename;
+  }
+  else if(buildingName.startsWith("Gold Mine", Qt::CaseSensitive) ||
+           buildingName.startsWith("Stone Mine", Qt::CaseSensitive))
+  {
+  return bMiningCampIconFilename;
+  }
+  else if(buildingName.startsWith("Monastery", Qt::CaseSensitive)){
+  return bMonasteryIconFilename;
+  }
+  else if(buildingName.startsWith("Mule Cart", Qt::CaseSensitive)){
+  return bMuleCartIconFilename;
+  }
+  else if(buildingName.startsWith("Outpost", Qt::CaseSensitive)){
+  return bOutpostIconFilename;
+  }
+  else if(buildingName.startsWith("Palisade Gate", Qt::CaseSensitive)){
+  return bPalisadeGateIconFilename;
+  }
+  else if(buildingName.startsWith("Palisade Wall", Qt::CaseSensitive)){
+  return bPalisadeWallIconFilename;
+  }
+  else if(buildingName.startsWith("Siege Workshop", Qt::CaseSensitive)){
+  return bSiegeWorkshopIconFilename;
+  }
+  else if(buildingName.startsWith("Stable", Qt::CaseSensitive)){
+  return bStableIconFilename;
+  }
+  else if(buildingName.startsWith("Stone Gate", Qt::CaseSensitive) || buildingName.startsWith("Fortified Gate", Qt::CaseSensitive)){
+  return bStoneGateIconFilename;
+  }
+  else if(buildingName.startsWith("Stone Wall", Qt::CaseSensitive) || buildingName.startsWith("Fortified Wall", Qt::CaseSensitive)){
+  return bStoneWallIconFilename;
+  }
+  else if(buildingName.startsWith("Town Center", Qt::CaseSensitive)){
+  return bTownCenterIconFilename;
+  }
+  else if(buildingName.startsWith("University", Qt::CaseSensitive)){
+  return bUniversityIconFilename;
+  }
+  else if(buildingName.startsWith("Watch Tower", Qt::CaseSensitive)){
+  return bWatchTowerIconFilename;
+  }
+  else if(buildingName == "Charlamagne's Palace At Aix La'Chapelle (Briton)" ||
+           buildingName == "Rock Of Cashel (Celt)" || buildingName == "The Golden Tent Of The Great Khan (Mongol)" ||
+           buildingName == "The Palace Of Ctesiphon On The Tigris (Persian)" ||
+           buildingName == "Tomb Of Theodoric (Goth)" ||
+           buildingName == "Notre-Dame Cathedral (Frank)" ||
+           buildingName == "Stave Church At Urnes (Viking)" ||
+           buildingName == "The Great Temple At Nara (Japanese)" ||
+           buildingName == "The Great Mosque at Samarra (Saracen)")
+          {
+  return bWonderIconFilename;
+  }
+  else{
+  qDebug() << "Could not find: " << buildingName;
+  Q_UNREACHABLE();
+  }
+}
+
 
 MainWindow::MainWindow(Database* database, QWidget* parent)
   : QMainWindow{parent}
@@ -290,6 +833,8 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   entityNames = unitNames + buildingNames;
 
   // Sort the list in alphabetical order
+  buildingNames.sort();
+  unitNames.sort();
   entityNames.sort();
 
   // What the possible names of technologies are
@@ -308,10 +853,52 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
 
   // Populate the UI elements with elements
   // Both player 1 & 2 UI elements
-  for (int i = 0; i < entityNames.size(); i++) {
-    ui.player1EntityNames->addItem(entityNames[i]);
-    ui.player2EntityNames->addItem(entityNames[i]);
+  for(int b = 0; b < buildingNames.size(); b++){
+  QListWidgetItem* buildingPlayer1 = new QListWidgetItem(buildingNames[b]);
+  QListWidgetItem* buildingPlayer2 = new QListWidgetItem(buildingNames[b]);
+
+  QString buildingIconFileNamePlayer1 = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer1->text());
+
+  QIcon* buildingIconPlayer1 = new QIcon((workingDirectory.absolutePath() + buildingIconFileNamePlayer1));
+
+  buildingPlayer1->setIcon(*buildingIconPlayer1);
+
+  QString buildingIconFileNamePlayer2 = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer2->text());
+
+  QIcon* buildingIconPlayer2 = new QIcon((workingDirectory.absolutePath() + buildingIconFileNamePlayer2));
+
+  buildingPlayer2->setIcon(*buildingIconPlayer2);
+
+
+  ui.player1EntityNames->addItem(buildingPlayer1);
+  ui.player2EntityNames->addItem(buildingPlayer2);
   }
+
+
+  for(int u = 0; u < unitNames.size(); u++){
+  QListWidgetItem* unitPlayer1 = new QListWidgetItem(unitNames[u]);
+  QListWidgetItem* unitPlayer2 = new QListWidgetItem(unitNames[u]);
+
+  QString unitIconFileNamePlayer1 = returnUnitFileNameThatMatchesUnitName(unitPlayer1->text(), "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon");
+
+  QIcon* unitIconPlayer1 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer1));
+
+  unitPlayer1->setIcon(*unitIconPlayer1);
+
+  QString unitIconFileNamePlayer2 = returnUnitFileNameThatMatchesUnitName(unitPlayer2->text(), "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon");
+
+  QIcon* unitIconPlayer2 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer2));
+
+  unitPlayer2->setIcon(*unitIconPlayer2);
+
+
+  ui.player1EntityNames->addItem(unitPlayer1);
+  ui.player2EntityNames->addItem(unitPlayer2);
+  }
+
+    // Sort the list in alphabetical order
+  ui.player1EntityNames->sortItems(Qt::AscendingOrder);
+  ui.player2EntityNames->sortItems(Qt::AscendingOrder);
 
   // Can only have one list widget item per list
   // C++11 range based for loop
@@ -477,8 +1064,13 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     ui.player2Events->addItem(eventPlayer2);
   }
 
-  ui.player1BattleAssistantNames->addItem("Monk");
-  ui.player2BattleAssistantNames->addItem("Monk");
+  QString monkIconFileName = returnUnitFileNameThatMatchesUnitName("Monk", "");
+
+  QIcon monkIcon = QIcon(workingDirectory.absolutePath() + monkIconFileName);
+
+
+  ui.player1BattleAssistantNames->addItem(monkIcon, "Monk", Qt::DisplayRole);
+  ui.player2BattleAssistantNames->addItem(monkIcon, "Monk", Qt::DisplayRole);
 
   // These are like placeholder (lorem ipsum) values
   // Player 1 UI elements starting state
@@ -2112,6 +2704,9 @@ void MainWindow::on_actionSet_civilization_of_player_1_triggered()
     "Enter " + convertUnderscoresToSpaces(player1Name) + "'s civilization");
   player1CivilizationSelection.setStyleSheet(palettes.getDialogBoxStyling());
   player1CivilizationSelection.setComboBoxItems(civilizations);
+
+
+
   player1CivilizationSelection.exec();
 
   player1Civilization = player1CivilizationSelection.textValue();
