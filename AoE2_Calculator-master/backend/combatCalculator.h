@@ -217,6 +217,42 @@ public:
   // Function: Return the modified battle participants based on the input player
   // number
   Entity returnModifiedBattleParticipants(int inputPlayerNumber);
+
+
+
+
+  /* Bombardment can be like a mini-round that's in the ranged or standard rounds */
+
+  void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
+                                                             // Given player stuff
+    bool&  givenPlayerBombardmentEntityActivated,
+    bool&  givenPlayerIsFightingBuilding,
+    bool&  givenPlayerIsFightingUnit,
+    float& givenPlayerPointsGained,
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerEntityDeaths);
+
+  void calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
+                                                                // Shared stuff
+    const int roundDownBasedOnMultiplesOfThisNumber,
+    // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    bool&   givenPlayerIsFightingBuilding,
+    bool&   givenPlayerIsFightingUnit,
+    bool&   givenPlayerBombardmentEntityActivated,
+    float&  givenPlayerRemainingDamage,
+    int&    givenPlayerRoundAttackModifiers,
+    bool& givenPlayerIsInRange,
+
+       // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    int&    opposingPlayerBuildingDamage,
+    int&    opposingPlayerDamageDie,
+    int&    opposingPlayerEntityDeaths);
+
+
 };
 #endif // COMBAT_CALCULATOR_H
 
@@ -362,35 +398,6 @@ public:
     std::string& opposingPlayerName,
     Entity&      opposingPlayerBattleParticipant,
     int&         opposingPlayerDamageDie);
-
-  void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
-    // Given player stuff
-    bool&  givenPlayerBombardmentEntityActivated,
-    bool&  givenPlayerIsFightingBuilding,
-    bool&  givenPlayerIsFightingUnit,
-    float& givenPlayerPointsGained,
-    // Opposing player stuff
-    Entity& opposingPlayerBattleParticipant,
-    int&    opposingPlayerBuildingDamage,
-    int&    opposingPlayerEntityDeaths);
-
-  void calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
-    // Shared stuff
-    const int roundDownBasedOnMultiplesOfThisNumber,
-    // Given player stuff
-    Entity& givenPlayerBattleParticipant,
-    bool&   givenPlayerIsFightingBuilding,
-    bool&   givenPlayerIsFightingUnit,
-    bool&   givenPlayerBombardmentEntityActivated,
-    float&  givenPlayerRemainingDamage,
-    int&    givenPlayerRoundAttackModifiers,
-    bool& givenPlayerIsInRange,
-
-    // Opposing player stuff
-    Entity& opposingPlayerBattleParticipant,
-    int&    opposingPlayerBuildingDamage,
-    int&    opposingPlayerDamageDie,
-    int&    opposingPlayerEntityDeaths);
 };
 #endif // COMBAT_CALCULATOR_BOMBARDMENT_ROUNDS_H
 

@@ -686,8 +686,6 @@ void Entity::outputEntity(
 std::string Entity::getPluralName() const
 {
 
-  qDebug() << entityName;
-
   if (entityName == "Man-at-Arms") {
     return "Men-at-Arms";
   }
