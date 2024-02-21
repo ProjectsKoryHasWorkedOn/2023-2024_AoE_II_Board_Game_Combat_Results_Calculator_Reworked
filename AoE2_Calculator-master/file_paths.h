@@ -30,4 +30,33 @@ extern const QString playerDetailsIconInvertedFilename;
 extern const QString checkedIconFilename;
 extern const QString checkedIconInvertedFilename;
 
+extern const QString tBlastFurnaceIconFilename;
+extern const QString tBloodlinesIconFilename;
+extern const QString tBodkinArrowIconFilename;
+extern const QString tChainBardingArmorIconFilename;
+extern const QString tChainMailArmorIconFilename;
+extern const QString tFletchingIconFilename;
+extern const QString tForgingIconFilename;
+extern const QString tHoardingsIconFilename;
+extern const QString tIronCastingIconFilename;
+extern const QString tLeatherArcherArmorIconFilename;
+extern const QString tLoomIconFilename;
+extern const QString tPaddedArcherArmorIconFilename;
+extern const QString tRedemptionIconFilename;
+extern const QString tSanctityIconFilename;
+extern const QString tScaleBardingArmorIconFilename;
+extern const QString tScaleMailArmorIconFilename;
+
+
+extern const QString tBracerIconFilename;
+extern const QString tPlateBardingArmorIconFilename;
+extern const QString tPlateMailArmorIconFilename;
+extern const QString tRingArcherArmorIconFilename;
+
+
+
+
+
+
+
 #endif // FILE_PATHS_H

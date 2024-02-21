@@ -35,6 +35,8 @@ public:
   // functions if it hasn't added them automatically or it'll throw up an error
 private slots:
 
+  QString returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName);
+
   void on_closeProgram_triggered();
 
   void on_actionAbout_triggered();

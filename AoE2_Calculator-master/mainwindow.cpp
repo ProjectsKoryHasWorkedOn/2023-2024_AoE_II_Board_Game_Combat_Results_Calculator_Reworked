@@ -140,6 +140,76 @@ QStringList ages;
 
 QStringList backFromAForeignLandCivilizationBonuses;
 
+
+QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName){
+  if(technologyName == "Blast Furnace"){
+    return tBlastFurnaceIconFilename;
+  }
+  else if(technologyName == "Bloodlines"){
+    return tBloodlinesIconFilename;
+  }
+  else if(technologyName == "Bodkin Arrow"){
+    return tBodkinArrowIconFilename;
+  }
+  else if(technologyName == "Chain Barding Armor"){
+    return tChainBardingArmorIconFilename;
+  }
+  else if(technologyName == "Chain Mail Armor"){
+    return tChainMailArmorIconFilename;
+  }
+  else if(technologyName == "Fletching"){
+    return tFletchingIconFilename;
+  }
+  else if(technologyName == "Forging"){
+    return tForgingIconFilename ;
+  }
+  else if(technologyName == "Hoardings"){
+    return tHoardingsIconFilename  ;
+  }
+  else if(technologyName == "Iron Casting"){
+    return tIronCastingIconFilename;
+  }
+  else if(technologyName == "Leather Archer Armor"){
+    return tLeatherArcherArmorIconFilename;
+  }
+  else if(technologyName == "Loom"){
+    return tLoomIconFilename;
+  }
+  else if(technologyName == "Padded Archer Armor"){
+    return tPaddedArcherArmorIconFilename;
+  }
+  else if(technologyName == "Redemption {2E}"){
+    return tRedemptionIconFilename;
+  }
+  else if(technologyName == "Sanctity {2E}"){
+    return tSanctityIconFilename;
+  }
+  else if(technologyName == "Scale Barding Armor"){
+    return tScaleBardingArmorIconFilename;
+  }
+  else if(technologyName == "Scale Mail Armor"){
+    return tScaleMailArmorIconFilename;
+  }
+  else if(technologyName == "Bracer"){
+    return tBracerIconFilename;
+  }
+  else if(technologyName == "Plate Barding Armor"){
+    return tPlateBardingArmorIconFilename;
+  }
+  else if(technologyName == "Plate Mail Armor"){
+    return tPlateMailArmorIconFilename;
+  }
+  else if(technologyName == "Ring Archer Armor"){
+    return tRingArcherArmorIconFilename;
+  }
+  else{
+    qDebug() << "Could not find: " << technologyName;
+
+  }
+
+
+}
+
 MainWindow::MainWindow(Database* database, QWidget* parent)
   : QMainWindow{parent}
   , m_database{database}
@@ -251,16 +321,31 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
 
     const QString technologyWithUnderscores{
       convertSpacesToUnderscores(technology)};
+
+
     technologyPlayer1->setData(
       Qt::CheckStateRole,
       m_player1Technologies.isActive(technologyWithUnderscores)
         ? Qt::Checked
         : Qt::Unchecked);
+
     technologyPlayer2->setData(
       Qt::CheckStateRole,
       m_player2Technologies.isActive(technologyWithUnderscores)
         ? Qt::Checked
         : Qt::Unchecked);
+
+    QString technologyIconFileNamePlayer1 = returnTechnologyFileNameThatMatchesTechnologyName(technologyPlayer1->text());
+
+    QIcon* technologyIconPlayer1 = new QIcon((workingDirectory.absolutePath() + technologyIconFileNamePlayer1));
+
+    technologyPlayer1->setIcon(*technologyIconPlayer1);
+
+    QString technologyIconFileNamePlayer2 = returnTechnologyFileNameThatMatchesTechnologyName(technologyPlayer2->text());
+
+    QIcon* technologyIconPlayer2 = new QIcon((workingDirectory.absolutePath() + technologyIconFileNamePlayer2));
+
+    technologyPlayer2->setIcon(*technologyIconPlayer2);
 
     // Mark which ones correspond to the 2E
     if (technologyPlayer1->text().contains("{2E}")) {
@@ -960,6 +1045,8 @@ void MainWindow::overrideTechnologies(
       technologiesToCancelOut[i], Qt::MatchExactly);
     for (QListWidgetItem* item : list) {
       item->setCheckState(Qt::Unchecked);
+
+
     }
   }
 }
@@ -1233,7 +1320,8 @@ void MainWindow::setColorTheToggleElements()
       m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
       == true) {
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
-        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+        ->setIcon(
+          QIcon(workingDirectory.absolutePath() + checkedIconFilename));
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
         ->setIconVisibleInMenu(true);
     }
