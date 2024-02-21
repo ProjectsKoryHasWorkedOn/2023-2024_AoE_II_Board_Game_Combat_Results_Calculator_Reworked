@@ -222,22 +222,22 @@ std::string combatCalculator::returnWhatIAm(
       (inputtedEntity.standardDamage > 0)
       && (inputtedEntity.maximumRange >= 1)) {
       if ((inputtedEntity.armorClass[1] == true)) { // building
-        return "Ranged building fighting with melee damage";
+        return "Ranged building: " + inputtedEntity.entityName + " fighting with melee damage";
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) { // land unit or ship
-        return "Ranged unit fighting with melee damage";
+        return "Ranged unit: " + inputtedEntity.entityName + " fighting with melee damage";
       }
     }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return "Non-fighting building";
+        return "Non-fighting building: " + inputtedEntity.entityName;
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return "Non-fighting unit";
+        return "Non-fighting unit: " + inputtedEntity.entityName;
       }
     }
   }
@@ -245,16 +245,26 @@ std::string combatCalculator::returnWhatIAm(
     if (
       (inputtedEntity.rangedDamage > 0)
       && (inputtedEntity.armorClass[0] == true)) { // Archer armor class
-      return "Ranged unit fighting with ranged damage";
+      return "Ranged unit: " + inputtedEntity.entityName + " fighting with ranged damage";
     }
+    else if (
+      (inputtedEntity.standardDamage > 0)
+      && (inputtedEntity.maximumRange >= 1) && (inputtedEntity.armorClass[1] == true)) { // building
+        return "Ranged building: " + inputtedEntity.entityName + " fighting with melee damage";
+      }
+      else if ( (inputtedEntity.maximumRange >= 1) &&
+                 ( (inputtedEntity.armorClass[25] == true)
+        || (inputtedEntity.armorClass[11] == true) ) ) { // land unit or ship
+        return "Ranged unit: " + inputtedEntity.entityName + " fighting with melee damage";
+      }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return "Non-fighting building";
+        return "Non-fighting building: " + inputtedEntity.entityName;
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return "Non-fighting unit";
+        return "Non-fighting unit: " + inputtedEntity.entityName;
       }
     }
   }
@@ -262,16 +272,16 @@ std::string combatCalculator::returnWhatIAm(
     if (
       (inputtedEntity.standardDamage > 0)
       && (inputtedEntity.armorClass[25] == true)) { // Land unit
-      return "Melee unit fighting with melee damage";
+      return "Melee unit: " + inputtedEntity.entityName + " fighting with melee damage";
     }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return "Non-fighting building";
+        return "Non-fighting building: " + inputtedEntity.entityName;
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return "Non-fighting unit";
+        return "Non-fighting unit: " + inputtedEntity.entityName;
       }
     }
   }
