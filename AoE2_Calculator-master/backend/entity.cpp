@@ -156,6 +156,9 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputForegroundColor == "green") {
     textColorValue = "green";
   }
+  else if(inputForegroundColor == "bright_light_green"){
+    textColorValue = "rgb(45, 254, 84)";
+  }
   else if (inputForegroundColor == "yellow") {
     textColorValue = "yellow";
   }
@@ -428,7 +431,7 @@ void Entity::outputEntity(
     if (maximumRange != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "green", "default", std::to_string(maximumRange), false);
+        "bold", "bright_light_green", "default", std::to_string(maximumRange), false);
       std::cout << " ";
       std::cout << "max. range";
     }
@@ -437,7 +440,7 @@ void Entity::outputEntity(
     if (minimumRange != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "green", "default", std::to_string(minimumRange), false);
+        "bold", "bright_light_green", "default", std::to_string(minimumRange), false);
       std::cout << " ";
       std::cout << "min. range";
     }

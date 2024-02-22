@@ -1047,6 +1047,7 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
     // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
 
+    /* todo phillip PHILLIP: Wonder if we can make this more efficient */
 
     QString formattedName = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
 
