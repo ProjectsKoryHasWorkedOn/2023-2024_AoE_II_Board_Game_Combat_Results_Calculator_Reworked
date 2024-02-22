@@ -228,7 +228,8 @@ std::string combatCalculator::returnHighlightedEntityNames(std::string inputtedN
 
 std::string combatCalculator::returnWhatIAm(
   Entity&     inputtedEntity,
-  std::string inputtedRound)
+  std::string inputtedRound,
+  Entity& opposingPlayerEntity)
 {
   // Behavior: Check if what's fighting can fight / fight back
   bool inputtedEntityInRange = false;
@@ -244,6 +245,12 @@ std::string combatCalculator::returnWhatIAm(
   }
   else{
     inputtedEntityInRange = false;
+  }
+
+
+  // Specific rule: Archers and Villagers cannot attack rams
+  if ( ( (inputtedEntity.armorClass[0] == true) || (inputtedEntity.armorClass[27] == true) ) && opposingPlayerEntity.armorClass[10] == true ) { // Archer or villager for inputtedEntity. ram for opposingplayerentity
+    return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
   }
 
 
@@ -1518,6 +1525,15 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
   }
+
+
+
+  // Specific rule: Archers cannot deal damage to rams
+  if(givenPlayerBattleParticipant.armorClass[0] == true && opposingPlayerBattleParticipant.armorClass[10] == true){ // Ram vs villager
+    opposingPlayerEntityDeaths   = 0;
+  }
+
+
 }
 
 // Function: Calculate the outcome of a archer battle
@@ -1838,10 +1854,10 @@ void archerRounds::roundOutcome(
       // changes occured
       if ((p1ArcherActivated == true) || (p2ArcherActivated == true)) {
         std::string p1Has;
-        p1Has = returnWhatIAm(p1BattleParticipant, "Ranged round");
+        p1Has = returnWhatIAm(p1BattleParticipant, "Ranged round", p2BattleParticipant);
 
         std::string p2Has;
-        p2Has = returnWhatIAm(p2BattleParticipant, "Ranged round");
+        p2Has = returnWhatIAm(p2BattleParticipant, "Ranged round", p1BattleParticipant);
 
         std::string outputRoundString = "";
 
@@ -2104,10 +2120,10 @@ void bombardmentRounds::roundOutcome(
           (p1BombardmentEntityActivated == true)
           || (p2BombardmentEntityActivated == true)) {
           std::string p1Has;
-          p1Has = returnWhatIAm(p1BattleParticipant, "Bombardment round");
+          p1Has = returnWhatIAm(p1BattleParticipant, "Bombardment round", p2BattleParticipant);
 
           std::string p2Has;
-          p2Has = returnWhatIAm(p2BattleParticipant, "Bombardment round");
+          p2Has = returnWhatIAm(p2BattleParticipant, "Bombardment round", p1BattleParticipant);
 
           std::string outputRoundString = "<br>Long range bombardment combat round "
                                           + std::to_string(numberOfTimesToRunTheBombardmentRound + 1)
@@ -2635,6 +2651,12 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     opposingPlayerEntityDeaths   = 0;
   }
 
+  // Specific rule: Villagers cannot deal damage to rams
+  if(givenPlayerBattleParticipant.armorClass[27] == true && opposingPlayerBattleParticipant.armorClass[10] == true){ // Ram vs villager
+    opposingPlayerEntityDeaths   = 0;
+  }
+
+
          // Behaviour: Clear the results if the entity is an infantry unit for
          // the attacking player and we are in the first round of combat
   if (givenPlayerEvents[37] == 1) {
@@ -2798,10 +2820,10 @@ void standardRounds::roundOutcome(
       // changes occured
       if ((p1EntityActivated == true) || (p2EntityActivated == true)) {
         std::string p1Has;
-        p1Has = returnWhatIAm(p1BattleParticipant, "Standard round");
+        p1Has = returnWhatIAm(p1BattleParticipant, "Standard round", p2BattleParticipant);
 
         std::string p2Has;
-        p2Has = returnWhatIAm(p2BattleParticipant, "Standard round");
+        p2Has = returnWhatIAm(p2BattleParticipant, "Standard round", p1BattleParticipant);
 
 
 

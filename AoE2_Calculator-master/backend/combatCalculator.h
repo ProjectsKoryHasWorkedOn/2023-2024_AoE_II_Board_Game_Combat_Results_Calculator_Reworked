@@ -215,7 +215,7 @@ public:
   void checkIfItCanBeHealed();
 
   /** Return information functions **/
-  std::string returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound);
+  std::string returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound, Entity& opposingPlayerEntity);
 
   // Function: Return the modified battle participants based on the input player
   // number
