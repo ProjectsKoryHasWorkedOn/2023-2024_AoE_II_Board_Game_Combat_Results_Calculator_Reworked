@@ -58,6 +58,7 @@ ui_*.h
 *.jsc
 Makefile*
 *build-*
+*AoE2_Calculator-build*
 *.qm
 *.prl
 
