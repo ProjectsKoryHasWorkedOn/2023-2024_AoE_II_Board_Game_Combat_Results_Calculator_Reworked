@@ -15,7 +15,7 @@ struct Entity {
   int         rangedDamage;
   int         garrisonValue;
   int         pointValue;
-  static int constexpr numberOfArmorClasses = 28;
+  static int constexpr numberOfArmorClasses = 29;
   bool armorClass[numberOfArmorClasses];
 
   /*
@@ -47,6 +47,7 @@ struct Entity {
   armorClass[25] -> land_unit
   armorClass[26] -> longboat
   armorClass[27] -> villager
+  armorClass[28] -> bombarder
   */
 
   int maximumRange;

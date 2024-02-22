@@ -70,7 +70,8 @@ VALUES
 ('Town center building'),
 ('Land unit'),
 ('Longboat (Viking)'),
-('Villager');
+('Villager'),
+('Bombarder');
 
 /* Tables with 1 FK */
 DROP TABLE IF EXISTS Events;
@@ -294,7 +295,7 @@ VALUES
 ('3','War Galley (Japanese)','34','16','0','4','2','0','0','N','N','N','Y'),
 ('2','Spearman (Celt)','10','3','0','2','0','0','0','N','N','N','N'),
 ('2','Galley (Viking)','30','14','0','3','0','0','0','N','N','N','Y'),
-('2','Galley (Japanese)','30','14','0','4','0','0','0','N','N','N','Y'),
+('2','Galley (Japanese)','30','14','0','4','1','0','0','N','N','N','Y'),
 ('4','Galleon (Japanese)','40','18','0','4','3','0','0','N','N','N','Y'),
 ('3','War Galley (Viking)','34','16','0','4','1','0','0','N','N','N','Y');
 
@@ -985,7 +986,35 @@ VALUES
 ('21','27'),
 ('59','27'),
 /* Villager (28) */
-('108','28');
+('108','28'),
+/* Bombarder (29) */
+('15','29'),
+('16','29'),
+('112','29'),
+('113','29'),
+('21','29'),
+('24','29'),
+('25','29'),
+('30','29'),
+('31','29'),
+('40','29'),
+('59','29'),
+('69','29'),
+('70','29'),
+('71','29'),
+('114','29'),
+('77','29'),
+('78','29'),
+('89','29'),
+('90','29'),
+('98','29'),
+('99','29'),
+('106','29'),
+('107','29'),
+('110','29'),
+('115','29');
+
+
 
 DROP TABLE IF EXISTS BuildingArmorClasses;
 CREATE TABLE IF NOT EXISTS BuildingArmorClasses(
@@ -1061,7 +1090,9 @@ VALUES
 ('33','24'),
 /* Town center building (25) */
 ('30','25'),
-('31','25');
+('31','25'),
+/* Bombarder (29) */
+('33','29');
 
 DROP TABLE IF EXISTS CivSpecificBuildings;
 CREATE TABLE IF NOT EXISTS CivSpecificBuildings(

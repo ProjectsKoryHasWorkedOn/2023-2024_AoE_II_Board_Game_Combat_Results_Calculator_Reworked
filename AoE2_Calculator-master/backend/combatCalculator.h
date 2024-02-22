@@ -133,6 +133,9 @@ public:
   // Function: Set the player names
   void setPlayerNames(std::string& inputtedP1Name, std::string& inputtedP2Name);
 
+
+  std::string returnHighlightedEntityNames(std::string inputtedName);
+
   // Function: Set the battle participants
   void setCombatParticipants(
     Entity& inputtedP1BattleParticipant,
@@ -428,7 +431,6 @@ public:
     bool&   givenPlayerHasAEntityThatActivated,
     bool&   givenPlayerIsFightingBuilding,
     bool&   givenPlayerIsFightingAUnit,
-    float&  givenPlayerPointsGained,
     int&    givenPlayerEntityDeaths,
     bool& givenPlayerIsInRange,
     // Opposing player stuff

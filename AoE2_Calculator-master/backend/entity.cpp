@@ -306,7 +306,6 @@ void Entity::outputEntity(
   std::string        playerName,
   EntityOutputConfig entityOutputConfig)
 {
-  // TODO: HERE
   const bool
     showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput{
       entityOutputConfig

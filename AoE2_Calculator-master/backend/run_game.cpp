@@ -282,6 +282,10 @@ void runGame(
   p2BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
   p2BattleAssistant   = theModifiersCalculator.applyAllModifiers(1);
 
+
+
+
+
   // Behaviour: Return information about the input entities once they have been
   // modified (before further calculations occur)
   std::cout << "You entered..."
@@ -363,6 +367,8 @@ void runGame(
     }
   }
 
+
+
   // Event [4] Caught from the Crow's Nest - One extra bombardment round if
   // there is a Galley or Fire Ship
   if ((p1Events[4] == 1) || (p2Events[4] == 1)) {
@@ -436,18 +442,33 @@ void runGame(
     = theCombatCalculator->returnModifiedBattleParticipants(player2);
   p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
+
+  /** Attacking monk stuff **/
+  const AttackMonksInitialValues attackMonksValues{determineAttackMonksInitialValues(attackMonksQueryingMode)};
+  bool player1AttacksMonks{attackMonksValues.isAttackingMonks};
+  bool player1HasAnsweredAttackMonksQuestion{
+                                             attackMonksValues.isQuestionAnswered};
+  bool player2AttacksMonks{attackMonksValues.isAttackingMonks};
+  bool player2HasAnsweredAttackMonksQuestion{
+                                             attackMonksValues.isQuestionAnswered};
+
   /** Part 4.2: Round 2 **/
+
+
+
+  // Make sure player has archers before even running the ranged round
+  if(p1BattleParticipant.armorClass[0] == true || p2BattleParticipant.armorClass[9] == true){ // Archer
+
+
+
+
   // Proceed with archer round of combat so long as archers are not fighting
   // buildings Ranged damage applies only to units and villagers, not to
   // buildings
 
   // Check if player1 is able to attack player2's monks with ranged attacks.
 
-  const AttackMonksInitialValues attackMonksValues{
-    determineAttackMonksInitialValues(attackMonksQueryingMode)};
-  bool player1AttacksMonks{attackMonksValues.isAttackingMonks};
-  bool player1HasAnsweredAttackMonksQuestion{
-    attackMonksValues.isQuestionAnswered};
+
   if (
     !player1HasAnsweredAttackMonksQuestion
     && (p1BattleParticipant.rangedDamage > 0)
@@ -457,9 +478,7 @@ void runGame(
     player1HasAnsweredAttackMonksQuestion = true;
   }
 
-  bool player2AttacksMonks{attackMonksValues.isAttackingMonks};
-  bool player2HasAnsweredAttackMonksQuestion{
-    attackMonksValues.isQuestionAnswered};
+
   if (
     !player2HasAnsweredAttackMonksQuestion
     && (p2BattleParticipant.rangedDamage > 0)
@@ -506,6 +525,7 @@ void runGame(
   p1BattleParticipant
     = theCombatCalculator->returnModifiedBattleParticipants(player1);
   p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+
 
   // Player 2
   p2BattleParticipant
@@ -565,6 +585,10 @@ void runGame(
   // Behaviour: Output the remaining damage
   // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
 
+
+
+  }
+
   /** Part 4.3: Bonus round **/
   if (isThereAStandaloneBombardmentCombatRound == true) {
     // Bombardment round
@@ -592,6 +616,10 @@ void runGame(
 
     // Set the player names
     theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+
+
+
+
 
     // Behaviour: Set the battle participants
     theCombatCalculator->setCombatParticipants(
@@ -683,6 +711,9 @@ void runGame(
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
   }
 
+
+
+
   /** Part 4.4: Round 3 & 4 **/
 
   // @ Phillip: Ask about how we can not ask question on if we're attacking
@@ -755,8 +786,9 @@ void runGame(
   // This is the regular melee round
   ///
 
-  ///
-  ///
+
+
+
   theCombatCalculator = &standardRounds;
 
   theCombatCalculator->setStartingQuantites();
@@ -776,6 +808,11 @@ void runGame(
   // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
+
+
+
+
+
 
   const ActivePlayer regularMeleeRoundActivePlayer{
     getActivePlayerForNormalCombatRound(
