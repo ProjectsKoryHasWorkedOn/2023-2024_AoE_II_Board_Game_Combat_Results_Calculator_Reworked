@@ -376,7 +376,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="player2BattleAssistantNames"/>
+               <widget class="QComboBox" name="player2BattleAssistantNames">
+                <property name="iconSize">
+                 <size>
+                  <width>12</width>
+                  <height>12</height>
+                 </size>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -442,7 +449,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="player1BattleAssistantNames"/>
+               <widget class="QComboBox" name="player1BattleAssistantNames">
+                <property name="iconSize">
+                 <size>
+                  <width>12</width>
+                  <height>12</height>
+                 </size>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -575,7 +589,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Resize</string>
+               <string>Detatch</string>
               </property>
              </widget>
             </item>
@@ -641,9 +655,10 @@
      <addaction name="actionUser_guide"/>
      <addaction name="actionDeveloper_guide"/>
      <addaction name="actionDeveloper_wishlist"/>
+     <addaction name="actionDeveloper_test_cases"/>
     </widget>
     <addaction name="actionAbout"/>
-    <addaction name="actionShow_developer_window"/>
+    <addaction name="actionShow_database_window"/>
     <addaction name="menuDocumentation"/>
     <addaction name="separator"/>
     <addaction name="closeProgram"/>
@@ -776,7 +791,7 @@
     <string>Set player 2's civilization</string>
    </property>
   </action>
-  <action name="actionShow_developer_window">
+  <action name="actionShow_database_window">
    <property name="text">
     <string>Database</string>
    </property>
@@ -794,6 +809,11 @@
   <action name="actionSet_default_answer_to_attack_monks_prompt">
    <property name="text">
     <string>Set default answer to attack monks prompt</string>
+   </property>
+  </action>
+  <action name="actionDeveloper_test_cases">
+   <property name="text">
+    <string>Developer test cases</string>
    </property>
   </action>
  </widget>

@@ -12,6 +12,11 @@ extern const QString technologiesP1Filename;
 extern const QString technologiesP2Filename;
 extern QDir          workingDirectory;
 
+extern const QString developerTestCasesDocumentFilename;
+extern const QString developerGuideDocumentFilename;
+extern const QString developerWishlistDocumentFilename;
+extern const QString userGuideDocumentFilename;
+
 extern const QString closeProgramIconFilename;
 extern const QString closeProgramIconInvertedFilename;
 
@@ -23,6 +28,12 @@ extern const QString aboutInvertedIconFilename;
 
 extern const QString documentationIconFilename;
 extern const QString documentationInvertedIconFilename;
+
+
+extern const QString databaseIconFilename;
+extern const QString databaseIconInvertedFilename;
+
+
 
 extern const QString playerDetailsIconFilename;
 extern const QString playerDetailsIconInvertedFilename;

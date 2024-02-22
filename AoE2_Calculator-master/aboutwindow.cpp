@@ -17,10 +17,10 @@ aboutwindow::aboutwindow(QWidget* parent)
 
 
   ui->assets_used_label->setPalette(selectedPalette);
-  ui->assets_used_label->setText("<b>Assets used:</b> .gif export of");
+  ui->assets_used_label->setText("<b>Assets used:</b>");
 
   ui->assets_used_list_label->setPalette(selectedPalette);
-  ui->assets_used_list_label->setText("Age of Empires II graphics for buildings & units by Microsoft, "
+  ui->assets_used_list_label->setText("Age of Empires II graphics for buildings, units, & technologies by Microsoft, "
 "Grape farm by Von_Vulcan {AoK Heaven}, "
 "Corn farm by perin_nirep {AoK Heaven}, "
 "Mining Camps by Warlord859 {AoK Heaven}");

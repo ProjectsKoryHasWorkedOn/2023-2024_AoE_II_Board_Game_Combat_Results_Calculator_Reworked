@@ -37,7 +37,7 @@ private slots:
 
   QString returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName);
 
-  QString returnUnitFileNameThatMatchesUnitName(QString unitName, QString runCondition);
+  QString returnUnitFileNameThatMatchesUnitName(QString unitName);
 
   QString returnBuildingFileNameThatMatchesBuildingName(QString buildingName);
 
@@ -121,7 +121,7 @@ private slots:
 
   void on_actionSet_civilization_of_player_2_triggered();
 
-  void onShowDeveloperWindowTriggered();
+  void onShowDatabaseWindowTriggered();
 
   void
   on_actionShow_further_information_about_the_battle_participants_in_the_output_triggered(
@@ -139,6 +139,12 @@ private slots:
 
 
   void on_pushButton_clicked();
+
+  void on_actionDeveloper_test_cases_triggered();
+
+  void detachOutputWindow();
+
+  void linkUnitNamesToFileNamesMap();
 
 private:
   void initializeEntityAliases();
@@ -216,6 +222,10 @@ private:
    int   m_p2VillagerMemory = 0;
    int   m_p1FarmMemory = 0;
    int   m_p2FarmMemory = 0;
+
+
+
+   QMap<QString, QString> unitNameToUnitFileNameMap;
 
 
 };

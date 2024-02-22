@@ -8,6 +8,14 @@ extern const QString playerNamesFilename        = "/import/playerNames.csv";
 extern const QString technologiesP1Filename     = "/import/technologies_p1.csv";
 extern const QString technologiesP2Filename     = "/import/technologies_p2.csv";
 
+
+extern const QString developerTestCasesDocumentFilename = "/documentation/developer_guide.pdf";
+extern const QString developerGuideDocumentFilename = "/documentation/developer_guide.pdf";
+extern const QString developerWishlistDocumentFilename = "/documentation/developer_test_cases.pdf";
+extern const QString userGuideDocumentFilename = "/documentation/user_guide.pdf";
+
+
+
 extern const QString closeProgramIconFilename
   = "/images/close_program_icon.ico";
 extern const QString closeProgramIconInvertedFilename
@@ -31,6 +39,13 @@ extern const QString playerDetailsIconFilename
   = "/images/player_details_icon.ico";
 extern const QString playerDetailsIconInvertedFilename
   = "/images/player_details_icon_inverted.ico";
+
+
+
+extern const QString databaseIconFilename = "/images/database_icon.ico";
+extern const QString databaseIconInvertedFilename = "/images/database_icon_inverted.ico";
+
+
 
 extern const QString checkedIconFilename = "/images/checked_icon.ico";
 extern const QString checkedIconInvertedFilename

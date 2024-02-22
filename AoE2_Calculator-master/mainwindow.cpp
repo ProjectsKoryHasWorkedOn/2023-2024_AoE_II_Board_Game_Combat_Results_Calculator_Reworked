@@ -11,7 +11,7 @@
 #include "soundEffects.h" // Sound playing class
 #include <QLabel>
 #include <ranges>
-
+#include <QMap>
 
 
 #include "cross-window_palette.h" // Coloring of the UI
@@ -70,6 +70,8 @@ QString p2UnitStyle = "_western"; // _western, _mesoamerican, _asian
 QRegularExpression removeBracketedTextExpression(
   "(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
 
+QRegularExpression removeBracketedTextExpressionNoUnderscore(" \\(.*?\\)");
+
 // Declaring class
 SoundPlayer playSound;
 bool        soundEffectsEnabled   = true;
@@ -86,6 +88,8 @@ QString player1BackFromAForeignLandCivilizationBonusSelection;
 
 bool    isP2BackFromAForeignLandEventInPlay;
 QString player2BackFromAForeignLandCivilizationBonusSelection;
+
+
 
 // Civilization selection
 QStringList civilizations = {
@@ -141,6 +145,19 @@ QStringList ages;
 QStringList backFromAForeignLandCivilizationBonuses;
 
 
+QString MainWindow::convertSpacesToUnderscores(QString text)
+{
+  std::replace(text.begin(), text.end(), ' ', '_');
+  return text;
+}
+
+QString MainWindow::convertUnderscoresToSpaces(QString text)
+{
+  std::replace(text.begin(), text.end(), '_', ' ');
+  return text;
+}
+
+
 QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName){
   if(technologyName == "Blast Furnace"){
     return tBlastFurnaceIconFilename;
@@ -161,10 +178,10 @@ QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString te
     return tFletchingIconFilename;
   }
   else if(technologyName == "Forging"){
-    return tForgingIconFilename ;
+    return tForgingIconFilename;
   }
   else if(technologyName == "Hoardings"){
-    return tHoardingsIconFilename  ;
+    return tHoardingsIconFilename;
   }
   else if(technologyName == "Iron Casting"){
     return tIronCastingIconFilename;
@@ -209,421 +226,173 @@ QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString te
 }
 
 
-QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName, QString runCondition){
-  if(unitName.startsWith("Arambai", Qt::CaseSensitive)){
-return uArambaiIconFilename;
-   }
-  else if(unitName.startsWith("Arbalest", Qt::CaseSensitive)){
-return uArbalestIconFilename;
-  }
-  else if(unitName.startsWith("Archer", Qt::CaseSensitive)){
-return uArcherIconFilename;
-  }
-  else if(unitName.startsWith("Armored Elephant", Qt::CaseSensitive)){
-return uArmoredElephantIconFilename;
-  }
-  else if(unitName.startsWith("Ballista Elephant", Qt::CaseSensitive)){
-return uBallistaElephantIconFilename;
-  }
-  else if(unitName.startsWith("Battering Ram", Qt::CaseSensitive)){
-return uBatteringRamIconFilename;
-  }
-  else if(unitName.startsWith("Battle Elephant", Qt::CaseSensitive)){
-return uBattleElephantIconFilename;
-  }
-  else if(unitName.startsWith("Berserk", Qt::CaseSensitive)){
-return uBerserkIconFilename;
-  }
-  else if(unitName.startsWith("Bombard Cannon", Qt::CaseSensitive)){
-return uBombardCannonIconFilename;
-  }
-  else if(unitName.startsWith("Boyar", Qt::CaseSensitive)){
-return uBoyarIconFilename;
-  }
-  else if(unitName.startsWith("Camel Archer", Qt::CaseSensitive)){
-return uCamelArcherIconFilename;
-  }
-  else if(unitName.startsWith("Camel Rider", Qt::CaseSensitive) || unitName == "Camel"){
-return uCamelRiderIconFilename;
-  }
-  else if(unitName.startsWith("Camel Scout", Qt::CaseSensitive)){
-return uCamelScoutIconFilename;
-  }
-  else if(unitName.startsWith("Cannon Galleon", Qt::CaseSensitive)){
-return uCannonGalleonIconFilename;
-  }
-  else if(unitName.startsWith("Capped Ram", Qt::CaseSensitive)){
-return uCappedRamIconFilename;
-  }
-  else if(unitName.startsWith("Caravel", Qt::CaseSensitive)){
-return uCaravelIconFilename;
-  }
-  else if(unitName.startsWith("Cataphract", Qt::CaseSensitive)){
-    return uCataphractIconFilename;
-  }
-  else if(unitName.startsWith("Cavalier", Qt::CaseSensitive)){
-return uCavalierIconFilename;
-  }
-  else if(unitName.startsWith("Cavalry Archer", Qt::CaseSensitive)){
- return uCavalryArcherIconFilename;
-  }
-  else if(unitName.startsWith("Centurion", Qt::CaseSensitive)){
-return uCenturionIconFilename;
-  }
-  else if(unitName.startsWith("Chakram Thrower", Qt::CaseSensitive)){
-return uChakramThrowerIconFilename;
-  }
-  else if(unitName.startsWith("Champion", Qt::CaseSensitive)){
-return uChampionIconFilename;
-  }
-  else if(unitName.startsWith("Chu Ko Nu", Qt::CaseSensitive)){
-return uChuKoNuIconFilename;
-  }
-  else if(unitName.startsWith("Composite Bowman", Qt::CaseSensitive)){
-return uCompositeBowmanIconFilename;
-  }
-  else if(unitName.startsWith("Condottiero", Qt::CaseSensitive)){
-return uCondottieroIconFilename;
-  }
-  else if(unitName.startsWith("Conquistador", Qt::CaseSensitive)){
-return uConquistadorIconFilename;
-  }
-  else if(unitName.startsWith("Coustillier", Qt::CaseSensitive)){
-return uCoustillierIconFilename;
-  }
-  else if(unitName.startsWith("Crossbowman", Qt::CaseSensitive)){
-return uCrossbowmanIconFilename;
-  }
-  else if(unitName.startsWith("Demolition Raft", Qt::CaseSensitive)){
-return uDemolitionRaftIconFilename;
-  }
-  else if(unitName.startsWith("Demolition Ship", Qt::CaseSensitive)){
-return uDemolitionShipIconFilename;
-  }
-  else if(unitName.startsWith("Dismounted Konnik", Qt::CaseSensitive)){
-return uDismountedKonnikIconFilename;
-  }
-  else if(unitName.startsWith("Dromon", Qt::CaseSensitive)){
-return uDromonIconFilename;
-  }
-  else if(unitName.startsWith("Eagle Scout", Qt::CaseSensitive)){
-return uEagleScoutIconFilename;
-  }
-  else if(unitName.startsWith("Eagle Warrior", Qt::CaseSensitive)){
-return uEagleWarriorIconFilename;
-  }
-  else if(unitName.startsWith("Elephant Archer", Qt::CaseSensitive)){
-return uElephantArcherIconFilename;
-  }
-  else if(unitName.startsWith("Elite Battle Elephant", Qt::CaseSensitive)){
-return uEliteBattleElephantIconFilename;
-  }
-  else if(unitName.startsWith("Elite Cannon Galleon", Qt::CaseSensitive)){
-return uEliteCannonGalleonIconFilename;
-  }
-  else if(unitName.startsWith("Elite Eagle Warrior", Qt::CaseSensitive)){
- return uEliteEagleWarriorIconFilename;
-  }
-  else if(unitName.startsWith("Elite Elephant Archer", Qt::CaseSensitive)){
-return uEliteElephantArcherIconFilename;
-  }
-  else if(unitName.startsWith("Elite Skirmisher", Qt::CaseSensitive)){
-    return uEliteSkirmisherIconFilename;
-  }
-  else if(unitName.startsWith("Elite Steppe Lancer", Qt::CaseSensitive)){
-    return uEliteSteppeLancerIconFilename;
-  }
-  else if(unitName.startsWith("Fast Fire Ship", Qt::CaseSensitive)){
-    return uFastFireShipIconFilename;
-  }
-  else if(unitName.startsWith("Fire Galley", Qt::CaseSensitive)){
-    return uFireGalleyIconFilename;
-  }
-  else if(unitName.startsWith("Fire Ship", Qt::CaseSensitive)){
-    return uFireShipIconFilename;
-  }
-  else if(unitName.startsWith("Fishing Ship", Qt::CaseSensitive)){
-    return uFishingShipIconFilename;
-  }
-  else if(unitName.startsWith("Flaming Camel", Qt::CaseSensitive)){
-    return uFlamingCamelIconFilename;
-  }
-  else if(unitName.startsWith("Flemish Militia", Qt::CaseSensitive)){
-    return uFlemishMilitiaIconFilename;
-  }
-  else if(unitName.startsWith("Galleon", Qt::CaseSensitive)){
-    return uGalleonIconFilename;
-  }
-  else if(unitName.startsWith("Galley", Qt::CaseSensitive)){
-    return uGalleyIconFilename;
-  }
-  else if(unitName.startsWith("Gbeto", Qt::CaseSensitive)){
-    return uGbetoIconFilename;
-  }
-  else if(unitName.startsWith("Genitour", Qt::CaseSensitive)){
-    return uGenitourIconFilename;
-  }
-  else if(unitName.startsWith("Genoese Crossbowman", Qt::CaseSensitive)){
-    return uGenoeseCrossbowmanIconFilename;
-  }
-  else if(unitName.startsWith("Ghulam", Qt::CaseSensitive)){
-    return uGhulamIconFilename;
-  }
-  else if(unitName.startsWith("Halbedier", Qt::CaseSensitive)){
-    return uHalbedierIconFilename;
-  }
-  else if(unitName.startsWith("Hand Cannoneer", Qt::CaseSensitive)){
-    return uHandCannoneerIconFilename;
-  }
-  else if(unitName.startsWith("Heavy Camel", Qt::CaseSensitive)){
-    return uHeavyCamelRiderIconFilename;
-  }
-  else if(unitName.startsWith("Heavy Cavalry Archer", Qt::CaseSensitive)){
-    return uHeavyCavalryArcherIconFilename;
-  }
-  else if(unitName.startsWith("Heavy Demolition Ship", Qt::CaseSensitive)){
-    return uHeavyDemolitionShipIconFilename;
-  }
-  else if(unitName.startsWith("Heavy Scorpion", Qt::CaseSensitive)){
-    return uHeavyScorpionIconFilename;
-  }
-  else if(unitName.startsWith("Houfnice", Qt::CaseSensitive)){
-    return uHoufniceIconFilename;
-  }
-  else if(unitName.startsWith("Huskarl", Qt::CaseSensitive)){
-    return uHuskarlIconFilename;
-  }
-  else if(unitName.startsWith("Hussar", Qt::CaseSensitive)){
-    return uHussarIconFilename;
-  }
-  else if(unitName.startsWith("Hussite Wagon", Qt::CaseSensitive)){
-    return uHussiteWagonIconFilename;
-  }
-  else if(unitName.startsWith("Imperial Camel Rider", Qt::CaseSensitive)){
-    return uImperialCamelRiderIconFilename;
-  }
-  else if(unitName.startsWith("Imperial Skirmisher", Qt::CaseSensitive)){
-    return uImperialSkirmisherIconFilename;
-  }
-  else if(unitName.startsWith("Jaguar Warrior", Qt::CaseSensitive)){
-    return uJaguarWarriorIconFilename;
-  }
-  else if(unitName.startsWith("Janissary", Qt::CaseSensitive)){
-    return uJanissaryIconFilename;
-  }
-  else if(unitName.startsWith("Kamayuk", Qt::CaseSensitive)){
-    return uKamayukIconFilename;
-  }
-  else if(unitName.startsWith("Karambit Warrior", Qt::CaseSensitive)){
-    return uKarambitWarriorIconFilename;
-  }
-  else if(unitName.startsWith("Keshik", Qt::CaseSensitive)){
-    return uKeshikIconFilename;
-  }
-  else if(unitName.startsWith("Kipchak", Qt::CaseSensitive)){
-    return uKipchakIconFilename;
-  }
-  else if(unitName.startsWith("Knight", Qt::CaseSensitive)){
-    return uKnightIconFilename;
-  }
-  else if(unitName.startsWith("Konnik", Qt::CaseSensitive)){
-    return uKonnikIconFilename;
-  }
-  else if(unitName.startsWith("Legionary", Qt::CaseSensitive)){
-    return uLegionaryIconFilename;
-  }
-  else if(unitName.startsWith("Leitis", Qt::CaseSensitive)){
-    return uLeitisIconFilename;
-  }
-  else if(unitName.startsWith("Light Cavalry", Qt::CaseSensitive)){
-    return uLightCavalryIconFilename;
-  }
-  else if(unitName.startsWith("Long Swordsman", Qt::CaseSensitive)){
-    return uLongSwordsmanIconFilename;
-  }
-  else if(unitName.startsWith("Longboat", Qt::CaseSensitive)){
-    return uLongboatIconFilename;
-  }
-  else if(unitName.startsWith("Longbowman", Qt::CaseSensitive)){
-    return uLongbowmanIconFilename;
-  }
-  else if(unitName.startsWith("Magyar Huszar", Qt::CaseSensitive)){
-    return uMagyarHuszarIconFilename;
-  }
-  else if(unitName.startsWith("Mameluke", Qt::CaseSensitive)){
-    return uMamelukeIconFilename;
-  }
-  else if(unitName.startsWith("Man-at-Arms", Qt::CaseSensitive)){
-    return uManAtArmsIconFilename;
-  }
-  else if(unitName.startsWith("Mangonel", Qt::CaseSensitive)){
-    return uMangonelIconFilename;
-  }
-  else if(unitName.startsWith("Mangudai", Qt::CaseSensitive)){
-    return uMangudaiIconFilename;
-  }
-  else if(unitName.startsWith("Militia", Qt::CaseSensitive)){
-    return uMilitiaIconFilename;
-  }
-  else if(unitName.startsWith("Missionary", Qt::CaseSensitive)){
-    return uMissionaryIconFilename;
-  }
-  else if(unitName.startsWith("Monaspa", Qt::CaseSensitive)){
-    return uMonaspaIconFilename;
-  }
-  else if(unitName.startsWith("Monk", Qt::CaseSensitive)){
-    return uMonkIconFilename;
-  }
-  else if(unitName.startsWith("Obuch", Qt::CaseSensitive)){
-    return uObuchIconFilename;
-  }
-  else if(unitName.startsWith("Onager", Qt::CaseSensitive)){
-    return uOnagerIconFilename;
-  }
-  else if(unitName.startsWith("Organ Gun", Qt::CaseSensitive)){
-    return uOrganGunIconFilename;
-  }
-  else if(unitName.startsWith("Paladin", Qt::CaseSensitive)){
-    return uPaladinIconFilename;
-  }
-  else if(unitName.startsWith("Petard", Qt::CaseSensitive)){
-    return uPetardIconFilename;
-  }
-  else if(unitName.startsWith("Pikeman", Qt::CaseSensitive)){
-    return uPikemanIconFilename;
-  }
+void MainWindow::linkUnitNamesToFileNamesMap(){
 
-  if(unitName.startsWith("Plumed Archer", Qt::CaseSensitive)){
-    return uPlumedArcherIconFilename;
-  }
-  else if(unitName.startsWith("Ratha Melee Mode", Qt::CaseSensitive)){
-    return uRathaMeleeModeIconFilename;
-  }
-  else if(unitName.startsWith("Ratha Ranged Mode", Qt::CaseSensitive)){
-    return uRathaRangedModeIconFilename;
-  }
-  else if(unitName.startsWith("Rattan Archer", Qt::CaseSensitive)){
-    return uRattanArcherIconFilename;
-  }
-  else if(unitName.startsWith("Samurai", Qt::CaseSensitive)){
-    return uSamuraiIconFilename;
-  }
-  else if(unitName.startsWith("Savar", Qt::CaseSensitive)){
-    return uSavarIconFilename;
-  }
-  else if(unitName.startsWith("Scorpion", Qt::CaseSensitive)){
-    return uScorpionIconFilename;
-  }
-  else if(unitName.startsWith("Scout Cavalry", Qt::CaseSensitive)){
-    return uScoutCavalryIconFilename;
-  }
-  else if(unitName.startsWith("Serjeant", Qt::CaseSensitive)){
-    return uSerjeantIconFilename;
-  }
-  else if(unitName.startsWith("Shotel Warrior", Qt::CaseSensitive)){
-    return uShotelWarriorIconFilename;
-  }
-  else if(unitName.startsWith("Shivamsha Rider", Qt::CaseSensitive)){
-    return uShivamshaRiderIconFilename;
-  }
-  else if(unitName.startsWith("Siege Elephant", Qt::CaseSensitive)){
-    return uSiegeElephantIconFilename;
-  }
-  else if(unitName.startsWith("Siege Onager", Qt::CaseSensitive)){
-    return uSiegeOnagerIconFilename;
-  }
-  else if(unitName.startsWith("Siege Ram", Qt::CaseSensitive)){
-    return uSiegeRamIconFilename;
-  }
-  else if(unitName.startsWith("Siege Tower", Qt::CaseSensitive)){
-    return uSiegeTowerIconFilename;
-  }
-  else if(unitName.startsWith("Skirmisher", Qt::CaseSensitive)){
-    return uSkirmisherIconFilename;
-  }
+  unitNameToUnitFileNameMap.insert("Arambai", uArambaiIconFilename);
+  unitNameToUnitFileNameMap.insert("Arbalest", uArbalestIconFilename);
+  unitNameToUnitFileNameMap.insert("Archer", uArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Armored Elephant", uArmoredElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("Ballista Elephant", uBallistaElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("Battering Ram", uBatteringRamIconFilename);
+  unitNameToUnitFileNameMap.insert("Battle Elephant", uBattleElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("Berserk", uBerserkIconFilename);
+  unitNameToUnitFileNameMap.insert("Bombard Cannon", uBombardCannonIconFilename);
+  unitNameToUnitFileNameMap.insert("Boyar", uBoyarIconFilename);
+  unitNameToUnitFileNameMap.insert("Camel Archer", uCamelArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Camel Rider", uCamelRiderIconFilename);
+  unitNameToUnitFileNameMap.insert("Camel Scout", uCamelScoutIconFilename);
+  unitNameToUnitFileNameMap.insert("Cannon Galleon", uCannonGalleonIconFilename);
+  unitNameToUnitFileNameMap.insert("Capped Ram", uCappedRamIconFilename);
+  unitNameToUnitFileNameMap.insert("Caravel", uCaravelIconFilename);
+  unitNameToUnitFileNameMap.insert("Cataphract", uCataphractIconFilename);
+  unitNameToUnitFileNameMap.insert("Cavalier", uCavalierIconFilename);
+  unitNameToUnitFileNameMap.insert("Cavalry Archer", uCavalryArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Centurion", uCenturionIconFilename);
+  unitNameToUnitFileNameMap.insert("Chakram Thrower", uChakramThrowerIconFilename);
+  unitNameToUnitFileNameMap.insert("Champion", uChampionIconFilename);
+  unitNameToUnitFileNameMap.insert("Chu Ko Nu", uChuKoNuIconFilename);
+  unitNameToUnitFileNameMap.insert("Composite Bowman", uCompositeBowmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Condottiero", uCondottieroIconFilename);
+  unitNameToUnitFileNameMap.insert("Conquistador", uConquistadorIconFilename);
+  unitNameToUnitFileNameMap.insert("Coustillier", uCoustillierIconFilename);
+  unitNameToUnitFileNameMap.insert("Crossbowman", uCrossbowmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Demolition Raft", uDemolitionRaftIconFilename);
+  unitNameToUnitFileNameMap.insert("Demolition Ship", uDemolitionShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Dismounted Konnik", uDismountedKonnikIconFilename);
+  unitNameToUnitFileNameMap.insert("Dromon", uDromonIconFilename);
+  unitNameToUnitFileNameMap.insert("Eagle Scout", uEagleScoutIconFilename);
+  unitNameToUnitFileNameMap.insert("Eagle Warrior", uEagleWarriorIconFilename);
+  unitNameToUnitFileNameMap.insert("Elephant Archer", uElephantArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Battle Elephant", uEliteBattleElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Cannon Galleon", uEliteCannonGalleonIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Eagle Warrior", uEliteEagleWarriorIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Elephant Archer", uEliteElephantArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Skirmisher", uEliteSkirmisherIconFilename);
+  unitNameToUnitFileNameMap.insert("Elite Steppe Lancer", uEliteSteppeLancerIconFilename);
+  unitNameToUnitFileNameMap.insert("Fast Fire Ship", uFastFireShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Fire Galley", uFireGalleyIconFilename);
+  unitNameToUnitFileNameMap.insert("Fire Ship", uFireShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Fishing Ship", uFishingShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Flaming Camel", uFlamingCamelIconFilename);
+  unitNameToUnitFileNameMap.insert("Flemish Militia", uFlemishMilitiaIconFilename);
+  unitNameToUnitFileNameMap.insert("Galleon", uGalleonIconFilename);
+  unitNameToUnitFileNameMap.insert("Galley", uGalleyIconFilename);
+  unitNameToUnitFileNameMap.insert("Gbeto", uGbetoIconFilename);
+  unitNameToUnitFileNameMap.insert("Genitour", uGenitourIconFilename);
+  unitNameToUnitFileNameMap.insert("Genoese Crossbowman", uGenoeseCrossbowmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Ghulam", uGhulamIconFilename);
+  unitNameToUnitFileNameMap.insert("Halbedier", uHalbedierIconFilename);
+  unitNameToUnitFileNameMap.insert("Hand Cannoneer", uHandCannoneerIconFilename);
+  unitNameToUnitFileNameMap.insert("Heavy Camel", uHeavyCamelRiderIconFilename);
+  unitNameToUnitFileNameMap.insert("Heavy Cavalry Archer", uHeavyCavalryArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Heavy Demolition Ship", uHeavyDemolitionShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Heavy Scorpion", uHeavyScorpionIconFilename);
+  unitNameToUnitFileNameMap.insert("Houfnice", uHoufniceIconFilename);
+  unitNameToUnitFileNameMap.insert("Huskarl", uHuskarlIconFilename);
+  unitNameToUnitFileNameMap.insert("Hussar", uHussarIconFilename);
+  unitNameToUnitFileNameMap.insert("Hussite Wagon", uHussiteWagonIconFilename);
+  unitNameToUnitFileNameMap.insert("Imperial Camel Rider", uImperialCamelRiderIconFilename);
+  unitNameToUnitFileNameMap.insert("Imperial Skirmisher", uImperialSkirmisherIconFilename);
+  unitNameToUnitFileNameMap.insert("Jaguar Warrior", uJaguarWarriorIconFilename);
+  unitNameToUnitFileNameMap.insert("Janissary", uJanissaryIconFilename);
+  unitNameToUnitFileNameMap.insert("Kamayuk", uKamayukIconFilename);
+  unitNameToUnitFileNameMap.insert("Karambit Warrior", uKarambitWarriorIconFilename);
+  unitNameToUnitFileNameMap.insert("Keshik", uKeshikIconFilename);
+  unitNameToUnitFileNameMap.insert("Kipchak", uKipchakIconFilename);
+  unitNameToUnitFileNameMap.insert("Knight", uKnightIconFilename);
+  unitNameToUnitFileNameMap.insert("Konnik", uKonnikIconFilename);
+  unitNameToUnitFileNameMap.insert("Legionary", uLegionaryIconFilename);
+  unitNameToUnitFileNameMap.insert("Leitis", uLeitisIconFilename);
+  unitNameToUnitFileNameMap.insert("Light Cavalry", uLightCavalryIconFilename);
+  unitNameToUnitFileNameMap.insert("Long Swordsman", uLongSwordsmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Longboat", uLongboatIconFilename);
+  unitNameToUnitFileNameMap.insert("Longbowman", uLongbowmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Magyar Huszar", uMagyarHuszarIconFilename);
+  unitNameToUnitFileNameMap.insert("Mameluke", uMamelukeIconFilename);
+  unitNameToUnitFileNameMap.insert("Man-at-Arms", uManAtArmsIconFilename);
+  unitNameToUnitFileNameMap.insert("Mangonel", uMangonelIconFilename);
+  unitNameToUnitFileNameMap.insert("Mangudai", uMangudaiIconFilename);
+  unitNameToUnitFileNameMap.insert("Militia", uMilitiaIconFilename);
+  unitNameToUnitFileNameMap.insert("Missionary", uMissionaryIconFilename);
+  unitNameToUnitFileNameMap.insert("Monaspa", uMonaspaIconFilename);
+  unitNameToUnitFileNameMap.insert("Monk", uMonkIconFilename);
+  unitNameToUnitFileNameMap.insert("Obuch", uObuchIconFilename);
+  unitNameToUnitFileNameMap.insert("Onager", uOnagerIconFilename);
+  unitNameToUnitFileNameMap.insert("Organ Gun", uOrganGunIconFilename);
+  unitNameToUnitFileNameMap.insert("Paladin", uPaladinIconFilename);
+  unitNameToUnitFileNameMap.insert("Petard", uPetardIconFilename);
+  unitNameToUnitFileNameMap.insert("Pikeman", uPikemanIconFilename);
+  unitNameToUnitFileNameMap.insert("Plumed Archer", uPlumedArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Ratha Melee Mode", uRathaMeleeModeIconFilename);
+  unitNameToUnitFileNameMap.insert("Ratha Ranged Mode", uRathaRangedModeIconFilename);
+  unitNameToUnitFileNameMap.insert("Rattan Archer", uRattanArcherIconFilename);
+  unitNameToUnitFileNameMap.insert("Samurai", uSamuraiIconFilename);
+  unitNameToUnitFileNameMap.insert("Savar", uSavarIconFilename);
+  unitNameToUnitFileNameMap.insert("Scorpion", uScorpionIconFilename);
+  unitNameToUnitFileNameMap.insert("Scout Cavalry", uScoutCavalryIconFilename);
+  unitNameToUnitFileNameMap.insert("Serjeant", uSerjeantIconFilename);
+  unitNameToUnitFileNameMap.insert("Shotel Warrior", uShotelWarriorIconFilename);
+  unitNameToUnitFileNameMap.insert("Shivamsha Rider", uShivamshaRiderIconFilename);
+  unitNameToUnitFileNameMap.insert("Siege Elephant", uSiegeElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("Siege Onager", uSiegeOnagerIconFilename);
+  unitNameToUnitFileNameMap.insert("Siege Ram", uSiegeRamIconFilename);
+  unitNameToUnitFileNameMap.insert("Siege Tower", uSiegeTowerIconFilename);
+  unitNameToUnitFileNameMap.insert("Skirmisher", uSkirmisherIconFilename);
+  unitNameToUnitFileNameMap.insert("Slinger", uSlingerIconFilename);
+  unitNameToUnitFileNameMap.insert("Spearman", uSpearmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Steppe Lancer", uSteppeLancerIconFilename);
+  unitNameToUnitFileNameMap.insert("Tarkan", uTarkanIconFilename);
+  unitNameToUnitFileNameMap.insert("Teutonic Knight", uTeutonicKnightIconFilename);
+  unitNameToUnitFileNameMap.insert("Thirisadai", uThirisadaiIconFilename);
+  unitNameToUnitFileNameMap.insert("Throwing Axeman", uThrowingAxemanIconFilename);
+  unitNameToUnitFileNameMap.insert("Trade Cart", uTradeCartIconFilename);
+  unitNameToUnitFileNameMap.insert("Trade Cog", uTradeCogIconFilename);
+  unitNameToUnitFileNameMap.insert("Transport Ship", uTransportShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Trebuchet", uTrebuchetUnpackedIconFilename);
+  // unitNameToUnitFileNameMap.insert("Trebuchet Packed", uTrebuchetPackedIconFilename);
+  unitNameToUnitFileNameMap.insert("Turtle Ship", uTurtleShipIconFilename);
+  unitNameToUnitFileNameMap.insert("Two-handed Swordsman", uTwoHandedSwordsmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Urumi Swordsman", uUrumiSwordsmanIconFilename);
+  unitNameToUnitFileNameMap.insert("Villager", uFemaleVillagerIconFilename);
+  // unitNameToUnitFileNameMap.insert("Villager Male", uMaleVillagerIconFilename);
+  // // @kory todo make this in sync with anim
+  unitNameToUnitFileNameMap.insert("War Elephant", uWarElephantIconFilename);
+  unitNameToUnitFileNameMap.insert("War Galley", uWarGalleyIconFilename);
+  unitNameToUnitFileNameMap.insert("War Wagon", uWarWagonIconFilename);
+  unitNameToUnitFileNameMap.insert("Warrior Priest", uWarriorPriestIconFilename);
+  unitNameToUnitFileNameMap.insert("Winged Hussar", uWingedHussarIconFilename);
+  unitNameToUnitFileNameMap.insert("Woad Raider", uWoadRaiderIconFilename);
+  unitNameToUnitFileNameMap.insert("Xolotl Warrior", uXolotlWarriorIconFilename);
+}
+
+QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName){
 
 
-  if(unitName.startsWith("Slinger", Qt::CaseSensitive)){
-    return uSlingerIconFilename;
-  }
-  else if(unitName.startsWith("Spearman", Qt::CaseSensitive)){
-    return uSpearmanIconFilename;
-  }
-  else if(unitName.startsWith("Steppe Lancer", Qt::CaseSensitive)){
-    return uSteppeLancerIconFilename;
-  }
-  else if(unitName.startsWith("Tarkan", Qt::CaseSensitive)){
-    return uTarkanIconFilename;
-  }
-  else if(unitName.startsWith("Teutonic Knight", Qt::CaseSensitive)){
-    return uTeutonicKnightIconFilename;
-  }
-  else if(unitName.startsWith("Thirisadai", Qt::CaseSensitive)){
-    return uThirisadaiIconFilename;
-  }
-  else if(unitName.startsWith("Throwing Axeman", Qt::CaseSensitive)){
-    return uThrowingAxemanIconFilename;
-  }
-  else if(unitName.startsWith("Trade Cart", Qt::CaseSensitive)){
-    return uTradeCartIconFilename;
-  }
-  else if(unitName.startsWith("Trade Cog", Qt::CaseSensitive)){
-    return uTradeCogIconFilename;
-  }
-  else if(unitName.startsWith("Transport Ship", Qt::CaseSensitive)){
-    return uTransportShipIconFilename;
-  }
-  else if(unitName.startsWith("Trebuchet", Qt::CaseSensitive)){
-    // return uTrebuchetPackedIconFilename;
-    return uTrebuchetUnpackedIconFilename;
-  }
-  else if(unitName.startsWith("Turtle Ship", Qt::CaseSensitive)){
-    return uTurtleShipIconFilename;
-  }
-  else if(unitName.startsWith("Two-handed Swordsman", Qt::CaseSensitive)){
-    return uTwoHandedSwordsmanIconFilename;
-  }
-  else if(unitName.startsWith("Urumi Swordsman", Qt::CaseSensitive)){
-    return uUrumiSwordsmanIconFilename;
-  }
 
-  else if(unitName.startsWith("Villager", Qt::CaseSensitive)){
 
-    // @kory todo make this in sync with anim
-    // return uMaleVillagerIconFilename;
-    return uFemaleVillagerIconFilename;
-  }
-  else if(unitName.startsWith("War Elephant", Qt::CaseSensitive)){
-    return uWarElephantIconFilename;
-  }
-  else if(unitName.startsWith("War Galley", Qt::CaseSensitive)){
-    return uWarGalleyIconFilename;
-  }
-  else if(unitName.startsWith("War Wagon", Qt::CaseSensitive)){
-    return uWarWagonIconFilename;
-  }
-  else if(unitName.startsWith("Warrior Priest", Qt::CaseSensitive)){
-    return uWarriorPriestIconFilename;
-  }
-  else if(unitName.startsWith("Winged Hussar", Qt::CaseSensitive)){
-    return uWingedHussarIconFilename;
-  }
-  else if(unitName.startsWith("Woad Raider", Qt::CaseSensitive)){
-    return uWoadRaiderIconFilename;
-  }
-  else if(unitName.startsWith("Xolotl Warrior", Qt::CaseSensitive)){
-    return uXolotlWarriorIconFilename;
-  }
-  else{
-    if(unitName.startsWith("Elite") &&
-        runCondition == "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon"
-        ){
-        unitName.remove(0, 6);
-        runCondition = "Checked for the non-elite version of the unit";
-        returnUnitFileNameThatMatchesUnitName(unitName, runCondition);
+ QString unbracketedUnitName = unitName.remove(removeBracketedTextExpressionNoUnderscore);
+ QString returnFileName = "";
+
+
+ if(unitNameToUnitFileNameMap.contains(unbracketedUnitName)){
+    returnFileName = unitNameToUnitFileNameMap.value(unbracketedUnitName);
+    return returnFileName;
+ }
+ else{ // Get the non-elite version of the unit if the elite version of it is not found
+    if(unbracketedUnitName.startsWith("Elite")){
+    QString unbracketedUnitNameWithEliteRemoved = unbracketedUnitName.remove(0, 6);
+
+      if(unitNameToUnitFileNameMap.contains(unbracketedUnitNameWithEliteRemoved)){
+        returnFileName = unitNameToUnitFileNameMap.value(unbracketedUnitNameWithEliteRemoved);
+        return returnFileName;
       }
+      else{
+        qDebug() << "Could not find: " << unitName;
+        Q_UNREACHABLE();
+      }
+    }
     else{
-    qDebug() << "Could not find: " << unitName;
+      qDebug() << "Could not find: " << unitName;
       Q_UNREACHABLE();
     }
  }
@@ -771,10 +540,10 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     this, retreatingPromptAnswer, convertingHealingPromptAnswer);
 
   connect(
-    ui.actionShow_developer_window,
+    ui.actionShow_database_window,
     &QAction::triggered,
     this,
-    &MainWindow::onShowDeveloperWindowTriggered);
+    &MainWindow::onShowDatabaseWindowTriggered);
   connect(
     ui.actionSet_default_answer_to_attack_monks_prompt,
     &QAction::triggered,
@@ -794,6 +563,9 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     &QShortcut::activated,
     this,
     &MainWindow::on_calculateResultsButton_clicked);
+
+  // Populate this
+  linkUnitNamesToFileNamesMap();
 
   // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
@@ -879,13 +651,13 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
   QListWidgetItem* unitPlayer1 = new QListWidgetItem(unitNames[u]);
   QListWidgetItem* unitPlayer2 = new QListWidgetItem(unitNames[u]);
 
-  QString unitIconFileNamePlayer1 = returnUnitFileNameThatMatchesUnitName(unitPlayer1->text(), "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon");
+  QString unitIconFileNamePlayer1 = returnUnitFileNameThatMatchesUnitName(unitPlayer1->text());
 
   QIcon* unitIconPlayer1 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer1));
 
   unitPlayer1->setIcon(*unitIconPlayer1);
 
-  QString unitIconFileNamePlayer2 = returnUnitFileNameThatMatchesUnitName(unitPlayer2->text(), "Attempt to use the icon for the non-elite version of the unit if the elite version of unit does not have a icon");
+  QString unitIconFileNamePlayer2 = returnUnitFileNameThatMatchesUnitName(unitPlayer2->text());
 
   QIcon* unitIconPlayer2 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer2));
 
@@ -925,6 +697,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     QString technologyIconFileNamePlayer1 = returnTechnologyFileNameThatMatchesTechnologyName(technologyPlayer1->text());
 
     QIcon* technologyIconPlayer1 = new QIcon((workingDirectory.absolutePath() + technologyIconFileNamePlayer1));
+
 
     technologyPlayer1->setIcon(*technologyIconPlayer1);
 
@@ -1064,7 +837,7 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
     ui.player2Events->addItem(eventPlayer2);
   }
 
-  QString monkIconFileName = returnUnitFileNameThatMatchesUnitName("Monk", "");
+  QString monkIconFileName = returnUnitFileNameThatMatchesUnitName("Monk");
 
   QIcon monkIcon = QIcon(workingDirectory.absolutePath() + monkIconFileName);
 
@@ -1290,12 +1063,25 @@ void MainWindow::on_actionDeveloper_guide_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Set the path to it
-  QString fileName = "/documentation/developer_guide.docx";
-  QString filePath = workingDirectory.absolutePath() + fileName;
 
-  // Open that path
-  QDesktopServices::openUrl(filePath);
+         // Set the path to it
+  QString filePath = workingDirectory.absolutePath() + developerGuideDocumentFilename;
+
+  PdfWindow pdfWindow{filePath};
+  pdfWindow.exec();
+}
+
+
+// Run this on click of Help > Documentation > Test cases
+void MainWindow::on_actionDeveloper_test_cases_triggered()
+{
+  SFXToPlay("/sfx/ui/button_pressed.wav");
+
+         // Set the path to it
+  QString filePath = workingDirectory.absolutePath() + developerTestCasesDocumentFilename;
+
+  PdfWindow pdfWindow{filePath};
+  pdfWindow.exec();
 }
 
 // Run this on click of Help > Documentation > Developer wishlist
@@ -1303,13 +1089,14 @@ void MainWindow::on_actionDeveloper_wishlist_triggered()
 {
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
-  // Set the path to it
-  QString fileName = "/documentation/developer_wishlist.docx";
-  QString filePath = workingDirectory.absolutePath() + fileName;
+         // Set the path to it
+  QString filePath = workingDirectory.absolutePath() + developerWishlistDocumentFilename;
 
-  // Open that path
-  QDesktopServices::openUrl(filePath);
+  PdfWindow pdfWindow{filePath};
+  pdfWindow.exec();
 }
+
+
 
 // Run this on click of Help > Documentation > User guide
 void MainWindow::on_actionUser_guide_triggered()
@@ -1317,17 +1104,13 @@ void MainWindow::on_actionUser_guide_triggered()
   SFXToPlay("/sfx/ui/button_pressed.wav");
 
   // Set the path to it
-  QString fileName = "/documentation/user_guide.docx";
-  QString filePath = workingDirectory.absolutePath() + fileName;
+  QString filePath = workingDirectory.absolutePath() + userGuideDocumentFilename;
 
-  // TODO: HERE: Instead we want to open our PDF window.
-  PdfWindow pdfWindow{
-    workingDirectory.absolutePath() + "/documentation/user_guide.pdf"};
+  PdfWindow pdfWindow{filePath};
   pdfWindow.exec();
-
-  // Open that path
-  // QDesktopServices::openUrl(filePath);
 }
+
+
 
 // Run on click of the calculate results button
 void MainWindow::on_calculateResultsButton_clicked()
@@ -1363,6 +1146,8 @@ void MainWindow::on_calculateResultsButton_clicked()
       m_p1FarmMemory,
       m_p2FarmMemory
     });
+
+  detachOutputWindow();
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -1485,18 +1270,6 @@ void MainWindow::on_player2EntityAssistantQuantity_valueChanged(
   }
 
   m_entities.changePlayer2AssistantQuantity(player2AssistingEntityQuantity);
-}
-
-QString MainWindow::convertSpacesToUnderscores(QString text)
-{
-  std::replace(text.begin(), text.end(), ' ', '_');
-  return text;
-}
-
-QString MainWindow::convertUnderscoresToSpaces(QString text)
-{
-  std::replace(text.begin(), text.end(), '_', ' ');
-  return text;
 }
 
 QListWidgetItem* MainWindow::findByEntityName(
@@ -1961,8 +1734,28 @@ void MainWindow::setColorTheUIElements()
     ui.menuDocumentation->setIcon(QIcon(
       workingDirectory.absolutePath() + documentationInvertedIconFilename));
 
+
+    ui.actionUser_guide->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+    ui.actionDeveloper_guide->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+    ui.actionDeveloper_wishlist->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+    ui.actionDeveloper_test_cases->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+
+
+
+
+
+
+
+
     ui.actionAbout->setIcon(
       QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilename));
+
+  ui.actionShow_database_window->setIcon(QIcon(
+      workingDirectory.absolutePath() + databaseIconInvertedFilename));
 
     ui.actionSet_player_1_Age->setIcon(QIcon(
       workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
@@ -2003,8 +1796,23 @@ void MainWindow::setColorTheUIElements()
     ui.menuDocumentation->setIcon(
       QIcon(workingDirectory.absolutePath() + documentationIconFilename));
 
+    ui.actionUser_guide->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationIconFilename));
+    ui.actionDeveloper_guide->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationIconFilename));
+    ui.actionDeveloper_wishlist->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationIconFilename));
+    ui.actionDeveloper_test_cases->setIcon(QIcon(
+      workingDirectory.absolutePath() + documentationIconFilename));
+
+
     ui.actionAbout->setIcon(
       QIcon(workingDirectory.absolutePath() + aboutIconFilename));
+
+
+    ui.actionShow_database_window->setIcon(QIcon(
+      workingDirectory.absolutePath() + databaseIconFilename));
+
 
     ui.actionSet_player_1_Age->setIcon(
       QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
@@ -2198,7 +2006,7 @@ void MainWindow::on_actionSet_name_of_player_2_triggered()
   updatePlayerNames();
 }
 
-void MainWindow::onShowDeveloperWindowTriggered()
+void MainWindow::onShowDatabaseWindowTriggered()
 {
   DeveloperWindow developerWindow{m_database->getDatabase()};
   developerWindow.exec();
@@ -3366,17 +3174,29 @@ void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(
 }
 
 
+void MainWindow::detachOutputWindow(){
+  // Is output window open
+  outputwindow *outputWindow = new outputwindow;
+
+  QObjectList children = outputWindow->children();
+  for(int i = 0; i < children.length(); i++){
+    qDebug() << "child number: " << i;
+  }
+
+  outputWindow->sendOutputToThisWindow(ui.gameOutputTextEdit);
+
+  outputWindow->show(); // Make it a non-modal window
 
 
-void MainWindow::on_pushButton_clicked()
-{
-  qDebug() << "clicked";
-
-  outputwindow outputWindow(ui.gameOutputTextEdit);
-  outputWindow.exec();
 
 
 
 
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+  detachOutputWindow();
+}
+
 

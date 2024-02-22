@@ -1,7 +1,7 @@
 #include "outputwindow.h"
 #include "ui_outputwindow.h"
 
-outputwindow::outputwindow(QTextEdit *textWindow, QWidget *parent) :
+outputwindow::outputwindow(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::outputwindow)
 {
@@ -9,12 +9,21 @@ outputwindow::outputwindow(QTextEdit *textWindow, QWidget *parent) :
 
   this->setWindowTitle("Game output text");
 
-
-  ui->gameOutputWindowText->setText(textWindow->toHtml());
-  ui->gameOutputWindowText->showFullScreen();
 }
 
 outputwindow::~outputwindow()
 {
+  *windowIsOpen = false;
   delete ui;
+}
+
+
+void outputwindow::setup(bool &isWindowOpen){
+  isWindowOpen = true;
+  *windowIsOpen = isWindowOpen;
+}
+
+void outputwindow::sendOutputToThisWindow(QTextEdit *textWindow){
+  ui->gameOutputWindowText->setText(textWindow->toHtml());
+  // ui->gameOutputWindowText->showFullScreen();
 }
