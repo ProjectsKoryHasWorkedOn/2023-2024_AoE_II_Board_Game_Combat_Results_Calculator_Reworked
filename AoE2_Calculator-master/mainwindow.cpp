@@ -161,6 +161,30 @@ QString MainWindow::convertUnderscoresToSpaces(QString text)
 }
 
 
+static bool isBuilding(const QString& entity)
+{
+  return (entity.contains("ARCHERY_RANGE")) || (entity.contains("BARRACKS"))
+         || (entity.contains("BLACKSMITH")) || (entity.contains("CASTLE"))
+         || (entity.contains(
+           "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)")) || (entity.contains("ROCK_OF_CASHEL_(CELT)"))
+         || (entity.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
+         || (entity.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
+         || (entity.contains("THE_GREAT_MOSQUE_AT_SAMARRA_(SARACEN)"))
+         || (entity.contains("TOMB_OF_THEODORIC_(GOTH)"))
+         || (entity.contains("NOTRE-DAME_CATHEDRAL_(FRANK)"))
+         || (entity.contains("STAVE_CHURCH_AT_URNES_(VIKING)"))
+         || (entity.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)"))
+         || (entity.contains("DOCK")) || (entity.contains("WALL"))
+         || (entity.contains("GATE")) || (entity.contains("GOLD_MINE"))
+         || (entity.contains("HOUSE")) || (entity.contains("LUMBER_CAMP"))
+         || (entity.contains("MARKET")) || (entity.contains("MILL"))
+         || (entity.contains("MONASTERY")) || (entity.contains("OUTPOST"))
+         || (entity.contains("SIEGE_WORKSHOP")) || (entity.contains("STABLE"))
+         || (entity.contains("STONE_MINE")) || (entity.contains("TOWN_CENTER"))
+         || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
+}
+
+
 QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName){
   if(technologyName == "Blast Furnace"){
     return tBlastFurnaceIconFilename;
@@ -1022,6 +1046,30 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
 
     // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
+
+
+    QString formattedName = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
+
+    const bool isItemABuilding = isBuilding(formattedName);
+
+    if(isItemABuilding == true){
+      QString buildingIconFileNamePlayer1 = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
+
+      QIcon* buildingIconPlayer1 = new QIcon((workingDirectory.absolutePath() + buildingIconFileNamePlayer1));
+
+      listWidgetItem->setIcon(*buildingIconPlayer1);
+    }
+    else{
+      QString unitIconFileNamePlayer1 = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
+
+      QIcon* unitIconPlayer1 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer1));
+
+      listWidgetItem->setIcon(*unitIconPlayer1);
+    }
+
+
+
+
     QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
     if (listWidgetItemTooltip != "") {
       listWidgetItem->setToolTip(listWidgetItemTooltip);
@@ -1055,6 +1103,34 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
 
     // Add in the tooltips for the aliases so the user is aware of them
     QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
+
+
+
+
+    QString formattedName = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
+
+    const bool isItemABuilding = isBuilding(formattedName);
+
+    if(isItemABuilding == true){
+      QString buildingIconFileNamePlayer2 = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
+
+      QIcon* buildingIconPlayer2 = new QIcon((workingDirectory.absolutePath() + buildingIconFileNamePlayer2));
+
+      listWidgetItem->setIcon(*buildingIconPlayer2);
+    }
+    else{
+      QString unitIconFileNamePlayer2 = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
+
+      QIcon* unitIconPlayer2 = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer2));
+
+      listWidgetItem->setIcon(*unitIconPlayer2);
+    }
+
+
+
+
+
+
     QString listWidgetItemTooltip   = tooltipReturner(nameOfFilteredItem);
     if (listWidgetItemTooltip != "") {
       listWidgetItem->setToolTip(listWidgetItemTooltip);
@@ -1293,29 +1369,6 @@ QListWidgetItem* MainWindow::findByEntityName(
   }
 
   return foundItems.front();
-}
-
-static bool isBuilding(const QString& entity)
-{
-  return (entity.contains("ARCHERY_RANGE")) || (entity.contains("BARRACKS"))
-         || (entity.contains("BLACKSMITH")) || (entity.contains("CASTLE"))
-         || (entity.contains(
-           "CHARLAMAGNE'S_PALACE_AT_AIX_LA'CHAPELLE_(BRITON)"))
-         || (entity.contains("ROCK_OF_CASHEL_(CELT)"))
-         || (entity.contains("THE_GOLDEN_TENT_OF_THE_GREAT_KHAN_(MONGOL)"))
-         || (entity.contains("THE_PALACE_OF_CTESIPHON_ON_THE_TIGRIS_(PERSIAN)"))
-         || (entity.contains("TOMB_OF_THEODORIC_(GOTH)"))
-         || (entity.contains("NOTRE-DAME_CATHEDRAL_(FRANK)"))
-         || (entity.contains("STAVE_CHURCH_AT_URNES_(VIKING)"))
-         || (entity.contains("THE_GREAT_TEMPLE_AT_NARA_(JAPANESE)"))
-         || (entity.contains("DOCK")) || (entity.contains("WALL"))
-         || (entity.contains("GATE")) || (entity.contains("GOLD_MINE"))
-         || (entity.contains("HOUSE")) || (entity.contains("LUMBER_CAMP"))
-         || (entity.contains("MARKET")) || (entity.contains("MILL"))
-         || (entity.contains("MONASTERY")) || (entity.contains("OUTPOST"))
-         || (entity.contains("SIEGE_WORKSHOP")) || (entity.contains("STABLE"))
-         || (entity.contains("STONE_MINE")) || (entity.contains("TOWN_CENTER"))
-         || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
 static bool isUnitWithOneToken(const QString& entity)
