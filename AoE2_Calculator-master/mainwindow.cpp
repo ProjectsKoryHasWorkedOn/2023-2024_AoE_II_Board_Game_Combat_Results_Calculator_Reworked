@@ -613,7 +613,7 @@ MainWindow::MainWindow(
     this, retreatingPromptAnswer, convertingHealingPromptAnswer);
 
   connect(
-    ui.actionShow_developer_window,
+    ui.actionShow_database_window,
     &QAction::triggered,
     this,
     &MainWindow::onShowDatabaseWindowTriggered);
@@ -705,18 +705,18 @@ MainWindow::MainWindow(
     QString buildingIconFileNamePlayer1
       = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer1->text());
 
-    QIcon* buildingIconPlayer1 = new QIcon(
+    QIcon buildingIconPlayer1(
       (workingDirectory.absolutePath() + buildingIconFileNamePlayer1));
 
-    buildingPlayer1->setIcon(*buildingIconPlayer1);
+    buildingPlayer1->setIcon(buildingIconPlayer1);
 
     QString buildingIconFileNamePlayer2
       = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer2->text());
 
-    QIcon* buildingIconPlayer2 = new QIcon(
+    QIcon buildingIconPlayer2(
       (workingDirectory.absolutePath() + buildingIconFileNamePlayer2));
 
-    buildingPlayer2->setIcon(*buildingIconPlayer2);
+    buildingPlayer2->setIcon(buildingIconPlayer2);
 
     ui.player1EntityNames->addItem(buildingPlayer1);
     ui.player2EntityNames->addItem(buildingPlayer2);
@@ -729,18 +729,18 @@ MainWindow::MainWindow(
     QString unitIconFileNamePlayer1
       = returnUnitFileNameThatMatchesUnitName(unitPlayer1->text());
 
-    QIcon* unitIconPlayer1
-      = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer1));
+    QIcon unitIconPlayer1(
+      (workingDirectory.absolutePath() + unitIconFileNamePlayer1));
 
-    unitPlayer1->setIcon(*unitIconPlayer1);
+    unitPlayer1->setIcon(unitIconPlayer1);
 
     QString unitIconFileNamePlayer2
       = returnUnitFileNameThatMatchesUnitName(unitPlayer2->text());
 
-    QIcon* unitIconPlayer2
-      = new QIcon((workingDirectory.absolutePath() + unitIconFileNamePlayer2));
+    QIcon unitIconPlayer2(
+      (workingDirectory.absolutePath() + unitIconFileNamePlayer2));
 
-    unitPlayer2->setIcon(*unitIconPlayer2);
+    unitPlayer2->setIcon(unitIconPlayer2);
 
     ui.player1EntityNames->addItem(unitPlayer1);
     ui.player2EntityNames->addItem(unitPlayer2);
@@ -775,19 +775,19 @@ MainWindow::MainWindow(
       = returnTechnologyFileNameThatMatchesTechnologyName(
         technologyPlayer1->text());
 
-    QIcon* technologyIconPlayer1 = new QIcon(
-      (workingDirectory.absolutePath() + technologyIconFileNamePlayer1));
+    QIcon technologyIconPlayer1(
+      workingDirectory.absolutePath() + technologyIconFileNamePlayer1);
 
-    technologyPlayer1->setIcon(*technologyIconPlayer1);
+    technologyPlayer1->setIcon(technologyIconPlayer1);
 
     QString technologyIconFileNamePlayer2
       = returnTechnologyFileNameThatMatchesTechnologyName(
         technologyPlayer2->text());
 
-    QIcon* technologyIconPlayer2 = new QIcon(
+    QIcon technologyIconPlayer2(
       (workingDirectory.absolutePath() + technologyIconFileNamePlayer2));
 
-    technologyPlayer2->setIcon(*technologyIconPlayer2);
+    technologyPlayer2->setIcon(technologyIconPlayer2);
 
     // Mark which ones correspond to the 2E
     if (technologyPlayer1->text().contains("{2E}")) {
@@ -1107,19 +1107,19 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
       QString buildingIconFileNamePlayer1
         = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
 
-      QIcon* buildingIconPlayer1 = new QIcon(
-        (workingDirectory.absolutePath() + buildingIconFileNamePlayer1));
+      QIcon buildingIconPlayer1(
+        workingDirectory.absolutePath() + buildingIconFileNamePlayer1);
 
-      listWidgetItem->setIcon(*buildingIconPlayer1);
+      listWidgetItem->setIcon(buildingIconPlayer1);
     }
     else {
       QString unitIconFileNamePlayer1
         = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
 
-      QIcon* unitIconPlayer1 = new QIcon(
-        (workingDirectory.absolutePath() + unitIconFileNamePlayer1));
+      QIcon unitIconPlayer1(
+        workingDirectory.absolutePath() + unitIconFileNamePlayer1);
 
-      listWidgetItem->setIcon(*unitIconPlayer1);
+      listWidgetItem->setIcon(unitIconPlayer1);
     }
 
     QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
@@ -1165,19 +1165,19 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
       QString buildingIconFileNamePlayer2
         = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
 
-      QIcon* buildingIconPlayer2 = new QIcon(
-        (workingDirectory.absolutePath() + buildingIconFileNamePlayer2));
+      QIcon buildingIconPlayer2(
+        workingDirectory.absolutePath() + buildingIconFileNamePlayer2);
 
-      listWidgetItem->setIcon(*buildingIconPlayer2);
+      listWidgetItem->setIcon(buildingIconPlayer2);
     }
     else {
       QString unitIconFileNamePlayer2
         = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
 
-      QIcon* unitIconPlayer2 = new QIcon(
-        (workingDirectory.absolutePath() + unitIconFileNamePlayer2));
+      QIcon unitIconPlayer2(
+        workingDirectory.absolutePath() + unitIconFileNamePlayer2);
 
-      listWidgetItem->setIcon(*unitIconPlayer2);
+      listWidgetItem->setIcon(unitIconPlayer2);
     }
 
     QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);

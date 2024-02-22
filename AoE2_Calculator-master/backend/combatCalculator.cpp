@@ -2234,22 +2234,23 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
 
 // Function: Apply the outcome of a standard battle
 
-void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer( // Shared
-                                                                        // stuff
-  int& numberOfTimesToRunTheStandardRound,
-  // Given player stuff
-  Entity& givenPlayerBattleParticipant,
-  int*    givenPlayerEvents,
-  bool&   givenPlayerHasAEntityThatActivated,
-  bool&   givenPlayerIsFightingAUnit,
-  float&  givenPlayerPointsGained,
-  bool&   givenPlayerIsFightingBuilding,
+void standardRounds::
+  applyingStandardRoundOutcomeForAnIndividualPlayer( // Shared
+                                                     // stuff
+    int& numberOfTimesToRunTheStandardRound,
+    // Given player stuff
+    Entity& givenPlayerBattleParticipant,
+    int*    givenPlayerEvents,
+    bool&   givenPlayerHasAEntityThatActivated,
+    bool&   givenPlayerIsFightingAUnit,
+    float&  givenPlayerPointsGained,
+    bool&   givenPlayerIsFightingBuilding,
 
-  // Opposing player stuff
-  Entity& opposingPlayerBattleParticipant,
-  float&  opposingPlayerPointsGained,
-  int&    opposingPlayerEntityDeaths,
-  int&    opposingPlayerBuildingDamage)
+    // Opposing player stuff
+    Entity& opposingPlayerBattleParticipant,
+    float&  opposingPlayerPointsGained,
+    int&    opposingPlayerEntityDeaths,
+    int&    opposingPlayerBuildingDamage)
 {
   //  Track if changes occured to the quantity
 
