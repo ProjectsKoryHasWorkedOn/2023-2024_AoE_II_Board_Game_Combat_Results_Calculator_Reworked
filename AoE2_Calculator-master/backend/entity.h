@@ -1,8 +1,8 @@
 #pragma once
 /** The libaries **/
+#include "entity_output_config.h"
 #include <iostream> // Using: cin, cout
 #include <string>   // Using: string
-#include "entity_output_config.h"
 
 /** Class: Entity **/
 struct Entity {
@@ -60,7 +60,7 @@ struct Entity {
     onlyAttacksOnceInTheFirstRoundOfCombat; /* Where a Standard or Ranged round
                                                counts as the first round */
   bool dealsAreaEffectDamage;
-  bool isKamikaze;  /* Suicide attacks */
+  bool isKamikaze; /* Suicide attacks */
   int  entitiesArmorClasses;
   // ^ Obtained via DB
 

@@ -543,11 +543,8 @@ static QString fetchArmorClasses(const Entity& entity)
 // No buildings deal bonus damage (there are no building modifiers)
 // Just unit modifiers
 
-
-
-
-/* todo phillip PHILLIP: Seems to be missing hp bonus, loom is giving ranged damage bonus */
-
+/* todo phillip PHILLIP: Seems to be missing hp bonus, loom is giving ranged
+ * damage bonus */
 
 Entity Database::getUnitModifiers(
   Entity entityToApplyModifiersTo,

@@ -5,16 +5,17 @@ openOutputWindowClass::openOutputWindowClass()
   outputWindow = new outputwindow();
 }
 
-void openOutputWindowClass::showOutputWindow(){
+void openOutputWindowClass::showOutputWindow()
+{
   outputWindow->show(); // Modal window
 }
 
-
-bool openOutputWindowClass::returnIfWindowIsOpen(){
+bool openOutputWindowClass::returnIfWindowIsOpen()
+{
   return outputWindow->isVisible();
 }
 
-
-void openOutputWindowClass::sendOutputToOutputWindow(QTextEdit *textWindow){
+void openOutputWindowClass::sendOutputToOutputWindow(QTextEdit* textWindow)
+{
   outputWindow->sendOutputToThisWindow(textWindow);
 }

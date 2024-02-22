@@ -34,10 +34,7 @@ int main(int argc, char* argv[])
 
   openOutputWindowClass openTheOutputWindow;
 
-
   MainWindow w{&database, &openTheOutputWindow};
-
-
 
   // Set the application icon
   w.setWindowIcon(QIcon("swords_clashing.ico"));

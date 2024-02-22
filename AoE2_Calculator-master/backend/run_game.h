@@ -2,8 +2,8 @@
 #define RUN_GAME_H
 #include "entity_output_config.h"
 
-#include "player_selection_memory.h"
 #include "player.h"
+#include "player_selection_memory.h"
 
 #include <QString>
 

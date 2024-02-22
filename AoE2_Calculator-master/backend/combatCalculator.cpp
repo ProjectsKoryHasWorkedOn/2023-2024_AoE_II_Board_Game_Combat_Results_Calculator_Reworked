@@ -59,11 +59,12 @@ CombatCalculatorCallbacks::getOnPlayerEntityDeath() const
 }
 
 CombatCalculatorState::CombatCalculatorState(
-  int                distanceBetweenTheBattleParticipants,
-  EntityOutputConfig entityOutputConfig,
+  int                   distanceBetweenTheBattleParticipants,
+  EntityOutputConfig    entityOutputConfig,
   PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath)
   : distanceBetweenTheBattleParticipants{distanceBetweenTheBattleParticipants}
-  , entityOutputConfig{entityOutputConfig} , resetMemoryOfPlayerSelectionOnDeath{resetMemoryOfPlayerSelectionOnDeath}
+  , entityOutputConfig{entityOutputConfig}
+  , resetMemoryOfPlayerSelectionOnDeath{resetMemoryOfPlayerSelectionOnDeath}
 {
   // Set all of the stored values to their initial values
   startingBattleParticipantQuantityP1 = 0;
@@ -213,15 +214,15 @@ Entity combatCalculator::returnModifiedBattleParticipants(int inputPlayerNumber)
   }
 }
 
-
-std::string combatCalculator::returnHighlightedEntityNames(std::string inputtedName){
+std::string combatCalculator::returnHighlightedEntityNames(
+  std::string inputtedName)
+{
   std::string highlightedName = "<span style=\"text-decoration: none";
   highlightedName += ";font-weight: bold";
   highlightedName += ";color: rgb(255,255,255)";
   highlightedName += ";background-color: darkcyan\">";
   highlightedName += inputtedName;
-    highlightedName += "</span>";
-
+  highlightedName += "</span>";
 
   return highlightedName;
 }
@@ -229,7 +230,7 @@ std::string combatCalculator::returnHighlightedEntityNames(std::string inputtedN
 std::string combatCalculator::returnWhatIAm(
   Entity&     inputtedEntity,
   std::string inputtedRound,
-  Entity& opposingPlayerEntity)
+  Entity&     opposingPlayerEntity)
 {
   // Behavior: Check if what's fighting can fight / fight back
   bool inputtedEntityInRange = false;
@@ -238,43 +239,54 @@ std::string combatCalculator::returnWhatIAm(
   // Y max. range, Z min. range
   // If X <= Y but >= Z in range
 
-  if(
-    (m_state->distanceBetweenTheBattleParticipants <= inputtedEntity.maximumRange)
-    && (m_state->distanceBetweenTheBattleParticipants >= inputtedEntity.minimumRange)){
+  if (
+    (m_state->distanceBetweenTheBattleParticipants
+     <= inputtedEntity.maximumRange)
+    && (m_state->distanceBetweenTheBattleParticipants >= inputtedEntity.minimumRange)) {
     inputtedEntityInRange = true;
   }
-  else{
+  else {
     inputtedEntityInRange = false;
   }
 
-
   // Specific rule: Archers and Villagers cannot attack rams
-  if ( ( (inputtedEntity.armorClass[0] == true) || (inputtedEntity.armorClass[27] == true) ) && opposingPlayerEntity.armorClass[10] == true ) { // Archer or villager for inputtedEntity. ram for opposingplayerentity
-    return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+  if (
+    ((inputtedEntity.armorClass[0] == true)
+     || (inputtedEntity.armorClass[27] == true))
+    && opposingPlayerEntity.armorClass[10]
+         == true) { // Archer or villager for inputtedEntity. ram for
+                    // opposingplayerentity
+    return returnHighlightedEntityNames(inputtedEntity.entityName)
+           + " did not fight";
   }
-
 
   if (inputtedRound == "Bombardment round") {
     if (
       (inputtedEntity.standardDamage > 0)
-      && (inputtedEntity.armorClass[28] == true) && (inputtedEntityInRange == true)) { // Bombarder
+      && (inputtedEntity.armorClass[28] == true)
+      && (inputtedEntityInRange == true)) {         // Bombarder
       if ((inputtedEntity.armorClass[1] == true)) { // building
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " fought with melee damage";
       }
-      else if ( (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true) &&
-        (inputtedEntity.armorClass[25] == true)
+      else if (
+        (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
+          && (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) { // land unit or ship
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " fought with melee damage";
       }
     }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
     }
   }
@@ -282,45 +294,60 @@ std::string combatCalculator::returnWhatIAm(
     if (
       (inputtedEntity.rangedDamage > 0)
       && (inputtedEntity.armorClass[0] == true)) { // Archer armor class
-      return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with ranged damage";
+      return returnHighlightedEntityNames(inputtedEntity.entityName)
+             + " fought with ranged damage";
     }
     else if (
       (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
-      && (inputtedEntity.armorClass[28] == true) && (inputtedEntity.armorClass[1] == true)) { // bombarder and building
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
-      }
-    else if ((inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true) && (inputtedEntity.armorClass[28] == true) && // bombarder
-                 ( (inputtedEntity.armorClass[25] == true)
-        || (inputtedEntity.armorClass[11] == true) ) ) { // land unit or ship
-        return  returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
-      }
+      && (inputtedEntity.armorClass[28] == true)
+      && (inputtedEntity.armorClass[1] == true)) { // bombarder and building
+      return returnHighlightedEntityNames(inputtedEntity.entityName)
+             + " fought with melee damage";
+    }
+    else if (
+      (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
+      && (inputtedEntity.armorClass[28] == true) && // bombarder
+      ((inputtedEntity.armorClass[25] == true)
+       || (inputtedEntity.armorClass[11] == true))) { // land unit or ship
+      return returnHighlightedEntityNames(inputtedEntity.entityName)
+             + " fought with melee damage";
+    }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
     }
   }
   else if (inputtedRound == "Standard round") {
-    if ((inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
-      && ( (inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true) ) ) { // Land unit or ship
-      return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
+    if (
+      (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
+      && ((inputtedEntity.armorClass[25] == true) || (inputtedEntity.armorClass[11] == true))) { // Land unit or ship
+      return returnHighlightedEntityNames(inputtedEntity.entityName)
+             + " fought with melee damage";
     }
-    else if((inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true) &&  inputtedEntity.armorClass[1] == true){
-      return returnHighlightedEntityNames(inputtedEntity.entityName) + " fought with melee damage";
+    else if (
+      (inputtedEntity.standardDamage > 0) && (inputtedEntityInRange == true)
+      && inputtedEntity.armorClass[1] == true) {
+      return returnHighlightedEntityNames(inputtedEntity.entityName)
+             + " fought with melee damage";
     }
     else {
       if (inputtedEntity.armorClass[1] == true) { // Building
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
       else if (
         (inputtedEntity.armorClass[25] == true)
         || (inputtedEntity.armorClass[11] == true)) {
-        return returnHighlightedEntityNames(inputtedEntity.entityName) + " did not fight";
+        return returnHighlightedEntityNames(inputtedEntity.entityName)
+               + " did not fight";
       }
     }
   }
@@ -411,28 +438,23 @@ void combatCalculator::deathDetectionForEachPlayer(
   if (givenPlayerBattleParticipant.entityQuantity <= 0) {
     aDeathHasOccured = true;
 
-    if(givenPlayerBattleParticipant.entityName == "Villager"){
-      if(currentPlayer == Player::Player1){
+    if (givenPlayerBattleParticipant.entityName == "Villager") {
+      if (currentPlayer == Player::Player1) {
         m_state->resetMemoryOfPlayerSelectionOnDeath.p1VillagerMemory = 0;
       }
-      else if(currentPlayer == Player::Player2){
+      else if (currentPlayer == Player::Player2) {
         m_state->resetMemoryOfPlayerSelectionOnDeath.p2VillagerMemory = 0;
-
       }
     }
 
-
-    if(givenPlayerBattleParticipant.entityName == "Farm"){
-      if(currentPlayer == Player::Player1){
+    if (givenPlayerBattleParticipant.entityName == "Farm") {
+      if (currentPlayer == Player::Player1) {
         m_state->resetMemoryOfPlayerSelectionOnDeath.p1FarmMemory = 0;
       }
-      else if(currentPlayer == Player::Player2){
+      else if (currentPlayer == Player::Player2) {
         m_state->resetMemoryOfPlayerSelectionOnDeath.p2FarmMemory = 0;
-
       }
     }
-
-
 
     if (givenPlayerBattleParticipant.entityName == "Monk") {
       m_callbacks->getOnPlayerEntityDeath()(currentPlayer, true);
@@ -506,8 +528,6 @@ void combatCalculator::outputEntityInformation(std::string inputMessage)
   if (inputMessage != "") {
     std::cout << inputMessage << "<br>";
   }
-
-
 
   p1BattleParticipant.outputEntity(player1Name, m_state->entityOutputConfig);
   // Do not show monks as being dead if started with 0
@@ -592,10 +612,8 @@ void combatCalculator::checkRemainingDamage( // @Kory todo: check if this is
   }
 }
 
-
-
 void combatCalculator::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
-                                                                             // Given player stuff
+  // Given player stuff
   bool&  givenPlayerBombardmentEntityActivated,
   bool&  givenPlayerIsFightingBuilding,
   bool&  givenPlayerIsFightingUnit,
@@ -605,9 +623,7 @@ void combatCalculator::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   int&    opposingPlayerBuildingDamage,
   int&    opposingPlayerEntityDeaths)
 {
-
-
-         //  Track if changes occured to the quantity
+  //  Track if changes occured to the quantity
   int opposingPlayerStartingQuantity
     = opposingPlayerBattleParticipant.entityQuantity;
   int opposingPlayerEndingQuantity
@@ -615,8 +631,8 @@ void combatCalculator::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
   int opposingPlayerQuantityDifference
     = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
-         // Behaviour: Apply the results for p1 if the activation conditions were
-         // met
+  // Behaviour: Apply the results for p1 if the activation conditions were
+  // met
   if (givenPlayerBombardmentEntityActivated == true) {
     // Behaviour: Apply the results to buildings or non-buildings
     if (givenPlayerIsFightingBuilding == true) {
@@ -628,31 +644,30 @@ void combatCalculator::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
         opposingPlayerBattleParticipant.entityHealth
           -= opposingPlayerBuildingDamage;
 
-               // Behaviour: if the HP of the building is > 0 then do not keep the
-               // set the point value
+        // Behaviour: if the HP of the building is > 0 then do not keep the
+        // set the point value
         if (opposingPlayerBattleParticipant.entityHealth > 0) {
           givenPlayerPointsGained = 0;
         }
       }
     }
     if (givenPlayerIsFightingUnit == true) {
-
       // Behavior: Store the starting quantity
       opposingPlayerStartingQuantity
         = opposingPlayerBattleParticipant.entityQuantity;
 
-             // Behaviour: Store how many points the entity is individually worth
+      // Behaviour: Store how many points the entity is individually worth
       givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
 
-             // Behaviour: Now decrease the quantity
+      // Behaviour: Now decrease the quantity
       while (opposingPlayerEntityDeaths != 0) {
         opposingPlayerBattleParticipant.entityQuantity -= 1;
         opposingPlayerEntityDeaths -= 1;
         checkIfDead();
       }
 
-             // Behavior: Store the ending quantity and cap the ending quantity at
-             // 0
+      // Behavior: Store the ending quantity and cap the ending quantity at
+      // 0
       if (opposingPlayerBattleParticipant.entityQuantity < 0) {
         opposingPlayerEndingQuantity = 0;
       }
@@ -661,11 +676,11 @@ void combatCalculator::applyingBombardmentRoundOutcomeForAnIndividualPlayer(
           = opposingPlayerBattleParticipant.entityQuantity;
       }
 
-             // Behaviour: Update the difference between the two quantities
+      // Behaviour: Update the difference between the two quantities
       opposingPlayerQuantityDifference
         = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
 
-             // Behaviour: Award points if deaths occured
+      // Behaviour: Award points if deaths occured
       if (opposingPlayerEntityDeaths >= 0) {
         // Behavior: Calculate the difference between the two quantities
         givenPlayerPointsGained *= opposingPlayerQuantityDifference;
@@ -681,28 +696,26 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   // Shared stuff
   const int roundDownBasedOnMultiplesOfThisNumber,
 
-     // Given player stuff
+  // Given player stuff
   Entity& givenPlayerBattleParticipant,
   bool&   givenPlayerIsFightingBuilding,
   bool&   givenPlayerIsFightingUnit,
   bool&   givenPlayerBombardmentEntityActivated,
   float&  givenPlayerRemainingDamage,
   int&    givenPlayerRoundAttackModifiers,
-  bool& givenPlayerIsInRange,
+  bool&   givenPlayerIsInRange,
 
-     // Opposing player stuff
+  // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
   int&    opposingPlayerBuildingDamage,
   int&    opposingPlayerDamageDie,
   int&    opposingPlayerEntityDeaths)
 {
-
   // Check if player has a bombarder
   bool playerHasBombarder = false;
-  if(givenPlayerBattleParticipant.armorClass[28] == true){
+  if (givenPlayerBattleParticipant.armorClass[28] == true) {
     playerHasBombarder = true;
   }
-
 
   // Behaviour: Check if player 1 is fighting a building
   if (opposingPlayerBattleParticipant.armorClass[1] == true) { // Building p2
@@ -712,7 +725,7 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingBuilding = false;
   }
 
-         // Behaviour: Check if given player is fighting a unit
+  // Behaviour: Check if given player is fighting a unit
   if (
     (opposingPlayerBattleParticipant.armorClass[25] == true)     // Land unit p2
     || (opposingPlayerBattleParticipant.armorClass[11] == true)) // Ship p2
@@ -724,26 +737,28 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingUnit = false;
   }
 
+  // Behavior: Check if what's fighting can fight / fight back
 
-         // Behavior: Check if what's fighting can fight / fight back
-
-         // distance between battle participants X
-         // Y max. range, Z min. range
-         // If X <= Y but >= Z in range
+  // distance between battle participants X
+  // Y max. range, Z min. range
+  // If X <= Y but >= Z in range
 
   if(
     (m_state->distanceBetweenTheBattleParticipants <= givenPlayerBattleParticipant.maximumRange)
     && (m_state->distanceBetweenTheBattleParticipants >= givenPlayerBattleParticipant.minimumRange)){
     givenPlayerIsInRange = true;
   }
-  else{
+  else {
     givenPlayerIsInRange = false;
   }
 
-  // Behaviour: Calculate the damage against buildings if player 1 is fighting a building
+  // Behaviour: Calculate the damage against buildings if player 1 is fighting a
+  // building
   givenPlayerBombardmentEntityActivated = false;
 
-  if (givenPlayerIsFightingBuilding == true && givenPlayerIsInRange == true && playerHasBombarder == true) {
+  if (
+    givenPlayerIsFightingBuilding == true && givenPlayerIsInRange == true
+    && playerHasBombarder == true) {
     opposingPlayerBuildingDamage = ( ((givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity) + givenPlayerRoundAttackModifiers) - ((opposingPlayerBattleParticipant.entityHealth) % roundDownBasedOnMultiplesOfThisNumber));
     opposingPlayerDamageDie = opposingPlayerBuildingDamage / 10;
     givenPlayerRemainingDamage += calculateRemainingDamage(
@@ -758,8 +773,9 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
   // Behaviour: Calculate the damage against units if player 1 is fighting a
   // unit
 
-  if (givenPlayerIsFightingUnit == true && givenPlayerIsInRange == true && playerHasBombarder == true) {
-
+  if (
+    givenPlayerIsFightingUnit == true && givenPlayerIsInRange == true
+    && playerHasBombarder == true) {
     if (givenPlayerBattleParticipant.dealsAreaEffectDamage == true) {
       int givenPlayerAreaEffectDamage
         = ((givenPlayerBattleParticipant.standardDamage)
@@ -779,13 +795,12 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
 
       givenPlayerBombardmentEntityActivated = true;
     }
-    else{
+    else {
       opposingPlayerEntityDeaths = std::floor(
         ((givenPlayerBattleParticipant.standardDamage
           * givenPlayerBattleParticipant.entityQuantity)
          + givenPlayerRoundAttackModifiers)
         / (opposingPlayerBattleParticipant.entityHealth));
-
 
       givenPlayerRemainingDamage += calculateRemainingDamage(
         opposingPlayerEntityDeaths,
@@ -796,39 +811,31 @@ void combatCalculator::calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
 
       givenPlayerBombardmentEntityActivated = true;
     }
-
   }
-
-
 
   // Behaviour: Clear the results if the entity only attacks once (in the
   // first round of combat) and this will not be the first round it has been in
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheFirstRoundOfCombat
      == true)
-    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 1)
-    ) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 1)) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
   }
 
-         // Behaviour: Clear the results if the entity only attacks in the second
-         // round of combat and this will not be the second round it has been in
+  // Behaviour: Clear the results if the entity only attacks in the second
+  // round of combat and this will not be the second round it has been in
 
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheSecondRoundOfCombat
      == true)
-    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 2)
-    ) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 2)) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
   }
-
-
 }
-
 
 // Function: Show the outcome of a monk battle
 void monkRounds::outputtingMonkRoundOutcomeForAnIndividualPlayer(
@@ -842,11 +849,15 @@ void monkRounds::outputtingMonkRoundOutcomeForAnIndividualPlayer(
   // Shows whether or not the given player's monk powers activated if
   // appropriate
   if (activePlayer != ActivePlayer::None) {
-    if (givenPlayerMonkPowersActivated == false && givenPlayerBattleAssistant.entityQuantity > 0) {
+    if (
+      givenPlayerMonkPowersActivated == false
+      && givenPlayerBattleAssistant.entityQuantity > 0) {
       std::cout << givenPlayerName << "'s monk powers failed to activate"
                 << "<br>";
     }
-    else if (givenPlayerMonkPowersActivated == true && givenPlayerBattleAssistant.entityQuantity > 0) {
+    else if (
+      givenPlayerMonkPowersActivated == true
+      && givenPlayerBattleAssistant.entityQuantity > 0) {
       std::cout << givenPlayerName << "'s monk powers activated"
                 << "<br>";
     }
@@ -1357,10 +1368,7 @@ void monkRounds::roundOutcome(
           p2BattleParticipant,
           p2BattleAssistant);
 
-
         p2BattleParticipant.numberOfRoundsItHasBeenIn++;
-
-
       }
 
     } // End if conditional checking for no deaths
@@ -1441,7 +1449,7 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingUnit = false;
   }
 
- // Event that allows archers to attack buildigns
+  // Event that allows archers to attack buildigns
   if (givenPlayerEvents[41] == 1) {
     givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true;
   }
@@ -1526,14 +1534,13 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
     opposingPlayerDamageDie      = 0;
   }
 
-
-
   // Specific rule: Archers cannot deal damage to rams
-  if(givenPlayerBattleParticipant.armorClass[0] == true && opposingPlayerBattleParticipant.armorClass[10] == true){ // Ram vs villager
-    opposingPlayerEntityDeaths   = 0;
+  if (
+    givenPlayerBattleParticipant.armorClass[0] == true
+    && opposingPlayerBattleParticipant.armorClass[10]
+         == true) { // Ram vs villager
+    opposingPlayerEntityDeaths = 0;
   }
-
-
 }
 
 // Function: Calculate the outcome of a archer battle
@@ -1629,26 +1636,25 @@ void archerRounds::roundOutcome(
   const int roundDownMultiple
     = 10; // Store the multiple to round down by for P1 and P2
 
-
   // Shared
   int p1EntityDeaths = 0,
-    p2EntityDeaths
-    = 0; //  Declare the number of units P1 & P2 killed in this round
+      p2EntityDeaths
+      = 0; //  Declare the number of units P1 & P2 killed in this round
   int p1BuildingDamage = 0,
-    p2BuildingDamage
-    = 0; //  Store the amount of damage dealt to buildings in this round
+      p2BuildingDamage
+      = 0; //  Store the amount of damage dealt to buildings in this round
 
-  int  p1DamageDiePlaced = 0,
-    p2DamageDiePlaced
-    = 0; //  Store the amount of damage die to place onto buildings
+  int p1DamageDiePlaced = 0,
+      p2DamageDiePlaced
+      = 0; //  Store the amount of damage die to place onto buildings
   float p1PointsGained = 0,
-    p2PointsGained = 0; //  Store the amount of points awarded
+        p2PointsGained = 0; //  Store the amount of points awarded
 
   // Archer variables
   bool p1ArcherActivated = false,
        p2ArcherActivated
        = false; //  Store if a ranged unit from P1 or P2 did something
-  int p1RangedDamageDealt = 0, p2RangedDamageDealt = 0;
+  int  p1RangedDamageDealt = 0, p2RangedDamageDealt = 0;
   bool p1RangedUnitCanAttackP2Building = false,
        p2RangedUnitCanAttackP1Building
        = false; // Store if archers can attack buildings
@@ -1657,17 +1663,17 @@ void archerRounds::roundOutcome(
        = false; //  Store if archers can attack cavalry
   bool p1TakeNoDamageDueToShotsInTheBack = false,
        p2TakeNoDamageDueToShotsInTheBack = false;
-  bool p1ArcherIsFightingBuilding = false,
-    p2ArcherIsFightingBuilding
-    = false; //  Store whether the archer entity is fighting a building
+  bool p1ArcherIsFightingBuilding        = false,
+       p2ArcherIsFightingBuilding
+       = false; //  Store whether the archer entity is fighting a building
   bool p1ArcherIsFightingUnit = false, p2ArcherIsFightingUnit = false;
 
   // Bombardment variables
-  bool p1BombardmentEntityActivated = false, p2BombardmentEntityActivated = false;
+  bool p1BombardmentEntityActivated = false,
+       p2BombardmentEntityActivated = false;
   bool p1InRange = false, p2InRange = false;
   bool p1BombarderIsFightingBuilding = false,
-    p2BombarderIsFightingBuilding
-    = false;
+       p2BombarderIsFightingBuilding = false;
   bool p1BombarderIsFightingUnit = false, p2BombarderIsFightingUnit = false;
 
   // Behaviour: Run the ranged battle round for X times
@@ -1689,7 +1695,7 @@ void archerRounds::roundOutcome(
       // simultaneously
       if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
         // Bombardment entity
-        if(p1BattleParticipant.armorClass[28] == true){ // Bombarder
+        if (p1BattleParticipant.armorClass[28] == true) { // Bombarder
           calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
             roundDownMultiple,
             p1BattleParticipant,
@@ -1705,7 +1711,7 @@ void archerRounds::roundOutcome(
             p2EntityDeaths);
         }
         // Archer entity
-        else if(p1BattleParticipant.armorClass[0] == true){ // Archer
+        else if (p1BattleParticipant.armorClass[0] == true) { // Archer
 
           calculatingArcherRoundOutcomeForAnIndividualPlayer(
             roundDownMultiple,
@@ -1725,12 +1731,7 @@ void archerRounds::roundOutcome(
             p2EntityDeaths,
             p2BuildingDamage,
             p2DamageDiePlaced);
-
         }
-
-
-
-
 
       } // End of p1 stuff conditional
 
@@ -1739,8 +1740,7 @@ void archerRounds::roundOutcome(
       if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
         // Bombardment entity
 
-
-        if(p2BattleParticipant.armorClass[28] == true){ // Bombarder
+        if (p2BattleParticipant.armorClass[28] == true) { // Bombarder
 
           calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
             roundDownMultiple,
@@ -1757,7 +1757,7 @@ void archerRounds::roundOutcome(
             p1EntityDeaths);
         }
         // Archer entity
-        else if(p2BattleParticipant.armorClass[0] == true){ // Archer
+        else if (p2BattleParticipant.armorClass[0] == true) { // Archer
 
           calculatingArcherRoundOutcomeForAnIndividualPlayer(
             roundDownMultiple,
@@ -1777,23 +1777,15 @@ void archerRounds::roundOutcome(
             p1EntityDeaths,
             p1BuildingDamage,
             p1DamageDiePlaced);
-
-
         }
 
-
-
-
       } // End of p2 stuff conditional
-
-
-
 
       qDebug() << "active player value: " << activePlayer;
 
       if (activePlayer != ActivePlayer::None) {
         // Archer entity
-        if(p1ArcherActivated == true){
+        if (p1ArcherActivated == true) {
           applyingArcherRoundOutcomeForAnIndividualPlayer(
             p1ArcherActivated,
             p1ArcherIsFightingBuilding,
@@ -1805,8 +1797,7 @@ void archerRounds::roundOutcome(
             p2BuildingDamage);
         }
 
-
-        if(p2ArcherActivated == true){
+        if (p2ArcherActivated == true) {
           applyingArcherRoundOutcomeForAnIndividualPlayer(
             p2ArcherActivated,
             p2ArcherIsFightingBuilding,
@@ -1818,7 +1809,7 @@ void archerRounds::roundOutcome(
             p1BuildingDamage);
         }
 
-        if(p1BombardmentEntityActivated == true){
+        if (p1BombardmentEntityActivated == true) {
           applyingBombardmentRoundOutcomeForAnIndividualPlayer(
             p1BombardmentEntityActivated,
             p1BombarderIsFightingBuilding,
@@ -1829,7 +1820,7 @@ void archerRounds::roundOutcome(
             p2EntityDeaths);
         }
 
-        if(p2BombardmentEntityActivated == true){
+        if (p2BombardmentEntityActivated == true) {
           applyingBombardmentRoundOutcomeForAnIndividualPlayer(
             p2BombardmentEntityActivated,
             p2BombarderIsFightingBuilding,
@@ -1839,9 +1830,6 @@ void archerRounds::roundOutcome(
             p1BuildingDamage,
             p1EntityDeaths);
         }
-
-
-
       }
 
       // Behaviour: Check if the remaining damage value triggers a death
@@ -1854,23 +1842,29 @@ void archerRounds::roundOutcome(
       // changes occured
       if ((p1ArcherActivated == true) || (p2ArcherActivated == true)) {
         std::string p1Has;
-        p1Has = returnWhatIAm(p1BattleParticipant, "Ranged round", p2BattleParticipant);
+        p1Has = returnWhatIAm(
+          p1BattleParticipant, "Ranged round", p2BattleParticipant);
 
         std::string p2Has;
-        p2Has = returnWhatIAm(p2BattleParticipant, "Ranged round", p1BattleParticipant);
+        p2Has = returnWhatIAm(
+          p2BattleParticipant, "Ranged round", p1BattleParticipant);
 
         std::string outputRoundString = "";
 
-
-        if( (p1BattleParticipant.armorClass[28] == true) || (p2BattleParticipant.armorClass[28] == true) ){ // Bombarder
-          outputRoundString =  "<br><b>Long range combat round + Long range bombardment mini-round "
-                              + std::to_string(numberOfTimesToRunTheRangedBattleRound + 1)
-                              + " calculations...</b>";
+        if (
+          (p1BattleParticipant.armorClass[28] == true)
+          || (p2BattleParticipant.armorClass[28] == true)) { // Bombarder
+          outputRoundString
+            = "<br><b>Long range combat round + Long range bombardment "
+              "mini-round "
+              + std::to_string(numberOfTimesToRunTheRangedBattleRound + 1)
+              + " calculations...</b>";
         }
-        else{
-          outputRoundString = "<br><b>Ranged combat round "
-                              + std::to_string(numberOfTimesToRunTheRangedBattleRound + 1)
-                              + " calculations...</b>";
+        else {
+          outputRoundString
+            = "<br><b>Ranged combat round "
+              + std::to_string(numberOfTimesToRunTheRangedBattleRound + 1)
+              + " calculations...</b>";
         }
 
         std::cout << outputRoundString;
@@ -1886,8 +1880,6 @@ void archerRounds::roundOutcome(
           p2BattleParticipant,
           p2DamageDiePlaced,
           player2Name);
-
-
 
         p1BattleParticipant.numberOfRoundsItHasBeenIn++;
 
@@ -1910,14 +1902,18 @@ void archerRounds::roundOutcome(
         if (aDeathHasOccured == false) {
           std::string messageToAsk = "";
 
-          if(p1ArcherActivated == true){
-            messageToAsk = "Does " + player1Name + " want to hit and run" + " with the " + p1BattleParticipant.entityName + "?<br>";
+          if (p1ArcherActivated == true) {
+            messageToAsk = "Does " + player1Name + " want to hit and run"
+                           + " with the " + p1BattleParticipant.entityName
+                           + "?<br>";
             checkIfRetreating(messageToAsk);
           }
 
           // Do not ask this question if p1 has retreated
-          if(p2ArcherActivated == true && isRetreating != "1"){
-            messageToAsk = "Does " + player2Name + " want to hit and run" + " with the " + p2BattleParticipant.entityName + "?<br>";
+          if (p2ArcherActivated == true && isRetreating != "1") {
+            messageToAsk = "Does " + player2Name + " want to hit and run"
+                           + " with the " + p2BattleParticipant.entityName
+                           + "?<br>";
             checkIfRetreating(messageToAsk);
           }
 
@@ -1958,11 +1954,7 @@ void archerRounds::roundOutcome(
 
     } // Check if dead or retreating conditional end
 
-
-
-
-
-  }   // For loop end
+  } // For loop end
 } // Archer round function end
 
 void bombardmentRounds::outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
@@ -1973,7 +1965,7 @@ void bombardmentRounds::outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
   bool&  givenPlayerIsFightingABuilding,
 
   Entity& givenPlayerBattleParticipant,
-  bool& givenPlayerIsInRange,
+  bool&   givenPlayerIsInRange,
 
   // Opposing player stuff
   std::string& opposingPlayerName,
@@ -1981,11 +1973,11 @@ void bombardmentRounds::outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
   int&         opposingPlayerDamageDie)
 {
   // Behavior: Display if it wasn't able to fight due to being out of range
-  if(givenPlayerIsInRange == false){
-    std::cout << givenPlayerBattleParticipant.entityName << " is unable to range " << opposingPlayerBattleParticipant.entityName << "<br>";
+  if (givenPlayerIsInRange == false) {
+    std::cout << givenPlayerBattleParticipant.entityName
+              << " is unable to range "
+              << opposingPlayerBattleParticipant.entityName << "<br>";
   }
-
-
 
   // Behaviour: Display how many damage die to place if appropriate
   if (givenPlayerIsFightingABuilding == true) {
@@ -2034,7 +2026,8 @@ void bombardmentRounds::roundOutcome(
       = 0; //  Declare the amount of damage die to place onto buildings
   float p2PointsGained = 0,
         p1PointsGained = 0; //  Declare the amount of points awarded
-  bool p1InRange = false, p2InRange = false; // Declare if the bombardment entity is in range
+  bool p1InRange       = false,
+       p2InRange       = false; // Declare if the bombardment entity is in range
 
   // Behaviour: Run the bombardment battle round for X times
   for (int numberOfTimesToRunTheBombardmentRound = 0;
@@ -2120,14 +2113,17 @@ void bombardmentRounds::roundOutcome(
           (p1BombardmentEntityActivated == true)
           || (p2BombardmentEntityActivated == true)) {
           std::string p1Has;
-          p1Has = returnWhatIAm(p1BattleParticipant, "Bombardment round", p2BattleParticipant);
+          p1Has = returnWhatIAm(
+            p1BattleParticipant, "Bombardment round", p2BattleParticipant);
 
           std::string p2Has;
-          p2Has = returnWhatIAm(p2BattleParticipant, "Bombardment round", p1BattleParticipant);
+          p2Has = returnWhatIAm(
+            p2BattleParticipant, "Bombardment round", p1BattleParticipant);
 
-          std::string outputRoundString = "<br>Long range bombardment combat round "
-                                          + std::to_string(numberOfTimesToRunTheBombardmentRound + 1)
-                                          + " calculations...";
+          std::string outputRoundString
+            = "<br>Long range bombardment combat round "
+              + std::to_string(numberOfTimesToRunTheBombardmentRound + 1)
+              + " calculations...";
 
           std::cout << outputRoundString;
 
@@ -2148,7 +2144,6 @@ void bombardmentRounds::roundOutcome(
 
           p1BattleParticipant.numberOfRoundsItHasBeenIn++;
 
-
           outputtingBombardmentRoundOutcomeForAnIndividualPlayer(
             player2Name,
             p2PointsGained,
@@ -2158,7 +2153,6 @@ void bombardmentRounds::roundOutcome(
             player1Name,
             p1BattleParticipant,
             p1DamageDie);
-
 
           p2BattleParticipant.numberOfRoundsItHasBeenIn++;
 
@@ -2173,19 +2167,20 @@ void bombardmentRounds::roundOutcome(
             if (numberOfTimesToRunTheBombardmentRound != roundRunTimes - 1) {
               std::string messageToAsk = "";
 
-              if(p1BombardmentEntityActivated == true){
-                messageToAsk = "Does " + player1Name + " want to retreat" + " with the " + p1BattleParticipant.entityName + "?<br>";
+              if (p1BombardmentEntityActivated == true) {
+                messageToAsk = "Does " + player1Name + " want to retreat"
+                               + " with the " + p1BattleParticipant.entityName
+                               + "?<br>";
                 checkIfRetreating(messageToAsk);
               }
 
-                     // Do not ask this question if p1 has retreated
-              if(p2BombardmentEntityActivated == true && isRetreating != "1"){
-                messageToAsk = "Does " + player2Name + " want to retreat" + " with the " + p2BattleParticipant.entityName + "?<br>";
+              // Do not ask this question if p1 has retreated
+              if (p2BombardmentEntityActivated == true && isRetreating != "1") {
+                messageToAsk = "Does " + player2Name + " want to retreat"
+                               + " with the " + p2BattleParticipant.entityName
+                               + "?<br>";
                 checkIfRetreating(messageToAsk);
               }
-
-
-
             }
           }
         }
@@ -2196,7 +2191,6 @@ void bombardmentRounds::roundOutcome(
 
 // Function: Calculate the outcome of a standard battle
 
-
 void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
   // Given player stuff
   std::string& givenPlayerName,
@@ -2204,9 +2198,8 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
   float& givenPlayerPointsGained,
   bool&  givenPlayerIsFightingABuilding,
 
-
   Entity& givenPlayerBattleParticipant,
-  bool& givenPlayerIsInRange,
+  bool&   givenPlayerIsInRange,
 
   // Opposing player stuff
   std::string& opposingPlayerName,
@@ -2214,10 +2207,11 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
   int&         opposingPlayerDamageDie)
 {
   // Behavior: Display if it wasn't able to fight due to being out of range
-  if(givenPlayerIsInRange == false){
-    std::cout << givenPlayerBattleParticipant.entityName << " is unable to range " << opposingPlayerBattleParticipant.entityName << "<br>";
+  if (givenPlayerIsInRange == false) {
+    std::cout << givenPlayerBattleParticipant.entityName
+              << " is unable to range "
+              << opposingPlayerBattleParticipant.entityName << "<br>";
   }
-
 
   // Behaviour: Display how many damage die to place if appropriate
   if (givenPlayerIsFightingABuilding == true) {
@@ -2240,7 +2234,8 @@ void standardRounds::outputtingStandardRoundOutcomeForAnIndividualPlayer(
 
 // Function: Apply the outcome of a standard battle
 
-void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared stuff
+void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer( // Shared
+                                                                        // stuff
   int& numberOfTimesToRunTheStandardRound,
   // Given player stuff
   Entity& givenPlayerBattleParticipant,
@@ -2248,16 +2243,15 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared
   bool&   givenPlayerHasAEntityThatActivated,
   bool&   givenPlayerIsFightingAUnit,
   float&  givenPlayerPointsGained,
-  bool& givenPlayerIsFightingBuilding,
+  bool&   givenPlayerIsFightingBuilding,
 
   // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
   float&  opposingPlayerPointsGained,
   int&    opposingPlayerEntityDeaths,
-  int &opposingPlayerBuildingDamage)
+  int&    opposingPlayerBuildingDamage)
 {
   //  Track if changes occured to the quantity
-
 
   int opposingPlayerStartingQuantity
     = opposingPlayerBattleParticipant.entityQuantity;
@@ -2268,10 +2262,8 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared
 
   // Behaviour: Apply the results to units
 
-
-
-         // Behaviour: Apply the results for p1 if the activation conditions were
-         // met
+  // Behaviour: Apply the results for p1 if the activation conditions were
+  // met
   if (givenPlayerHasAEntityThatActivated == true) {
     // Behaviour: Apply the results to buildings or non-buildings
     if (givenPlayerIsFightingBuilding == true) {
@@ -2283,68 +2275,59 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared
         opposingPlayerBattleParticipant.entityHealth
           -= opposingPlayerBuildingDamage;
 
-               // Behaviour: if the HP of the building is > 0 then do not keep
-               // the set the point value
+        // Behaviour: if the HP of the building is > 0 then do not keep
+        // the set the point value
         if (opposingPlayerBattleParticipant.entityHealth > 0) {
           givenPlayerPointsGained = 0;
         }
 
-               // Update the quantity of the building
+        // Update the quantity of the building
         if (opposingPlayerBattleParticipant.entityHealth < 0) {
           opposingPlayerBattleParticipant.entityQuantity -= 1;
         }
       }
     }
 
-
-
-  if (givenPlayerIsFightingAUnit == true) {
-    // Behavior: Store the starting quantity
-    opposingPlayerStartingQuantity
-      = opposingPlayerBattleParticipant.entityQuantity;
-
-    // Behaviour: Store how many points the entity is individually worth
-    givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
-
-    // Behaviour: Now decrease the quantity
-    while (opposingPlayerEntityDeaths != 0) {
-
-
-
-      opposingPlayerBattleParticipant.entityQuantity -= 1;
-      opposingPlayerEntityDeaths -= 1;
-      checkIfDead();
-    }
-
-
-
-
-    // Behavior: Store the ending quantity and cap the ending quantity
-    // at
-    // 0
-    if (opposingPlayerBattleParticipant.entityQuantity < 0) {
-      opposingPlayerEndingQuantity = 0;
-    }
-    else {
-      opposingPlayerEndingQuantity
+    if (givenPlayerIsFightingAUnit == true) {
+      // Behavior: Store the starting quantity
+      opposingPlayerStartingQuantity
         = opposingPlayerBattleParticipant.entityQuantity;
-    }
 
-    // Behaviour: Update the difference between the two quantities
-    opposingPlayerQuantityDifference
-      = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+      // Behaviour: Store how many points the entity is individually worth
+      givenPlayerPointsGained = opposingPlayerBattleParticipant.pointValue;
 
-    // Behaviour: Award points if deaths occured
-    if (opposingPlayerEntityDeaths >= 0) {
-      // Behavior: Calculate the difference between the two quantities
-      givenPlayerPointsGained *= opposingPlayerQuantityDifference;
-    }
-    else {
-      givenPlayerPointsGained = 0;
+      // Behaviour: Now decrease the quantity
+      while (opposingPlayerEntityDeaths != 0) {
+        opposingPlayerBattleParticipant.entityQuantity -= 1;
+        opposingPlayerEntityDeaths -= 1;
+        checkIfDead();
+      }
+
+      // Behavior: Store the ending quantity and cap the ending quantity
+      // at
+      // 0
+      if (opposingPlayerBattleParticipant.entityQuantity < 0) {
+        opposingPlayerEndingQuantity = 0;
+      }
+      else {
+        opposingPlayerEndingQuantity
+          = opposingPlayerBattleParticipant.entityQuantity;
+      }
+
+      // Behaviour: Update the difference between the two quantities
+      opposingPlayerQuantityDifference
+        = (opposingPlayerStartingQuantity - opposingPlayerEndingQuantity);
+
+      // Behaviour: Award points if deaths occured
+      if (opposingPlayerEntityDeaths >= 0) {
+        // Behavior: Calculate the difference between the two quantities
+        givenPlayerPointsGained *= opposingPlayerQuantityDifference;
+      }
+      else {
+        givenPlayerPointsGained = 0;
+      }
     }
   }
-}
-
 
   // Apply the effects of certain entities that automatically die in the
   // second round of combat Make sure that the standard round got
@@ -2369,12 +2352,10 @@ void standardRounds::applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared
       }
     }
   }
-
 }
 
-
 void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
-                                                                           // Shared stuff
+  // Shared stuff
   int&      numberOfTimesToRunTheStandardRound,
   const int roundDownBasedOnMultiplesOfThisNumber,
   // Given player stuff
@@ -2386,19 +2367,15 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
   bool&   givenPlayerIsFightingBuilding,
   bool&   givenPlayerIsFightingAUnit,
   int&    givenPlayerEntityDeaths,
-  bool& givenPlayerIsInRange,
+  bool&   givenPlayerIsInRange,
 
-     // Opposing player stuff
+  // Opposing player stuff
   Entity& opposingPlayerBattleParticipant,
   int*    opposingPlayerEvents,
   int&    opposingPlayerEntityDeaths,
   int&    opposingPlayerBuildingDamage,
   int&    opposingPlayerDamageDie)
 {
-
-
-
-
   // Behaviour: Check if given player is fighting a building
   if (opposingPlayerBattleParticipant.armorClass[1] == true) { // Building p2
     givenPlayerIsFightingBuilding = true;
@@ -2407,7 +2384,7 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     givenPlayerIsFightingBuilding = false;
   }
 
-         // Behaviour: Check if given player is fighting a unit
+  // Behaviour: Check if given player is fighting a unit
   if (
     (opposingPlayerBattleParticipant.armorClass[25] == true)     // Land unit p2
     || (opposingPlayerBattleParticipant.armorClass[11] == true)) // Ship p2
@@ -2456,14 +2433,14 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
-         // Behaviour: Give the person who played the card more attack
+  // Behaviour: Give the person who played the card more attack
   if (givenPlayerEvents[35] == 1) {
     // [35] The Jester Is Dead, Let's Get Em (Celt) = Sacrifice 1 of your
     // villagers. +4 standardDamage to all defending units this turn
     givenPlayerBattleParticipant.standardDamage += 4;
   }
 
-         // Behaviour: Infantry double standard attack vs cavalry
+  // Behaviour: Infantry double standard attack vs cavalry
   if (givenPlayerEvents[20] == 1) {
     // [20] Muddy Battlefield - Target infantry gets double standardAttack
     // versus Cavalry this turn
@@ -2474,7 +2451,7 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
-         // Behaviour: Decrease the standardDamage by two units if event 9 is played
+  // Behaviour: Decrease the standardDamage by two units if event 9 is played
   if (givenPlayerEvents[9] == 1) {
     // [9] First Battle Jitter - Two tokens on target unit have 0 standardDamage
     // for this battle. Target unit must have five tokens on it
@@ -2488,11 +2465,11 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
-         // Behaviour: Multiply the standardDamage by a random number between 1-6 if a
-         // Fire Ship
+  // Behaviour: Multiply the standardDamage by a random number between 1-6 if a
+  // Fire Ship
   d6DieRoll = generateD6DieInput();
 
-         // Behaviour: Set the result to 1 if player 2 has Soak_The_Timbers
+  // Behaviour: Set the result to 1 if player 2 has Soak_The_Timbers
   if (opposingPlayerEvents[30] == 1) {
     // [30] Soak The Timbers - All enemy Fire Ships get an automatic result of 1
     // for their die roll when calculating damage this turn
@@ -2505,10 +2482,10 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     givenPlayerBattleParticipant.standardDamage *= d6DieRoll;
   }
 
-         // Give the player who played the card a weakened defender
-         // [24] Black Knight: “Play this card when you are the attacking Cavalry
-         // unit. Two tokens on the defending unit have 0 AP for the first round of
-         // normal combat
+  // Give the player who played the card a weakened defender
+  // [24] Black Knight: “Play this card when you are the attacking Cavalry
+  // unit. Two tokens on the defending unit have 0 AP for the first round of
+  // normal combat
   int getHowMuchAttackIndividualUnitsDo            = 0;
   int getHowMuchAttackTheGroupDoesWithTwoLazyUnits = 0;
 
@@ -2545,24 +2522,23 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
+  // Behavior: Check if what's fighting can fight / fight back
 
-         // Behavior: Check if what's fighting can fight / fight back
-
-         // distance between battle participants X
-         // Y max. range, Z min. range
-         // If X <= Y but >= Z in range
+  // distance between battle participants X
+  // Y max. range, Z min. range
+  // If X <= Y but >= Z in range
 
   if(
     (m_state->distanceBetweenTheBattleParticipants <= givenPlayerBattleParticipant.maximumRange)
     && (m_state->distanceBetweenTheBattleParticipants >= givenPlayerBattleParticipant.minimumRange)){
     givenPlayerIsInRange = true;
   }
-  else{
+  else {
     givenPlayerIsInRange = false;
   }
 
-         // Behaviour: Calculate the damage against buildings if player 1 is fighting a
-         // building
+  // Behaviour: Calculate the damage against buildings if player 1 is fighting a
+  // building
 
   if (givenPlayerIsFightingBuilding == true && givenPlayerIsInRange == true) {
     opposingPlayerBuildingDamage = (givenPlayerBattleParticipant.standardDamage * givenPlayerBattleParticipant.entityQuantity);
@@ -2580,10 +2556,8 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     givenPlayerHasAEntityThatActivated = true;
   }
 
-
-
-         // Behaviour: Calculate the damage against units if player 1 is fighting
-         // a unit
+  // Behaviour: Calculate the damage against units if player 1 is fighting
+  // a unit
 
   if (givenPlayerIsFightingAUnit == true && givenPlayerIsInRange == true) {
     // Behaviour: Check if player 1 has an area effect unit and if so then
@@ -2626,39 +2600,39 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
     }
   }
 
-         // Behaviour: Clear the results if the entity only attacks once (in the
-         // first round of combat) and this will not be the first round it has been in
+  // Behaviour: Clear the results if the entity only attacks once (in the
+  // first round of combat) and this will not be the first round it has been in
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheFirstRoundOfCombat
      == true)
-    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 1)
-    ) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 1)) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
   }
 
-         // Behaviour: Clear the results if the entity only attacks in the second
-         // round of combat and this will not be the second round it has been in
+  // Behaviour: Clear the results if the entity only attacks in the second
+  // round of combat and this will not be the second round it has been in
 
   if (
     (givenPlayerBattleParticipant.onlyAttacksOnceInTheSecondRoundOfCombat
      == true)
-    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 2)
-    ) {
+    && (givenPlayerBattleParticipant.numberOfRoundsItHasBeenIn + 1 != 2)) {
     opposingPlayerBuildingDamage = 0;
     opposingPlayerDamageDie      = 0;
     opposingPlayerEntityDeaths   = 0;
   }
 
   // Specific rule: Villagers cannot deal damage to rams
-  if(givenPlayerBattleParticipant.armorClass[27] == true && opposingPlayerBattleParticipant.armorClass[10] == true){ // Ram vs villager
-    opposingPlayerEntityDeaths   = 0;
+  if (
+    givenPlayerBattleParticipant.armorClass[27] == true
+    && opposingPlayerBattleParticipant.armorClass[10]
+         == true) { // Ram vs villager
+    opposingPlayerEntityDeaths = 0;
   }
 
-
-         // Behaviour: Clear the results if the entity is an infantry unit for
-         // the attacking player and we are in the first round of combat
+  // Behaviour: Clear the results if the entity is an infantry unit for
+  // the attacking player and we are in the first round of combat
   if (givenPlayerEvents[37] == 1) {
     // [37] While They're Sleeping - Target attacking Infantry unit takes
     // no damage for the first round of combat. The ranged round does not
@@ -2667,9 +2641,6 @@ void standardRounds::calculatingStandardRoundOutcomeForAnIndividualPlayer(
       givenPlayerEntityDeaths = 0;
     }
   }
-
-
-
 }
 
 // Function: Calculate the outcome of a standard round of battle
@@ -2697,9 +2668,8 @@ void standardRounds::roundOutcome(
   int p1DamageDie = 0,
       p2DamageDie
       = 0; //  Declare the amount of damage die to place onto buildings
-  bool p1IsInRange = false, p2IsInRange = false; // Declare if it's in range of what it's attacking
-
-
+  bool p1IsInRange = false,
+       p2IsInRange = false; // Declare if it's in range of what it's attacking
 
   /* Run the standard battle round for X times */
   for (int numberOfTimesToRunTheStandardRound = 0;
@@ -2743,9 +2713,6 @@ void standardRounds::roundOutcome(
 
       } // end p1 calc
 
-
-
-
       // Determine if we'll be running the calculations for P1 and P2
       // simultaneously
       if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
@@ -2769,43 +2736,38 @@ void standardRounds::roundOutcome(
 
       } // end p2 calc
 
-
-
-
       if (activePlayer != ActivePlayer::None) {
         // Apply outcome of calculations for P1 and P2 here
         if ((activePlayer & ActivePlayer::Player1) != ActivePlayer::None) {
-        applyingStandardRoundOutcomeForAnIndividualPlayer(
-          numberOfTimesToRunTheStandardRound,
-          p1BattleParticipant,
-          p1Events,
-          p1EntityActivated,
-          p1IsFightingUnit,
-          p1PointsGained,
-          p1IsFightingBuilding,
-          p2BattleParticipant,
-          p2PointsGained,
-          p2EntityDeaths,
-          p2BuildingDamage);
+          applyingStandardRoundOutcomeForAnIndividualPlayer(
+            numberOfTimesToRunTheStandardRound,
+            p1BattleParticipant,
+            p1Events,
+            p1EntityActivated,
+            p1IsFightingUnit,
+            p1PointsGained,
+            p1IsFightingBuilding,
+            p2BattleParticipant,
+            p2PointsGained,
+            p2EntityDeaths,
+            p2BuildingDamage);
         }
 
         if ((activePlayer & ActivePlayer::Player2) != ActivePlayer::None) {
-        applyingStandardRoundOutcomeForAnIndividualPlayer(
-          numberOfTimesToRunTheStandardRound,
-          p2BattleParticipant,
-          p2Events,
-          p2EntityActivated,
-          p2IsFightingUnit,
-          p2PointsGained,
-          p2IsFightingBuilding,
-          p1BattleParticipant,
-          p1PointsGained,
-          p1EntityDeaths,
-          p1BuildingDamage);
+          applyingStandardRoundOutcomeForAnIndividualPlayer(
+            numberOfTimesToRunTheStandardRound,
+            p2BattleParticipant,
+            p2Events,
+            p2EntityActivated,
+            p2IsFightingUnit,
+            p2PointsGained,
+            p2IsFightingBuilding,
+            p1BattleParticipant,
+            p1PointsGained,
+            p1EntityDeaths,
+            p1BuildingDamage);
+        }
       }
-
-      }
-
 
       // Behaviour: Check if the remaining damage value triggers a death
       checkRemainingDamage(p1Events, p2Events);
@@ -2820,26 +2782,30 @@ void standardRounds::roundOutcome(
       // changes occured
       if ((p1EntityActivated == true) || (p2EntityActivated == true)) {
         std::string p1Has;
-        p1Has = returnWhatIAm(p1BattleParticipant, "Standard round", p2BattleParticipant);
+        p1Has = returnWhatIAm(
+          p1BattleParticipant, "Standard round", p2BattleParticipant);
 
         std::string p2Has;
-        p2Has = returnWhatIAm(p2BattleParticipant, "Standard round", p1BattleParticipant);
-
-
+        p2Has = returnWhatIAm(
+          p2BattleParticipant, "Standard round", p1BattleParticipant);
 
         std::string outputRoundString = "";
 
-        if( (p1BattleParticipant.armorClass[28] == true) || (p2BattleParticipant.armorClass[28] == true) ){ // Bombarder
-        outputRoundString =  "<br><b>Close range combat round + Close range bombardment mini-round "
-            + std::to_string(numberOfTimesToRunTheStandardRound + 1)
-            + " calculations...</b>";
+        if (
+          (p1BattleParticipant.armorClass[28] == true)
+          || (p2BattleParticipant.armorClass[28] == true)) { // Bombarder
+          outputRoundString
+            = "<br><b>Close range combat round + Close range bombardment "
+              "mini-round "
+              + std::to_string(numberOfTimesToRunTheStandardRound + 1)
+              + " calculations...</b>";
         }
-        else{
-          outputRoundString = "<br><b>Standard combat round "
-                              + std::to_string(numberOfTimesToRunTheStandardRound + 1)
-                              + " calculations...</b>";
+        else {
+          outputRoundString
+            = "<br><b>Standard combat round "
+              + std::to_string(numberOfTimesToRunTheStandardRound + 1)
+              + " calculations...</b>";
         }
-
 
         std::cout << outputRoundString;
 
@@ -2858,9 +2824,7 @@ void standardRounds::roundOutcome(
           p2BattleParticipant,
           p2DamageDie);
 
-
         p1BattleParticipant.numberOfRoundsItHasBeenIn++;
-
 
         outputtingStandardRoundOutcomeForAnIndividualPlayer(
           player2Name,
@@ -2890,18 +2854,20 @@ void standardRounds::roundOutcome(
               isRetreating = "1";
             }
             else {
-
-
               std::string messageToAsk = "";
 
-              if(p1EntityActivated == true){
-                messageToAsk = "Does " + player1Name + " want to retreat" + " with the " + p1BattleParticipant.entityName + "?<br>";
+              if (p1EntityActivated == true) {
+                messageToAsk = "Does " + player1Name + " want to retreat"
+                               + " with the " + p1BattleParticipant.entityName
+                               + "?<br>";
                 checkIfRetreating(messageToAsk);
               }
 
               // Do not ask this question if P1 has retreated
-              if(p2EntityActivated == true && isRetreating != "1"){
-                messageToAsk = "Does " + player2Name + " want to retreat" + " with the " + p2BattleParticipant.entityName + "?<br>";
+              if (p2EntityActivated == true && isRetreating != "1") {
+                messageToAsk = "Does " + player2Name + " want to retreat"
+                               + " with the " + p2BattleParticipant.entityName
+                               + "?<br>";
                 checkIfRetreating(messageToAsk);
               }
             }
@@ -2909,10 +2875,6 @@ void standardRounds::roundOutcome(
         }
       }
     }
-
-
-
-
   }
 }
 
