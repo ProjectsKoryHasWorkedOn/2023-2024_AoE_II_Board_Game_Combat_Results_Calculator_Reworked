@@ -1077,118 +1077,14 @@ QString MainWindow::tooltipReturner(QString name)
 void MainWindow::on_player1EntityNamesFilter_textChanged(
   const QString& textInsideOfElement)
 {
-  // Get what entity names the user is entering
-  QString player1EntityNamesFiltered = textInsideOfElement;
-
-  // Clear what's in the list of entity names
-  ui.player1EntityNames->clear();
-
-  // Store name of filtered item
-  QString nameOfFilteredItem;
-
-  // Filter the list based on what entity name the user entered, factoring in
-  // aliases for that entity name
-  QStringList filteredList = filterEntityNames(player1EntityNamesFiltered);
-  for (int y = 0; y < filteredList.size(); y++) {
-    // Get the name of the filtered item
-    nameOfFilteredItem = filteredList[y];
-
-    // Add in the tooltips for the aliases so the user is aware of them
-    QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-
-    /* todo phillip PHILLIP: Wonder if we can make this more efficient */
-
-    QString formattedName
-      = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
-
-    const bool isItemABuilding = isBuilding(formattedName);
-
-    if (isItemABuilding == true) {
-      QString buildingIconFileNamePlayer1
-        = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
-
-      QIcon buildingIconPlayer1(
-        workingDirectory.absolutePath() + buildingIconFileNamePlayer1);
-
-      listWidgetItem->setIcon(buildingIconPlayer1);
-    }
-    else {
-      QString unitIconFileNamePlayer1
-        = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
-
-      QIcon unitIconPlayer1(
-        workingDirectory.absolutePath() + unitIconFileNamePlayer1);
-
-      listWidgetItem->setIcon(unitIconPlayer1);
-    }
-
-    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
-    if (listWidgetItemTooltip != "") {
-      listWidgetItem->setToolTip(listWidgetItemTooltip);
-    }
-
-    ui.player1EntityNames->addItem(listWidgetItem);
-  }
-
-  filterBasedOnAgeAndCivilization("1");
+  filterEntityNames(ui.player1EntityNames, textInsideOfElement, "1");
 }
 
 // Run this when the text inside of the player 2 entities search field changes
 void MainWindow::on_player2EntityNamesFilter_textChanged(
   const QString& textInsideOfElement)
 {
-  // Get what entity names the user is entering
-  QString player2EntityNamesFiltered = textInsideOfElement;
-
-  // Clear what's in the list of entity names
-  ui.player2EntityNames->clear();
-
-  // Store name of filtered item
-  QString nameOfFilteredItem;
-
-  // Filter the list based on what entity name the user entered, factoring in
-  // aliases for that entity name
-  QStringList filteredList = filterEntityNames(player2EntityNamesFiltered);
-  for (int y = 0; y < filteredList.size(); y++) {
-    // Get the name of the filtered item
-    nameOfFilteredItem = filteredList[y];
-
-    // Add in the tooltips for the aliases so the user is aware of them
-    QListWidgetItem* listWidgetItem = new QListWidgetItem(nameOfFilteredItem);
-
-    QString formattedName
-      = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
-
-    const bool isItemABuilding = isBuilding(formattedName);
-
-    if (isItemABuilding == true) {
-      QString buildingIconFileNamePlayer2
-        = returnBuildingFileNameThatMatchesBuildingName(listWidgetItem->text());
-
-      QIcon buildingIconPlayer2(
-        workingDirectory.absolutePath() + buildingIconFileNamePlayer2);
-
-      listWidgetItem->setIcon(buildingIconPlayer2);
-    }
-    else {
-      QString unitIconFileNamePlayer2
-        = returnUnitFileNameThatMatchesUnitName(listWidgetItem->text());
-
-      QIcon unitIconPlayer2(
-        workingDirectory.absolutePath() + unitIconFileNamePlayer2);
-
-      listWidgetItem->setIcon(unitIconPlayer2);
-    }
-
-    QString listWidgetItemTooltip = tooltipReturner(nameOfFilteredItem);
-    if (listWidgetItemTooltip != "") {
-      listWidgetItem->setToolTip(listWidgetItemTooltip);
-    }
-
-    ui.player2EntityNames->addItem(listWidgetItem);
-  }
-
-  filterBasedOnAgeAndCivilization("2");
+  filterEntityNames(ui.player2EntityNames, textInsideOfElement, "2");
 }
 
 // Run this on click of Help > Documentation > Developer guide
@@ -2129,42 +2025,39 @@ void MainWindow::initializeEntityAliases()
   m_aliases.add("Town Center (Persian)", "TC (Persian)");
 }
 
-static std::vector<QString> findMatches(
-  const QList<QString>& haystack,
-  const QString&        needle)
+static QList<QString> fetchNamesOf(
+  const QListWidgetItem* item,
+  const Aliases&         aliases)
 {
-  std::vector<QString> result{};
-  result.reserve(haystack.size());
-  std::copy_if(
-    haystack.begin(),
-    haystack.end(),
-    std::back_inserter(result),
-    [&needle](const QString& hay) {
-      return hay.contains(needle, Qt::CaseInsensitive);
-    });
-  return result;
+  const QString  name{item->text()};
+  QList<QString> names{aliases.aliasesOf(name)};
+  names.push_front(name);
+  return names;
 }
 
-QStringList MainWindow::filterEntityNames(QString input) const
+static bool hasMatch(const QList<QString>& names, const QString& filter)
 {
-  std::vector<QString> directMatches{findMatches(entityNames, input)};
-  QSet<QString>        filteredEntities(
-    std::make_move_iterator(directMatches.begin()),
-    std::make_move_iterator(directMatches.end()));
-  const QList<QString>       aliases{m_aliases.getAllAliases()};
-  const std::vector<QString> indirectMatches{findMatches(aliases, input)};
+  return std::ranges::any_of(names, [&filter](const QString& name) {
+    return name.contains(filter, Qt::CaseInsensitive);
+  });
+}
 
-  for (const QString& alias : indirectMatches) {
-    const QList<QString> entities{m_aliases.entityOf(alias)};
+void MainWindow::filterEntityNames(
+  QListWidget*   list,
+  const QString& filter,
+  QString        player)
+{
+  filterBasedOnAgeAndCivilization(player);
 
-    for (const QString& entity : entities) {
-      filteredEntities.insert(entity);
+  for (int row{0}; row < list->count(); ++row) {
+    QListWidgetItem* const element{list->item(row)};
+    const QList<QString>   names{fetchNamesOf(element, m_aliases)};
+    const bool             doesMatch{hasMatch(names, filter)};
+
+    if (!element->isHidden() && !doesMatch) {
+      element->setHidden(true);
     }
   }
-
-  QList<QString> result{filteredEntities.values()};
-  result.sort();
-  return result;
 }
 
 void MainWindow::on_actionSet_player_1_Age_triggered()

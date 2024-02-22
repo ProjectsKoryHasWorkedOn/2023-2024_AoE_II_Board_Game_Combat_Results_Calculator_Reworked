@@ -155,7 +155,8 @@ private slots:
 private:
   void initializeEntityAliases();
 
-  QStringList filterEntityNames(QString input) const;
+  void
+  filterEntityNames(QListWidget* list, const QString& filter, QString player);
 
   QString tooltipReturner(QString name);
 
