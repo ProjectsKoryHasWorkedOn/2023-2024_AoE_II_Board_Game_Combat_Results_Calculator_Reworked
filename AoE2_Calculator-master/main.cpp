@@ -5,6 +5,7 @@
 
 #include "database.hpp"
 #include "mainwindow.hpp"
+#include "openoutputwindowclass.h"
 
 static QString getSqlScriptPath()
 {
@@ -31,7 +32,12 @@ int main(int argc, char* argv[])
   Database database{};
   database.runSqlScript(sqlScriptPath);
 
-  MainWindow w{&database};
+  openOutputWindowClass openTheOutputWindow;
+
+
+  MainWindow w{&database, &openTheOutputWindow};
+
+
 
   // Set the application icon
   w.setWindowIcon(QIcon("swords_clashing.ico"));

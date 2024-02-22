@@ -36,6 +36,7 @@ SOURCES += \
     file_paths.cpp \
     main.cpp \
     mainwindow.cpp \
+    openoutputwindowclass.cpp \
     output_redirector.cpp \
     outputwindow.cpp \
     pdfwindow.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     file_paths.h \
     mainwindow.h \
     mainwindow.hpp \
+    openoutputwindowclass.h \
     output_redirector.h \
     outputwindow.h \
     pdfwindow.hpp \

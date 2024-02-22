@@ -5,13 +5,15 @@
 #include "database.hpp"
 #include "developerwindow.hpp"
 #include "dialog_input.h"
-#include "outputwindow.h"
 #include "file_paths.h"
 #include "pdfwindow.hpp"
 #include "soundEffects.h" // Sound playing class
 #include <QLabel>
 #include <ranges>
 #include <QMap>
+#include "openoutputwindowclass.h"
+
+
 
 
 #include "cross-window_palette.h" // Coloring of the UI
@@ -71,6 +73,7 @@ QRegularExpression removeBracketedTextExpression(
   "(\\_\\(.*?\\))"); // Remember to add double backslashes in QT
 
 QRegularExpression removeBracketedTextExpressionNoUnderscore(" \\(.*?\\)");
+
 
 // Declaring class
 SoundPlayer playSound;
@@ -522,9 +525,10 @@ QString MainWindow::returnBuildingFileNameThatMatchesBuildingName(QString buildi
 }
 
 
-MainWindow::MainWindow(Database* database, QWidget* parent)
+MainWindow::MainWindow(Database* database, openOutputWindowClass* opOutWin, QWidget* parent)
   : QMainWindow{parent}
   , m_database{database}
+  , m_myOutputWindowClass{opOutWin}
   , m_lastLine{}
   , m_outputRedirector{std::cout, ui.gameOutputTextEdit, m_lastLine}
   , m_aliases{}
@@ -552,6 +556,10 @@ MainWindow::MainWindow(Database* database, QWidget* parent)
 
   QIntValidator myName;
   myName.setRange(100, 999);
+
+
+
+
 
   // create shortcut
   QShortcut* shortcut = new QShortcut(QKeySequence(Qt::Key_R), this);
@@ -1147,7 +1155,7 @@ void MainWindow::on_calculateResultsButton_clicked()
       m_p2FarmMemory
     });
 
-  detachOutputWindow();
+  updateDetatchedOutputWindow();
 }
 
 // Run this when the value inside of the player 1 entity quantities field
@@ -3174,24 +3182,17 @@ void MainWindow::on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(
 }
 
 
-void MainWindow::detachOutputWindow(){
-  // Is output window open
-  outputwindow *outputWindow = new outputwindow;
-
-  QObjectList children = outputWindow->children();
-  for(int i = 0; i < children.length(); i++){
-    qDebug() << "child number: " << i;
+void MainWindow::updateDetatchedOutputWindow(){
+  if(m_myOutputWindowClass->returnIfWindowIsOpen() == true){
+    m_myOutputWindowClass->sendOutputToOutputWindow(ui.gameOutputTextEdit);
   }
-
-  outputWindow->sendOutputToThisWindow(ui.gameOutputTextEdit);
-
-  outputWindow->show(); // Make it a non-modal window
+}
 
 
+void MainWindow::detachOutputWindow(){
+  m_myOutputWindowClass->sendOutputToOutputWindow(ui.gameOutputTextEdit);
 
-
-
-
+  m_myOutputWindowClass->showOutputWindow();
 }
 
 void MainWindow::on_pushButton_clicked()

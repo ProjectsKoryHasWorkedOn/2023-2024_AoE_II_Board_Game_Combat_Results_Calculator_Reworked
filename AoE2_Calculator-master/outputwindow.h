@@ -16,11 +16,7 @@ public:
   explicit outputwindow(QWidget *parent = nullptr);
   ~outputwindow();
 
-  void setup(bool &isWindowOpen);
-
   void sendOutputToThisWindow(QTextEdit *textWindow);
-
-  bool * windowIsOpen;
 
 private:
   Ui::outputwindow *ui;

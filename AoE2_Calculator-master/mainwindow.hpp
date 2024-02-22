@@ -8,6 +8,7 @@
 #include "csv/player_names.h"
 #include "csv/technologies.h"
 #include "output_redirector.h"
+#include "openoutputwindowclass.h"
 
 #include <QDir>
 #include <QHash>
@@ -21,7 +22,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(Database* database, QWidget* parent = nullptr);
+  MainWindow(Database* database, openOutputWindowClass* opOutWin, QWidget* parent = nullptr);
   ~MainWindow();
 
   const QString& lastLine() const;
@@ -144,6 +145,8 @@ private slots:
 
   void detachOutputWindow();
 
+  void updateDetatchedOutputWindow();
+
   void linkUnitNamesToFileNamesMap();
 
 private:
@@ -199,6 +202,7 @@ private:
   void filterBasedOnAgeAndCivilization(QString player);
 
   Database*          m_database;
+  openOutputWindowClass* m_myOutputWindowClass;
   Ui::MainWindow     ui;
   QString            m_lastLine;
   OutputRedirector   m_outputRedirector;
