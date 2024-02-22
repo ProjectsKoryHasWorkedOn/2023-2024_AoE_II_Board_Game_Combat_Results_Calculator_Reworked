@@ -672,7 +672,7 @@ Entity Database::applyTechnologyEffects(
 
     entityToApplyModifiersTo.standardDamage += technologyStandardDamageModifier;
     entityToApplyModifiersTo.rangedDamage += technologyRangedDamageModifier;
-    entityToApplyModifiersTo.rangedDamage += technologyHealthModifier;
+    entityToApplyModifiersTo.entityHealth += technologyHealthModifier;
   }
 
   return entityToApplyModifiersTo;
