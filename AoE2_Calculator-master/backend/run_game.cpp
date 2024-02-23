@@ -127,8 +127,7 @@ void runGame(
   int                               distanceBetweenTheBattleParticipants,
   EntityOutputConfig                entityOutputConfig,
   const QString&                    attackMonksQueryingMode,
-  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath
-  )
+  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath)
 {
   /** Simple declarations **/
   // Integer: The player numbers
@@ -239,7 +238,9 @@ void runGame(
 
   // Object: The combat calculator superclass and the combat rounds subclasses
   CombatCalculatorState combatCalculatorState{
-    distanceBetweenTheBattleParticipants, entityOutputConfig, resetMemoryOfPlayerSelectionOnDeath};
+    distanceBetweenTheBattleParticipants,
+    entityOutputConfig,
+    resetMemoryOfPlayerSelectionOnDeath};
 
   CombatCalculatorCallbacks combatCalculatorCallbacks{onPlayerEntityDeath};
   combatCalculator*         theCombatCalculator;
@@ -281,10 +282,6 @@ void runGame(
   // Behaviour: Run a function to apply all of the modifiers for player 2
   p2BattleParticipant = theModifiersCalculator.applyAllModifiers(0);
   p2BattleAssistant   = theModifiersCalculator.applyAllModifiers(1);
-
-
-
-
 
   // Behaviour: Return information about the input entities once they have been
   // modified (before further calculations occur)
@@ -367,8 +364,6 @@ void runGame(
     }
   }
 
-
-
   // Event [4] Caught from the Crow's Nest - One extra bombardment round if
   // there is a Galley or Fire Ship
   if ((p1Events[4] == 1) || (p2Events[4] == 1)) {
@@ -442,151 +437,142 @@ void runGame(
     = theCombatCalculator->returnModifiedBattleParticipants(player2);
   p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
-
   /** Attacking monk stuff **/
-  const AttackMonksInitialValues attackMonksValues{determineAttackMonksInitialValues(attackMonksQueryingMode)};
+  const AttackMonksInitialValues attackMonksValues{
+    determineAttackMonksInitialValues(attackMonksQueryingMode)};
   bool player1AttacksMonks{attackMonksValues.isAttackingMonks};
   bool player1HasAnsweredAttackMonksQuestion{
-                                             attackMonksValues.isQuestionAnswered};
+    attackMonksValues.isQuestionAnswered};
   bool player2AttacksMonks{attackMonksValues.isAttackingMonks};
   bool player2HasAnsweredAttackMonksQuestion{
-                                             attackMonksValues.isQuestionAnswered};
+    attackMonksValues.isQuestionAnswered};
 
   /** Part 4.2: Round 2 **/
 
-
-
   // Make sure player has archers before even running the ranged round
-  if(p1BattleParticipant.armorClass[0] == true || p2BattleParticipant.armorClass[9] == true){ // Archer
-
-
-
-
-  // Proceed with archer round of combat so long as archers are not fighting
-  // buildings Ranged damage applies only to units and villagers, not to
-  // buildings
-
-  // Check if player1 is able to attack player2's monks with ranged attacks.
-
-
   if (
-    !player1HasAnsweredAttackMonksQuestion
-    && (p1BattleParticipant.rangedDamage > 0)
-    && (p2BattleAssistant.entityQuantity > 0)) {
-    const bool shouldFightMonks{queryIfMonksShouldBeFought(playerNames[0])};
-    player1AttacksMonks                   = shouldFightMonks;
-    player1HasAnsweredAttackMonksQuestion = true;
-  }
+    p1BattleParticipant.armorClass[0] == true
+    || p2BattleParticipant.armorClass[9] == true) { // Archer
 
+    // Proceed with archer round of combat so long as archers are not fighting
+    // buildings Ranged damage applies only to units and villagers, not to
+    // buildings
 
-  if (
-    !player2HasAnsweredAttackMonksQuestion
-    && (p2BattleParticipant.rangedDamage > 0)
-    && (p1BattleAssistant.entityQuantity > 0)) {
-    const bool shouldFightMonks{queryIfMonksShouldBeFought(playerNames[1])};
-    player2AttacksMonks                   = shouldFightMonks;
-    player2HasAnsweredAttackMonksQuestion = true;
-  }
+    // Check if player1 is able to attack player2's monks with ranged attacks.
 
-  theCombatCalculator = &fightMonksRangedRounds;
+    if (
+      !player1HasAnsweredAttackMonksQuestion
+      && (p1BattleParticipant.rangedDamage > 0)
+      && (p2BattleAssistant.entityQuantity > 0)) {
+      const bool shouldFightMonks{queryIfMonksShouldBeFought(playerNames[0])};
+      player1AttacksMonks                   = shouldFightMonks;
+      player1HasAnsweredAttackMonksQuestion = true;
+    }
 
-  theCombatCalculator->setStartingQuantites();
+    if (
+      !player2HasAnsweredAttackMonksQuestion
+      && (p2BattleParticipant.rangedDamage > 0)
+      && (p1BattleAssistant.entityQuantity > 0)) {
+      const bool shouldFightMonks{queryIfMonksShouldBeFought(playerNames[1])};
+      player2AttacksMonks                   = shouldFightMonks;
+      player2HasAnsweredAttackMonksQuestion = true;
+    }
 
-  // Set the player names
-  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+    theCombatCalculator = &fightMonksRangedRounds;
 
-  // Behaviour: Set the battle participants
-  theCombatCalculator->setCombatParticipants(
-    p1BattleParticipant,
-    p2BattleParticipant,
-    p1BattleAssistant,
-    p2BattleAssistant,
-    modifyRoundAttackP1,
-    modifyRoundAttackP2);
+    theCombatCalculator->setStartingQuantites();
 
-  // Behaviour: Set the remaining damage values for the combat calculator
-  theCombatCalculator->setAdditionalValues(
-    p1RemainingDamage, p2RemainingDamage);
+    // Set the player names
+    theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
-  const ActivePlayer fightMonksRangedRoundsActivePlayer{
-    getActivePlayerForFightMonks(player1AttacksMonks, player2AttacksMonks)};
-  /* qDebug() << ">>>>>>>> active player for fight monks ranged:"
-           << fightMonksRangedRoundsActivePlayer; */
-  theCombatCalculator->roundOutcome(
-    numberOfArcherCombatRounds,
-    p1Events,
-    p2Events,
-    p1Technologies,
-    p2Technologies,
-    fightMonksRangedRoundsActivePlayer);
+    // Behaviour: Set the battle participants
+    theCombatCalculator->setCombatParticipants(
+      p1BattleParticipant,
+      p2BattleParticipant,
+      p1BattleAssistant,
+      p2BattleAssistant,
+      modifyRoundAttackP1,
+      modifyRoundAttackP2);
 
-  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
-  // ranged combat Player 1
-  p1BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player1);
-  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+    // Behaviour: Set the remaining damage values for the combat calculator
+    theCombatCalculator->setAdditionalValues(
+      p1RemainingDamage, p2RemainingDamage);
 
+    const ActivePlayer fightMonksRangedRoundsActivePlayer{
+      getActivePlayerForFightMonks(player1AttacksMonks, player2AttacksMonks)};
+    /* qDebug() << ">>>>>>>> active player for fight monks ranged:"
+             << fightMonksRangedRoundsActivePlayer; */
+    theCombatCalculator->roundOutcome(
+      numberOfArcherCombatRounds,
+      p1Events,
+      p2Events,
+      p1Technologies,
+      p2Technologies,
+      fightMonksRangedRoundsActivePlayer);
 
-  // Player 2
-  p2BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player2);
-  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+    // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
+    // ranged combat Player 1
+    p1BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player1);
+    p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
 
-  // +-+-+-+-+-+-+-+-+
-  // +-+-+-+-+-+-+-+-+
-  // +-+-+-+-+-+-+-+-+
-  // +-+-+-+-+-+-+-+-+
-  // +-+-+-+-+-+-+-+-+
-  // Ranged round
-  theCombatCalculator = &rangedRounds;
+    // Player 2
+    p2BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player2);
+    p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
-  theCombatCalculator->setStartingQuantites();
+    // +-+-+-+-+-+-+-+-+
+    // +-+-+-+-+-+-+-+-+
+    // +-+-+-+-+-+-+-+-+
+    // +-+-+-+-+-+-+-+-+
+    // +-+-+-+-+-+-+-+-+
+    // Ranged round
+    theCombatCalculator = &rangedRounds;
 
-  // Set the player names
-  theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
+    theCombatCalculator->setStartingQuantites();
 
-  // Behaviour: Set the battle participants
-  theCombatCalculator->setCombatParticipants(
-    p1BattleParticipant,
-    p2BattleParticipant,
-    p1BattleAssistant,
-    p2BattleAssistant,
-    modifyRoundAttackP1,
-    modifyRoundAttackP2);
+    // Set the player names
+    theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
 
-  // Behaviour: Set the remaining damage values for the combat calculator
-  theCombatCalculator->setAdditionalValues(
-    p1RemainingDamage, p2RemainingDamage);
+    // Behaviour: Set the battle participants
+    theCombatCalculator->setCombatParticipants(
+      p1BattleParticipant,
+      p2BattleParticipant,
+      p1BattleAssistant,
+      p2BattleAssistant,
+      modifyRoundAttackP1,
+      modifyRoundAttackP2);
 
-  const ActivePlayer rangedRoundActivePlayer{
-    getActivePlayerForNormalCombatRound(
-      player1AttacksMonks, player2AttacksMonks)};
-  /* qDebug() << ">>>>>>>> Active player for ranged rounds:"
-           << rangedRoundActivePlayer; */
-  theCombatCalculator->roundOutcome(
-    numberOfArcherCombatRounds,
-    p1Events,
-    p2Events,
-    p1Technologies,
-    p2Technologies,
-    rangedRoundActivePlayer);
+    // Behaviour: Set the remaining damage values for the combat calculator
+    theCombatCalculator->setAdditionalValues(
+      p1RemainingDamage, p2RemainingDamage);
 
-  // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
-  // ranged combat Player 1
-  p1BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player1);
-  p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
+    const ActivePlayer rangedRoundActivePlayer{
+      getActivePlayerForNormalCombatRound(
+        player1AttacksMonks, player2AttacksMonks)};
+    /* qDebug() << ">>>>>>>> Active player for ranged rounds:"
+             << rangedRoundActivePlayer; */
+    theCombatCalculator->roundOutcome(
+      numberOfArcherCombatRounds,
+      p1Events,
+      p2Events,
+      p1Technologies,
+      p2Technologies,
+      rangedRoundActivePlayer);
 
-  // Player 2
-  p2BattleParticipant
-    = theCombatCalculator->returnModifiedBattleParticipants(player2);
-  p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
+    // Behaviour: Get the results after numberOfArcherCombatRounds rounds of
+    // ranged combat Player 1
+    p1BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player1);
+    p1RemainingDamage += theCombatCalculator->returnRemaningDamage(player1);
 
-  // Behaviour: Output the remaining damage
-  // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
+    // Player 2
+    p2BattleParticipant
+      = theCombatCalculator->returnModifiedBattleParticipants(player2);
+    p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
 
-
-
+    // Behaviour: Output the remaining damage
+    // outputRemainingDamage(p1RemainingDamage, p2RemainingDamage);
   }
 
   /** Part 4.3: Bonus round **/
@@ -616,10 +602,6 @@ void runGame(
 
     // Set the player names
     theCombatCalculator->setPlayerNames(playerNames[0], playerNames[1]);
-
-
-
-
 
     // Behaviour: Set the battle participants
     theCombatCalculator->setCombatParticipants(
@@ -711,9 +693,6 @@ void runGame(
     p2RemainingDamage += theCombatCalculator->returnRemaningDamage(player2);
   }
 
-
-
-
   /** Part 4.4: Round 3 & 4 **/
 
   // @ Phillip: Ask about how we can not ask question on if we're attacking
@@ -786,9 +765,6 @@ void runGame(
   // This is the regular melee round
   ///
 
-
-
-
   theCombatCalculator = &standardRounds;
 
   theCombatCalculator->setStartingQuantites();
@@ -808,11 +784,6 @@ void runGame(
   // Behaviour: Set the remaining damage values for the combat calculator
   theCombatCalculator->setAdditionalValues(
     p1RemainingDamage, p2RemainingDamage);
-
-
-
-
-
 
   const ActivePlayer regularMeleeRoundActivePlayer{
     getActivePlayerForNormalCombatRound(

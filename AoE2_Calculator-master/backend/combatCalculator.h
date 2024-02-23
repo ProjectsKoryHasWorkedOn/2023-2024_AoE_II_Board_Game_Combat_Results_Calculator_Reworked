@@ -1,8 +1,8 @@
 #pragma once
 /** The libaries **/
 #include "entity.h" // Using: Entity class
-#include "player_selection_memory.h"
 #include "player.h"
+#include "player_selection_memory.h"
 #include <QDebug>
 #include <functional>
 #include <iostream> // Using: cin, cout
@@ -44,12 +44,12 @@ private:
 class CombatCalculatorState {
 public:
   CombatCalculatorState(
-    int                distanceBetweenTheBattleParticipants,
-    EntityOutputConfig entityOutputConfig,
+    int                   distanceBetweenTheBattleParticipants,
+    EntityOutputConfig    entityOutputConfig,
     PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath);
 
-  int                distanceBetweenTheBattleParticipants;
-  EntityOutputConfig entityOutputConfig;
+  int                   distanceBetweenTheBattleParticipants;
+  EntityOutputConfig    entityOutputConfig;
   PlayerSelectionMemory resetMemoryOfPlayerSelectionOnDeath;
 
   /** Values attained sometime during the running of the combat rounds **/
@@ -133,7 +133,6 @@ public:
   // Function: Set the player names
   void setPlayerNames(std::string& inputtedP1Name, std::string& inputtedP2Name);
 
-
   std::string returnHighlightedEntityNames(std::string inputtedName);
 
   // Function: Set the battle participants
@@ -215,19 +214,20 @@ public:
   void checkIfItCanBeHealed();
 
   /** Return information functions **/
-  std::string returnWhatIAm(Entity& inputtedEntity, std::string inputtedRound, Entity& opposingPlayerEntity);
+  std::string returnWhatIAm(
+    Entity&     inputtedEntity,
+    std::string inputtedRound,
+    Entity&     opposingPlayerEntity);
 
   // Function: Return the modified battle participants based on the input player
   // number
   Entity returnModifiedBattleParticipants(int inputPlayerNumber);
 
-
-
-
-  /* Bombardment can be like a mini-round that's in the ranged or standard rounds */
+  /* Bombardment can be like a mini-round that's in the ranged or standard
+   * rounds */
 
   void applyingBombardmentRoundOutcomeForAnIndividualPlayer(
-                                                             // Given player stuff
+    // Given player stuff
     bool&  givenPlayerBombardmentEntityActivated,
     bool&  givenPlayerIsFightingBuilding,
     bool&  givenPlayerIsFightingUnit,
@@ -238,7 +238,7 @@ public:
     int&    opposingPlayerEntityDeaths);
 
   void calculatingBombardmentRoundOutcomeForAnIndividualPlayer(
-                                                                // Shared stuff
+    // Shared stuff
     const int roundDownBasedOnMultiplesOfThisNumber,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
@@ -247,15 +247,13 @@ public:
     bool&   givenPlayerBombardmentEntityActivated,
     float&  givenPlayerRemainingDamage,
     int&    givenPlayerRoundAttackModifiers,
-    bool& givenPlayerIsInRange,
+    bool&   givenPlayerIsInRange,
 
-       // Opposing player stuff
+    // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     int&    opposingPlayerBuildingDamage,
     int&    opposingPlayerDamageDie,
     int&    opposingPlayerEntityDeaths);
-
-
 };
 #endif // COMBAT_CALCULATOR_H
 
@@ -393,9 +391,8 @@ public:
     float& givenPlayerPointsGained,
     bool&  givenPlayerIsFightingABuilding,
 
-
     Entity& givenPlayerBattleParticipant,
-    bool& givenPlayerIsInRange,
+    bool&   givenPlayerIsInRange,
 
     // Opposing player stuff
     std::string& opposingPlayerName,
@@ -432,7 +429,7 @@ public:
     bool&   givenPlayerIsFightingBuilding,
     bool&   givenPlayerIsFightingAUnit,
     int&    givenPlayerEntityDeaths,
-    bool& givenPlayerIsInRange,
+    bool&   givenPlayerIsInRange,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     int*    opposingPlayerEvents,
@@ -440,7 +437,7 @@ public:
     int&    opposingPlayerBuildingDamage,
     int&    opposingPlayerDamageDie);
 
-  void applyingStandardRoundOutcomeForAnIndividualPlayer(// Shared stuff
+  void applyingStandardRoundOutcomeForAnIndividualPlayer( // Shared stuff
     int& numberOfTimesToRunTheStandardRound,
     // Given player stuff
     Entity& givenPlayerBattleParticipant,
@@ -448,12 +445,12 @@ public:
     bool&   givenPlayerHasAEntityThatActivated,
     bool&   givenPlayerIsFightingAUnit,
     float&  givenPlayerPointsGained,
-    bool &givenPlayerIsFightingBuilding,
+    bool&   givenPlayerIsFightingBuilding,
     // Opposing player stuff
     Entity& opposingPlayerBattleParticipant,
     float&  opposingPlayerPointsGained,
     int&    opposingPlayerEntityDeaths,
-    int& opposingPlayerBuildingDamage);
+    int&    opposingPlayerBuildingDamage);
 
   void outputtingStandardRoundOutcomeForAnIndividualPlayer(
     // Given player stuff
@@ -464,7 +461,7 @@ public:
     bool& givenPlayerIsFightingABuilding,
 
     Entity& givenPlayerBattleParticipant,
-    bool& givenPlayerIsInRange,
+    bool&   givenPlayerIsInRange,
 
     // Opposing player stuff
     std::string& opposingPlayerName,

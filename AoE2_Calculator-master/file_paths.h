@@ -29,11 +29,8 @@ extern const QString aboutInvertedIconFilename;
 extern const QString documentationIconFilename;
 extern const QString documentationInvertedIconFilename;
 
-
 extern const QString databaseIconFilename;
 extern const QString databaseIconInvertedFilename;
-
-
 
 extern const QString playerDetailsIconFilename;
 extern const QString playerDetailsIconInvertedFilename;
@@ -58,13 +55,10 @@ extern const QString tSanctityIconFilename;
 extern const QString tScaleBardingArmorIconFilename;
 extern const QString tScaleMailArmorIconFilename;
 
-
 extern const QString tBracerIconFilename;
 extern const QString tPlateBardingArmorIconFilename;
 extern const QString tPlateMailArmorIconFilename;
 extern const QString tRingArcherArmorIconFilename;
-
-
 
 extern const QString bArcheryRangeIconFilename;
 extern const QString bBarracksIconFilename;
@@ -236,6 +230,5 @@ extern const QString uWarriorPriestIconFilename;
 extern const QString uWingedHussarIconFilename;
 extern const QString uWoadRaiderIconFilename;
 extern const QString uXolotlWarriorIconFilename;
-
 
 #endif // FILE_PATHS_H

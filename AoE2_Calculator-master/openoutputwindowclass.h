@@ -3,29 +3,18 @@
 #ifndef OPENOUTPUTWINDOWCLASS_H
 #define OPENOUTPUTWINDOWCLASS_H
 
-
-class openOutputWindowClass
-{
+class openOutputWindowClass {
 public:
   openOutputWindowClass();
 
   void showOutputWindow();
 
-  void sendOutputToOutputWindow(QTextEdit *textWindow);
+  void sendOutputToOutputWindow(QTextEdit* textWindow);
 
   bool returnIfWindowIsOpen();
 
-
-
-
 private:
-  outputwindow * outputWindow;
-
-
-
-
-
-
+  outputwindow* outputWindow;
 };
 
 #endif // OPENOUTPUTWINDOWCLASS_H

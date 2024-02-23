@@ -8,18 +8,17 @@ namespace Ui {
 class outputwindow;
 }
 
-class outputwindow : public QDialog
-{
+class outputwindow : public QDialog {
   Q_OBJECT
 
 public:
-  explicit outputwindow(QWidget *parent = nullptr);
+  explicit outputwindow(QWidget* parent = nullptr);
   ~outputwindow();
 
-  void sendOutputToThisWindow(QTextEdit *textWindow);
+  void sendOutputToThisWindow(QTextEdit* textWindow);
 
 private:
-  Ui::outputwindow *ui;
+  Ui::outputwindow* ui;
 };
 
 #endif // OUTPUTWINDOW_H

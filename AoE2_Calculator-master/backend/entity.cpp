@@ -27,7 +27,7 @@ Entity::Entity()
   isKamikaze                              = false;
   initialEntityQuantity                   = 0;
   healsAvailable                          = 0;
-  numberOfRoundsItHasBeenIn = 0;
+  numberOfRoundsItHasBeenIn               = 0;
 }
 
 Entity::~Entity()
@@ -36,16 +36,16 @@ Entity::~Entity()
 
 Wonder::Wonder()
 {
-  turnsInPlay   = 0;
-  entityName    = "Wonder";
-  entityAge     = 4;
-  pointValue    = 90;   // 20 wood, 20 stone, 20 gold, 30 bodies.
-  armorClass[1] = true; // Building armor class
-  minimumRange = 0;
-  maximumRange = 0;
+  turnsInPlay           = 0;
+  entityName            = "Wonder";
+  entityAge             = 4;
+  pointValue            = 90;   // 20 wood, 20 stone, 20 gold, 30 bodies.
+  armorClass[1]         = true; // Building armor class
+  minimumRange          = 0;
+  maximumRange          = 0;
   dealsAreaEffectDamage = false;
-  isKamikaze = false;
-  onlyAttacksOnceInTheFirstRoundOfCombat = false;
+  isKamikaze            = false;
+  onlyAttacksOnceInTheFirstRoundOfCombat  = false;
   onlyAttacksOnceInTheSecondRoundOfCombat = false;
 }
 
@@ -156,7 +156,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputForegroundColor == "green") {
     textColorValue = "green";
   }
-  else if(inputForegroundColor == "bright_light_green"){
+  else if (inputForegroundColor == "bright_light_green") {
     textColorValue = "rgb(45, 254, 84)";
   }
   else if (inputForegroundColor == "yellow") {
@@ -189,7 +189,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputForegroundColor == "light_yellow") {
     textColorValue = "rgb(255,255,224)";
   }
-  else if(inputForegroundColor == "orange"){
+  else if (inputForegroundColor == "orange") {
     textColorValue = "rgb(255,140,0)";
   }
   else if (inputForegroundColor == "light_blue") {
@@ -216,7 +216,6 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   // Behaviour: Convert the input text into a color code for the background
   // color
 
-
   if (inputBackgroundColor == "black") {
     backgroundColorValue = "black";
   }
@@ -226,7 +225,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputBackgroundColor == "green") {
     backgroundColorValue = "green";
   }
-  else if(inputBackgroundColor == "brown"){
+  else if (inputBackgroundColor == "brown") {
     backgroundColorValue = "rgb(139,69,19)";
   }
   else if (inputBackgroundColor == "yellow") {
@@ -241,7 +240,7 @@ QCssParser::parseHexColor: Unknown color name '#FFFFF'
   else if (inputBackgroundColor == "cyan") {
     backgroundColorValue = "cyan";
   }
-  else if(inputBackgroundColor == "orange"){
+  else if (inputBackgroundColor == "orange") {
     backgroundColorValue = "rgb(255,140,0)";
   }
   else if (inputBackgroundColor == "light_gray") {
@@ -317,13 +316,6 @@ void Entity::outputEntity(
     entityOutputConfig
       .showFurtherInformationAboutTheBattleParticipantsInTheOutput};
 
-
-
-
-
-
-
-
   // Behaviour: Display the player's name first (no matter what)
   displayColorfulText("bold", "white", "default", playerName + "'s", false);
   std::cout << " ";
@@ -362,41 +354,44 @@ void Entity::outputEntity(
 
     std::cout << " ";
 
+    if (entityQuantity > 1) {
+      displayColorfulText("bold", "white", "dark_cyan", getPluralName(), false);
 
-
-      if (entityQuantity > 1) {
-        displayColorfulText("bold", "white", "dark_cyan", getPluralName(), false);
-
-        if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-          std::cout << " have a total of ";
-        }
-        else{
-          std::cout << " each have ";
-        }
-
+      if (
+        showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+        == true) {
+        std::cout << " have a total of ";
       }
       else {
-        displayColorfulText("bold", "white", "dark_cyan", entityName, false);
-
-        std::cout << " has ";
+        std::cout << " each have ";
       }
+    }
+    else {
+      displayColorfulText("bold", "white", "dark_cyan", entityName, false);
 
-    int healthValueToSendToOutput = entityHealth;
+      std::cout << " has ";
+    }
+
+    int healthValueToSendToOutput         = entityHealth;
     int standardDamageValueToSendToOutput = standardDamage;
-    int rangedDamageValueToSendToOutput = rangedDamage;
-    int pointValueToSendToOutput = pointValue;
+    int rangedDamageValueToSendToOutput   = rangedDamage;
+    int pointValueToSendToOutput          = pointValue;
 
-
-    if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-      healthValueToSendToOutput = entityHealth * entityQuantity;
+    if (
+      showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+      == true) {
+      healthValueToSendToOutput         = entityHealth * entityQuantity;
       standardDamageValueToSendToOutput = standardDamage * entityQuantity;
-      rangedDamageValueToSendToOutput = rangedDamage * entityQuantity;
-      pointValueToSendToOutput = pointValue * entityQuantity;
-
+      rangedDamageValueToSendToOutput   = rangedDamage * entityQuantity;
+      pointValueToSendToOutput          = pointValue * entityQuantity;
     }
 
     displayColorfulText(
-      "bold", "red", "default", std::to_string(healthValueToSendToOutput), false);
+      "bold",
+      "red",
+      "default",
+      std::to_string(healthValueToSendToOutput),
+      false);
     std::cout << " "
               << "HP";
 
@@ -405,19 +400,27 @@ void Entity::outputEntity(
     if (standardDamage != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "yellow", "default", std::to_string(standardDamageValueToSendToOutput), false);
+        "bold",
+        "yellow",
+        "default",
+        std::to_string(standardDamageValueToSendToOutput),
+        false);
       std::cout << " "
                 << "melee damage";
     }
     if (rangedDamage != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "magenta", "default", std::to_string(rangedDamageValueToSendToOutput), false);
+        "bold",
+        "magenta",
+        "default",
+        std::to_string(rangedDamageValueToSendToOutput),
+        false);
       std::cout << " "
                 << "ranged damage";
     }
 
-    if(showFurtherInformationAboutTheBattleParticipantsInTheOutput == true){
+    if (showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
       if (garrisonValue != 0) {
         std::cout << ", ";
         displayColorfulText(
@@ -431,7 +434,11 @@ void Entity::outputEntity(
     if (maximumRange != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "bright_light_green", "default", std::to_string(maximumRange), false);
+        "bold",
+        "bright_light_green",
+        "default",
+        std::to_string(maximumRange),
+        false);
       std::cout << " ";
       std::cout << "max. range";
     }
@@ -440,33 +447,41 @@ void Entity::outputEntity(
     if (minimumRange != 0) {
       std::cout << ", ";
       displayColorfulText(
-        "bold", "bright_light_green", "default", std::to_string(minimumRange), false);
+        "bold",
+        "bright_light_green",
+        "default",
+        std::to_string(minimumRange),
+        false);
       std::cout << " ";
       std::cout << "min. range";
     }
 
     if (pointValue != 0) {
-      if(showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true){
-        if(entityQuantity > 1){
-                std::cout << ", and are worth a total of ";
+      if (
+        showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+        == true) {
+        if (entityQuantity > 1) {
+          std::cout << ", and are worth a total of ";
         }
-        else{
-                std::cout << ", and is worth a total of ";
+        else {
+          std::cout << ", and is worth a total of ";
         }
-
-
       }
-      else{
-      std::cout << ", and are each worth ";
+      else {
+        std::cout << ", and are each worth ";
       }
-
-
-
 
       displayColorfulText(
-        "bold", "cyan", "default", std::to_string(pointValueToSendToOutput), false);
+        "bold",
+        "cyan",
+        "default",
+        std::to_string(pointValueToSendToOutput),
+        false);
       std::cout << " ";
-      if (pointValue > 1 || showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput == true) {
+      if (
+        pointValue > 1
+        || showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
+             == true) {
         std::cout << "points";
       }
       else {
@@ -480,7 +495,6 @@ void Entity::outputEntity(
 
     // @todo Kory add toggle for this in mainwindow.ui and carry that over to
     // here
-
 
     if (showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
       std::cout << ". It's of type: ";
@@ -496,7 +510,6 @@ void Entity::outputEntity(
       // Could have fewer armor classes if I referred to entityName (e.g. for
       // capped ram) instead of having an armor class for it in
       // modifiersCalculator.cpp
-
 
       for (int i = 0; i != entitiesArmorClasses; i++) {
         if ((armorClass[0] == true) && (displayedArmorClass[0] == false)) {
@@ -636,45 +649,34 @@ void Entity::outputEntity(
         }
       }
 
-
-
-      if(isKamikaze || dealsAreaEffectDamage){
+      if (isKamikaze || dealsAreaEffectDamage) {
         std::cout << ". It has these unique properties: ";
 
-        if(isKamikaze == true){
-          displayColorfulText("bold", "white", "orange", "Suicide attacks", false);
+        if (isKamikaze == true) {
+          displayColorfulText(
+            "bold", "white", "orange", "Suicide attacks", false);
         }
 
-        if(isKamikaze && dealsAreaEffectDamage){
+        if (isKamikaze && dealsAreaEffectDamage) {
           std::cout << ", ";
         }
 
-        if(dealsAreaEffectDamage == true){
-          displayColorfulText("bold", "white", "orange", "Deals area effect damage", false);
+        if (dealsAreaEffectDamage == true) {
+          displayColorfulText(
+            "bold", "white", "orange", "Deals area effect damage", false);
         }
 
         std::cout << ". ";
-
       }
 
-
-      if(onlyAttacksOnceInTheFirstRoundOfCombat == true){
+      if (onlyAttacksOnceInTheFirstRoundOfCombat == true) {
         std::cout << "It only attacks in the <b>first</b> round of combat.";
       }
 
-
-      if(onlyAttacksOnceInTheSecondRoundOfCombat == true){
+      if (onlyAttacksOnceInTheSecondRoundOfCombat == true) {
         std::cout << "It only attacks in the <b>second</b> round of combat.";
       }
-
-
-
-
-
     }
-
-
-
   }
   // Behaviour: Display something different if the entity is dead
   else if (entityQuantity <= 0) {
@@ -687,16 +689,15 @@ void Entity::outputEntity(
 
 std::string Entity::getPluralName() const
 {
-
   if (entityName == "Man-at-Arms") {
     return "Men-at-Arms";
   }
 
-  if(entityName == "Scout_Cavalry"){
+  if (entityName == "Scout_Cavalry") {
     return entityName;
   }
 
-  if(entityName == "Light_Cavalry"){
+  if (entityName == "Light_Cavalry") {
     return entityName;
   }
 

@@ -542,9 +542,7 @@ static QString fetchArmorClasses(const Entity& entity)
 
 // No buildings deal bonus damage (there are no building modifiers)
 // Just unit modifiers
-
-
-
+\
 
 Entity Database::getUnitModifiers(
   Entity entityToApplyModifiersTo,

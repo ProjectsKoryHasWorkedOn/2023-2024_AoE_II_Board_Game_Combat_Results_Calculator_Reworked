@@ -7,8 +7,8 @@
 #include "csv/player_medieval_ages.h"
 #include "csv/player_names.h"
 #include "csv/technologies.h"
-#include "output_redirector.h"
 #include "openoutputwindowclass.h"
+#include "output_redirector.h"
 
 #include <QDir>
 #include <QHash>
@@ -22,7 +22,10 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(Database* database, openOutputWindowClass* opOutWin, QWidget* parent = nullptr);
+  MainWindow(
+    Database*              database,
+    openOutputWindowClass* opOutWin,
+    QWidget*               parent = nullptr);
   ~MainWindow();
 
   const QString& lastLine() const;
@@ -36,7 +39,8 @@ public:
   // functions if it hasn't added them automatically or it'll throw up an error
 private slots:
 
-  QString returnTechnologyFileNameThatMatchesTechnologyName(QString technologyName);
+  QString returnTechnologyFileNameThatMatchesTechnologyName(
+    QString technologyName);
 
   QString returnUnitFileNameThatMatchesUnitName(QString unitName);
 
@@ -138,7 +142,6 @@ private slots:
 
   void on_distanceBetweenTheBattleParticipantsSlider_sliderMoved(int position);
 
-
   void on_pushButton_clicked();
 
   void on_actionDeveloper_test_cases_triggered();
@@ -152,7 +155,8 @@ private slots:
 private:
   void initializeEntityAliases();
 
-  QStringList filterEntityNames(QString input) const;
+  void
+  filterEntityNames(QListWidget* list, const QString& filter, QString player);
 
   QString tooltipReturner(QString name);
 
@@ -201,36 +205,31 @@ private:
 
   void filterBasedOnAgeAndCivilization(QString player);
 
-  Database*          m_database;
+  Database*              m_database;
   openOutputWindowClass* m_myOutputWindowClass;
-  Ui::MainWindow     ui;
-  QString            m_lastLine;
-  OutputRedirector   m_outputRedirector;
-  Aliases            m_aliases;
-  QString            m_player1EntityName;
-  QString            m_player2EntityName;
-  Entities           m_entities;
-  PlayerName         m_player_names;
-  playerMedievalAges m_player_medieval_age;
-  Events             m_player1Events;
-  Events             m_player2Events;
-  Technologies       m_player1Technologies;
-  Technologies       m_player2Technologies;
+  Ui::MainWindow         ui;
+  QString                m_lastLine;
+  OutputRedirector       m_outputRedirector;
+  Aliases                m_aliases;
+  QString                m_player1EntityName;
+  QString                m_player2EntityName;
+  Entities               m_entities;
+  PlayerName             m_player_names;
+  playerMedievalAges     m_player_medieval_age;
+  Events                 m_player1Events;
+  Events                 m_player2Events;
+  Technologies           m_player1Technologies;
+  Technologies           m_player2Technologies;
   bool m_showFurtherInformationAboutTheBattleParticipantsInTheOutput = false;
   bool m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
     = false;
   int m_distanceBetweenTheBattleParticipants = 0;
 
-
   int m_p1VillagerMemory = 0;
-   int   m_p2VillagerMemory = 0;
-   int   m_p1FarmMemory = 0;
-   int   m_p2FarmMemory = 0;
+  int m_p2VillagerMemory = 0;
+  int m_p1FarmMemory     = 0;
+  int m_p2FarmMemory     = 0;
 
-
-
-   QMap<QString, QString> unitNameToUnitFileNameMap;
-
-
+  QMap<QString, QString> unitNameToUnitFileNameMap;
 };
 #endif // MAINWINDOW_HPP

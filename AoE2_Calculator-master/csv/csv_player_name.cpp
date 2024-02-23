@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <utility>
 
+#include "csv/csv_player_name.h"
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
-#include "csv/csv_player_name.h"
 
 CsvPlayerName CsvPlayerName::fromLine(const QString& line)
 {
