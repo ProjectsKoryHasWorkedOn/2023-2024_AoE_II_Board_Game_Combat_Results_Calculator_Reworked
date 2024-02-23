@@ -3,7 +3,7 @@ QT       += core gui sql pdf
 # If it throws an error, delete build folder and rebuild it
 
 # Set icon
-RC_ICONS = swords_clashing.ico
+# RC_ICONS = swords_clashing.ico
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets core multimedia sql pdfwidgets
