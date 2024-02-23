@@ -4,6 +4,7 @@
 
 #include "player.h"
 #include "player_selection_memory.h"
+#include <QDir>
 
 #include <QString>
 
@@ -21,6 +22,7 @@ void runGame(
   int                               distanceBetweenTheBattleParticipants,
   EntityOutputConfig                entityOutputConfig,
   const QString&                    attackMonksQueryingMode,
-  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath);
+  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath,
+  std::string directoryWeAreWorkingIn);
 
 #endif // RUN_GAME_H

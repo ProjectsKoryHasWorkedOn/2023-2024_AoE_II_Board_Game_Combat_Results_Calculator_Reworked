@@ -12,8 +12,10 @@
 #include <unordered_map> // Using: std::unordered_map
 
 // Functions: The constructor and deconstructor
-fileImporter::fileImporter(Database* database) : m_database{database}
+fileImporter::fileImporter(Database* database, std::string directoryWeAreWorkingIn) : m_database{database}
 {
+  directoryToWorkOffOf = directoryWeAreWorkingIn;
+
 }
 fileImporter::~fileImporter()
 {
@@ -174,7 +176,7 @@ Entity fileImporter::entitiesFile(
   Entity returnEntityCSV;
 
   // Behaviour: Check that the filename is correct
-  if (inputEntityFilename != "import/csv/entities.csv") {
+  if (inputEntityFilename != directoryToWorkOffOf + "import/csv/entities.csv") {
     std::cout
       << "Error: Input filename supposed to be called 'import/entities.csv'"
       << "\n";
@@ -397,11 +399,11 @@ int* fileImporter::aSplitColumnFile(
 
   // Behaviour: Check that the filename is correct
   if (
-    (inputTechnologyOrEventsOrPlayerAgeFilename != "import/csv/technologies_p1.csv")
-    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/csv/technologies_p2.csv")
-    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/csv/events_p1.csv")
-    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/csv/events_p2.csv")
-    && (inputTechnologyOrEventsOrPlayerAgeFilename != "import/csv/playerAge.csv")) {
+    (inputTechnologyOrEventsOrPlayerAgeFilename != directoryToWorkOffOf + "import/csv/technologies_p1.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != directoryToWorkOffOf + "import/csv/technologies_p2.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != directoryToWorkOffOf + "import/csv/events_p1.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != directoryToWorkOffOf + "import/csv/events_p2.csv")
+    && (inputTechnologyOrEventsOrPlayerAgeFilename != directoryToWorkOffOf + "import/csv/playerAge.csv")) {
     std::cout << "Error: Input filename supposed to be called "
                  "'import/[p1/p2]_technologies.csv', "
                  "'import/[p1/p2]_events.csv', or 'import/playerDetails.csv'"
@@ -543,7 +545,7 @@ std::string* fileImporter::playerNames(
   inputFile.open(inputPlayerNamesFilename);
 
   // Behaviour: Check that the filename is correct
-  if (inputPlayerNamesFilename != "import/csv/playerNames.csv") {
+  if (inputPlayerNamesFilename != directoryToWorkOffOf + "import/csv/playerNames.csv") {
     std::cout << "Error: Input filename supposed to be called "
                  "'import/playerNames.csv'"
               << "\n";

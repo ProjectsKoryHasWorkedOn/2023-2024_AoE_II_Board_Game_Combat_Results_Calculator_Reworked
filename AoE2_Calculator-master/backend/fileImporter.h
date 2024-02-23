@@ -15,8 +15,10 @@ public:
   // Object: A single common file object to store the input file
   std::ifstream inputFile;
 
+  std::string directoryToWorkOffOf;
+
   // Functions: The constructor and deconstructor
-  explicit fileImporter(Database* database);
+  explicit fileImporter(Database* database, std::string directoryWeAreWorkingIn);
   ~fileImporter();
 
   // Function: Check if a string is an integer

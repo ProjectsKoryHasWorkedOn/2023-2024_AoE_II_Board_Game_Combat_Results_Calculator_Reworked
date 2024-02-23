@@ -1157,6 +1157,7 @@ void MainWindow::on_calculateResultsButton_clicked()
   getAssistantEntityAnimationForSelectedAssistant(
     ui.player1BattleAssistantNames->currentText(), "2", "_attack");
 
+
   // Calculate the results of a battle
   runGame(
     m_database,
@@ -1169,7 +1170,8 @@ void MainWindow::on_calculateResultsButton_clicked()
       m_showFurtherInformationAboutTheBattleParticipantsInTheOutput},
     monkAttackingPromptAnswer,
     PlayerSelectionMemory{
-      m_p1VillagerMemory, m_p2VillagerMemory, m_p1FarmMemory, m_p2FarmMemory});
+      m_p1VillagerMemory, m_p2VillagerMemory, m_p1FarmMemory, m_p2FarmMemory},
+    workingDirectory.absolutePath().toStdString() + "/");
 
   updateDetatchedOutputWindow();
 }

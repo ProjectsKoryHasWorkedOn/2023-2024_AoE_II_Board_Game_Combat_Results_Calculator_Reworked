@@ -127,8 +127,10 @@ void runGame(
   int                               distanceBetweenTheBattleParticipants,
   EntityOutputConfig                entityOutputConfig,
   const QString&                    attackMonksQueryingMode,
-  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath)
+  PlayerSelectionMemory             resetMemoryOfPlayerSelectionOnDeath,
+  std::string directoryWeAreWorkingIn)
 {
+
   /** Simple declarations **/
   // Integer: The player numbers
   int player1 = 1, player2 = 2;
@@ -180,49 +182,49 @@ void runGame(
   Entity p2BattleAssistant;
 
   // Object: The file importing object
-  fileImporter importFile{database};
+  fileImporter importFile{database, directoryWeAreWorkingIn};
 
   /** Part 1: Getting basic information about the input entities **/
   // Behaviour: Load "entities.csv" and get information about the input entities
   // Player 1
   p1BattleParticipant
-    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player1, 0);
+    = importFile.entitiesFile(directoryWeAreWorkingIn + "import/csv/entities.csv", entitiesWords, player1, 0);
   p1BattleAssistant
-    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player1, 1);
+    = importFile.entitiesFile(directoryWeAreWorkingIn + "import/csv/entities.csv", entitiesWords, player1, 1);
 
   // Player 2
   p2BattleParticipant
-    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player2, 0);
+    = importFile.entitiesFile(directoryWeAreWorkingIn + "import/csv/entities.csv", entitiesWords, player2, 0);
   p2BattleAssistant
-    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player2, 1);
+    = importFile.entitiesFile(directoryWeAreWorkingIn + "import/csv/entities.csv", entitiesWords, player2, 1);
 
   // Behaviour: Load "technologies_[p1/p2].csv" and get information about the
   // active technologies Player 1
-  p1Technologies = importFile.aSplitColumnFile(
+  p1Technologies = importFile.aSplitColumnFile(directoryWeAreWorkingIn +
     "import/csv/technologies_p1.csv", technologiesRows);
   std::unique_ptr<int[]> p1TechUp(p1Technologies);
 
   // Player 2
-  p2Technologies = importFile.aSplitColumnFile(
+  p2Technologies = importFile.aSplitColumnFile(directoryWeAreWorkingIn +
     "import/csv/technologies_p2.csv", technologiesRows);
   std::unique_ptr<int[]> p2TechUp(p2Technologies);
 
   // Behaviour: Load "events_[p1/p2].csv" and get information about the active
   // events Player 1
-  p1Events = importFile.aSplitColumnFile("import/csv/events_p1.csv", eventsRows);
+  p1Events = importFile.aSplitColumnFile(directoryWeAreWorkingIn + "import/csv/events_p1.csv", eventsRows);
   std::unique_ptr<int[]> p1EventsUp(p1Events);
 
   // Player 2
-  p2Events = importFile.aSplitColumnFile("import/csv/events_p2.csv", eventsRows);
+  p2Events = importFile.aSplitColumnFile(directoryWeAreWorkingIn + "import/csv/events_p2.csv", eventsRows);
   std::unique_ptr<int[]> p2EventsUp(p2Events);
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
   playerAges
-    = importFile.aSplitColumnFile("import/csv/playerAge.csv", playerAgeRows);
+    = importFile.aSplitColumnFile(directoryWeAreWorkingIn + "import/csv/playerAge.csv", playerAgeRows);
   std::unique_ptr<int[]> playerAgeUp(playerAges);
 
-  playerNames = importFile.playerNames("import/csv/playerNames.csv", 2);
+  playerNames = importFile.playerNames(directoryWeAreWorkingIn + "import/csv/playerNames.csv", 2);
   std::unique_ptr<std::string[]> playerNamesUp(playerNames);
 
   // Behavior: Work out what the initial quantity values are
@@ -452,7 +454,7 @@ void runGame(
   // Make sure player has archers before even running the ranged round
   if (
     p1BattleParticipant.armorClass[0] == true
-    || p2BattleParticipant.armorClass[9] == true) { // Archer
+    || p2BattleParticipant.armorClass[0] == true) { // Archer
 
     // Proceed with archer round of combat so long as archers are not fighting
     // buildings Ranged damage applies only to units and villagers, not to
