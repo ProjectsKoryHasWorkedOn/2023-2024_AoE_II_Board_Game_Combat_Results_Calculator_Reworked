@@ -1450,6 +1450,7 @@ void archerRounds::calculatingArcherRoundOutcomeForAnIndividualPlayer(
   }
 
   // Event that allows archers to attack buildigns
+  // Explosive arrows
   if (givenPlayerEvents[41] == 1) {
     givenPlayerRangedUnitCanAttackOpposingPlayerBuilding = true;
   }

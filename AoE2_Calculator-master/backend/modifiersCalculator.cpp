@@ -327,6 +327,14 @@ void modifiersCalculator::applyEventCardEffects()
   // [40] Back From A Foreign Land (Teuton civ bonus: Conversion rate modifier
   // is -1) (done elsewhere)
 
+
+  // [42] Good winds
+  if(playerEvents[42] == 1){
+    if(applyEventCardModifiers.armorClass[12] == true){
+      applyEventCardModifiers.maximumRange += 1;
+    }
+  }
+
   // Behaviour: Update the Entity values
   if (playerNumber == 1) {
     p1BattleParticipant = applyEventCardModifiers;

@@ -44,7 +44,7 @@ void outputRemainingDamage(
 //    a real unit (not a building).
 
 // * CHANGE NUMBER OF EVENTS AND TECHNOLOGIES HERE
-extern const int technologiesRows = 19, eventsRows = 42, playerAgeRows = 2;
+extern const int technologiesRows = 19, eventsRows = 43, playerAgeRows = 2;
 
 static bool queryIfMonksShouldBeFought(const std::string& playerName)
 {
