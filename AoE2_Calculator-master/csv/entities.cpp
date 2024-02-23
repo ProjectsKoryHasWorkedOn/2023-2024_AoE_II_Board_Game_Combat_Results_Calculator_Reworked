@@ -9,12 +9,12 @@
 namespace {
 std::vector<CsvEntity> readEntities()
 {
-  QFile file{workingDirectory.absolutePath() + entitiesFilename};
+  QFile file{workingDirectory.absolutePath() + entitiesFilePath};
   if (!file.open(
         QIODeviceBase::ReadOnly | QIODeviceBase::Text,
         QFileDevice::ReadOther)) {
     throw std::runtime_error{
-      "Could not open \"" + entitiesFilename.toStdString() + "\""};
+      "Could not open \"" + entitiesFilePath.toStdString() + "\""};
   }
 
   QTextStream            stream{&file};
@@ -29,12 +29,12 @@ std::vector<CsvEntity> readEntities()
 
 void writeEntities(const std::vector<CsvEntity>& entities)
 {
-  QFile file{workingDirectory.absolutePath() + entitiesFilename};
+  QFile file{workingDirectory.absolutePath() + entitiesFilePath};
   if (!file.open(
         QIODeviceBase::WriteOnly | QIODeviceBase::Text,
         QFileDevice::WriteOther)) {
     throw std::runtime_error{
-      "Could not open \"" + entitiesFilename.toStdString() + "\""};
+      "Could not open \"" + entitiesFilePath.toStdString() + "\""};
   }
 
   QTextStream stream{&file};

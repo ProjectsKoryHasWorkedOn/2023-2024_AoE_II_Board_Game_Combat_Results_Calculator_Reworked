@@ -9,12 +9,12 @@
 namespace {
 std::vector<CsvPlayerMedievalAge> readMedievalAges()
 {
-  QFile file{workingDirectory.absolutePath() + playerMedievalAgesFilename};
+  QFile file{workingDirectory.absolutePath() + playerMedievalAgesFilePath};
   if (!file.open(
         QIODeviceBase::ReadOnly | QIODeviceBase::Text,
         QFileDevice::ReadOther)) {
     throw std::runtime_error{
-      "Could not open \"" + playerMedievalAgesFilename.toStdString() + "\""};
+      "Could not open \"" + playerMedievalAgesFilePath.toStdString() + "\""};
   }
 
   QTextStream                       stream{&file};
@@ -30,12 +30,12 @@ std::vector<CsvPlayerMedievalAge> readMedievalAges()
 void writeMedievalAges(
   const std::vector<CsvPlayerMedievalAge>& playerMedievalAges)
 {
-  QFile file{workingDirectory.absolutePath() + playerMedievalAgesFilename};
+  QFile file{workingDirectory.absolutePath() + playerMedievalAgesFilePath};
   if (!file.open(
         QIODeviceBase::WriteOnly | QIODeviceBase::Text,
         QFileDevice::WriteOther)) {
     throw std::runtime_error{
-      "Could not open \"" + playerMedievalAgesFilename.toStdString() + "\""};
+      "Could not open \"" + playerMedievalAgesFilePath.toStdString() + "\""};
   }
 
   QTextStream stream{&file};

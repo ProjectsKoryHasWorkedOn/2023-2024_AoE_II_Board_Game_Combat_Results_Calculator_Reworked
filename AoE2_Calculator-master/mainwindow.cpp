@@ -177,68 +177,69 @@ static bool isBuilding(const QString& entity)
          || (entity.contains("WATCH_TOWER")) || (entity.contains("FARM"));
 }
 
-QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(
+
+QString MainWindow::returnTechnologyFilePathThatMatchesTechnologyName(
   QString technologyName)
 {
   if (technologyName == "Blast Furnace") {
-    return tBlastFurnaceIconFilename;
+    return tBlastFurnaceIconFilePath;
   }
   else if (technologyName == "Bloodlines") {
-    return tBloodlinesIconFilename;
+    return tBloodlinesIconFilePath;
   }
   else if (technologyName == "Bodkin Arrow") {
-    return tBodkinArrowIconFilename;
+    return tBodkinArrowIconFilePath;
   }
   else if (technologyName == "Chain Barding Armor") {
-    return tChainBardingArmorIconFilename;
+    return tChainBardingArmorIconFilePath;
   }
   else if (technologyName == "Chain Mail Armor") {
-    return tChainMailArmorIconFilename;
+    return tChainMailArmorIconFilePath;
   }
   else if (technologyName == "Fletching") {
-    return tFletchingIconFilename;
+    return tFletchingIconFilePath;
   }
   else if (technologyName == "Forging") {
-    return tForgingIconFilename;
+    return tForgingIconFilePath;
   }
   else if (technologyName == "Hoardings") {
-    return tHoardingsIconFilename;
+    return tHoardingsIconFilePath;
   }
   else if (technologyName == "Iron Casting") {
-    return tIronCastingIconFilename;
+    return tIronCastingIconFilePath;
   }
   else if (technologyName == "Leather Archer Armor") {
-    return tLeatherArcherArmorIconFilename;
+    return tLeatherArcherArmorIconFilePath;
   }
   else if (technologyName == "Loom") {
-    return tLoomIconFilename;
+    return tLoomIconFilePath;
   }
   else if (technologyName == "Padded Archer Armor") {
-    return tPaddedArcherArmorIconFilename;
+    return tPaddedArcherArmorIconFilePath;
   }
   else if (technologyName == "Redemption {2E}") {
-    return tRedemptionIconFilename;
+    return tRedemptionIconFilePath;
   }
   else if (technologyName == "Sanctity {2E}") {
-    return tSanctityIconFilename;
+    return tSanctityIconFilePath;
   }
   else if (technologyName == "Scale Barding Armor") {
-    return tScaleBardingArmorIconFilename;
+    return tScaleBardingArmorIconFilePath;
   }
   else if (technologyName == "Scale Mail Armor") {
-    return tScaleMailArmorIconFilename;
+    return tScaleMailArmorIconFilePath;
   }
   else if (technologyName == "Bracer") {
-    return tBracerIconFilename;
+    return tBracerIconFilePath;
   }
   else if (technologyName == "Plate Barding Armor") {
-    return tPlateBardingArmorIconFilename;
+    return tPlateBardingArmorIconFilePath;
   }
   else if (technologyName == "Plate Mail Armor") {
-    return tPlateMailArmorIconFilename;
+    return tPlateMailArmorIconFilePath;
   }
   else if (technologyName == "Ring Archer Armor") {
-    return tRingArcherArmorIconFilename;
+    return tRingArcherArmorIconFilePath;
   }
   else {
     qDebug() << "Could not find: " << technologyName;
@@ -246,197 +247,197 @@ QString MainWindow::returnTechnologyFileNameThatMatchesTechnologyName(
   }
 }
 
-void MainWindow::linkUnitNamesToFileNamesMap()
+void MainWindow::linkUnitNamesToFilePathsMap()
 {
-  unitNameToUnitFileNameMap.insert("Arambai", uArambaiIconFilename);
-  unitNameToUnitFileNameMap.insert("Arbalest", uArbalestIconFilename);
-  unitNameToUnitFileNameMap.insert("Archer", uArcherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Armored Elephant", uArmoredElephantIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Ballista Elephant", uBallistaElephantIconFilename);
-  unitNameToUnitFileNameMap.insert("Battering Ram", uBatteringRamIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Battle Elephant", uBattleElephantIconFilename);
-  unitNameToUnitFileNameMap.insert("Berserk", uBerserkIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Bombard Cannon", uBombardCannonIconFilename);
-  unitNameToUnitFileNameMap.insert("Boyar", uBoyarIconFilename);
-  unitNameToUnitFileNameMap.insert("Camel Archer", uCamelArcherIconFilename);
-  unitNameToUnitFileNameMap.insert("Camel Rider", uCamelRiderIconFilename);
-  unitNameToUnitFileNameMap.insert("Camel Scout", uCamelScoutIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Cannon Galleon", uCannonGalleonIconFilename);
-  unitNameToUnitFileNameMap.insert("Capped Ram", uCappedRamIconFilename);
-  unitNameToUnitFileNameMap.insert("Caravel", uCaravelIconFilename);
-  unitNameToUnitFileNameMap.insert("Cataphract", uCataphractIconFilename);
-  unitNameToUnitFileNameMap.insert("Cavalier", uCavalierIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Cavalry Archer", uCavalryArcherIconFilename);
-  unitNameToUnitFileNameMap.insert("Centurion", uCenturionIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Chakram Thrower", uChakramThrowerIconFilename);
-  unitNameToUnitFileNameMap.insert("Champion", uChampionIconFilename);
-  unitNameToUnitFileNameMap.insert("Chu Ko Nu", uChuKoNuIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Composite Bowman", uCompositeBowmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Condottiero", uCondottieroIconFilename);
-  unitNameToUnitFileNameMap.insert("Conquistador", uConquistadorIconFilename);
-  unitNameToUnitFileNameMap.insert("Coustillier", uCoustillierIconFilename);
-  unitNameToUnitFileNameMap.insert("Crossbowman", uCrossbowmanIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Demolition Raft", uDemolitionRaftIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Demolition Ship", uDemolitionShipIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Dismounted Konnik", uDismountedKonnikIconFilename);
-  unitNameToUnitFileNameMap.insert("Dromon", uDromonIconFilename);
-  unitNameToUnitFileNameMap.insert("Eagle Scout", uEagleScoutIconFilename);
-  unitNameToUnitFileNameMap.insert("Eagle Warrior", uEagleWarriorIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elephant Archer", uElephantArcherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Battle Elephant", uEliteBattleElephantIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Cannon Galleon", uEliteCannonGalleonIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Eagle Warrior", uEliteEagleWarriorIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Elephant Archer", uEliteElephantArcherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Skirmisher", uEliteSkirmisherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Elite Steppe Lancer", uEliteSteppeLancerIconFilename);
-  unitNameToUnitFileNameMap.insert("Fast Fire Ship", uFastFireShipIconFilename);
-  unitNameToUnitFileNameMap.insert("Fire Galley", uFireGalleyIconFilename);
-  unitNameToUnitFileNameMap.insert("Fire Ship", uFireShipIconFilename);
-  unitNameToUnitFileNameMap.insert("Fishing Ship", uFishingShipIconFilename);
-  unitNameToUnitFileNameMap.insert("Flaming Camel", uFlamingCamelIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Flemish Militia", uFlemishMilitiaIconFilename);
-  unitNameToUnitFileNameMap.insert("Galleon", uGalleonIconFilename);
-  unitNameToUnitFileNameMap.insert("Galley", uGalleyIconFilename);
-  unitNameToUnitFileNameMap.insert("Gbeto", uGbetoIconFilename);
-  unitNameToUnitFileNameMap.insert("Genitour", uGenitourIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Genoese Crossbowman", uGenoeseCrossbowmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Ghulam", uGhulamIconFilename);
-  unitNameToUnitFileNameMap.insert("Halbedier", uHalbedierIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Hand Cannoneer", uHandCannoneerIconFilename);
-  unitNameToUnitFileNameMap.insert("Heavy Camel", uHeavyCamelRiderIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Heavy Cavalry Archer", uHeavyCavalryArcherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Heavy Demolition Ship", uHeavyDemolitionShipIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Heavy Scorpion", uHeavyScorpionIconFilename);
-  unitNameToUnitFileNameMap.insert("Houfnice", uHoufniceIconFilename);
-  unitNameToUnitFileNameMap.insert("Huskarl", uHuskarlIconFilename);
-  unitNameToUnitFileNameMap.insert("Hussar", uHussarIconFilename);
-  unitNameToUnitFileNameMap.insert("Hussite Wagon", uHussiteWagonIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Imperial Camel Rider", uImperialCamelRiderIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Imperial Skirmisher", uImperialSkirmisherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Jaguar Warrior", uJaguarWarriorIconFilename);
-  unitNameToUnitFileNameMap.insert("Janissary", uJanissaryIconFilename);
-  unitNameToUnitFileNameMap.insert("Kamayuk", uKamayukIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Karambit Warrior", uKarambitWarriorIconFilename);
-  unitNameToUnitFileNameMap.insert("Keshik", uKeshikIconFilename);
-  unitNameToUnitFileNameMap.insert("Kipchak", uKipchakIconFilename);
-  unitNameToUnitFileNameMap.insert("Knight", uKnightIconFilename);
-  unitNameToUnitFileNameMap.insert("Konnik", uKonnikIconFilename);
-  unitNameToUnitFileNameMap.insert("Legionary", uLegionaryIconFilename);
-  unitNameToUnitFileNameMap.insert("Leitis", uLeitisIconFilename);
-  unitNameToUnitFileNameMap.insert("Light Cavalry", uLightCavalryIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Long Swordsman", uLongSwordsmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Longboat", uLongboatIconFilename);
-  unitNameToUnitFileNameMap.insert("Longbowman", uLongbowmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Magyar Huszar", uMagyarHuszarIconFilename);
-  unitNameToUnitFileNameMap.insert("Mameluke", uMamelukeIconFilename);
-  unitNameToUnitFileNameMap.insert("Man-at-Arms", uManAtArmsIconFilename);
-  unitNameToUnitFileNameMap.insert("Mangonel", uMangonelIconFilename);
-  unitNameToUnitFileNameMap.insert("Mangudai", uMangudaiIconFilename);
-  unitNameToUnitFileNameMap.insert("Militia", uMilitiaIconFilename);
-  unitNameToUnitFileNameMap.insert("Missionary", uMissionaryIconFilename);
-  unitNameToUnitFileNameMap.insert("Monaspa", uMonaspaIconFilename);
-  unitNameToUnitFileNameMap.insert("Monk", uMonkIconFilename);
-  unitNameToUnitFileNameMap.insert("Obuch", uObuchIconFilename);
-  unitNameToUnitFileNameMap.insert("Onager", uOnagerIconFilename);
-  unitNameToUnitFileNameMap.insert("Organ Gun", uOrganGunIconFilename);
-  unitNameToUnitFileNameMap.insert("Paladin", uPaladinIconFilename);
-  unitNameToUnitFileNameMap.insert("Petard", uPetardIconFilename);
-  unitNameToUnitFileNameMap.insert("Pikeman", uPikemanIconFilename);
-  unitNameToUnitFileNameMap.insert("Plumed Archer", uPlumedArcherIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Ratha Melee Mode", uRathaMeleeModeIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Ratha Ranged Mode", uRathaRangedModeIconFilename);
-  unitNameToUnitFileNameMap.insert("Rattan Archer", uRattanArcherIconFilename);
-  unitNameToUnitFileNameMap.insert("Samurai", uSamuraiIconFilename);
-  unitNameToUnitFileNameMap.insert("Savar", uSavarIconFilename);
-  unitNameToUnitFileNameMap.insert("Scorpion", uScorpionIconFilename);
-  unitNameToUnitFileNameMap.insert("Scout Cavalry", uScoutCavalryIconFilename);
-  unitNameToUnitFileNameMap.insert("Serjeant", uSerjeantIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Shotel Warrior", uShotelWarriorIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Shivamsha Rider", uShivamshaRiderIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Siege Elephant", uSiegeElephantIconFilename);
-  unitNameToUnitFileNameMap.insert("Siege Onager", uSiegeOnagerIconFilename);
-  unitNameToUnitFileNameMap.insert("Siege Ram", uSiegeRamIconFilename);
-  unitNameToUnitFileNameMap.insert("Siege Tower", uSiegeTowerIconFilename);
-  unitNameToUnitFileNameMap.insert("Skirmisher", uSkirmisherIconFilename);
-  unitNameToUnitFileNameMap.insert("Slinger", uSlingerIconFilename);
-  unitNameToUnitFileNameMap.insert("Spearman", uSpearmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Steppe Lancer", uSteppeLancerIconFilename);
-  unitNameToUnitFileNameMap.insert("Tarkan", uTarkanIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Teutonic Knight", uTeutonicKnightIconFilename);
-  unitNameToUnitFileNameMap.insert("Thirisadai", uThirisadaiIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Throwing Axeman", uThrowingAxemanIconFilename);
-  unitNameToUnitFileNameMap.insert("Trade Cart", uTradeCartIconFilename);
-  unitNameToUnitFileNameMap.insert("Trade Cog", uTradeCogIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Transport Ship", uTransportShipIconFilename);
-  unitNameToUnitFileNameMap.insert("Trebuchet", uTrebuchetUnpackedIconFilename);
-  // unitNameToUnitFileNameMap.insert("Trebuchet Packed",
-  // uTrebuchetPackedIconFilename);
-  unitNameToUnitFileNameMap.insert("Turtle Ship", uTurtleShipIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Two-handed Swordsman", uTwoHandedSwordsmanIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Urumi Swordsman", uUrumiSwordsmanIconFilename);
-  unitNameToUnitFileNameMap.insert("Villager", uFemaleVillagerIconFilename);
-  // unitNameToUnitFileNameMap.insert("Villager Male",
-  // uMaleVillagerIconFilename);
+  unitNameToUnitFilePathMap.insert("Arambai", uArambaiIconFilePath);
+  unitNameToUnitFilePathMap.insert("Arbalest", uArbalestIconFilePath);
+  unitNameToUnitFilePathMap.insert("Archer", uArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Armored Elephant", uArmoredElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Ballista Elephant", uBallistaElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert("Battering Ram", uBatteringRamIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Battle Elephant", uBattleElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert("Berserk", uBerserkIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Bombard Cannon", uBombardCannonIconFilePath);
+  unitNameToUnitFilePathMap.insert("Boyar", uBoyarIconFilePath);
+  unitNameToUnitFilePathMap.insert("Camel Archer", uCamelArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert("Camel Rider", uCamelRiderIconFilePath);
+  unitNameToUnitFilePathMap.insert("Camel Scout", uCamelScoutIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Cannon Galleon", uCannonGalleonIconFilePath);
+  unitNameToUnitFilePathMap.insert("Capped Ram", uCappedRamIconFilePath);
+  unitNameToUnitFilePathMap.insert("Caravel", uCaravelIconFilePath);
+  unitNameToUnitFilePathMap.insert("Cataphract", uCataphractIconFilePath);
+  unitNameToUnitFilePathMap.insert("Cavalier", uCavalierIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Cavalry Archer", uCavalryArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert("Centurion", uCenturionIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Chakram Thrower", uChakramThrowerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Champion", uChampionIconFilePath);
+  unitNameToUnitFilePathMap.insert("Chu Ko Nu", uChuKoNuIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Composite Bowman", uCompositeBowmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Condottiero", uCondottieroIconFilePath);
+  unitNameToUnitFilePathMap.insert("Conquistador", uConquistadorIconFilePath);
+  unitNameToUnitFilePathMap.insert("Coustillier", uCoustillierIconFilePath);
+  unitNameToUnitFilePathMap.insert("Crossbowman", uCrossbowmanIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Demolition Raft", uDemolitionRaftIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Demolition Ship", uDemolitionShipIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Dismounted Konnik", uDismountedKonnikIconFilePath);
+  unitNameToUnitFilePathMap.insert("Dromon", uDromonIconFilePath);
+  unitNameToUnitFilePathMap.insert("Eagle Scout", uEagleScoutIconFilePath);
+  unitNameToUnitFilePathMap.insert("Eagle Warrior", uEagleWarriorIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elephant Archer", uElephantArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Battle Elephant", uEliteBattleElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Cannon Galleon", uEliteCannonGalleonIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Eagle Warrior", uEliteEagleWarriorIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Elephant Archer", uEliteElephantArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Skirmisher", uEliteSkirmisherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Elite Steppe Lancer", uEliteSteppeLancerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Fast Fire Ship", uFastFireShipIconFilePath);
+  unitNameToUnitFilePathMap.insert("Fire Galley", uFireGalleyIconFilePath);
+  unitNameToUnitFilePathMap.insert("Fire Ship", uFireShipIconFilePath);
+  unitNameToUnitFilePathMap.insert("Fishing Ship", uFishingShipIconFilePath);
+  unitNameToUnitFilePathMap.insert("Flaming Camel", uFlamingCamelIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Flemish Militia", uFlemishMilitiaIconFilePath);
+  unitNameToUnitFilePathMap.insert("Galleon", uGalleonIconFilePath);
+  unitNameToUnitFilePathMap.insert("Galley", uGalleyIconFilePath);
+  unitNameToUnitFilePathMap.insert("Gbeto", uGbetoIconFilePath);
+  unitNameToUnitFilePathMap.insert("Genitour", uGenitourIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Genoese Crossbowman", uGenoeseCrossbowmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Ghulam", uGhulamIconFilePath);
+  unitNameToUnitFilePathMap.insert("Halbedier", uHalbedierIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Hand Cannoneer", uHandCannoneerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Heavy Camel", uHeavyCamelRiderIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Heavy Cavalry Archer", uHeavyCavalryArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Heavy Demolition Ship", uHeavyDemolitionShipIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Heavy Scorpion", uHeavyScorpionIconFilePath);
+  unitNameToUnitFilePathMap.insert("Houfnice", uHoufniceIconFilePath);
+  unitNameToUnitFilePathMap.insert("Huskarl", uHuskarlIconFilePath);
+  unitNameToUnitFilePathMap.insert("Hussar", uHussarIconFilePath);
+  unitNameToUnitFilePathMap.insert("Hussite Wagon", uHussiteWagonIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Imperial Camel Rider", uImperialCamelRiderIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Imperial Skirmisher", uImperialSkirmisherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Jaguar Warrior", uJaguarWarriorIconFilePath);
+  unitNameToUnitFilePathMap.insert("Janissary", uJanissaryIconFilePath);
+  unitNameToUnitFilePathMap.insert("Kamayuk", uKamayukIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Karambit Warrior", uKarambitWarriorIconFilePath);
+  unitNameToUnitFilePathMap.insert("Keshik", uKeshikIconFilePath);
+  unitNameToUnitFilePathMap.insert("Kipchak", uKipchakIconFilePath);
+  unitNameToUnitFilePathMap.insert("Knight", uKnightIconFilePath);
+  unitNameToUnitFilePathMap.insert("Konnik", uKonnikIconFilePath);
+  unitNameToUnitFilePathMap.insert("Legionary", uLegionaryIconFilePath);
+  unitNameToUnitFilePathMap.insert("Leitis", uLeitisIconFilePath);
+  unitNameToUnitFilePathMap.insert("Light Cavalry", uLightCavalryIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Long Swordsman", uLongSwordsmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Longboat", uLongboatIconFilePath);
+  unitNameToUnitFilePathMap.insert("Longbowman", uLongbowmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Magyar Huszar", uMagyarHuszarIconFilePath);
+  unitNameToUnitFilePathMap.insert("Mameluke", uMamelukeIconFilePath);
+  unitNameToUnitFilePathMap.insert("Man-at-Arms", uManAtArmsIconFilePath);
+  unitNameToUnitFilePathMap.insert("Mangonel", uMangonelIconFilePath);
+  unitNameToUnitFilePathMap.insert("Mangudai", uMangudaiIconFilePath);
+  unitNameToUnitFilePathMap.insert("Militia", uMilitiaIconFilePath);
+  unitNameToUnitFilePathMap.insert("Missionary", uMissionaryIconFilePath);
+  unitNameToUnitFilePathMap.insert("Monaspa", uMonaspaIconFilePath);
+  unitNameToUnitFilePathMap.insert("Monk", uMonkIconFilePath);
+  unitNameToUnitFilePathMap.insert("Obuch", uObuchIconFilePath);
+  unitNameToUnitFilePathMap.insert("Onager", uOnagerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Organ Gun", uOrganGunIconFilePath);
+  unitNameToUnitFilePathMap.insert("Paladin", uPaladinIconFilePath);
+  unitNameToUnitFilePathMap.insert("Petard", uPetardIconFilePath);
+  unitNameToUnitFilePathMap.insert("Pikeman", uPikemanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Plumed Archer", uPlumedArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Ratha Melee Mode", uRathaMeleeModeIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Ratha Ranged Mode", uRathaRangedModeIconFilePath);
+  unitNameToUnitFilePathMap.insert("Rattan Archer", uRattanArcherIconFilePath);
+  unitNameToUnitFilePathMap.insert("Samurai", uSamuraiIconFilePath);
+  unitNameToUnitFilePathMap.insert("Savar", uSavarIconFilePath);
+  unitNameToUnitFilePathMap.insert("Scorpion", uScorpionIconFilePath);
+  unitNameToUnitFilePathMap.insert("Scout Cavalry", uScoutCavalryIconFilePath);
+  unitNameToUnitFilePathMap.insert("Serjeant", uSerjeantIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Shotel Warrior", uShotelWarriorIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Shivamsha Rider", uShivamshaRiderIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Siege Elephant", uSiegeElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert("Siege Onager", uSiegeOnagerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Siege Ram", uSiegeRamIconFilePath);
+  unitNameToUnitFilePathMap.insert("Siege Tower", uSiegeTowerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Skirmisher", uSkirmisherIconFilePath);
+  unitNameToUnitFilePathMap.insert("Slinger", uSlingerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Spearman", uSpearmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Steppe Lancer", uSteppeLancerIconFilePath);
+  unitNameToUnitFilePathMap.insert("Tarkan", uTarkanIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Teutonic Knight", uTeutonicKnightIconFilePath);
+  unitNameToUnitFilePathMap.insert("Thirisadai", uThirisadaiIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Throwing Axeman", uThrowingAxemanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Trade Cart", uTradeCartIconFilePath);
+  unitNameToUnitFilePathMap.insert("Trade Cog", uTradeCogIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Transport Ship", uTransportShipIconFilePath);
+  unitNameToUnitFilePathMap.insert("Trebuchet", uTrebuchetUnpackedIconFilePath);
+  // unitNameToUnitFilePathMap.insert("Trebuchet Packed",
+  // uTrebuchetPackedIconFilePath);
+  unitNameToUnitFilePathMap.insert("Turtle Ship", uTurtleShipIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Two-handed Swordsman", uTwoHandedSwordsmanIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Urumi Swordsman", uUrumiSwordsmanIconFilePath);
+  unitNameToUnitFilePathMap.insert("Villager", uFemaleVillagerIconFilePath);
+  // unitNameToUnitFilePathMap.insert("Villager Male",
+  // uMaleVillagerIconFilePath);
   // // @kory todo make this in sync with anim
-  unitNameToUnitFileNameMap.insert("War Elephant", uWarElephantIconFilename);
-  unitNameToUnitFileNameMap.insert("War Galley", uWarGalleyIconFilename);
-  unitNameToUnitFileNameMap.insert("War Wagon", uWarWagonIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Warrior Priest", uWarriorPriestIconFilename);
-  unitNameToUnitFileNameMap.insert("Winged Hussar", uWingedHussarIconFilename);
-  unitNameToUnitFileNameMap.insert("Woad Raider", uWoadRaiderIconFilename);
-  unitNameToUnitFileNameMap.insert(
-    "Xolotl Warrior", uXolotlWarriorIconFilename);
+  unitNameToUnitFilePathMap.insert("War Elephant", uWarElephantIconFilePath);
+  unitNameToUnitFilePathMap.insert("War Galley", uWarGalleyIconFilePath);
+  unitNameToUnitFilePathMap.insert("War Wagon", uWarWagonIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Warrior Priest", uWarriorPriestIconFilePath);
+  unitNameToUnitFilePathMap.insert("Winged Hussar", uWingedHussarIconFilePath);
+  unitNameToUnitFilePathMap.insert("Woad Raider", uWoadRaiderIconFilePath);
+  unitNameToUnitFilePathMap.insert(
+    "Xolotl Warrior", uXolotlWarriorIconFilePath);
 }
 
-QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName)
+QString MainWindow::returnUnitFilePathThatMatchesUnitName(QString unitName)
 {
   QString unbracketedUnitName
     = unitName.remove(removeBracketedTextExpressionNoUnderscore);
-  QString returnFileName = "";
+  QString returnFilePath = "";
 
-  if (unitNameToUnitFileNameMap.contains(unbracketedUnitName)) {
-    returnFileName = unitNameToUnitFileNameMap.value(unbracketedUnitName);
-    return returnFileName;
+  if (unitNameToUnitFilePathMap.contains(unbracketedUnitName)) {
+    returnFilePath = unitNameToUnitFilePathMap.value(unbracketedUnitName);
+    return returnFilePath;
   }
   else { // Get the non-elite version of the unit if the elite version of it is
          // not found
@@ -444,11 +445,11 @@ QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName)
       QString unbracketedUnitNameWithEliteRemoved
         = unbracketedUnitName.remove(0, 6);
 
-      if (unitNameToUnitFileNameMap.contains(
+      if (unitNameToUnitFilePathMap.contains(
             unbracketedUnitNameWithEliteRemoved)) {
-        returnFileName = unitNameToUnitFileNameMap.value(
+        returnFilePath = unitNameToUnitFilePathMap.value(
           unbracketedUnitNameWithEliteRemoved);
-        return returnFileName;
+        return returnFilePath;
       }
       else {
         qDebug() << "Could not find: " << unitName;
@@ -462,116 +463,116 @@ QString MainWindow::returnUnitFileNameThatMatchesUnitName(QString unitName)
   }
 }
 
-QString MainWindow::returnBuildingFileNameThatMatchesBuildingName(
+QString MainWindow::returnBuildingFilePathThatMatchesBuildingName(
   QString buildingName)
 {
   if (buildingName.startsWith("Archery Range", Qt::CaseSensitive)) {
-    return bArcheryRangeIconFilename;
+    return bArcheryRangeIconFilePath;
   }
   else if (buildingName.startsWith("Barracks", Qt::CaseSensitive)) {
-    return bBarracksIconFilename;
+    return bBarracksIconFilePath;
   }
   else if (buildingName.startsWith("Blacksmith", Qt::CaseSensitive)) {
-    return bBlacksmithIconFilename;
+    return bBlacksmithIconFilePath;
   }
   else if (buildingName.startsWith("Bombard Tower", Qt::CaseSensitive)) {
-    return bBombardTowerIconFilename;
+    return bBombardTowerIconFilePath;
   }
   else if (buildingName.startsWith("Caravanserai", Qt::CaseSensitive)) {
-    return bCaravanseraiIconFilename;
+    return bCaravanseraiIconFilePath;
   }
   else if (buildingName.startsWith("Castle", Qt::CaseSensitive)) {
-    return bCastleIconFilename;
+    return bCastleIconFilePath;
   }
   else if (buildingName.startsWith("Dock", Qt::CaseSensitive)) {
-    return bDockIconFilename;
+    return bDockIconFilePath;
   }
   else if (buildingName.startsWith("Donjon", Qt::CaseSensitive)) {
-    return bDonjonIconFilename;
+    return bDonjonIconFilePath;
   }
   else if (buildingName.startsWith("Farm", Qt::CaseSensitive)) {
-    return bFarmIconFilename;
+    return bFarmIconFilePath;
   }
   else if (buildingName.startsWith("Feitoria", Qt::CaseSensitive)) {
-    return bFeitoriaIconFilename;
+    return bFeitoriaIconFilePath;
   }
   else if (buildingName.startsWith("Fish Trap", Qt::CaseSensitive)) {
-    return bFishTrapIconFilename;
+    return bFishTrapIconFilePath;
   }
   else if (buildingName.startsWith("Folwark", Qt::CaseSensitive)) {
-    return bFolwarkIconFilename;
+    return bFolwarkIconFilePath;
   }
   else if (buildingName.startsWith("Fortified Church", Qt::CaseSensitive)) {
-    return bFortifiedChurchIconFilename;
+    return bFortifiedChurchIconFilePath;
   }
   else if (buildingName.startsWith("Guard Tower", Qt::CaseSensitive)) {
-    return bGuardTowerIconFilename;
+    return bGuardTowerIconFilePath;
   }
   else if (buildingName.startsWith("Harbor", Qt::CaseSensitive)) {
-    return bHarborIconFilename;
+    return bHarborIconFilePath;
   }
   else if (buildingName.startsWith("House", Qt::CaseSensitive)) {
-    return bHouseIconFilename;
+    return bHouseIconFilePath;
   }
   else if (buildingName.startsWith("Keep", Qt::CaseSensitive)) {
-    return bKeepIconFilename;
+    return bKeepIconFilePath;
   }
   else if (buildingName.startsWith("Krepost", Qt::CaseSensitive)) {
-    return bKrepostIconFilename;
+    return bKrepostIconFilePath;
   }
   else if (buildingName.startsWith("Lumber Camp", Qt::CaseSensitive)) {
-    return bLumberCampIconFilename;
+    return bLumberCampIconFilePath;
   }
   else if (buildingName.startsWith("Market", Qt::CaseSensitive)) {
-    return bMarketIconFilename;
+    return bMarketIconFilePath;
   }
   else if (buildingName.startsWith("Mill", Qt::CaseSensitive)) {
-    return bMillIconFilename;
+    return bMillIconFilePath;
   }
   else if (
     buildingName.startsWith("Gold Mine", Qt::CaseSensitive)
     || buildingName.startsWith("Stone Mine", Qt::CaseSensitive)) {
-    return bMiningCampIconFilename;
+    return bMiningCampIconFilePath;
   }
   else if (buildingName.startsWith("Monastery", Qt::CaseSensitive)) {
-    return bMonasteryIconFilename;
+    return bMonasteryIconFilePath;
   }
   else if (buildingName.startsWith("Mule Cart", Qt::CaseSensitive)) {
-    return bMuleCartIconFilename;
+    return bMuleCartIconFilePath;
   }
   else if (buildingName.startsWith("Outpost", Qt::CaseSensitive)) {
-    return bOutpostIconFilename;
+    return bOutpostIconFilePath;
   }
   else if (buildingName.startsWith("Palisade Gate", Qt::CaseSensitive)) {
-    return bPalisadeGateIconFilename;
+    return bPalisadeGateIconFilePath;
   }
   else if (buildingName.startsWith("Palisade Wall", Qt::CaseSensitive)) {
-    return bPalisadeWallIconFilename;
+    return bPalisadeWallIconFilePath;
   }
   else if (buildingName.startsWith("Siege Workshop", Qt::CaseSensitive)) {
-    return bSiegeWorkshopIconFilename;
+    return bSiegeWorkshopIconFilePath;
   }
   else if (buildingName.startsWith("Stable", Qt::CaseSensitive)) {
-    return bStableIconFilename;
+    return bStableIconFilePath;
   }
   else if (
     buildingName.startsWith("Stone Gate", Qt::CaseSensitive)
     || buildingName.startsWith("Fortified Gate", Qt::CaseSensitive)) {
-    return bStoneGateIconFilename;
+    return bStoneGateIconFilePath;
   }
   else if (
     buildingName.startsWith("Stone Wall", Qt::CaseSensitive)
     || buildingName.startsWith("Fortified Wall", Qt::CaseSensitive)) {
-    return bStoneWallIconFilename;
+    return bStoneWallIconFilePath;
   }
   else if (buildingName.startsWith("Town Center", Qt::CaseSensitive)) {
-    return bTownCenterIconFilename;
+    return bTownCenterIconFilePath;
   }
   else if (buildingName.startsWith("University", Qt::CaseSensitive)) {
-    return bUniversityIconFilename;
+    return bUniversityIconFilePath;
   }
   else if (buildingName.startsWith("Watch Tower", Qt::CaseSensitive)) {
-    return bWatchTowerIconFilename;
+    return bWatchTowerIconFilePath;
   }
   else if (
     buildingName == "Charlamagne's Palace At Aix La'Chapelle (Briton)"
@@ -583,7 +584,7 @@ QString MainWindow::returnBuildingFileNameThatMatchesBuildingName(
     || buildingName == "Stave Church At Urnes (Viking)"
     || buildingName == "The Great Temple At Nara (Japanese)"
     || buildingName == "The Great Mosque at Samarra (Saracen)") {
-    return bWonderIconFilename;
+    return bWonderIconFilePath;
   }
   else {
     qDebug() << "Could not find: " << buildingName;
@@ -638,7 +639,7 @@ MainWindow::MainWindow(
     &MainWindow::on_calculateResultsButton_clicked);
 
   // Populate this
-  linkUnitNamesToFileNamesMap();
+  linkUnitNamesToFilePathsMap();
 
   // Indicate that there's a hotkey for this in the tooltip
   ui.calculateResultsButton->setToolTip("<b>Hotkey:</b> R");
@@ -703,7 +704,7 @@ MainWindow::MainWindow(
     QListWidgetItem* buildingPlayer2 = new QListWidgetItem(buildingNames[b]);
 
     QString buildingIconFileNamePlayer1
-      = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer1->text());
+      = returnBuildingFilePathThatMatchesBuildingName(buildingPlayer1->text());
 
     QIcon buildingIconPlayer1(
       (workingDirectory.absolutePath() + buildingIconFileNamePlayer1));
@@ -711,7 +712,7 @@ MainWindow::MainWindow(
     buildingPlayer1->setIcon(buildingIconPlayer1);
 
     QString buildingIconFileNamePlayer2
-      = returnBuildingFileNameThatMatchesBuildingName(buildingPlayer2->text());
+      = returnBuildingFilePathThatMatchesBuildingName(buildingPlayer2->text());
 
     QIcon buildingIconPlayer2(
       (workingDirectory.absolutePath() + buildingIconFileNamePlayer2));
@@ -727,7 +728,7 @@ MainWindow::MainWindow(
     QListWidgetItem* unitPlayer2 = new QListWidgetItem(unitNames[u]);
 
     QString unitIconFileNamePlayer1
-      = returnUnitFileNameThatMatchesUnitName(unitPlayer1->text());
+      = returnUnitFilePathThatMatchesUnitName(unitPlayer1->text());
 
     QIcon unitIconPlayer1(
       (workingDirectory.absolutePath() + unitIconFileNamePlayer1));
@@ -735,7 +736,7 @@ MainWindow::MainWindow(
     unitPlayer1->setIcon(unitIconPlayer1);
 
     QString unitIconFileNamePlayer2
-      = returnUnitFileNameThatMatchesUnitName(unitPlayer2->text());
+      = returnUnitFilePathThatMatchesUnitName(unitPlayer2->text());
 
     QIcon unitIconPlayer2(
       (workingDirectory.absolutePath() + unitIconFileNamePlayer2));
@@ -772,7 +773,7 @@ MainWindow::MainWindow(
         : Qt::Unchecked);
 
     QString technologyIconFileNamePlayer1
-      = returnTechnologyFileNameThatMatchesTechnologyName(
+      = returnTechnologyFilePathThatMatchesTechnologyName(
         technologyPlayer1->text());
 
     QIcon technologyIconPlayer1(
@@ -781,7 +782,7 @@ MainWindow::MainWindow(
     technologyPlayer1->setIcon(technologyIconPlayer1);
 
     QString technologyIconFileNamePlayer2
-      = returnTechnologyFileNameThatMatchesTechnologyName(
+      = returnTechnologyFilePathThatMatchesTechnologyName(
         technologyPlayer2->text());
 
     QIcon technologyIconPlayer2(
@@ -919,7 +920,7 @@ MainWindow::MainWindow(
     ui.player2Events->addItem(eventPlayer2);
   }
 
-  QString monkIconFileName = returnUnitFileNameThatMatchesUnitName("Monk");
+  QString monkIconFileName = returnUnitFilePathThatMatchesUnitName("Monk");
 
   QIcon monkIcon = QIcon(workingDirectory.absolutePath() + monkIconFileName);
 
@@ -986,7 +987,7 @@ void MainWindow::on_closeProgram_triggered()
 // Run this on click of Help > About
 void MainWindow::on_actionAbout_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   // Open the about window
   aboutwindow aboutWindow;
@@ -1090,11 +1091,11 @@ void MainWindow::on_player2EntityNamesFilter_textChanged(
 // Run this on click of Help > Documentation > Developer guide
 void MainWindow::on_actionDeveloper_guide_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   // Set the path to it
   QString filePath
-    = workingDirectory.absolutePath() + developerGuideDocumentFilename;
+    = workingDirectory.absolutePath() + developerGuideDocumentFilePath;
 
   PdfWindow pdfWindow{filePath};
   pdfWindow.exec();
@@ -1103,11 +1104,11 @@ void MainWindow::on_actionDeveloper_guide_triggered()
 // Run this on click of Help > Documentation > Test cases
 void MainWindow::on_actionDeveloper_test_cases_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   // Set the path to it
   QString filePath
-    = workingDirectory.absolutePath() + developerTestCasesDocumentFilename;
+    = workingDirectory.absolutePath() + developerTestCasesDocumentFilePath;
 
   PdfWindow pdfWindow{filePath};
   pdfWindow.exec();
@@ -1116,11 +1117,11 @@ void MainWindow::on_actionDeveloper_test_cases_triggered()
 // Run this on click of Help > Documentation > Developer wishlist
 void MainWindow::on_actionDeveloper_wishlist_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   // Set the path to it
   QString filePath
-    = workingDirectory.absolutePath() + developerWishlistDocumentFilename;
+    = workingDirectory.absolutePath() + developerWishlistDocumentFilePath;
 
   PdfWindow pdfWindow{filePath};
   pdfWindow.exec();
@@ -1129,11 +1130,11 @@ void MainWindow::on_actionDeveloper_wishlist_triggered()
 // Run this on click of Help > Documentation > User guide
 void MainWindow::on_actionUser_guide_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   // Set the path to it
   QString filePath
-    = workingDirectory.absolutePath() + userGuideDocumentFilename;
+    = workingDirectory.absolutePath() + userGuideDocumentFilePath;
 
   PdfWindow pdfWindow{filePath};
   pdfWindow.exec();
@@ -1142,7 +1143,7 @@ void MainWindow::on_actionUser_guide_triggered()
 // Run on click of the calculate results button
 void MainWindow::on_calculateResultsButton_clicked()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   ui.gameOutputTextEdit->setHtml("");
 
@@ -1233,7 +1234,7 @@ void MainWindow::on_player2EntityQuantity_valueChanged(int valueInsideOfField)
 void MainWindow::on_player1BattleAssistantNames_textActivated(
   const QString& currentSelection)
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   player1BattleAssistantName = currentSelection;
 
@@ -1247,7 +1248,7 @@ void MainWindow::on_player1BattleAssistantNames_textActivated(
 void MainWindow::on_player2BattleAssistantNames_textActivated(
   const QString& currentSelection)
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   player2BattleAssistantName = currentSelection;
 
@@ -1356,7 +1357,7 @@ void MainWindow::updateRangeAllowed(QString nameOfSelection, int playerNumber)
 void MainWindow::on_player1EntityNames_itemClicked(
   QListWidgetItem* selectedItem)
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   updateRangeAllowed(selectedItem->text(), 1);
 
@@ -1375,7 +1376,7 @@ void MainWindow::on_player1EntityNames_itemClicked(
 void MainWindow::on_player2EntityNames_itemClicked(
   QListWidgetItem* selectedItem)
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   updateRangeAllowed(selectedItem->text(), 2);
 
@@ -1440,7 +1441,7 @@ void MainWindow::technologyOverrider(
 void MainWindow::on_player1Technologies_itemChanged(
   QListWidgetItem* checkedItem)
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QString technology = checkedItem->text();
   technology         = convertSpacesToUnderscores(technology);
@@ -1468,7 +1469,7 @@ void MainWindow::on_player1Technologies_itemChanged(
 // Run on change of what events are toggled by player 1
 void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
@@ -1536,7 +1537,7 @@ void MainWindow::on_player1Events_itemChanged(QListWidgetItem* checkedItem)
 void MainWindow::on_player2Technologies_itemChanged(
   QListWidgetItem* checkedItem)
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QString technology = checkedItem->text();
   technology         = convertSpacesToUnderscores(technology);
@@ -1563,7 +1564,7 @@ void MainWindow::on_player2Technologies_itemChanged(
 
 void MainWindow::on_player2Events_itemChanged(QListWidgetItem* checkedItem)
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QString event = checkedItem->text();
   event         = convertSpacesToUnderscores(event);
@@ -1638,7 +1639,7 @@ void MainWindow::setColorTheToggleElements()
     // ui.actionEnableDisableDarkMode->setFont(); \\ Has no color option
     // Also have to remove checkable option as it interferes with the icons
     ui.actionEnableDisableDarkMode->setIcon(
-      QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+      QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilePath));
     ui.actionEnableDisableDarkMode->setIconVisibleInMenu(true);
 
     if (
@@ -1646,7 +1647,7 @@ void MainWindow::setColorTheToggleElements()
       == true) {
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
         ->setIcon(
-          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilePath));
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
         ->setIconVisibleInMenu(true);
     }
@@ -1658,7 +1659,7 @@ void MainWindow::setColorTheToggleElements()
     if (m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
       ui.actionShow_further_information_about_the_battle_participants_in_the_output
         ->setIcon(
-          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+          QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilePath));
       ui.actionShow_further_information_about_the_battle_participants_in_the_output
         ->setIconVisibleInMenu(true);
     }
@@ -1669,7 +1670,7 @@ void MainWindow::setColorTheToggleElements()
 
     if (soundEffectsEnabled == false) {
       ui.actionEnableDisableSFX->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilename));
+        QIcon(workingDirectory.absolutePath() + checkedIconInvertedFilePath));
       ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
     }
     else {
@@ -1683,7 +1684,7 @@ void MainWindow::setColorTheToggleElements()
       m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
       == true) {
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
-        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilePath));
       ui.actionShow_the_total_instead_of_individual_values_of_battle_participants_in_the_output
         ->setIconVisibleInMenu(true);
     }
@@ -1694,7 +1695,7 @@ void MainWindow::setColorTheToggleElements()
 
     if (m_showFurtherInformationAboutTheBattleParticipantsInTheOutput == true) {
       ui.actionShow_further_information_about_the_battle_participants_in_the_output
-        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+        ->setIcon(QIcon(workingDirectory.absolutePath() + checkedIconFilePath));
       ui.actionShow_further_information_about_the_battle_participants_in_the_output
         ->setIconVisibleInMenu(true);
     }
@@ -1705,7 +1706,7 @@ void MainWindow::setColorTheToggleElements()
 
     if (soundEffectsEnabled == false) {
       ui.actionEnableDisableSFX->setIcon(
-        QIcon(workingDirectory.absolutePath() + checkedIconFilename));
+        QIcon(workingDirectory.absolutePath() + checkedIconFilePath));
       ui.actionEnableDisableSFX->setIconVisibleInMenu(true);
     }
     else {
@@ -1723,46 +1724,46 @@ void MainWindow::setColorTheUIElements()
 
     // Do the icons
     ui.closeProgram->setIcon(QIcon(
-      workingDirectory.absolutePath() + closeProgramIconInvertedFilename));
+      workingDirectory.absolutePath() + closeProgramIconInvertedFilePath));
 
     ui.menuOptions->setIcon(QIcon(
-      workingDirectory.absolutePath() + programOptionsIconInvertedFilename));
+      workingDirectory.absolutePath() + programOptionsIconInvertedFilePath));
 
     ui.menuDocumentation->setIcon(QIcon(
-      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+      workingDirectory.absolutePath() + documentationInvertedIconFilePath));
 
     ui.actionUser_guide->setIcon(QIcon(
-      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+      workingDirectory.absolutePath() + documentationInvertedIconFilePath));
     ui.actionDeveloper_guide->setIcon(QIcon(
-      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+      workingDirectory.absolutePath() + documentationInvertedIconFilePath));
     ui.actionDeveloper_wishlist->setIcon(QIcon(
-      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+      workingDirectory.absolutePath() + documentationInvertedIconFilePath));
     ui.actionDeveloper_test_cases->setIcon(QIcon(
-      workingDirectory.absolutePath() + documentationInvertedIconFilename));
+      workingDirectory.absolutePath() + documentationInvertedIconFilePath));
 
     ui.actionAbout->setIcon(
-      QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilename));
+      QIcon(workingDirectory.absolutePath() + aboutInvertedIconFilePath));
 
     ui.actionShow_database_window->setIcon(
-      QIcon(workingDirectory.absolutePath() + databaseIconInvertedFilename));
+      QIcon(workingDirectory.absolutePath() + databaseIconInvertedFilePath));
 
     ui.actionSet_player_1_Age->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_name_of_player_1->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_set_color_of_player_1->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_player_2_Age->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_name_of_player_2->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_set_color_of_player_2->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
 
     ui.actionSet_civilization_of_player_1->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
     ui.actionSet_civilization_of_player_2->setIcon(QIcon(
-      workingDirectory.absolutePath() + playerDetailsIconInvertedFilename));
+      workingDirectory.absolutePath() + playerDetailsIconInvertedFilePath));
 
     // Update the player names
     if (player1Color == "black" || player2Color == "black") {
@@ -1778,45 +1779,45 @@ void MainWindow::setColorTheUIElements()
     // Do the icons
 
     ui.closeProgram->setIcon(
-      QIcon(workingDirectory.absolutePath() + closeProgramIconFilename));
+      QIcon(workingDirectory.absolutePath() + closeProgramIconFilePath));
     ui.menuOptions->setIcon(
-      QIcon(workingDirectory.absolutePath() + programOptionsIconFilename));
+      QIcon(workingDirectory.absolutePath() + programOptionsIconFilePath));
 
     ui.menuDocumentation->setIcon(
-      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+      QIcon(workingDirectory.absolutePath() + documentationIconFilePath));
 
     ui.actionUser_guide->setIcon(
-      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+      QIcon(workingDirectory.absolutePath() + documentationIconFilePath));
     ui.actionDeveloper_guide->setIcon(
-      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+      QIcon(workingDirectory.absolutePath() + documentationIconFilePath));
     ui.actionDeveloper_wishlist->setIcon(
-      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+      QIcon(workingDirectory.absolutePath() + documentationIconFilePath));
     ui.actionDeveloper_test_cases->setIcon(
-      QIcon(workingDirectory.absolutePath() + documentationIconFilename));
+      QIcon(workingDirectory.absolutePath() + documentationIconFilePath));
 
     ui.actionAbout->setIcon(
-      QIcon(workingDirectory.absolutePath() + aboutIconFilename));
+      QIcon(workingDirectory.absolutePath() + aboutIconFilePath));
 
     ui.actionShow_database_window->setIcon(
-      QIcon(workingDirectory.absolutePath() + databaseIconFilename));
+      QIcon(workingDirectory.absolutePath() + databaseIconFilePath));
 
     ui.actionSet_player_1_Age->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_name_of_player_1->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_set_color_of_player_1->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_player_2_Age->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_name_of_player_2->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_set_color_of_player_2->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
 
     ui.actionSet_civilization_of_player_1->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
     ui.actionSet_civilization_of_player_2->setIcon(
-      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilename));
+      QIcon(workingDirectory.absolutePath() + playerDetailsIconFilePath));
 
     // Update the player names
     if (player1Color == "white" || player2Color == "white") {
@@ -1944,7 +1945,7 @@ void MainWindow::updatePlayerNames()
 // Run on change of "Options" > "Set player 1's name"
 void MainWindow::on_actionSet_name_of_player_1_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   QInputDialog nameDialog;
 
@@ -1970,7 +1971,7 @@ void MainWindow::on_actionSet_name_of_player_1_triggered()
 // Run on change of "Options" > "Set player 2's name"
 void MainWindow::on_actionSet_name_of_player_2_triggered()
 {
-  SFXToPlay("/sfx/ui/button_pressed.wav");
+  SFXToPlay(buttonPressedFilePath);
 
   QInputDialog nameDialog;
   QLabel       player2NameLabel(palettes.getDialogBoxTextTags(
@@ -2230,7 +2231,7 @@ void MainWindow::selectInitialAssistants()
 // Run on change of "Program" > "Options" > "Disable SFX" toggle
 void MainWindow::on_actionEnableDisableSFX_triggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   soundEffectsEnabled = !soundEffectsEnabled;
 
@@ -2240,7 +2241,7 @@ void MainWindow::on_actionEnableDisableSFX_triggered()
 // Run on change of "Program" > "Options" > "Enable dark mode" toggle
 void MainWindow::on_actionEnableDisableDarkMode_triggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
   palettes.darkModeEnabled = !palettes.darkModeEnabled;
   setColorTheUIElements();
 }
@@ -2331,7 +2332,7 @@ void MainWindow::on_p2ActiveEventsToggle_toggled(bool checked)
 
 void MainWindow::on_actionSetDefaultAnswerToRetreatingPrompt_triggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QStringList options
     = {"Ask each time", "Always retreating", "Never retreating"};
@@ -2352,7 +2353,7 @@ void MainWindow::on_actionSetDefaultAnswerToRetreatingPrompt_triggered()
 
 void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QStringList options
     = {"Ask each time", "Always converting", "Always healing"};
@@ -2373,7 +2374,7 @@ void MainWindow::on_actionSetDefaultAnswerToConvertingHealingPrompt_triggered()
 
 void MainWindow::onActionSetDefaultAnswerToAttackMonksPromptTriggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QStringList options
     = {"Ask each time", "Always attack monks", "Never attack monks"};
@@ -2477,7 +2478,7 @@ void MainWindow::setUnitBuildingStyleBasedOnCivilizationSelected(
 
 void MainWindow::on_actionSet_civilization_of_player_1_triggered()
 {
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   QInputDialog player1CivilizationSelection;
 
@@ -2547,12 +2548,12 @@ void MainWindow::getAssistantEntityAnimationForSelectedAssistant(
   if (player == "1") {
     theLabelOfTheCurrentPlayer = ui.p1AssistantAnimation;
     filePath
-      = "/animations/" + fileName + p1UnitStyle + assistantStatus + ".gif";
+      = animationFolderPath + fileName + p1UnitStyle + assistantStatus + ".gif";
   }
   else if (player == "2") {
     theLabelOfTheCurrentPlayer = ui.p2AssistantAnimation;
     filePath
-      = "/animations/" + fileName + p2UnitStyle + assistantStatus + ".gif";
+      = animationFolderPath + fileName + p2UnitStyle + assistantStatus + ".gif";
   }
 
   QMovie* GifAnimation = new QMovie(workingDirectory.absolutePath() + filePath);
@@ -2771,12 +2772,12 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
     if (building == true) {
       if (isADarkAgeBuilding == false) {
-        filePath = "/animations/" + fileName + p1BuildingArchitecturalStyle
+        filePath = animationFolderPath + fileName + p1BuildingArchitecturalStyle
                    + "_" + fileAge + entityStatus + ".gif";
       }
       else {
         filePath
-          = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
+          = animationFolderPath + fileName + "_" + fileAge + entityStatus + ".gif";
       }
     }
 
@@ -2800,7 +2801,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
         }
       }
 
-      filePath = "/animations/" + fileName + entityStatus + ".gif";
+      filePath = animationFolderPath + fileName + entityStatus + ".gif";
     }
   }
   else if (player == "2") {
@@ -2808,12 +2809,12 @@ void MainWindow::getEntityAnimationForSelectedEntity(
 
     if (building == true) {
       if (isADarkAgeBuilding == false) {
-        filePath = "/animations/" + fileName + p2BuildingArchitecturalStyle
+        filePath = animationFolderPath + fileName + p2BuildingArchitecturalStyle
                    + "_" + fileAge + entityStatus + ".gif";
       }
       else {
         filePath
-          = "/animations/" + fileName + "_" + fileAge + entityStatus + ".gif";
+          = animationFolderPath + fileName + "_" + fileAge + entityStatus + ".gif";
       }
     }
 
@@ -2837,7 +2838,7 @@ void MainWindow::getEntityAnimationForSelectedEntity(
         }
       }
 
-      filePath = "/animations/" + fileName + entityStatus + ".gif";
+      filePath = animationFolderPath + fileName + entityStatus + ".gif";
     }
   }
 
@@ -2845,11 +2846,11 @@ void MainWindow::getEntityAnimationForSelectedEntity(
   if (currentSelection.contains("Monk")) {
     if (player == "1") {
       filePath
-        = "/animations/" + fileName + p1UnitStyle + entityStatus + ".gif";
+        = animationFolderPath + fileName + p1UnitStyle + entityStatus + ".gif";
     }
     else if (player == "2") {
       filePath
-        = "/animations/" + fileName + p2UnitStyle + entityStatus + ".gif";
+        = animationFolderPath + fileName + p2UnitStyle + entityStatus + ".gif";
     }
   }
 
@@ -3099,7 +3100,7 @@ void MainWindow::
   m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput
     = !m_showTheTotalInsteadOfIndividualValuesOfBattleParticipantsInTheOutput; // Used in entity.cpp
 
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   setColorTheToggleElements();
 }
@@ -3112,7 +3113,7 @@ void MainWindow::
     = !m_showFurtherInformationAboutTheBattleParticipantsInTheOutput; // Used in
                                                                       // entity.cpp
 
-  SFXToPlay("/sfx/ui/toggle_pressed_sfx.wav");
+  SFXToPlay(togglePressedFilePath);
 
   setColorTheToggleElements();
 }

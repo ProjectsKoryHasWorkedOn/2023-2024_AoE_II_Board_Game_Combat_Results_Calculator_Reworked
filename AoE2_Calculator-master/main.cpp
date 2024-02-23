@@ -10,11 +10,19 @@
 static QString getSqlScriptPath()
 {
   QDir dir{workingDirectory};
-  dir.cdUp();
-  dir.cd("AoE2_Calculator-master");
-  dir.cd("db");
-  return dir.absoluteFilePath("aoe_board_game_db.sql");
+  dir.cd(importFolderDirectoryName);
+  dir.cd(databaseFolderDirectoryName);
+  return dir.absoluteFilePath(databaseFileName);
 }
+
+
+static QString getProgramIconPath(){
+  QDir dir{workingDirectory};
+  dir.cd(importFolderDirectoryName);
+  dir.cd(imagesFolderDirectoryName);
+  return dir.absoluteFilePath(programIconFilename);
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -37,7 +45,7 @@ int main(int argc, char* argv[])
   MainWindow w{&database, &openTheOutputWindow};
 
   // Set the application icon
-  w.setWindowIcon(QIcon("swords_clashing.ico"));
+  w.setWindowIcon(QIcon(getProgramIconPath()));
 
   w.show();
   return application.exec();

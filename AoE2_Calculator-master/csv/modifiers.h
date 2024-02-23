@@ -19,13 +19,13 @@ QString getFilePath(Player player)
   if constexpr (std::is_same_v<Modifier, CsvEvent>) {
     return workingDirectory.absolutePath()
            + ((
-             player == Player::Player1 ? eventsP1Filename : eventsP2Filename));
+             player == Player::Player1 ? eventsP1FilePath : eventsP2FilePath));
   }
   else if constexpr (std::is_same_v<Modifier, CsvTechnology>) {
     return workingDirectory.absolutePath()
            + ((
-             player == Player::Player1 ? technologiesP1Filename
-                                       : technologiesP2Filename));
+             player == Player::Player1 ? technologiesP1FilePath
+                                       : technologiesP2FilePath));
   }
   else {
     assert(false && "Only CsvEvent and CsvTechnology work here.");

@@ -186,43 +186,43 @@ void runGame(
   // Behaviour: Load "entities.csv" and get information about the input entities
   // Player 1
   p1BattleParticipant
-    = importFile.entitiesFile("import/entities.csv", entitiesWords, player1, 0);
+    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player1, 0);
   p1BattleAssistant
-    = importFile.entitiesFile("import/entities.csv", entitiesWords, player1, 1);
+    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player1, 1);
 
   // Player 2
   p2BattleParticipant
-    = importFile.entitiesFile("import/entities.csv", entitiesWords, player2, 0);
+    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player2, 0);
   p2BattleAssistant
-    = importFile.entitiesFile("import/entities.csv", entitiesWords, player2, 1);
+    = importFile.entitiesFile("import/csv/entities.csv", entitiesWords, player2, 1);
 
   // Behaviour: Load "technologies_[p1/p2].csv" and get information about the
   // active technologies Player 1
   p1Technologies = importFile.aSplitColumnFile(
-    "import/technologies_p1.csv", technologiesRows);
+    "import/csv/technologies_p1.csv", technologiesRows);
   std::unique_ptr<int[]> p1TechUp(p1Technologies);
 
   // Player 2
   p2Technologies = importFile.aSplitColumnFile(
-    "import/technologies_p2.csv", technologiesRows);
+    "import/csv/technologies_p2.csv", technologiesRows);
   std::unique_ptr<int[]> p2TechUp(p2Technologies);
 
   // Behaviour: Load "events_[p1/p2].csv" and get information about the active
   // events Player 1
-  p1Events = importFile.aSplitColumnFile("import/events_p1.csv", eventsRows);
+  p1Events = importFile.aSplitColumnFile("import/csv/events_p1.csv", eventsRows);
   std::unique_ptr<int[]> p1EventsUp(p1Events);
 
   // Player 2
-  p2Events = importFile.aSplitColumnFile("import/events_p2.csv", eventsRows);
+  p2Events = importFile.aSplitColumnFile("import/csv/events_p2.csv", eventsRows);
   std::unique_ptr<int[]> p2EventsUp(p2Events);
 
   // Behaviour: Load "players.csv"and store information about the player details
   // for all players
   playerAges
-    = importFile.aSplitColumnFile("import/playerAge.csv", playerAgeRows);
+    = importFile.aSplitColumnFile("import/csv/playerAge.csv", playerAgeRows);
   std::unique_ptr<int[]> playerAgeUp(playerAges);
 
-  playerNames = importFile.playerNames("import/playerNames.csv", 2);
+  playerNames = importFile.playerNames("import/csv/playerNames.csv", 2);
   std::unique_ptr<std::string[]> playerNamesUp(playerNames);
 
   // Behavior: Work out what the initial quantity values are

@@ -9,12 +9,12 @@
 namespace {
 std::vector<CsvPlayerName> readNames()
 {
-  QFile file{workingDirectory.absolutePath() + playerNamesFilename};
+  QFile file{workingDirectory.absolutePath() + playerNamesFilePath};
   if (!file.open(
         QIODeviceBase::ReadOnly | QIODeviceBase::Text,
         QFileDevice::ReadOther)) {
     throw std::runtime_error{
-      "Could not open \"" + playerNamesFilename.toStdString() + "\""};
+      "Could not open \"" + playerNamesFilePath.toStdString() + "\""};
   }
 
   QTextStream                stream{&file};
@@ -29,12 +29,12 @@ std::vector<CsvPlayerName> readNames()
 
 void writeNames(const std::vector<CsvPlayerName>& playernames)
 {
-  QFile file{workingDirectory.absolutePath() + playerNamesFilename};
+  QFile file{workingDirectory.absolutePath() + playerNamesFilePath};
   if (!file.open(
         QIODeviceBase::WriteOnly | QIODeviceBase::Text,
         QFileDevice::WriteOther)) {
     throw std::runtime_error{
-      "Could not open \"" + playerNamesFilename.toStdString() + "\""};
+      "Could not open \"" + playerNamesFilePath.toStdString() + "\""};
   }
 
   QTextStream stream{&file};

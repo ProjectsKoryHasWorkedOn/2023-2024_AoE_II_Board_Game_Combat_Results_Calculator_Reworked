@@ -39,12 +39,12 @@ public:
   // functions if it hasn't added them automatically or it'll throw up an error
 private slots:
 
-  QString returnTechnologyFileNameThatMatchesTechnologyName(
+  QString returnTechnologyFilePathThatMatchesTechnologyName(
     QString technologyName);
 
-  QString returnUnitFileNameThatMatchesUnitName(QString unitName);
+  QString returnUnitFilePathThatMatchesUnitName(QString unitName);
 
-  QString returnBuildingFileNameThatMatchesBuildingName(QString buildingName);
+  QString returnBuildingFilePathThatMatchesBuildingName(QString buildingName);
 
   void on_closeProgram_triggered();
 
@@ -150,7 +150,7 @@ private slots:
 
   void updateDetatchedOutputWindow();
 
-  void linkUnitNamesToFileNamesMap();
+  void linkUnitNamesToFilePathsMap();
 
 private:
   void initializeEntityAliases();
@@ -230,6 +230,6 @@ private:
   int m_p1FarmMemory     = 0;
   int m_p2FarmMemory     = 0;
 
-  QMap<QString, QString> unitNameToUnitFileNameMap;
+  QMap<QString, QString> unitNameToUnitFilePathMap;
 };
 #endif // MAINWINDOW_HPP

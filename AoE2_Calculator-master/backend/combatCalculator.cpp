@@ -464,7 +464,7 @@ void combatCalculator::deathDetectionForEachPlayer(
     }
 
     if (givenPlayerBattleParticipant.entityName == "Wonder") {
-      SFXToPlay("/sfx/significant_events/wonder_destroyed_sfx.wav");
+      SFXToPlay(wonderDestroyedFilePath);
     }
   }
 }
@@ -1189,7 +1189,7 @@ void monkRounds::calculatingMonkRoundOutcomeForAnIndividualPlayer(
         }
 
         // Play a SFX for a successful conversion attempt
-        SFXToPlay("/sfx/rng/successful_monk_conversion_attempt_sfx.wav");
+        SFXToPlay(monkConversionAttemptFilePath);
       }
       else if (givenPlayerIsHealingOrConverting == "Healing") {
         // Work out whether the given player is targeting a assistant or
@@ -1237,7 +1237,7 @@ void monkRounds::calculatingMonkRoundOutcomeForAnIndividualPlayer(
         }
 
         // Play a SFX for a successful healing attempt
-        SFXToPlay("/sfx/rng/successful_monk_healing_attempt_sfx.wav");
+        SFXToPlay(monkHealingAttemptFilePath);
       }
     }
   }
