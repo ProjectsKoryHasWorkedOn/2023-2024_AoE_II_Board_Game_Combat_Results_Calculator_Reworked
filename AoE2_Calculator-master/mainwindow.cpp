@@ -1051,6 +1051,7 @@ void MainWindow::on_player1EntityNamesFilter_textChanged(
 
     QString formattedName = convertSpacesToUnderscores(listWidgetItem->text().toUpper());
 
+
     const bool isItemABuilding = isBuilding(formattedName);
 
     if(isItemABuilding == true){

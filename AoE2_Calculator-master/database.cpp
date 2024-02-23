@@ -546,9 +546,6 @@ static QString fetchArmorClasses(const Entity& entity)
 
 
 
-/* todo phillip PHILLIP: Seems to be missing hp bonus, loom is giving ranged damage bonus */
-
-
 Entity Database::getUnitModifiers(
   Entity entityToApplyModifiersTo,
   Entity entityToCheckArmorClassesOf)
